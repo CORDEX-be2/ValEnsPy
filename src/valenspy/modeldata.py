@@ -1,19 +1,30 @@
 import xarray as xr
 import dask
 import shapely
+import os
 
 class Modeldata:
-    """A class to represent a single xarray dataset in CF convention."""
+    """
+    A class to represent a single netCDF file which is in CF convention. 
+    The file is loaded as a dask xarray dataset.
+    """
 
-    def __init__(self, file_location=None):
-        """Initialize an empty dataset."""
+    def __init__(self, file_location):
+        """
+        Initialize modeldata object from a location of a netCDF file.
+        
+        Parameters
+        ----------
+        file_location : str
+            The location of the netCDF file.
+        """
         self.file_location = file_location
         self.load_dataset()
 
     def __str__(self):
         """Return a string representation of the dataset."""
-        if self.ds:
-            return "Empty dataset"
+        if not self.ds:
+            return f"{self.file_location} is not a valid netCDF file."
         start_dt = self.ds.time.min().values
         end_dt = self.ds.time.max().values
         variables = ", ".join(self.ds.data_vars)
@@ -25,29 +36,37 @@ class Modeldata:
         return self.__str__()
     
     def load_dataset(self):
-        """Load the dataset as a dask xarray dataset."""
-        if self.file_location:
-            self.ds = xr.open_dataset(self.file_location, chunks={'time': 'auto'})
+        """
+        Load the dataset as a dask xarray dataset and store it in the ds attribute.
+        A check is performed to see if the file is a valid netCDF file in CF convention.
+        
+        Raises
+        ------
+        FileNotFoundError
+            If the file_location is not a valid file location.
+        ValueError
+            If the file is not in CF convention.
+        """
+        if not os.path.isfile(self.file_location):
+            raise FileNotFoundError(f"{self.file_location} is not a valid file location.")
         else:
-            self.ds = None
+            self.ds = xr.open_dataset(self.file_location, chunks={'time': 'auto'})
+            if not self._is_CF_convention():
+                raise ValueError(f"{self.file_location} is not in the CF convention.")
 
     @property
     def domain_bound(self):
-        """Returns a shapely polygon of the domain of the dataset."""
+        """Property: The outer bounds of the domain of the dataset as a shapely polygon."""
         if not self.ds:
             return None
         return shapely.geometry.box(self.ds.lon.min(), self.ds.lat.min(), self.ds.lon.max(), self.ds.lat.max())
     
     def _is_same_ensmember(self, other):
         """Check if the modeldata object is from the same ens_member with another modeldata object."""
-        if not self.ds or not other.ds:
-            return False
-        if not self.domain_bound.equals(other.domain_bound):
-            return False
-        for var in self.ds.data_vars:
-            if var in other.ds.data_vars:
-                if self.ds[var].time.min() > other.ds[var].time.max() or self.ds[var].time.max() < other.ds[var].time.min():
-                    return False
+        #TODO: Implement this method to check if the modeldata objects are possibly from the same ensemble member
+        #Based on??
+        #No overlapping time periods (for the same variable), the same domain, ... ?
+        #These two modeldatasets should (at least) be concatenatable along the time dimension.
         return True
     
     def _is_CF_convention(self):
