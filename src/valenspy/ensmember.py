@@ -1,3 +1,4 @@
+import xarray as xr
 class Ensmember:
     """A class representing one ensemble member which consists of multiple modeldata objects."""
 
@@ -22,23 +23,38 @@ class Ensmember:
         self.institution = institution
         self.model = model
         self.run_id = run_id
+        self.load_data()
 
     def __str__(self):
-        return f"Ensemble member: \n model: {self.model} \n institution: {self.institution} \n experiment: {self.experiment} \n data: {self.data}"
+        return f"Ensemble member: \n model: {self.model} \n institution: {self.institution} \n experiment: {self.experiment} \n run_id: {self.run_id} \n time period: {self.time_period} \n resolution: {self.resolution} \n domain: {self.get_domain}"
 
     def __repr__(self):
         return self.__str__()
     
+    def load_data(self):
+        """Load the data from the modeldata objects in the ensemble member."""
+        self.ds = xr.open_mfdataset([modeldata.file_location for modeldata in self.data], combine='by_coords', chunks='auto')
     
+    @property
+    def time_period(self):
+        """Return the time period of the ensemble member."""
+        return self.ds.time.min().values, self.ds.time.max().values
+    
+    @property
+    def get_domain(self):
+        """Return the domain of the ensemble member."""
+        return self.data[0].domain_bound
+    
+    @property
+    def resolution(self):
+        """Return the resolution of the ensemble member as the nominal resolution attribute of the ds."""
+        return self.ds.attrs['nominal_resolution']
     
     def add_modeldata(self, modeldata):
         """Add a modeldata object to the ensemble member."""
         self.data.append(modeldata)
 
     def _is_consistent(self):
-        #To be improved (maybe using dask and xarray to try to concatenate the data and see if it works) i.e. no overlapping time periods (for different vars) or different domains
-        """Check if the ensemble member is consistent, i.e. the modeldata covers the same time period, domain and have the same resolution."""
-
-        
+        #Check if the xarray contains data for each variable, for the full time period and the same domain (lat, lon and resolution)
         return True
 

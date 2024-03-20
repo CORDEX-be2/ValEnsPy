@@ -28,8 +28,7 @@ class Modeldata:
         start_dt = self.ds.time.min().values
         end_dt = self.ds.time.max().values
         variables = ", ".join(self.ds.data_vars)
-        domain = self.get_domain()
-        return f"Modeldata object: {start_dt} - {end_dt}, variables: {variables}, domain: {domain.bounds}"
+        return f"Modeldata object: {start_dt} - {end_dt}, variables: {variables}, domain: {self.domain_bound.bounds}"
     
     def __repr__(self):
         """Return a string representation of the dataset."""

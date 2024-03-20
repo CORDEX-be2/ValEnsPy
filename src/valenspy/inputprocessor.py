@@ -1,4 +1,5 @@
 from valenspy.modeldata import Modeldata
+from pathlib import Path
 class InputProcessor:
     """Class to read an input file and convert it to CF convention."""
     def __init__(self, converter):
@@ -17,12 +18,12 @@ class InputProcessor:
         
         Parameters
         ----------
-        input : str or list(str)
+        input : Path or list(Path)
             The input file or list of input files to convert.
         """
         input = self.converter(input)
 
-        if isinstance(input, str):
+        if isinstance(input, Path):
             return Modeldata(file_location=input)
         elif isinstance(input, list):
             return [Modeldata(file_location=file) for file in input]
