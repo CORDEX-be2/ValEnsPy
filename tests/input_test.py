@@ -1,24 +1,27 @@
-import src.valenspy
-import xarray as xr
-import dask 
+import sys, os
+from pathlib import Path
 
-ds = xr.open_dataset(r"C:\Users\kvandela\Projects\ValEnsPy\tests\data\tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc")
+lib_folder = Path(__file__).resolve().parents[1].joinpath("src")
 
-modeldata = src.valenspy.Modeldata(file_location=r"C:\Users\kvandela\Projects\ValEnsPy\tests\data\tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc")
-print(modeldata.get_domain())
+sys.path.insert(0, str(lib_folder))
+import valenspy
+import shapely
 
-ensmember = src.valenspy.Ensmember(data=[modeldata, modeldata])
-print(ensmember)
+test_data_folder = Path(__file__).resolve().parents[0].joinpath("data")
+file1 = test_data_folder.joinpath("tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc")
+file2 = test_data_folder.joinpath("tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc")
 
+#Testing the modeldata class
+modeldata = valenspy.Modeldata(file_location=file1)
+assert (modeldata.domain_bound == shapely.geometry.box(0, -89.4628215685774, 359.296875, 89.4628215685774)), "Domain is not correct"
+assert (modeldata._is_CF_convention() == True), "Not in CF convention"
 
-#Creating a simple input processor
-simple_input = src.valenspy.InputProcessor(converter=lambda x: x)
-modeldata = simple_input.convert_input(r"C:\Users\kvandela\Projects\ValEnsPy\tests\data\tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc")
+#Testing the inputprocessor class with a dummy converter
+simple_input = valenspy.InputProcessor(converter=lambda x: x)
+modeldata = simple_input.convert_input(file1)
 
 #Using it for multiple files
-data = simple_input.convert_input([r"C:\Users\kvandela\Projects\ValEnsPy\tests\data\tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc", 
-                                   r"C:\Users\kvandela\Projects\ValEnsPy\tests\data\tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc"])
-
-ensmember = src.valenspy.Ensmember(data=data, experiment="historical", institution="EC-Earth3-Veg", model="EC-Earth3-Veg")
+data = simple_input.convert_input([file1, file2])
+ensmember = valenspy.Ensmember(data=data, experiment="historical", institution="EC-Earth3-Veg", model="EC-Earth3-Veg")
 ensmember
 

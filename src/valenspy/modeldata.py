@@ -31,34 +31,26 @@ class Modeldata:
         else:
             self.ds = None
 
-    def get_domain(self):
+    @property
+    def domain_bound(self):
         """Returns a shapely polygon of the domain of the dataset."""
         if not self.ds:
             return None
         return shapely.geometry.box(self.ds.lon.min(), self.ds.lat.min(), self.ds.lon.max(), self.ds.lat.max())
     
-    def _is_consistent(self, other):
-        """Check if the modeldata object is consistent with another modeldata object."""
-        if self.ds.empty or other.ds.empty:
+    def _is_same_ensmember(self, other):
+        """Check if the modeldata object is from the same ens_member with another modeldata object."""
+        if not self.ds or not other.ds:
             return False
-        same_domain = self.get_domain().equals(other.get_domain())
-        return same_domain
+        if not self.domain_bound.equals(other.domain_bound):
+            return False
+        for var in self.ds.data_vars:
+            if var in other.ds.data_vars:
+                if self.ds[var].time.min() > other.ds[var].time.max() or self.ds[var].time.max() < other.ds[var].time.min():
+                    return False
+        return True
     
-    def _check_CF_convention(self):
+    def _is_CF_convention(self):
         """Check if the dataset is in CF convention."""
         #TODO: Expand this method to check if the dataset is in CF convention
-
-        # Check if the dataset has the required variables
-        required_vars = ['time', 'lat', 'lon']
-        for var in required_vars:
-            if var not in self.ds.variables:
-                return False
-
-        # Check if the dataset has the required attributes
-        required_attrs = ['standard_name', 'units']
-        for var in self.ds.variables:
-            for attr in required_attrs:
-                if attr not in self.ds[var].attrs:
-                    return False
-
         return True

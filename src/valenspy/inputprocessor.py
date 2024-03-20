@@ -1,5 +1,4 @@
 from valenspy.modeldata import Modeldata
-from valenspy.ensmember import Ensmember
 class InputProcessor:
     """Class to read an input file and convert it to CF convention."""
     def __init__(self, converter):

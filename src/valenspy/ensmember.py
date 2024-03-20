@@ -30,14 +30,14 @@ class Ensmember:
         """Add a modeldata object to the ensemble member."""
         self.data.append(modeldata)
 
-    def _is_consistent(self, other):
-        """Check if the ensemble member is consistent with another ensemble member."""
-        #TODO: Implement this method to check if the ensemble members are consistent - i.e. cover the same time period, domain and variables
-        return True
-
-    def _check_modeldata(self, modeldata):
-        """Check if the modeldata objects in the ensemble member are consistent."""
+    def _is_consistent(self):
+        #To be improved (maybe using dask and xarray to try to concatenate the data and see if it works) i.e. no overlapping time periods (for different vars) or different domains
+        """Check if the ensemble member is consistent, i.e. the modeldata objects are comparable"""
         if not self.data:
             return False
-        return modeldata._is_consistent(self.data[0])
+        for i in range(len(self.data)-1):
+            #Not completely correct, but a start - consistency here is not transitive
+            if not self.data[i]._is_consistent(self.data[i+1]):
+                return False
+        return True
 
