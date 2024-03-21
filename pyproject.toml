@@ -2,7 +2,8 @@
 name = "valenspy"
 version = "0.1.0"
 description = "A Python package to validate gridded model data."
-authors = ["Your Name <you@example.com>"]
+authors = ["Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
+	   " .... "]
 license = ","
 readme = "README.md"
 
@@ -11,6 +12,7 @@ python = "^3.9"
 xarray = "^2024.2.0"
 dask = "^2024.3.1"
 netCDF4 = "^1.6.5"
+pandas = "^2.2.1"
 
 [tool.poetry.group.dev.dependencies]
 poetry = "^1.8.2"
