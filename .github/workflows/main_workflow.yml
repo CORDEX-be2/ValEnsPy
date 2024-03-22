@@ -44,23 +44,29 @@ jobs:
           with:
             name: package_build
             path: dist/*.tar.gz
-        #- name: build package with all extras
-        #  run: |
-        #      poetry update
-        #      poetry install --all-extras
-        #- name: export documentation requirement group
-         # run: |
-         #     poetry export -f requirements.txt --without-hashes --only documentation -o only_doc_req.txt
-        #- name: convert doc requirments to artifact
-        #  uses: actions/upload-artifact@v3
-        #  with:
-        #    name: documentation_requirements
-        #    path: only_doc_req.txt
-        #- name: export titan requirement group
-        #  run: |
-        #      poetry export -f requirements.txt --without-hashes --only titan -o only_titan_req.txt
-        #- name: convert titan requirements to artifact
-        #  uses: actions/upload-artifact@v3
-        #  with:
-        #    name: titan_requirements
-        #    path: only_titan_req.txt
+
+# ---- Installing the package test ------#
+   #--- Package os installation ---
+   mac_install_testing:
+     name: Installation on Mac latest
+     needs: packageing
+     runs-on: macos-latest
+     steps:
+       - uses: actions/checkout@v3
+       - name: Set up Python39
+         uses: actions/setup-python@v4
+         with:
+           python-version: "3.9"
+       - name: Download the package build
+         uses: actions/download-artifact@v3
+         with:
+           name: package_build
+
+       - name: Install the package
+         run: |
+             python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
+       - name: Run tests
+         run: |
+             python tests/push_test/import_test.py
+
+      
