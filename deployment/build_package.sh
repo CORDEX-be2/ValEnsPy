@@ -16,6 +16,7 @@ SRCDIR=${WORKDIR}/src/valenspy
 #add packages that 
 poetry add xarray
 poetry add pandas
+poetry add shapely
 
 # --- Build the package ---------
 
