@@ -67,6 +67,6 @@ jobs:
              python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
        - name: Run tests
          run: |
-             python tests/push_test/import_test.py
+             python tests/push_tests/import_test.py
 
       
