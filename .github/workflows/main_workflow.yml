@@ -9,6 +9,9 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         pkg_file: ${{ steps.base_def.outputs.filename }}
+      #Will be triggerd when pushing to main/dev or when 'run_tests' is in the commit message
+      if: |
+        github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || contains(github.event.head_commit.message, 'run_tests')
       steps:
         - uses: actions/checkout@v3
         - name: Set up Python39
@@ -69,4 +72,47 @@ jobs:
          run: |
              python tests/push_tests/import_test.py
 
+   windows_install_testing:
+     name: Installation on Windows latest
+     needs: packageing
+     runs-on: windows-latest
+     steps:
+       - uses: actions/checkout@v3
+       - name: Set up Python39
+         uses: actions/setup-python@v4
+         with:
+           python-version: "3.9"
+       - name: Download the package build
+         uses: actions/download-artifact@v3
+         with:
+           name: package_build
+
+       - name: Install the package
+         run: |
+             python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
+       - name: Run tests
+         run: |
+             python tests\push_tests\import_test.py
+
+
+#---- Version Control -----#
+   versiontest:
+     name: check if version is valid
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v3
+       - name: get version
+         id: 'version_info'
+         run: |
+           CURRENT_VERSION="$(grep -oP '__version__ = "\K\d+\.\d+\.\d+' src/valenspy/__init__.py)"
+           echo "current version (init) = ${CURRENT_VERSION}"
+           echo "::set-output name=current_version::$CURRENT_VERSION"
+           PYPROJECT_VERSION="$(grep -oP 'version = "\K\d+\.\d+\.\d+' pyproject.toml)"
+           echo "current version (pyproject) = ${PYPROJECT_VERSION}"
+           echo "::set-output name=pyproject_version::$PYPROJECT_VERSION"
+       - name: version-is-correct
+         if: ${{ steps.version_info.outputs.current_version != steps.version_info.outputs.pyproject_version }}
+         run: |
+           echo "version tags are not aligned!"
+           exit 1
       
