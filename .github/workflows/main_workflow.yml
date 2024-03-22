@@ -15,17 +15,8 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         pkg_file: ${{ steps.base_def.outputs.filename }}
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || contains(github.event.head_commit.message, 'test')
       steps:
-      - uses: khan/pull-request-comment-trigger@v1.1.0
-        id: check
-        with:
-          trigger: '@test_this'
-          reaction: rocket
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      - run: 'echo Found test trigger!'
-        if: steps.check.outputs.triggered == 'true'
-        
       - uses: actions/checkout@v3
       - name: Set up Python39
         uses: actions/setup-python@v4
@@ -37,7 +28,7 @@ jobs:
         run: |
               rm -f dist/metobs_toolkit-*.whl
               rm -f dist/metobs_toolkit-*.tar.gz
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || steps.check.outputs.triggered
+        
       - name: Install dependencies and build
         run: |
               pip install poetry
@@ -46,21 +37,18 @@ jobs:
               poetry update
               poetry install 
               poetry build
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || steps.check.outputs.triggered
     
       - name: get distribution file name
         id: base_def
         run: |
               rel_path=$(find dist/ -name 'valenspy-*.tar.gz' -print -quit)
               echo "filename=$(basename "$rel_path")" >> $GITHUB_OUTPUT
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || steps.check.outputs.triggered
 
       - name: save package as artifact
         uses: actions/upload-artifact@v3
         with:
             name: package_build
             path: dist/*.tar.gz
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || steps.check.outputs.triggered
 
 # ---- Installing the package test ------#
    #--- Package os installation ---
