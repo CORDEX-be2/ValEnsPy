@@ -3,7 +3,7 @@ name = "valenspy"
 version = "0.1.0"
 description = "A Python package to validate gridded model data."
 authors = ["Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
-	   " .... "]
+	   " ... "]
 license = ","
 readme = "README.md"
 
