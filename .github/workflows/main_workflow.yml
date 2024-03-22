@@ -1,6 +1,12 @@
 name: Automatic tests pipeline
 
-on: [push]
+on: 
+   push:
+   pull_request: 
+      types: [opened]
+   issue_comment:
+      types: ['created']
+    
 
 jobs:
 #--- Build the package and save as artifacts----
@@ -9,10 +15,21 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         pkg_file: ${{ steps.base_def.outputs.filename }}
+      steps:
+      - uses: khan/pull-request-comment-trigger@v1.1.0
+        id: check
+        with:
+          trigger: '@deploy'
+          reaction: rocket
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      - run: 'echo Found it!'
+        if: steps.check.outputs.triggered == 'true'
+        
       #Will be triggerd when pushing to main/dev or when 'run_tests' is in the commit message
       if: |
-        github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || contains(github.event.head_commit.message, 'run_tests')
-      steps:
+        github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || steps.check.outputs.triggered
+      
         - uses: actions/checkout@v3
         - name: Set up Python39
           uses: actions/setup-python@v4
