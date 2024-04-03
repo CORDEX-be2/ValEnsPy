@@ -2,24 +2,20 @@ import sys, os
 from pathlib import Path
 import numpy
 
-# lib_folder = Path(__file__).resolve().parents[1].joinpath("src")
+lib_folder = Path(__file__).resolve().parents[1].joinpath("src")
 
-# test_data_folder = Path(__file__).resolve().parents[1].joinpath("tests").joinpath("data")
+test_data_folder = Path(__file__).resolve().parents[1].joinpath("tests").joinpath("data")
 #Get the git root directory
 
-test_data_folder = r"C:\Users\kvandela\Projects\ValEnsPy\tests\data"
-
 #Import xarray datatree
-from datatree import DataTree
+import datatree 
 
 import xarray as xr
-# Create a DataTree object
-ds=xr.open_dataset(Path(test_data_folder).joinpath("tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc"))
 
-ds=xr.open_mfdataset(test_data_folder + "/*historical*.nc", combine='by_coords', chunks='auto')
-ds2=xr.open_mfdataset(test_data_folder + "/*ssp245*.nc", combine='by_coords', chunks='auto')
+ds=xr.open_mfdataset(str(test_data_folder) + "/*historical*.nc", combine='by_coords', chunks='auto')
+ds2=xr.open_mfdataset(str(test_data_folder) + "/*ssp245*.nc", combine='by_coords', chunks='auto')
 
-dt = DataTree.from_dict({"historical": ds, "ssp245": ds2})
+dt = datatree.DataTree.from_dict({"historical": ds, "ssp245": ds2})
 
 avg=dt.mean("time")
 avg
