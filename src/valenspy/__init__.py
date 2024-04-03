@@ -8,7 +8,7 @@ sys.path.append(BASE_PATH)
 from valenspy.modeldata import Modeldata
 from valenspy.ensmember import Ensmember
 from valenspy.ensemble import Ensemble
-from valenspy.inputprocessor import InputProcessor
+from valenspy.inputconverter import InputConverter
 
     
 # =============================================================================
