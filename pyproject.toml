@@ -16,6 +16,7 @@ pandas = "^2.2.1"
 shapely = "^2.0.3"
 xarray-datatree = "^0.0.14"
 matplotlib = "^3.8.3"
+scipy = "^1.13.0"
 
 [tool.poetry.group.dev.dependencies]
 poetry = "^1.8.2"
