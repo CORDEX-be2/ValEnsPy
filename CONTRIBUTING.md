@@ -13,7 +13,7 @@ The following software (or equivalent) is required to set up a developer environ
 Make sure you have this software installed before proceeding.
 
 ### Setup a developer environment
-1. Clone the MetObs-toolkit locally:
+1. Clone the ValEnsPy-tool locally:
 
   ```
   git clone git@github.com:CORDEX-be2/ValEnsPy.git
