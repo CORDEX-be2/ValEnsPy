@@ -2,8 +2,24 @@
 
 All contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.
 
-## Get Started
-Ready to make code contributions? Here is how to set up a developer's environment for the toolkit.
+## Ways to contribute
+There are many ways to contribute to the ValEnsPy package:
+1) Partake in one of the [discussions](https://github.com/CORDEX-be2/ValEnsPy/discussions) or create a new one.
+2) Create a new [issue](https://github.com/CORDEX-be2/ValEnsPy/issues) to help us improve the package.
+  - New feature requests
+  - Bug Reports
+
+3) Contribute to the codebase. This can be done by:
+  - Taking on an open issue
+  - Adding a new diagnostic (see [Adding a new diagnostic](#adding-a-new-diagnostic)
+
+4) Help improve the documentation. This can be done by:
+  - Adding a new example
+  - Improving the general documentation
+
+## Contribute to the codebase
+Ready to make code contributions? Here's how to set up ValEnsPy for local development.
+If you are planning to develop on the VSC see CONTRIBUTING_VSC.md for a VSC specific guide.
 
 ### Required software
 
@@ -61,8 +77,8 @@ If your code is ready for review, you can add the ![Static Badge](https://img.sh
 
 After the code review, and all review marks are resolved, your contributions will be merged to the *dev* branch.
 
- ## Versioning/Tagging
- From time to time the *dev* branch will be merged with the master with a new [*Release tag*](https://github.com/CORDEX-be2/ValEnsPy/releases).
+## Versioning/Tagging
+From time to time the *dev* branch will be merged with the master with a new [*Release tag*](https://github.com/CORDEX-be2/ValEnsPy/releases).
 
 ## Acknowledgement
 This file is inspired by the [RavenPy](https://github.com/CSHS-CWRA/RavenPy) project. Thank you for the inspiration!”.
