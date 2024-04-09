@@ -14,8 +14,8 @@ There are many ways to contribute to the ValEnsPy package:
   - Adding a new diagnostic (see [Adding a new diagnostic](#adding-a-new-diagnostic)
 
 4) Help improve the documentation. This can be done by:
-  - Adding a new example
-  - Improving the general documentation
+- Adding a new example
+- Improving the general documentation
 
 ## Contribute to the codebase
 Ready to make code contributions? Here's how to set up ValEnsPy for local development.
@@ -31,43 +31,43 @@ Make sure you have this software installed before proceeding.
 ### Setup a developer environment
 1. Clone the ValEnsPy locally:
 
-  ```
-  git clone git@github.com:CORDEX-be2/ValEnsPy.git
-  ```
+```bash
+git clone git@github.com:CORDEX-be2/ValEnsPy.git
+```
 2. Create a conda environment and install the required packages.
-  ```
-  # Setup a developers' environment
-  conda create -n valenspy_dev python==3.9 poetry
-  conda activate valenspy_dev
+```bash
+# Setup a developers' environment
+conda create -n valenspy_dev python==3.9 poetry
+conda activate valenspy_dev
 
-  # Install dependencies in the developers' environment
-  cd ValEnsPy
-  poetry install
-  ```
+# Install dependencies in the developers' environment
+cd ValEnsPy
+poetry install
+```
 3. Create a branch for local development which is a copy of the **dev** branch.:
- ```
-  # checkout the dev branch
-  git checkout dev
-  git pull
+```bash
+# checkout the dev branch
+git checkout dev
+git pull
 
-  # Create a new local branch and switch to it.
-  git branch name-of-your-bugfix-or-feature
-  git checkout name-of-your-bugfix-or-feature
-  ```
- Now you can make local changes.
+# Create a new local branch and switch to it.
+git branch name-of-your-bugfix-or-feature
+git checkout name-of-your-bugfix-or-feature
+```
+Now you can make local changes.
 
 5. Push your code online:
-   ```
-   # Add your changes to your commit
-   git add -A
-   # Write commit text
-   git commit -m "Some text describing your code changes in this commit"
-   # Push your branch online
-   #only the first time:
-   git push --set-upstream origin name-of-your-bugfix-or-feature
-   #all other times
-   git push
-   ```
+```bash
+# Add your changes to your commit
+git add -A
+# Write commit text
+git commit -m "Some text describing your code changes in this commit"
+# Push your branch online
+#only the first time:
+git push --set-upstream origin name-of-your-bugfix-or-feature
+#all other times
+git push
+```
 
 ## Pull Request Guidelines
 Once your branch has been *pushed* to github, you can create a *Pull request* in github. Make sure that you have **referred the corresponding issues** to the *Pull request*.
