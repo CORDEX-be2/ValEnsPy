@@ -42,58 +42,62 @@ TODO Test if this works on the VSC!?
 ### Setup a developer environment
 
 0. Choose a location for your development environment. Ideaaly this should be within the 2022_200 project directory.
-  For example:
-  ```bash
-  cd /dodrio/scratch/projects/2022_200/project_output/__INSTITUTE__/__VSC_USERNAME__
-  ```
+For example:
+
+```bash
+cd /dodrio/scratch/projects/2022_200/project_output/__INSTITUTE__/__VSC_USERNAME__
+```
 
 1. Clone the ValEnsPy repository locally:
 
-  ```bash
-  git clone git@github.com:CORDEX-be2/ValEnsPy.git
-  ```
-  TODO: Add link to Git guide for cloning the repository (using SSH keys).
+```bash
+git clone git@github.com:CORDEX-be2/ValEnsPy.git
+```
+TODO: Add link to Git guide for cloning the repository (using SSH keys).
 
 2. Create a conda environment and install the required packages.
   
-  First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).
-  ```bash
-  conda create -p ./valenspy_dev python==3.9 poetry
-  source activate valenspy_dev
-  ```
-  Note that the conda environment is created in the current directory (./valenspy_dev) - this is optional and can be changed to a different location.
+First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).
 
-  Now install the required packages using poetry: All required packages are listed in the pyproject.toml file and automatically installed by poetry.
-  ```bash	
-  cd ValEnsPy
-  poetry install
-  ```
+```bash
+conda create -p ./valenspy_dev python==3.9 poetry
+source activate valenspy_dev
+```
+Note that the conda environment is created in the current directory (./valenspy_dev) - this is optional and can be changed to a different location.
+
+Now install the required packages using poetry: All required packages are listed in the pyproject.toml file and automatically installed by poetry.
+
+```bash
+cd ValEnsPy
+poetry install
+```
 
 3. Create a branch for local development which is a copy of the **dev** branch.:
- ```
-  # checkout the dev branch
-  git checkout dev
-  git pull
 
-  # Create a new local branch and switch to it.
-  git branch name-of-your-bugfix-or-feature
-  git checkout name-of-your-bugfix-or-feature
-  ```
- Now you can make local changes.
+```bash
+# checkout the dev branch
+git checkout dev 
+git pull
+
+# Create a new local branch and switch to it.
+git branch name-of-your-bugfix-or-feature
+git checkout name-of-your-bugfix-or-feature
+```
+Now you can make local changes.
 
 5. Push your code online:
-Using the 
-   ```
-   # Add your changes to your commit
-   git add -A
-   # Write commit text
-   git commit -m "Some text describing your code changes in this commit"
-   # Push your branch online
-   #only the first time:
-   git push --set-upstream origin name-of-your-bugfix-or-feature
-   #all other times
-   git push
-   ```
+
+```bash
+# Add your changes to your commit
+git add -A
+# Write commit text
+git commit -m "Some text describing your code changes in this commit"
+# Push your branch online
+#only the first time:
+git push --set-upstream origin name-of-your-bugfix-or-feature
+#all other times
+git push
+```
 
 ## Pull Request Guidelines
 Once your branch has been *pushed* to github, you can create a *Pull request* in github. Make sure that you have **referred the corresponding issues** to the *Pull request*.
