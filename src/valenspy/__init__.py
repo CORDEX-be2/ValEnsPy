@@ -8,6 +8,7 @@ sys.path.append(BASE_PATH)
 from valenspy.inputconverter import InputConverter
 from valenspy.preprocessor import Preprocessor
 from valenspy.diagnostic import Diagnostic, Model2Obs
+import valenspy.preprocessing_tasks
 
 # =============================================================================
 # Pre-made diagnostics

@@ -1,7 +1,7 @@
 from valenspy.preprocessing_tasks._regrid import Regrid
-from valenspy.preprocessing_tasks._area import Area
+from valenspy.preprocessing_tasks._set_domain import Set_Domain
 
 PREPROCESSING_TASKS = {
     "regrid": Regrid,
-    "area": Area
+    "set_domain": Set_Domain
 }

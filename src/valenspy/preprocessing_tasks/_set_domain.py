@@ -1,8 +1,8 @@
 from valenspy.preprocessing_tasks.task import PreprocessingTask
 import xarray as xr
 
-class Area(PreprocessingTask):
-    """Selection of a common area for all grids pre-processing task."""
+class Set_Domain(PreprocessingTask):
+    """Selection of a common area for all grids."""
 
     #TODO extend this to accept the target area as a dataset, or any other format that can be used to select the area.
     def __init__(self, target_domain: xr.Dataset, name="", description=None):
