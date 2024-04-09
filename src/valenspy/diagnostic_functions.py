@@ -1,49 +1,47 @@
 import xarray as xr
 ##################################
-# Model2Obs diagnostic functions #
+# Model2Ref diagnostic functions #
 ##################################
 
-def spatial_bias(data: xr.Dataset, obs: xr.Dataset, relative=False):
-    """Calculate the spatial bias of the data compared to the observations.
+def spatial_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
+    """Calculate the spatial bias of the data compared to the reference.
     
     Parameters
     ----------
     data : DataTree
         The data to calculate the spatial bias of.
-    obs : xr.Dataset
-        The observations to compare the data to.
+    ref : xr.Dataset
+        The reference data to compare the data to.
     
     Returns
     -------
     Dataset
-        The spatial bias of the data compared to the observations.
+        The spatial bias of the data compared to the reference.
     """
-    return bias(data.mean("time").tas, obs.mean("time").tas, relative)
-
-
+    return bias(data.mean("time").tas, ref.mean("time").tas, relative)
 
 
 ##################################
 ########### Metrics ##############
 ##################################
 
-def bias(data: xr.DataArray, obs: xr.DataArray, relative=False):
-    """Calculate the bias of the data compared to the observations.
+def bias(data: xr.DataArray, ref: xr.DataArray, relative=False):
+    """Calculate the bias of the data compared to a reference.
     
     Parameters
     ----------
     data : DataTree
         The data to calculate the bias of.
-    obs : xr.Dataset
-        The observations to compare the data to.
+    ref : xr.Dataset
+        The reference to compare the data to.
     
     Returns
     -------
     Dataset
-        The bias of the data compared to the observations.
+        The bias of the data compared to there reference.
     """
     if relative:
-        return (data - obs) / obs
+        return (data - ref) / ref
     else:
-        return data - obs
+        return data - ref
 

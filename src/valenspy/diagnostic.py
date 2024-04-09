@@ -41,69 +41,86 @@ class Diagnostic:
         pass
         
 
-class Model2Obs(Diagnostic):
-    """A class representing a diagnostic that compares a model to observations."""
+class Model2Ref(Diagnostic):
+    """A class representing a diagnostic that compares a model to a reference."""
 
-    def __init__(self,diagnostic_function, visualization_function, name=None, description=None):
-        """Initialize the Model2Obs diagnostic."""
-        super().__init__(diagnostic_function,visualization_function, name, description)
+    def __init__(self, diagnostic_function, visualization_function, name=None, description=None):
+        """Initialize the Model2Ref diagnostic."""
+        super().__init__(diagnostic_function, visualization_function, name, description)
 
-    def apply(self, data: xr.Dataset, obs: xr.Dataset):
+    def apply(self, data: xr.Dataset, ref: xr.Dataset):
         """Apply the diagnostic to the data.
 
         Parameters
         ----------
-        data : DataTree
+        data : xr.Dataset
             The data to apply the diagnostic to.
-        obs : xr.Dataset
-            The observations to compare the data to.
+        ref : xr.Dataset
+            The reference data to compare the data to.
 
         Returns
         -------
-        Dataset
-            The data after applying the diagnostic either as a DataTree, Dataset, DataArray, Scalar, or a pandas DataFrame.
+        xr.Dataset
+            The data after applying the diagnostic.
         """
-        return self.diagnostic_function(data, obs)
+        return self.diagnostic_function(data, ref)
 
-    def visualize(self, data: xr.Dataset, obs: xr.Dataset):
+    def visualize(self, data: xr.Dataset, ref: xr.Dataset):
         """Visualize the diagnostic.
 
         Parameters
         ----------
-        data : DataTree
+        data : xr.Dataset
             The data to visualize.
-        obs : xr.Dataset
-            The observations to compare the data to.
+        ref : xr.Dataset
+            The reference data to compare the data to.
 
         Returns
         -------
         Figure
             The figure representing the diagnostic.
         """
-        return self.visualization_function(self.apply(data, obs))
+        return self.visualization_function(self.apply(data, ref))
 
     
-class Ensemble2Obs(Diagnostic):
-    """A class representing a diagnostic that compares an ensemble to observations."""
+class Ensemble2Ref(Diagnostic):
+    """A class representing a diagnostic that compares an ensemble to a reference."""
 
-    def __init__(self,diagnostic_function, name=None, description=None):
-        """Initialize the Ensemble2Obs diagnostic."""
-        super().__init__(diagnostic_function,visualization_function, name, description)
+    def __init__(self, diagnostic_function, visualization_function, name=None, description=None):
+        """Initialize the Ensemble2Ref diagnostic."""
+        super().__init__(diagnostic_function, visualization_function, name, description)
 
-    def apply(self, data: DataTree, obs: xr.Dataset):
+    def apply(self, data: xr.Dataset, ref: xr.Dataset):
         """Apply the diagnostic to the data.
 
         Parameters
         ----------
-        data : DataTree
+        data : xr.Dataset
             The data to apply the diagnostic to.
-        obs : xr.Dataset
-            The observations to compare the data to.
+        ref : xr.DataArray
+            The reference data to compare the data to.
 
         Returns
         -------
-        Dataset
-            The data after applying the diagnostic either as a DataTree, Dataset, DataArray, Scalar, or a pandas DataFrame.
+        xr.Dataset
+            The data after applying the diagnostic.
         """
-        return self.diagnostic_function(data, obs)
+        return self.diagnostic_function(data, ref)
+
+    def visualize(self, data: xr.Dataset, ref: xr.Dataset):
+        """Visualize the diagnostic.
+
+        Parameters
+        ----------
+        data : xr.Dataset
+            The data to visualize.
+        ref : xr.Dataset
+            The reference data to compare the data to.
+
+        Returns
+        -------
+        Figure
+            The figure representing the diagnostic.
+        """
+        return self.visualization_function(self.apply(data, ref))
     
