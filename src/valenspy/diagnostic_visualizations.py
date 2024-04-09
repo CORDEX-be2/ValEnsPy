@@ -1,7 +1,7 @@
 import xarray as xr
 import matplotlib.pyplot as plt
 ##################################
-# Model2Obs diagnostic visuals   #
+# Model2Ref diagnostic visuals   #
 ##################################
 
 def plot_spatial_bias(data: xr.DataArray, **kwargs):
