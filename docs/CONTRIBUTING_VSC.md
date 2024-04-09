@@ -69,6 +69,7 @@ Now install the required packages using poetry: All required packages are listed
 
 ```bash
 cd ValEnsPy
+git checkout dev #Or the branch you want to work on (e.g. structure)
 poetry install
 ```
 
