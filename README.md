@@ -1,4 +1,15 @@
 # ValEnsPy
 A Python package to validate gridded model data. 
 
-![image](https://github.com/kobebryant432/ValEnsPy/assets/61313519/5d1406c2-5c49-4fc6-b52d-d7a0fadc8b5d)
+## Installation
+
+Currently, the package is in development and not yet available on PyPI.
+
+To contribute to the development of the package, follow the instructions in the [CONTRIBUTING_VSC.md](docs/CONTRIBUTING_VSC.md) file (if developing on the VSC) or the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
+## Package structure
+
+The package is structured as follows:
+
+![Package structure](docs/images/package_structure.png)
+
