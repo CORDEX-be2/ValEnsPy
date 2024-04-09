@@ -17,10 +17,13 @@ SRCDIR=${WORKDIR}/src/valenspy
 poetry add xarray
 poetry add pandas
 poetry add shapely
+poetry add xarray-datatree
+poetry add matplotlib
 
 # --- Build the package ---------
 
 #remove previous builds
+mkdir -p ${DISTDIR}
 cd ${DISTDIR}
 rm *.whl
 rm *.tar.gz
