@@ -59,7 +59,7 @@ TODO Test if this works on the VSC!?
   First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).
   ```bash
   conda create -p ./valenspy_dev python==3.9 poetry
-  conda activate valenspy_dev
+  source activate valenspy_dev
   ```
   Note that the conda environment is created in the current directory (./valenspy_dev) - this is optional and can be changed to a different location.
 
