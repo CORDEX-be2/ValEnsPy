@@ -11,5 +11,5 @@ To contribute to the development of the package, follow the instructions in the 
 
 The package is structured as follows:
 
-![Package structure](docs/images/package_structure.png)
+![Package structure](docs/package_structure.png)
 
