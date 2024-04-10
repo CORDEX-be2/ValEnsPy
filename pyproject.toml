@@ -19,10 +19,28 @@ matplotlib = "^3.8.3"
 scipy = "^1.13.0"
 cfchecker = "^4.1.0"
 
+# Development group
+[tool.poetry.group.dev]
 [tool.poetry.group.dev.dependencies]
+pre-commit = "^3.6.2" #To ensure clean-coding standards
+
+
+# Packaging group
+[tool.poetry.group.packaging]
+[tool.poetry.group.packaging.dependencies]
 poetry = "^1.8.2"
+
+# Documentation group
+[tool.poetry.group.docs]
+[tool.poetry.group.docs.dependencies]
 Sphinx = "^7.2.6"
-pre-commit = "^3.6.2"
+sphinx-rtd-theme = "^2.0.0"
+sphinx-copybutton = "^0.5.2"
+myst-parser = "^2.0.0"
+nbsphinx = "^0.9.3"
+pydata-sphinx-theme = "^0.15.2"
+
+
 
 [build-system]
 requires = ["poetry-core"]
