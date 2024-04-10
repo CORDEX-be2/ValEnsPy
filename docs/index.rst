@@ -8,22 +8,32 @@ A Python package to validate gridded climate model data.
 
 
 
+.. toctree::
+   :hidden:
+   :maxdepth: 5
+
+   Home <self>
+   Getting started <getting_started>
+   Examples <doc_examples/index>
+   Contributing <CONTRIBUTING.md>
+   Contributing_VSC <CONTRIBUTING_VSC>
+   Dev Notes <dev_notes>
+
+.. container:: button
+
+    :doc:`Getting started <getting_started>` :doc:`Contributing <CONTRIBUTING>`
+    :doc:`Examples <doc_examples/index>` :doc:`Contributing VSC <CONTRIBUTING_VSC>`
+
+
+
 Description
 -----------
 
-The MetObs-toolkit is a Python package developed to facilitate the use of non-traditional meteorological observations.
-The package provides automated quality control (QC) techniques to identify and
-flag erroneous observations, and includes methods to fill data gaps.
-Additionally, the package offers tools for analyzing the data, e.g. linkage
-with popular land-use datasets is included, trough the use of the Google Earth Engine, such
-that microclimate effects can be investigated with the MetObs-toolkit.
+Some info on the package and the developers funding etc.
 
-
-The MetObs-toolkit provides a comprehensive framework for scientists to process
-raw meteorological data for analysis by making intensive use of the `Pandas <https://pandas.pydata.org/>`_
-and `GeoPandas <https://geopandas.org/en/stable/>`_ functionalities.
-
-
+.. image:: package_structure.png
+    :alt: logo
+    :width: 700
 
 
 Indices and tables

@@ -39,7 +39,6 @@ poetry add --group docs 'myst_parser'
 poetry add --group docs 'nbsphinx'
 poetry add --group docs 'pydata-sphinx-theme'
 
-
 # ==============================================================================
 # Build the package
 # ==============================================================================

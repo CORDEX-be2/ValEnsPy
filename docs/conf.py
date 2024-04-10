@@ -76,6 +76,9 @@ extensions = [
 
 # Turn on sphinx.ext.autosummary
 autosummary_generate = True
+numpydoc_class_members_toctree = False
+
+
 
 # Specify which file formats to render:
 source_suffix = {
@@ -135,7 +138,7 @@ html_theme = "pydata_sphinx_theme"
 html_title = "ValEnsPy documentation"
 html_short_title = "ValEnsPy docs"
 # html_logo = "logo_small.svg"
-# html_static_path = ["_static"]
+html_static_path = ["_static"]
 html_css_files = ["custom.css"] #to specify custom color palets etc
 html_show_sphinx = True
 html_show_copyright = True
