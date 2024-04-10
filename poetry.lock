@@ -83,6 +83,23 @@ files = [
 ]
 
 [[package]]
+name = "cfchecker"
+version = "4.1.0"
+description = "The NetCDF Climate Forecast Conventions compliance checker"
+optional = false
+python-versions = ">3"
+files = [
+    {file = "cfchecker-4.1.0-py3-none-any.whl", hash = "sha256:97d58377acda15f34977e14928329e6311081d6a56e0bcaee06f516724b66873"},
+    {file = "cfchecker-4.1.0.tar.gz", hash = "sha256:10b86748565c9e0f4c959e4d82fe83b00344551db3db3c7d0d2f8c31449aa1b9"},
+]
+
+[package.dependencies]
+cfunits = ">=3.0.0"
+future = "*"
+netCDF4 = "*"
+numpy = ">=1.7"
+
+[[package]]
 name = "cffi"
 version = "1.16.0"
 description = "Foreign Function Interface for Python calling C code."
@@ -192,6 +209,26 @@ numpy = [
     {version = ">1.13.3", markers = "python_version < \"3.12.0.rc1\""},
     {version = ">=1.26.0b1", markers = "python_version >= \"3.12.0.rc1\""},
 ]
+
+[[package]]
+name = "cfunits"
+version = "3.3.6"
+description = "A python interface to UNIDATA's UDUNITS-2 package with CF extensions"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "cfunits-3.3.6.tar.gz", hash = "sha256:fb209bae52e84eed44ed9e7efe10d8237861137aad4a648aa4b69c2535c40fbc"},
+]
+
+[package.dependencies]
+cftime = ">=1.5.0"
+numpy = ">=1.15"
+packaging = ">=20.0"
+
+[package.extras]
+documentation = ["sphinx (>=2,<=4)", "sphinx-copybutton", "sphinx-toggleprompt", "sphinxcontrib-spelling"]
+"pre-commit hooks" = ["black", "docformatter", "flake8", "pre-commit", "pydocstyle"]
+"required c libraries" = ["udunits2 (==2.2.20)"]
 
 [[package]]
 name = "charset-normalizer"
@@ -753,6 +790,17 @@ sftp = ["paramiko"]
 smb = ["smbprotocol"]
 ssh = ["paramiko"]
 tqdm = ["tqdm"]
+
+[[package]]
+name = "future"
+version = "1.0.0"
+description = "Clean single-source support for Python 3 and 2"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+files = [
+    {file = "future-1.0.0-py3-none-any.whl", hash = "sha256:929292d34f5872e70396626ef385ec22355a1fae8ad29e1a734c3e43f9fbc216"},
+    {file = "future-1.0.0.tar.gz", hash = "sha256:bd2968309307861edae1458a4f8a4f3598c03be43b97521076aebf5d94c07b05"},
+]
 
 [[package]]
 name = "identify"
@@ -2456,4 +2504,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "b37ed818652630f797c3630667134b9a73a60aed51e128a7494fd1a5d77751b1"
+content-hash = "b16b8b2d89082f890b161a816802d9826a971eca56a8d008bf357e32d610dfce"
