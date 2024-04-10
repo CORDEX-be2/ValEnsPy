@@ -19,6 +19,7 @@ poetry add pandas
 poetry add shapely
 poetry add xarray-datatree
 poetry add matplotlib
+poetry add cfchecker
 
 # --- Build the package ---------
 
