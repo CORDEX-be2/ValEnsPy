@@ -1,6 +1,13 @@
 #!/bin/bash
 
 #This script will make a local build of the package on a Unix system.
+# 1 Add dependencies to the pyproject file
+# 2 remove previous builds
+# 3 update dependencies and build package
+# 4 build the documentation
+
+
+
 
 
 # ----- Setup paths ---------

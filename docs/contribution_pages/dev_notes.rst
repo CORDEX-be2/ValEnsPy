@@ -67,20 +67,71 @@ has the option to install them by
 
 
 
-
-
-
 Documentation builds
 --------------------------
 
-bla ba
+The `docs/` folder contains all the file to build the documentation. To view the
+documentation, go to `docs/_build` and open the `index.html` file in your browser.
+(If the `docs/_build` is empty, you need to build the documentation, see below)
+
+
+The documentation is a combination of
+
+* Static file: These are standard files, that are converted to HTML. Most of them are RST and MD files,
+and if you do not change them, the documentation will not change as well (trivial).
+
+* Dynamic part: When you make a code contribution, your contribution must be represented in the API page of the documentation.
+So this means that each time you make a code contribution, the documentation (only the API part), must be upated as well. This is the
+reason that every developer must know how to build the documentation form there working branch.
+
+
+To build the documentation, simply run the `deployment/dev_pipeline.sh` file.
+If you want to build the documentation without building the package, you must
+install all the dependencies for the documentation (see `deployment/dev_pipeline.sh`),
+and build it using sphinx.
+
+.. code-block::
+
+    cd docs
+    sphinx-build -a -E -v . ./_build/
+
+or execute the `docs/sphinx_build` script.
+
+
+When building the documentation, take a look at the sphinx errors and warnings,
+they indicate syntax and formatting issues.
+
+
+Code-Standards
+----------------------
+
+@kobe: You should descide on these standards
+
+* CamelCase
+
+* Docstring: Use Numpy-style docstrings, other types are not rendered well in the documentation. See https://numpydoc.readthedocs.io/en/latest/example.html#example
 
 
 
-CF-Convention
+
+
+
+Dev-checklist
 ---------------
 
-bla bla
+* Adding a new (non-standard) dependencies
+
+  #. Add the package in the `deployment/dev_pipeline.sh` (see Handling Dependencies)
+
+  #. run the `deployment/dev_pipeline.sh`
+
+  #. Check if the dependency is written in the `pyproject.toml` file. (Do not make changes in it.)
+
+
+* Clean-code with pre-commit
+
+
+
 
 
 
