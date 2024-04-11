@@ -35,9 +35,20 @@ which conda
 ```
 
 ### Using the existing conda environment
-On the VSC, there is an existing conda environment that can be used for development. This environment is called `valenspy_dev` and can be activated using the following command:
+On the VSC, there is an existing conda environment that can be used. This environment is called `valenspy_dev`.
+This environment can be added to your conda environment list by adding the following path to your .conda/environments.txt file:
 
-TODO Test if this works on the VSC!?
+```bash
+echo "/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/install_test/valenspy_dev" >> ~/.conda/environments.txt
+```
+
+You can now activate the environment:
+```bash
+source activate /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/install_test/valenspy_dev
+```
+
+This is ideaal for testing the package, and developing new features if no additional packages are required.
+If additional packages are required, a new conda environment should be created - see the next section.
 
 ### Setup a developer environment
 
