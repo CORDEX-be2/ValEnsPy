@@ -69,7 +69,8 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_*
+docs/_build
+docs/_autosummary
 !docs/_templates #keep track of these!
 !docs/_static #keep track of these
 
