@@ -19,11 +19,11 @@ by a workflow, if:
 * 'test' is found in a commit message
 
 You can also build the package, (especially handy for testing), on your local machine.
-To do this, you run the `build_package.sh` script:
+To do this, you run the `dev_pipeline.sh` script:
 
 .. code-block::
 
-    source deployment/build_package.sh
+    source deployment/dev_pipeline.sh
 
 
 
@@ -34,13 +34,13 @@ If you make code adaptations and intoduce a new dependency (aka import a new pac
 you need to specify this in order for packaging. This is to make shure that all
 dependencies are campatible with each other.
 
-If you introduce a new dependency, you must add it in the `deployment/build_package.sh` script
+If you introduce a new dependency, you must add it in the `deployment/dev_pipeline.sh` script
 under "Add dependencies to pyproject".
 
 
 .. code-block::
 
-    #example: add shapely as a dependency, add this in the build_package script
+    #example: add shapely as a dependency, add this in the dev_pipeline script
     poetry add shapely
 
 
@@ -107,11 +107,8 @@ Code-Standards
 
 @kobe: You should descide on these standards
 
-* CamelCase
 
 * Docstring: Use Numpy-style docstrings, other types are not rendered well in the documentation. See https://numpydoc.readthedocs.io/en/latest/example.html#example
-
-
 
 
 
@@ -128,12 +125,6 @@ Dev-checklist
   #. Check if the dependency is written in the `pyproject.toml` file. (Do not make changes in it.)
 
 
-* Clean-code with pre-commit
+* Adding a new module
 
-
-
-
-
-
-
-
+  #. Add the module in the toctree of `docs/API_doc`

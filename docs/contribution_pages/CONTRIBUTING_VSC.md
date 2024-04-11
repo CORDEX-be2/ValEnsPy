@@ -1,4 +1,4 @@
-# Contributing
+# Contributing VSC
 
 All contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.
 
@@ -56,7 +56,7 @@ git clone git@github.com:CORDEX-be2/ValEnsPy.git
 TODO: Add link to Git guide for cloning the repository (using SSH keys).
 
 2. Create a conda environment and install the required packages.
-  
+
 First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).
 
 ```bash
@@ -77,7 +77,7 @@ poetry install
 
 ```bash
 # checkout the dev branch
-git checkout dev 
+git checkout dev
 git pull
 
 # Create a new local branch and switch to it.
