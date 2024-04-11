@@ -72,7 +72,7 @@ extensions = [
 # =============================================================================
 
 # Add any paths that contain templates here, relative to this directory.
-# templates_path = ["_templates"]
+templates_path = ["_templates"]
 
 # Turn on sphinx.ext.autosummary
 autosummary_generate = True
@@ -112,6 +112,7 @@ autodoc_mock_imports = [
 # directories to ignore when looking for source files.
 exclude_patterns = [
     "_build",
+    "_templates",
     "Thumbs.db",
     ".DS_Store",
     "**.ipynb_checkpoints",
