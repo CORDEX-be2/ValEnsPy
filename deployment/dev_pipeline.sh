@@ -16,6 +16,7 @@ WORKDIR=$(pwd)
 DOCDIR=${WORKDIR}/docs
 DISTDIR=${WORKDIR}/dist
 SRCDIR=${WORKDIR}/src/valenspy
+TESTDIR=${WORKDIR}/tests
 
 
 # ---- Add dependencies to pyproject  ------
@@ -78,3 +79,7 @@ cd ${WORKDIR}
 # ==============================================================================
 
 # ---- Use the build to run the testscripts ---------
+
+cd ${TESTDIR}
+poetry run python push_tests/import_test.py
+cd ${WORKDIR}
