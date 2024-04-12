@@ -431,7 +431,7 @@ To do this, you run the <cite>dev_pipeline.sh</cite> script:</p>
 </section>
 <section id="handling-dependencies">
 <h2>Handling Dependencies<a class="headerlink" href="#handling-dependencies" title="Link to this heading">#</a></h2>
-<p>If you make code adaptations and intoduce a new dependency (aka import a new package),
+<p>If you make code adaptations and introduce a new dependency (aka import a new package),
 you need to specify this in order for packaging. This is to make shure that all
 dependencies are campatible with each other.</p>
 <p>If you introduce a new dependency, you must add it in the <cite>deployment/dev_pipeline.sh</cite> script
@@ -502,9 +502,14 @@ they indicate syntax and formatting issues.</p>
 <li><p>Check if the dependency is written in the <cite>pyproject.toml</cite> file. (Do not make changes in it.)</p></li>
 </ol>
 </li>
-<li><p>Adding a new module</p>
+<li><p>Adding a new module (adding new files to automatically document).</p>
 <ol class="arabic simple">
 <li><p>Add the module in the toctree of <cite>docs/API_doc</cite></p></li>
+</ol>
+</li>
+<li><p>Pre-commit</p>
+<ol class="arabic simple">
+<li><p>Run Pre-commit before merging for code formatting and linting.</p></li>
 </ol>
 </li>
 </ul>
