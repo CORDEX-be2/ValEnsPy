@@ -1,18 +1,20 @@
 import xarray as xr
+
 ##################################
 # Model2Ref diagnostic functions #
 ##################################
 
+
 def spatial_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
     """Calculate the spatial bias of the data compared to the reference.
-    
+
     Parameters
     ----------
     data : DataTree
         The data to calculate the spatial bias of.
     ref : xr.Dataset
         The reference data to compare the data to.
-    
+
     Returns
     -------
     Dataset
@@ -25,16 +27,17 @@ def spatial_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
 ########### Metrics ##############
 ##################################
 
+
 def bias(data: xr.DataArray, ref: xr.DataArray, relative=False):
     """Calculate the bias of the data compared to a reference.
-    
+
     Parameters
     ----------
     data : DataTree
         The data to calculate the bias of.
     ref : xr.Dataset
         The reference to compare the data to.
-    
+
     Returns
     -------
     Dataset
@@ -44,4 +47,3 @@ def bias(data: xr.DataArray, ref: xr.DataArray, relative=False):
         return (data - ref) / ref
     else:
         return data - ref
-

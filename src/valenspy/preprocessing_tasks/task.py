@@ -1,6 +1,7 @@
 import xarray as xr
 
-class Task():
+
+class Task:
     """Base class for all tasks."""
 
     def __init__(self, name=None, description=None):
@@ -22,6 +23,7 @@ class Task():
             The data after applying the task.
         """
         pass
+
 
 class PreprocessingTask(Task):
     """A class representing a preprocessing task."""

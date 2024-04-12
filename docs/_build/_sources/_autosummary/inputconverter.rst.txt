@@ -3,29 +3,26 @@ inputconverter
 
 .. automodule:: inputconverter
 
-   
-   
-   
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
+
+
+
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
-   
-      InputConverter
-   
-   
 
-   
-   
-   
+      InputConverter
+
+
+
 
 
 

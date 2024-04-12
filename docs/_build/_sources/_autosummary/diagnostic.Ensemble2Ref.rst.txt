@@ -8,20 +8,20 @@ diagnostic.Ensemble2Ref
    :show-inheritance:
    :inherited-members:
 
-   
+
    .. automethod:: __init__
 
-   
+
    .. rubric:: Methods
 
    .. autosummary::
-   
+
       ~Ensemble2Ref.__init__
       ~Ensemble2Ref.apply
       ~Ensemble2Ref.visualize
-   
-   
 
-   
-   
-   
+
+
+
+
+
