@@ -11,7 +11,7 @@ There are many ways to contribute to the ValEnsPy package:
 
 3. Contribute to the codebase. This can be done by:
   - Taking on an open issue
-  - Adding a new diagnostic (see [Adding a new diagnostic](#adding-a-new-diagnostic)
+  - Adding a new diagnostic (see ???)
 
 4. Help improve the documentation. This can be done by:
   - Adding a new example
