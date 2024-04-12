@@ -3,10 +3,13 @@ import xarray as xr
 
 from abc import abstractmethod
 
+
 class Diagnostic:
     """An abstract class representing a diagnostic."""
 
-    def __init__(self,diagnostic_function, visualization_function, name=None, description=None):
+    def __init__(
+        self, diagnostic_function, visualization_function, name=None, description=None
+    ):
         """Initialize the Diagnostic."""
         self.name = name
         self.description = description
@@ -39,12 +42,14 @@ class Diagnostic:
             The figure representing the diagnostic.
         """
         pass
-        
+
 
 class Model2Ref(Diagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
 
-    def __init__(self, diagnostic_function, visualization_function, name=None, description=None):
+    def __init__(
+        self, diagnostic_function, visualization_function, name=None, description=None
+    ):
         """Initialize the Model2Ref diagnostic."""
         super().__init__(diagnostic_function, visualization_function, name, description)
 
@@ -82,11 +87,13 @@ class Model2Ref(Diagnostic):
         """
         return self.visualization_function(self.apply(data, ref))
 
-    
+
 class Ensemble2Ref(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
 
-    def __init__(self, diagnostic_function, visualization_function, name=None, description=None):
+    def __init__(
+        self, diagnostic_function, visualization_function, name=None, description=None
+    ):
         """Initialize the Ensemble2Ref diagnostic."""
         super().__init__(diagnostic_function, visualization_function, name, description)
 
@@ -123,4 +130,3 @@ class Ensemble2Ref(Diagnostic):
             The figure representing the diagnostic.
         """
         return self.visualization_function(self.apply(data, ref))
-    

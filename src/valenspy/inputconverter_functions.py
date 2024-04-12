@@ -9,11 +9,6 @@ def EOBS_to_CF(file: Path) -> Path:
     """Convert the EOBS netCDF file to a netCDF file in CF convention."""
     #Open the EOBS file
     ds = xr.open_dataset(file)
-    
+
     #Rename the dimensions
     ds = ds.rename_dims({"latitude": "lat", "longitude": "lon"})
-    
-
-
-
-
