@@ -11,7 +11,7 @@
 
 
 # ----- Setup paths ---------
-cd ..
+#Run this from the root of the project
 WORKDIR=$(pwd)
 DOCDIR=${WORKDIR}/docs
 DISTDIR=${WORKDIR}/dist
