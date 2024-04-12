@@ -30,7 +30,7 @@ To do this, you run the `dev_pipeline.sh` script:
 Handling Dependencies
 -------------------------
 
-If you make code adaptations and intoduce a new dependency (aka import a new package),
+If you make code adaptations and introduce a new dependency (aka import a new package),
 you need to specify this in order for packaging. This is to make shure that all
 dependencies are campatible with each other.
 
@@ -125,6 +125,12 @@ Dev-checklist
   #. Check if the dependency is written in the `pyproject.toml` file. (Do not make changes in it.)
 
 
-* Adding a new module
+* Adding a new module (adding new files to automatically document).
 
   #. Add the module in the toctree of `docs/API_doc`
+
+* Pre-commit 
+
+  #. Run Pre-commit before merging for code formatting and linting.
+
+
