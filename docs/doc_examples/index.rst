@@ -10,4 +10,4 @@ made as notbooks, and will be rendered as such.
 .. toctree::
    :maxdepth: 2
 
-   illustrative_example.ipynb
+   workflow_example.ipynb
