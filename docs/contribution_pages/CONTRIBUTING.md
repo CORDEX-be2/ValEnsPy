@@ -4,16 +4,16 @@ All contributions are welcome, and they are greatly appreciated! Every little bi
 
 ## Ways to contribute
 There are many ways to contribute to the ValEnsPy package:
-1) Partake in one of the [discussions](https://github.com/CORDEX-be2/ValEnsPy/discussions) or create a new one.
-2) Create a new [issue](https://github.com/CORDEX-be2/ValEnsPy/issues) to help us improve the package.
+1. Partake in one of the [discussions](https://github.com/CORDEX-be2/ValEnsPy/discussions) or create a new one.
+2. Create a new [issue](https://github.com/CORDEX-be2/ValEnsPy/issues) to help us improve the package.
   - New feature requests
   - Bug Reports
 
-3) Contribute to the codebase. This can be done by:
+3. Contribute to the codebase. This can be done by:
   - Taking on an open issue
-  - Adding a new diagnostic (see [Adding a new diagnostic](#adding-a-new-diagnostic)
+  - Adding a new diagnostic (see ???)
 
-4) Help improve the documentation. This can be done by:
+4. Help improve the documentation. This can be done by:
 - Adding a new example
 - Improving the general documentation
 

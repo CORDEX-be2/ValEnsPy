@@ -1,6 +1,7 @@
 from valenspy.preprocessing_tasks.task import PreprocessingTask
 from datatree import DataTree
 
+
 class Preprocessor:
     """A class that organizes the preprocessing of the input data to prepare it for a diagnostic."""
 
@@ -18,5 +19,3 @@ class Preprocessor:
         for task in self.preprocessing_tasks:
             dt = dt.map_over_subtree(task.apply)
         return dt
-
-    

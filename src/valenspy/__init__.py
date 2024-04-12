@@ -14,8 +14,8 @@ import valenspy.preprocessing_tasks
 # Pre-made diagnostics
 # =============================================================================
 
-#Load some pre-made diagnostics which others can use and contribute to
-    
+# Load some pre-made diagnostics which others can use and contribute to
+
 # =============================================================================
 # Version
 # =============================================================================

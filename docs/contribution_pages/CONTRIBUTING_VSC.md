@@ -1,4 +1,4 @@
-# Contributing
+# Contributing VSC
 
 All contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.
 
@@ -11,7 +11,7 @@ There are many ways to contribute to the ValEnsPy package:
 
 3. Contribute to the codebase. This can be done by:
   - Taking on an open issue
-  - Adding a new diagnostic (see [Adding a new diagnostic](#adding-a-new-diagnostic)
+  - Adding a new diagnostic (see ???)
 
 4. Help improve the documentation. This can be done by:
   - Adding a new example
@@ -35,9 +35,20 @@ which conda
 ```
 
 ### Using the existing conda environment
-On the VSC, there is an existing conda environment that can be used for development. This environment is called `valenspy_dev` and can be activated using the following command:
+On the VSC, there is an existing conda environment that can be used. This environment is called `valenspy_dev`.
+This environment can be added to your conda environment list by adding the following path to your .conda/environments.txt file:
 
-TODO Test if this works on the VSC!?
+```bash
+echo "/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/install_test/valenspy_dev" >> ~/.conda/environments.txt
+```
+
+You can now activate the environment:
+```bash
+source activate /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/install_test/valenspy_dev
+```
+
+This is ideaal for testing the package, and developing new features if no additional packages are required.
+If additional packages are required, a new conda environment should be created - see the next section.
 
 ### Setup a developer environment
 
@@ -56,7 +67,7 @@ git clone git@github.com:CORDEX-be2/ValEnsPy.git
 TODO: Add link to Git guide for cloning the repository (using SSH keys).
 
 2. Create a conda environment and install the required packages.
-  
+
 First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).
 
 ```bash
@@ -77,7 +88,7 @@ poetry install
 
 ```bash
 # checkout the dev branch
-git checkout dev 
+git checkout dev
 git pull
 
 # Create a new local branch and switch to it.
