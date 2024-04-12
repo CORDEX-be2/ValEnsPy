@@ -32,8 +32,8 @@ sys.path.insert(0, os.path.join(str(basefolder), "src", "valenspy"))
 
 # ValEnsPy must be imported when testing and building the documentation
 # locally. However this is overkill for RTD service, so only import it for
-# local builds
-if "/home/" in str(basefolder):
+# local builds (or on the VSC server)
+if "/home/" in str(basefolder) or "/dodrio/" in str(basefolder):
     import valenspy
 
 
