@@ -8,20 +8,20 @@ diagnostic.Model2Ref
    :show-inheritance:
    :inherited-members:
 
-   
+
    .. automethod:: __init__
 
-   
+
    .. rubric:: Methods
 
    .. autosummary::
-   
+
       ~Model2Ref.__init__
       ~Model2Ref.apply
       ~Model2Ref.visualize
-   
-   
 
-   
-   
-   
+
+
+
+
+

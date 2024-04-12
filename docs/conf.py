@@ -79,7 +79,6 @@ autosummary_generate = True
 numpydoc_class_members_toctree = False
 
 
-
 # Specify which file formats to render:
 source_suffix = {
     ".rst": "restructuredtext",
@@ -98,14 +97,14 @@ master_doc = "index"
 # So specify which packages can be mocked
 
 autodoc_mock_imports = [
-    'xarray',
-    'dask',
-    'netCDF4',
-    'pandas',
-    'shapely',
-    'xarray-datatree',
-    'matplotlib',
-    'scipy',
+    "xarray",
+    "dask",
+    "netCDF4",
+    "pandas",
+    "shapely",
+    "xarray-datatree",
+    "matplotlib",
+    "scipy",
 ]
 
 # List of patterns, relative to source directory (= docs), that match files and
@@ -128,7 +127,6 @@ todo_include_todos = False  # Do not show TODOs in docs
 autosectionlabel_prefix_document = True
 
 
-
 # =============================================================================
 # Options for HTML output
 # =============================================================================
@@ -140,7 +138,7 @@ html_title = "ValEnsPy documentation"
 html_short_title = "ValEnsPy docs"
 # html_logo = "logo_small.svg"
 html_static_path = ["_static"]
-html_css_files = ["custom.css"] #to specify custom color palets etc
+html_css_files = ["custom.css"]  # to specify custom color palets etc
 html_show_sphinx = True
 html_show_copyright = True
 htmlhelp_basename = "ValEnsPy"  # Output file base name for HTML help builder.

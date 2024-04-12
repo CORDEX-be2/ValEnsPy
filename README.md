@@ -2,7 +2,7 @@
 A Python package to validate gridded model data.
 
 ## Documentation
-As ValEnsPy is a private repository, the documentation is available in the docs folder. 
+As ValEnsPy is a private repository, the documentation is available in the docs folder.
 To access the documentation, clone the repository,
 ```bash
 git clone git@github.com:CORDEX-be2/ValEnsPy.git
@@ -22,4 +22,3 @@ For additional developer guidelines see the Notes for developers page in the Con
 The package is structured as follows:
 
 ![Package structure](docs/package_structure.png)
-

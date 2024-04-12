@@ -129,8 +129,6 @@ Dev-checklist
 
   #. Add the module in the toctree of `docs/API_doc`
 
-* Pre-commit 
+* Pre-commit
 
   #. Run Pre-commit before merging for code formatting and linting.
-
-

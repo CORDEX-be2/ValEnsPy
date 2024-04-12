@@ -1,13 +1,14 @@
 from valenspy.preprocessing_tasks.task import PreprocessingTask
 import xarray as xr
 
+
 class Regrid(PreprocessingTask):
     """A regrid preprocessing task."""
 
     def __init__(self, target_grid: xr.Dataset, name="", description=None):
         """Initialize the Regrid task."""
         super().__init__("regrid_" + name, description)
-        #ToDo: Extend target grid to more options - kwargs should be passed and saved here.
+        # ToDo: Extend target grid to more options - kwargs should be passed and saved here.
         self.target_grid = target_grid
 
     def apply(self, data: xr.Dataset):
@@ -25,8 +26,9 @@ class Regrid(PreprocessingTask):
         xr.Dataset
             The regridded dataset.
         """
-        #ToDo: Implement regridding here
-        #https://github.com/pangeo-data/xESMF from Pangeo for regridding capabilities (including conservative regridding)!
+        # ToDo: Implement regridding here
+        # https://github.com/pangeo-data/xESMF from Pangeo for regridding capabilities (including conservative regridding)!
 
-        return data.interp(lon=self.target_grid.lon, lat=self.target_grid.lat, method='linear')
-
+        return data.interp(
+            lon=self.target_grid.lon, lat=self.target_grid.lat, method="linear"
+        )
