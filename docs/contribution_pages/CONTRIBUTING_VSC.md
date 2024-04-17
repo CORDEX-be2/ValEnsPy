@@ -82,7 +82,7 @@ Now install the required packages using poetry: All required packages are listed
 ```bash
 cd ValEnsPy
 git checkout dev #Or the branch you want to work on (e.g. structure)
-poetry install
+poetry install --all-extras #All extras also installs packages used for development.
 ```
 
 3. Create a branch for local development which is a copy of the **dev** branch.:
