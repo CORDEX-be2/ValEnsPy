@@ -1,6 +1,5 @@
 
 tas:
-  long_name: Near-Surface Air Temperature
   units: K
   standard_name: air_temperature
   long_name: Near-Surface Air Temperature

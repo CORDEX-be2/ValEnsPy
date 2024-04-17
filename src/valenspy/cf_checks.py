@@ -10,8 +10,39 @@ files = Path(__file__).resolve().parent
 with open(files / 'data' / 'CORDEX_variables.yml') as file:
     CORDEX_VARIABLES = safe_load(file)
 
-#ToDo add warning messages for the users
+MAIN_METADATA=['Conventions', 'history']
+VARIABLE_METADATA = ['units', 'standard_name', 'long_name']
+
+#Currently only a True or False: True if the file is CF compliant, False otherwise
+#Should be extended to return a list of errors if the file is not CF compliant. Maybe each check should through warning separately?
 def is_cf_compliant(netCDF: Union[str, Path, xr.Dataset]) -> bool:
+    """
+    Check if a file is a CF compliant netCDF file. The following checks are performed:
+    - Check if the file is a netCDF file (or an xarray dataset)
+    - Check if the main metadata attributes exist (title, history)
+    - Check if the variable metadata attributes exist (units, standard_name, long_name)
+    - For each variable check if it is present in the predefined variables, if so check if the attributes match.
+
+    Parameters
+    ----------
+    netCDF : Union[str, Path, xr.Dataset]
+        The netCDF file to check or the xarray dataset to check
+    
+    Returns
+    -------
+    bool
+        True if the file is CF compliant, False otherwise
+
+    Examples
+    --------
+    .. code-block:: python
+
+        >>> import valenspy as vp
+        >>>
+        >>> vp.cf_checks.is_cf_compliant(vp.demo_data_CF)
+        True
+    
+    """
     if isinstance(netCDF, str) or isinstance(netCDF, Path):
         if _check_file_extension(netCDF):
             try:
@@ -64,8 +95,6 @@ def _check_main_metadata(ds: xr.Dataset):
         True if the required main metadata attributes exist, False otherwise
     """
 
-    MAIN_METADATA=['title', 'history']
-
     return all([attr in ds.attrs for attr in MAIN_METADATA])
 
 def _check_variable_metadata(da: xr.DataArray):
@@ -83,24 +112,11 @@ def _check_variable_metadata(da: xr.DataArray):
         True if the CF required variable attributes exist, False otherwise
     """
 
-    VARIABLE_METADATA = ['units', 'standard_name', 'long_name']
     return all([attr in da.attrs for attr in VARIABLE_METADATA]) 
 
 def _check_file_extension(file: Union[str, Path]) -> bool:
     """Check if the file extension is netcdf (.nc)"""
-    return file.endswith('.nc')
-
-if __name__ == '__main__':
-    print(is_cf_compliant("/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/ValEnsPy/tests/data/tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc"))
-    EOBS_data_dir = Path("/dodrio/scratch/projects/2022_200/project_input/External/observations/EOBS/0.1deg/")
-
-    EOBS_obs_files = list(EOBS_data_dir.glob("*tg*mean*.nc")) #Select all the netCDF files in the directory
-
-    EOBS_ds = xr.open_mfdataset(EOBS_obs_files, combine='by_coords', chunks='auto')
-    print(is_cf_compliant(EOBS_ds))
-
-    EOBS_ds.attrs['title'] = 'EOBS dataset'
-    print(is_cf_compliant(EOBS_ds))
-
-    EOBS_ds = EOBS_ds.rename({'tg': 'tas'})
-    print(is_cf_compliant(EOBS_ds))
+    if isinstance(file, str):
+        return file.endswith('.nc')
+    else:
+        return file.suffix == '.nc'
