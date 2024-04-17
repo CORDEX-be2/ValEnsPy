@@ -8,10 +8,10 @@ class Regrid(PreprocessingTask):
     def __init__(self, target_grid: xr.Dataset, name="", description=None):
         """Initialize the Regrid task."""
         super().__init__("regrid_" + name, description)
-        # ToDo: Extend target grid to more options - kwargs should be passed and saved here.
+        
         self.target_grid = target_grid
 
-    def apply(self, data: xr.Dataset):
+    def apply(self, data: xr.Dataset, method="linear") -> xr.Dataset:
         """Apply the regridding task to an xr.Dataset.
 
         Parameters
@@ -29,6 +29,11 @@ class Regrid(PreprocessingTask):
         # ToDo: Implement regridding here
         # https://github.com/pangeo-data/xESMF from Pangeo for regridding capabilities (including conservative regridding)!
 
+        if method == "conservative":
+            raise NotImplementedError(
+                "Conservative regridding is not yet implemented. Please use another method."
+            )
+
         return data.interp(
-            lon=self.target_grid.lon, lat=self.target_grid.lat, method="linear"
+            lon=self.target_grid.lon, lat=self.target_grid.lat, method=method
         )
