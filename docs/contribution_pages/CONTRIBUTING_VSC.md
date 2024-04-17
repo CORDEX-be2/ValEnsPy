@@ -45,7 +45,7 @@ echo "/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/
 
 You can now activate the environment:
 ```bash
-source activate /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/install_test/valenspy_dev
+source activate /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/valenspy_dev_shared
 ```
 
 This is ideaal for testing the package, and developing new features if no additional packages are required.
