@@ -28,8 +28,9 @@ The following software (or equivalent) is required to set up a developer environ
 
 On the VSC Miniconda can be used instead of Anaconda.
 To install Miniconda on the VSC, follow the instructions on the [VSC website](https://docs.vscentrum.be/software/python_package_management.html#install-miniconda).
+NOTE! Their documentation recommends installing conda on $VSC_DATA but this is very slow, therefore, do the install on the project scratch.
 
-To test if Miniconda is installed correctly, the following command should provide the path to the conda executable ($VSC_data/miniconda3/bin/conda):
+To test if Miniconda is installed correctly, the following command should provide the path to the conda executable (......./miniconda3/bin/conda):
 ```bash
 which conda
 ```
