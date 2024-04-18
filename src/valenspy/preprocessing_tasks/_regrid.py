@@ -1,5 +1,6 @@
 from valenspy.preprocessing_tasks.task import PreprocessingTask
 import xarray as xr
+import xesmf
 
 
 class Regrid(PreprocessingTask):
