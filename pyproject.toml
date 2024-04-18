@@ -23,7 +23,6 @@ scipy = "^1.13.0"
 shapely = "^2.0.3"
 xarray = "^2024.2.0"
 xarray-datatree = "^0.0.14"
-xesmf = "^0.8.5"
 
 # Development group
 [tool.poetry.group.dev]
