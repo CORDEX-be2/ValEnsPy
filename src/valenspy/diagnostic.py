@@ -53,7 +53,7 @@ class Model2Ref(Diagnostic):
         """Initialize the Model2Ref diagnostic."""
         super().__init__(diagnostic_function, visualization_function, name, description)
 
-    def apply(self, data: xr.Dataset, ref: xr.Dataset):
+    def apply(self, data: xr.Dataset, ref: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
@@ -68,7 +68,7 @@ class Model2Ref(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
-        return self.diagnostic_function(data, ref)
+        return self.diagnostic_function(data, ref, **kwargs)
 
     def visualize(self, data: xr.Dataset, ref: xr.Dataset):
         """Visualize the diagnostic.
