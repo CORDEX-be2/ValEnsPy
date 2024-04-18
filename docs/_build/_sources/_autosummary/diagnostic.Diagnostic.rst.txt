@@ -8,20 +8,20 @@ diagnostic.Diagnostic
    :show-inheritance:
    :inherited-members:
 
-
+   
    .. automethod:: __init__
 
-
+   
    .. rubric:: Methods
 
    .. autosummary::
-
+   
       ~Diagnostic.__init__
       ~Diagnostic.apply
       ~Diagnostic.visualize
+   
+   
 
-
-
-
-
-
+   
+   
+   
