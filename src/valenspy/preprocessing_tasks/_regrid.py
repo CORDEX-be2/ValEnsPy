@@ -3,6 +3,7 @@ import xarray as xr
 
 
 class Regrid(PreprocessingTask):
+    REGRID_METHODS_XARRAY = {"linear", "nearest"} #Native xarray regridding methods (for n-dimensional data)
     """A regrid preprocessing task."""
 
     def __init__(self, target_grid: xr.Dataset, name="", description=None):
@@ -26,12 +27,10 @@ class Regrid(PreprocessingTask):
         xr.Dataset
             The regridded dataset.
         """
-        # ToDo: Implement regridding here
-        # https://github.com/pangeo-data/xESMF from Pangeo for regridding capabilities (including conservative regridding)!
 
-        if method == "conservative":
+        if method not in self.REGRID_METHODS_XARRAY:
             raise NotImplementedError(
-                "Conservative regridding is not yet implemented. Please use another method."
+                f"{method} regridding is not yet implemented. Please choose from {self.REGRID_METHODS_XARRAY}."
             )
 
         return data.interp(
