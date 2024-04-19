@@ -25,6 +25,7 @@ xarray = "^2024.2.0"
 xarray-datatree = "^0.0.14"
 
 # Development group
+pooch = "^1.8.1"
 [tool.poetry.group.dev]
 
 [tool.poetry.group.dev.dependencies]
