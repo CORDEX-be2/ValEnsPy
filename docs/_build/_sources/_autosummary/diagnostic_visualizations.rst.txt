@@ -3,25 +3,28 @@ diagnostic\_visualizations
 
 .. automodule:: diagnostic_visualizations
 
+   
+   
+   
 
-
-
-
-
-
+   
+   
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
-
+   
       plot_spatial_bias
+   
+   
 
+   
+   
+   
 
-
-
-
-
-
+   
+   
+   
 
 
 

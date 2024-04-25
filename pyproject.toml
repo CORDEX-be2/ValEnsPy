@@ -23,6 +23,8 @@ scipy = "^1.13.0"
 shapely = "^2.0.3"
 xarray = "^2024.2.0"
 xarray-datatree = "^0.0.14"
+pooch = "^1.8.1"
+nc-time-axis = "^1.4.1"
 
 # Development group
 [tool.poetry.group.dev]
@@ -46,3 +48,10 @@ sphinx-rtd-theme = "^2.0.0"
 
 [tool.poetry.group.packaging.dependencies]
 poetry = "^1.8.2"
+
+# Examples group
+[tool.poetry.group.examples]
+
+[tool.poetry.group.examples.dependencies]
+bokeh = "^3.4.1"
+
