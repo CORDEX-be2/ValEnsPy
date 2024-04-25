@@ -1,12 +1,12 @@
 name: Automatic tests pipeline
 
-on: 
+on:
    push:
-   pull_request: 
+   pull_request:
       types: [opened]
    issue_comment:
       types: ['created']
-    
+
 
 jobs:
 #--- Build the package and save as artifacts----
@@ -23,21 +23,21 @@ jobs:
         with:
           python-version: '3.9'
           #cache: 'poetry'
-            
+
       - name: remove previous builds
         run: |
               rm -f dist/metobs_toolkit-*.whl
               rm -f dist/metobs_toolkit-*.tar.gz
-        
+
       - name: Install dependencies and build
         run: |
               pip install poetry
               #poetry update --without titan,documentation
               #poetry install --without titan,documentation
               poetry update
-              poetry install 
+              poetry install
               poetry build
-    
+
       - name: get distribution file name
         id: base_def
         run: |
@@ -117,4 +117,4 @@ jobs:
          run: |
            echo "version tags are not aligned!"
            exit 1
-      
+

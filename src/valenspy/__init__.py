@@ -5,12 +5,17 @@ from pathlib import Path
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_PATH)
 
-from valenspy.modeldata import Modeldata
-from valenspy.ensmember import Ensmember
-from valenspy.ensemble import Ensemble
-from valenspy.inputprocessor import InputProcessor
+from valenspy.inputconverter import InputConverter
+from valenspy.preprocessor import Preprocessor
+from valenspy.diagnostic import Diagnostic, Model2Ref, Ensemble2Ref
+import valenspy.preprocessing_tasks
 
-    
+# =============================================================================
+# Pre-made diagnostics
+# =============================================================================
+
+# Load some pre-made diagnostics which others can use and contribute to
+
 # =============================================================================
 # Version
 # =============================================================================

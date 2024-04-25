@@ -3,7 +3,7 @@ from pathlib import Path
 
 # ----- Import test as package -----#
 
-#This is to test if the package is in your PYTHONPAHT, and can be imported
+# This is to test if the package is in your PYTHONPATH, and can be imported
 import valenspy
 
 # ----- Import valenspy (NOT AS A PACKAGE) ---------
