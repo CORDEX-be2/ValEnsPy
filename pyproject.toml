@@ -1,0 +1,57 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core"]
+
+[tool.poetry]
+authors = [
+  "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
+  " ... "
+]
+description = "A Python package to validate gridded model data."
+license = ","
+name = "valenspy"
+readme = "README.md"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+dask = "^2024.3.1"
+matplotlib = "^3.8.3"
+netCDF4 = "^1.6.5"
+pandas = "^2.2.1"
+python = "^3.9"
+scipy = "^1.13.0"
+shapely = "^2.0.3"
+xarray = "^2024.2.0"
+xarray-datatree = "^0.0.14"
+pooch = "^1.8.1"
+nc-time-axis = "^1.4.1"
+
+# Development group
+[tool.poetry.group.dev]
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.6.2"  # To ensure clean-coding standards
+
+# Documentation group
+[tool.poetry.group.docs]
+
+[tool.poetry.group.docs.dependencies]
+Sphinx = "^7.2.6"
+myst-parser = "^2.0.0"
+nbsphinx = "^0.9.3"
+pydata-sphinx-theme = "^0.15.2"
+sphinx-copybutton = "^0.5.2"
+sphinx-rtd-theme = "^2.0.0"
+
+# Packaging group
+[tool.poetry.group.packaging]
+
+[tool.poetry.group.packaging.dependencies]
+poetry = "^1.8.2"
+
+# Examples group
+[tool.poetry.group.examples]
+
+[tool.poetry.group.examples.dependencies]
+bokeh = "^3.4.1"
+
