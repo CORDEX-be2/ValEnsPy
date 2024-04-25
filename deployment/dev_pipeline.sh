@@ -31,7 +31,6 @@ poetry add pandas
 poetry add shapely
 poetry add xarray-datatree
 poetry add matplotlib
-poetry add cfchecker
 
 #add to dev (= development) group
 poetry add --group dev 'pre-commit'
