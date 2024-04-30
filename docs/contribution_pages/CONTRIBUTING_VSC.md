@@ -40,7 +40,7 @@ On the VSC, there is an existing conda environment that can be used. This enviro
 This environment can be added to your conda environment list by adding the following path to your .conda/environments.txt file:
 
 ```bash
-echo "/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/install_test/valenspy_dev" >> ~/.conda/environments.txt
+echo "/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/valenspy_dev_shared" >> ~/.conda/environments.txt
 ```
 
 You can now activate the environment:
