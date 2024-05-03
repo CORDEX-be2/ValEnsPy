@@ -166,6 +166,48 @@ filecache = ["filelock (>=3.8.0)"]
 redis = ["redis (>=2.10.5)"]
 
 [[package]]
+name = "cartopy"
+version = "0.23.0"
+description = "A Python library for cartographic visualizations with Matplotlib"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "Cartopy-0.23.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:374e66f816c3bafa48ffdbf6abaefa67063b405fac5f425f9be241cdf3498352"},
+    {file = "Cartopy-0.23.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:2bae450c4c913796cad0b7ce05aa2fa78d1788de47989f0a03183397648e24be"},
+    {file = "Cartopy-0.23.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a40437596e8ac5e74575eab822c661f4e725bd995cfd9e445069695fe9086b42"},
+    {file = "Cartopy-0.23.0-cp310-cp310-win_amd64.whl", hash = "sha256:3292d6d403137eed80d32014c2f28de6282bed8824213f4b4c2170f388b24a1b"},
+    {file = "Cartopy-0.23.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:86b07b6794b616674e4e485b8574e9197bca54a4467d28dd01ae0bf178f8dc2b"},
+    {file = "Cartopy-0.23.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:8dece2aa8d5ff7bf989ded6b5f07c980fb5bb772952bc7cdeab469738abdecee"},
+    {file = "Cartopy-0.23.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a9dfd28352dc83d6b4e4cf85d84cb50fc4886d4c1510d61f4c7cf22477d1156f"},
+    {file = "Cartopy-0.23.0-cp311-cp311-win_amd64.whl", hash = "sha256:b2671b5354e43220f8e1074e7fe30a8b9f71cb38407c78e51db9c97772f0320b"},
+    {file = "Cartopy-0.23.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:80b9fd666fd47f6370d29f7ad4e352828d54aaf688a03d0b83b51e141cfd77fa"},
+    {file = "Cartopy-0.23.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:43e36b8b7e7e373a5698757458fd28fafbbbf5f3ebbe2d378f6a5ec3993d6dc0"},
+    {file = "Cartopy-0.23.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:550173b91155d4d81cd14b4892cb6cabe3dd32bd34feacaa1ec78c0e56287832"},
+    {file = "Cartopy-0.23.0-cp312-cp312-win_amd64.whl", hash = "sha256:55219ee0fb069cc3254426e87382cde03546e86c3f7c6759f076823b1e3a44d9"},
+    {file = "Cartopy-0.23.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:6279af846bf77d9817ab8792a8e38ca561878f048bba1afdae3e3a30c5432bfd"},
+    {file = "Cartopy-0.23.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:843bf9dc0a18e1a8eed872c49e8092e8a8109e4dce285ad96752841e21e8161e"},
+    {file = "Cartopy-0.23.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:350ff8802e2bc617c09bd6148aeb46e841775a846bfaa6e635a212d1eaf5ab66"},
+    {file = "Cartopy-0.23.0-cp39-cp39-win_amd64.whl", hash = "sha256:b52ab2274ad7504955854ef8d6f603e41f5d7163d02b29d369cecdbd29c2fda1"},
+    {file = "Cartopy-0.23.0.tar.gz", hash = "sha256:231f37b35701f2ba31d94959cca75e6da04c2eea3a7f14ce1c75ee3b0eae7676"},
+]
+
+[package.dependencies]
+matplotlib = ">=3.5"
+numpy = ">=1.21"
+packaging = ">=20"
+pyproj = ">=3.3.1"
+pyshp = ">=2.3"
+shapely = ">=1.7"
+
+[package.extras]
+doc = ["pydata-sphinx-theme", "sphinx", "sphinx-gallery"]
+ows = ["OWSLib (>=0.20.0)", "pillow (>=6.1.0)"]
+plotting = ["pillow (>=6.1.0)", "scipy (>=1.3.1)"]
+speedups = ["fiona", "pykdtree"]
+srtm = ["beautifulsoup4"]
+test = ["coveralls", "pytest (>=5.1.2)", "pytest-cov", "pytest-mpl (>=0.11)", "pytest-xdist"]
+
+[[package]]
 name = "certifi"
 version = "2024.2.2"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -760,6 +802,29 @@ testing = ["covdefaults (>=2.3)", "coverage (>=7.3.2)", "diff-cover (>=8.0.1)", 
 typing = ["typing-extensions (>=4.8)"]
 
 [[package]]
+name = "flox"
+version = "0.9.6"
+description = "GroupBy operations for dask.array"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "flox-0.9.6-py3-none-any.whl", hash = "sha256:58b6704d386f9990d3f18abd3dcef41b0663ac52f46de54abc81c6db38e2ca6c"},
+    {file = "flox-0.9.6.tar.gz", hash = "sha256:5c6ff36293fe710a8547fa90f6f0066357efee5a481f1ecaa5df7523902afdf6"},
+]
+
+[package.dependencies]
+numpy = ">=1.22"
+numpy-groupies = ">=0.9.19"
+packaging = ">=21.3"
+pandas = ">=1.5"
+scipy = ">=1.9"
+toolz = "*"
+
+[package.extras]
+all = ["cachey", "dask", "numba", "numbagg", "xarray"]
+test = ["netCDF4"]
+
+[[package]]
 name = "fonttools"
 version = "4.51.0"
 description = "Tools to manipulate font files"
@@ -960,6 +1025,25 @@ more-itertools = "*"
 [package.extras]
 docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
 testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-mypy", "pytest-ruff (>=0.2.1)"]
+
+[[package]]
+name = "jcclass"
+version = "0.0.4"
+description = "Jenkinson and Collison automated gridded classification"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "jcclass-0.0.4.tar.gz", hash = "sha256:77b589d7b69c262ca18c62de0b3b4c084d3781aab792eebdf1758abf590abd8d"},
+]
+
+[package.dependencies]
+cartopy = ">=0.17.0"
+cftime = "*"
+matplotlib = ">=3.2.0"
+netCDF4 = "*"
+numpy = ">=1.19.5"
+pyproj = "*"
+xarray = ">=0.16.2"
 
 [[package]]
 name = "jeepney"
@@ -1739,6 +1823,24 @@ files = [
 ]
 
 [[package]]
+name = "numpy-groupies"
+version = "0.11.1"
+description = "Optimised tools for group-indexing operations: aggregated sum and more."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "numpy_groupies-0.11.1-py3-none-any.whl", hash = "sha256:c9f2471b0ee96e202fb0a591a551192c19fa3bdddad33df8665a7accbaf3263e"},
+    {file = "numpy_groupies-0.11.1.tar.gz", hash = "sha256:b0e9cf7a4d015beca969f1e90463fa90972df8380a722eb96d679f8838d2f6fe"},
+]
+
+[package.dependencies]
+numpy = "*"
+
+[package.extras]
+dev = ["numba", "pandas", "pytest"]
+fast = ["numba"]
+
+[[package]]
 name = "packaging"
 version = "24.0"
 description = "Core utilities for Python packages"
@@ -2161,6 +2263,45 @@ files = [
 diagrams = ["jinja2", "railroad-diagrams"]
 
 [[package]]
+name = "pyproj"
+version = "3.6.1"
+description = "Python interface to PROJ (cartographic projections and coordinate transformations library)"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "pyproj-3.6.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:ab7aa4d9ff3c3acf60d4b285ccec134167a948df02347585fdd934ebad8811b4"},
+    {file = "pyproj-3.6.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:4bc0472302919e59114aa140fd7213c2370d848a7249d09704f10f5b062031fe"},
+    {file = "pyproj-3.6.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5279586013b8d6582e22b6f9e30c49796966770389a9d5b85e25a4223286cd3f"},
+    {file = "pyproj-3.6.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:80fafd1f3eb421694857f254a9bdbacd1eb22fc6c24ca74b136679f376f97d35"},
+    {file = "pyproj-3.6.1-cp310-cp310-win32.whl", hash = "sha256:c41e80ddee130450dcb8829af7118f1ab69eaf8169c4bf0ee8d52b72f098dc2f"},
+    {file = "pyproj-3.6.1-cp310-cp310-win_amd64.whl", hash = "sha256:db3aedd458e7f7f21d8176f0a1d924f1ae06d725228302b872885a1c34f3119e"},
+    {file = "pyproj-3.6.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:ebfbdbd0936e178091309f6cd4fcb4decd9eab12aa513cdd9add89efa3ec2882"},
+    {file = "pyproj-3.6.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:447db19c7efad70ff161e5e46a54ab9cc2399acebb656b6ccf63e4bc4a04b97a"},
+    {file = "pyproj-3.6.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e7e13c40183884ec7f94eb8e0f622f08f1d5716150b8d7a134de48c6110fee85"},
+    {file = "pyproj-3.6.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:65ad699e0c830e2b8565afe42bd58cc972b47d829b2e0e48ad9638386d994915"},
+    {file = "pyproj-3.6.1-cp311-cp311-win32.whl", hash = "sha256:8b8acc31fb8702c54625f4d5a2a6543557bec3c28a0ef638778b7ab1d1772132"},
+    {file = "pyproj-3.6.1-cp311-cp311-win_amd64.whl", hash = "sha256:38a3361941eb72b82bd9a18f60c78b0df8408416f9340521df442cebfc4306e2"},
+    {file = "pyproj-3.6.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:1e9fbaf920f0f9b4ee62aab832be3ae3968f33f24e2e3f7fbb8c6728ef1d9746"},
+    {file = "pyproj-3.6.1-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:6d227a865356f225591b6732430b1d1781e946893789a609bb34f59d09b8b0f8"},
+    {file = "pyproj-3.6.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:83039e5ae04e5afc974f7d25ee0870a80a6bd6b7957c3aca5613ccbe0d3e72bf"},
+    {file = "pyproj-3.6.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:fffb059ba3bced6f6725961ba758649261d85ed6ce670d3e3b0a26e81cf1aa8d"},
+    {file = "pyproj-3.6.1-cp312-cp312-win32.whl", hash = "sha256:2d6ff73cc6dbbce3766b6c0bce70ce070193105d8de17aa2470009463682a8eb"},
+    {file = "pyproj-3.6.1-cp312-cp312-win_amd64.whl", hash = "sha256:7a27151ddad8e1439ba70c9b4b2b617b290c39395fa9ddb7411ebb0eb86d6fb0"},
+    {file = "pyproj-3.6.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:4ba1f9b03d04d8cab24d6375609070580a26ce76eaed54631f03bab00a9c737b"},
+    {file = "pyproj-3.6.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:18faa54a3ca475bfe6255156f2f2874e9a1c8917b0004eee9f664b86ccc513d3"},
+    {file = "pyproj-3.6.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:fd43bd9a9b9239805f406fd82ba6b106bf4838d9ef37c167d3ed70383943ade1"},
+    {file = "pyproj-3.6.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:50100b2726a3ca946906cbaa789dd0749f213abf0cbb877e6de72ca7aa50e1ae"},
+    {file = "pyproj-3.6.1-cp39-cp39-win32.whl", hash = "sha256:9274880263256f6292ff644ca92c46d96aa7e57a75c6df3f11d636ce845a1877"},
+    {file = "pyproj-3.6.1-cp39-cp39-win_amd64.whl", hash = "sha256:36b64c2cb6ea1cc091f329c5bd34f9c01bb5da8c8e4492c709bda6a09f96808f"},
+    {file = "pyproj-3.6.1-pp39-pypy39_pp73-macosx_10_9_x86_64.whl", hash = "sha256:fd93c1a0c6c4aedc77c0fe275a9f2aba4d59b8acf88cebfc19fe3c430cfabf4f"},
+    {file = "pyproj-3.6.1-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6420ea8e7d2a88cb148b124429fba8cd2e0fae700a2d96eab7083c0928a85110"},
+    {file = "pyproj-3.6.1.tar.gz", hash = "sha256:44aa7c704c2b7d8fb3d483bbf75af6cb2350d30a63b144279a09b75fead501bf"},
+]
+
+[package.dependencies]
+certifi = "*"
+
+[[package]]
 name = "pyproject-hooks"
 version = "1.0.0"
 description = "Wrappers to call pyproject.toml-based build backend hooks."
@@ -2173,6 +2314,17 @@ files = [
 
 [package.dependencies]
 tomli = {version = ">=1.1.0", markers = "python_version < \"3.11\""}
+
+[[package]]
+name = "pyshp"
+version = "2.3.1"
+description = "Pure Python read/write support for ESRI Shapefile format"
+optional = false
+python-versions = ">=2.7"
+files = [
+    {file = "pyshp-2.3.1-py2.py3-none-any.whl", hash = "sha256:67024c0ccdc352ba5db777c4e968483782dfa78f8e200672a90d2d30fd8b7b49"},
+    {file = "pyshp-2.3.1.tar.gz", hash = "sha256:4caec82fd8dd096feba8217858068bacb2a3b5950f43c048c6dc32a3489d5af1"},
+]
 
 [[package]]
 name = "python-dateutil"
@@ -3320,4 +3472,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "16ec04b4d9a29cea6cdb5c0c10d3ba8c2ca9b3a54ffb7e1922a2fbbb2d93d8c4"
+content-hash = "9ecc53e10394bcaa7d6240108123337c03db708dc8e6fe74b22a892f194de825"
