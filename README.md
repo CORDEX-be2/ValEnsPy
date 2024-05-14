@@ -1,21 +1,22 @@
 # ValEnsPy
 A Python package to validate gridded model data.
 
+## Installation
+
+Currently, the package is in development and not yet available on [PyPI](https://pypi.org/).
+
+To install the package locally, follow the instructions in the [INSTALL.md](docs/installation_pages/INSTALL.md) file.
+Interested in contributing? Take a look at [CONTRIBUTING.md](docs/contribution_pages/CONTRIBUTING.md) file to see how you can help.
+
+For additional developer guidelines see the Notes for developers page in the Contributing section of the documentation.
+
 ## Documentation
-As ValEnsPy is a private repository, the documentation is available in the docs folder.
+As ValEnsPy is a private repository, the documentation is only available locally.
 To access the documentation, clone the repository,
 ```bash
 git clone git@github.com:CORDEX-be2/ValEnsPy.git
 ```
-and open the [index.html](docs/_build/index.html) file in your browser to explore the documentation.
-
-## Installation
-
-Currently, the package is in development and not yet available on PyPI.
-
-To contribute to the development of the package, follow the instructions in the [CONTRIBUTING_VSC.md](docs/contribution_pages/CONTRIBUTING_VSC.md) file (if developing on the VSC) or the [CONTRIBUTING.md](docs/contribution_pages/CONTRIBUTING.md) file to set up the development environment.
-
-For additional developer guidelines see the Notes for developers page in the Contributing section of the documentation.
+and open the [ValEnsPy/docs/_build/index.html](docs/_build/index.html) file in your favourite web browser.
 
 ## Package structure
 

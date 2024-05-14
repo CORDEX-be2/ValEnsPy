@@ -1,0 +1,73 @@
+# Installation
+
+Currently, the package is in development and not yet available on [PyPI](https://pypi.org/).
+Therefore, to install the package locally, follow the instructions below.
+
+## Local installation
+
+### Required software
+
+=== "General"
+
+The following software (or equivalent) is required to set up a developer environment:
+* [Anaconda](https://anaconda.org/)
+
+Make sure you have this software installed before proceeding.
+
+=== "VSC"
+Test
+
+### Setup a developer environment
+1. Clone the ValEnsPy locally:
+
+```bash
+git clone git@github.com:CORDEX-be2/ValEnsPy.git
+```
+2. Create a conda environment and install the required packages.
+```bash
+# Setup a developers' environment
+conda create -n valenspy_dev python==3.9 poetry
+conda activate valenspy_dev
+
+# Install dependencies in the developers' environment
+cd ValEnsPy
+poetry install
+```
+3. Create a branch for local development which is a copy of the **dev** branch.:
+```bash
+# checkout the dev branch
+git checkout dev
+git pull
+
+# Create a new local branch and switch to it.
+git branch name-of-your-bugfix-or-feature
+git checkout name-of-your-bugfix-or-feature
+```
+Now you can make local changes.
+
+5. Push your code online:
+```bash
+# Add your changes to your commit
+git add -A
+# Write commit text
+git commit -m "Some text describing your code changes in this commit"
+# Push your branch online
+#only the first time:
+git push --set-upstream origin name-of-your-bugfix-or-feature
+#all other times
+git push
+```
+
+## Pull Request Guidelines
+Once your branch has been *pushed* to github, you can create a *Pull request* in github. Make sure that you have **referred the corresponding issues** to the *Pull request*.
+If your code adaptations are still *work-in-progress* add the ![Static Badge](https://img.shields.io/badge/WIP%20-%20%23A21079) label to it. For each push, github will perform a list of checks (package building, version control, functionality test, os-tests, documentation build test), in order to merge your contributions these tests must all be successful.
+
+If your code is ready for review, you can add the ![Static Badge](https://img.shields.io/badge/Ready_for_Review%20-%20%230315E4) label to it.
+
+After the code review, and all review marks are resolved, your contributions will be merged to the *dev* branch.
+
+## Versioning/Tagging
+From time to time the *dev* branch will be merged with the master with a new [*Release tag*](https://github.com/CORDEX-be2/ValEnsPy/releases).
+
+## Acknowledgement
+This file is inspired by the [RavenPy](https://github.com/CSHS-CWRA/RavenPy) project. Thank you for the inspiration!”.
