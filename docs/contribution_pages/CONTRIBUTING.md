@@ -27,6 +27,9 @@ You can then contribute to the codebase by:
 - Taking on an open issue
 - Creating a new diagnostic: see [example](examples/making_a_diagnostic.ipynb)
 
+Create a new branch, a new pull request and link it to the issue(s) you are working on.
+Read the developer guidelines in the Contributing section of the documentation for more information on how your code will be integrated into the package.
+
 ### Help improve the documentation
 
 The docementation helps others help themselves and in turn help contribute to the package.

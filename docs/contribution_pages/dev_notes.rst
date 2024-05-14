@@ -7,6 +7,24 @@ other developers.
 On general, the `deployment` folder contains executable (bash) scripts, to
 streamline some typical development procedures.
 
+Merging and Pull Requests
+---------------------------
+
+Once you are satisfied with your code and are ready to share it with the rest of the team, you can create a *Pull request* in github. 
+A *Pull request* is a request to merge your code into the *dev* branch. It allows other developers to review your code and suggest changes.
+Even if you are not ready to merge your code, you can still create a *Pull request*. This is useful to have an overview of incoming changes.
+
+Here are some guidelines for creating a *Pull request*:
+- Make sure that you have referred the corresponding issues to the *Pull request* (if any).
+- If your code adaptations are still *work-in-progress*, add the ![Static Badge](https://img.shields.io/badge/WIP%20-%20%23A21079) label to it - this will indicate to other developers that the code is not ready for review.
+- If your code is ready for review, you can add the ![Static Badge](https://img.shields.io/badge/Ready_for_Review%20-%20%230315E4) label to it.
+
+After the code review, and all review marks are resolved, your contributions will be merged to the *dev* branch.
+
+Versioning/Tagging
+---------------------
+
+From time to time the *dev* branch will be merged with the master with a new [*Release tag*](https://github.com/CORDEX-be2/ValEnsPy/releases).
 
 Packaging
 ------------
