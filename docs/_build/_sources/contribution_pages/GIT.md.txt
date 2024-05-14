@@ -2,7 +2,7 @@
 The purpose of this page is to provide links to resource for those who are new to git.
 
 ## Why git and GitHub?
-Git is a version control system that allows you to track changes in your code. This allows you to work on a project with multiple people simultaneously without overwriting each other's work. 
+Git is a version control system that allows you to track changes in your code. This allows you to work on a project with multiple people simultaneously without overwriting each other's work.
 
 GitHub is a platform that allows you to store your code online. It provides a way to collaborate with others through issues, pull requests, and much more.
 
@@ -33,8 +33,8 @@ git clone git@github.com:CORDEX-be2/ValEnsPy.git
 This will create a folder called ValEnsPy in your current directory. You can now navigate to this folder and start working on the code.
 
 ## Branching
-Branching is a way to work on a feature or bugfix without affecting the main codebase. 
-Note that ValEnsPy is protected and you will not be able to push directly to the main or dev branch. 
+Branching is a way to work on a feature or bugfix without affecting the main codebase.
+Note that ValEnsPy is protected and you will not be able to push directly to the main or dev branch.
 Therefore, you are safe to try out branching without worrying about breaking the code.
 
 ## Contributing

@@ -2,7 +2,7 @@
 
 Currently, the package is in development and not yet available on [PyPI](https://pypi.org/).
 Therefore, to install the package locally, follow the instructions below.
-This quide is specifically for the VSC. 
+This quide is specifically for the VSC.
 
 ## Local installation
 

@@ -10,7 +10,7 @@ streamline some typical development procedures.
 Merging and Pull Requests
 ---------------------------
 
-Once you are satisfied with your code and are ready to share it with the rest of the team, you can create a *Pull request* in github. 
+Once you are satisfied with your code and are ready to share it with the rest of the team, you can create a *Pull request* in github.
 A *Pull request* is a request to merge your code into the *dev* branch. It allows other developers to review your code and suggest changes.
 Even if you are not ready to merge your code, you can still create a *Pull request*. This is useful to have an overview of incoming changes.
 

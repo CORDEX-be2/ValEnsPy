@@ -35,7 +35,7 @@ Read the developer guidelines in the Contributing section of the documentation f
 The docementation helps others help themselves and in turn help contribute to the package.
 You can help improve the documentation by:
 - Adding a new example notebooks
-- Improving the general documentation 
+- Improving the general documentation
 - Reporting gaps in the documentation in an issue
 - Document your code while you are developing it
 
