@@ -420,12 +420,12 @@ document.write(`
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from pathlib import Path
-from datatree import DataTree
-import xarray as xr
-import pandas as pd
-import valenspy as vp
-import numpy as np
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">datatree</span> <span class="kn">import</span> <span class="n">DataTree</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">valenspy</span> <span class="k">as</span> <span class="nn">vp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
 </div>
@@ -436,9 +436,9 @@ import numpy as np
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>demo_data = vp.demo_data_CF
-demo_ds = xr.open_dataset(demo_data)
-vp.cf_checks.is_cf_compliant(demo_ds)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">demo_data</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">demo_data_CF</span>
+<span class="n">demo_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">demo_data</span><span class="p">)</span>
+<span class="n">vp</span><span class="o">.</span><span class="n">cf_checks</span><span class="o">.</span><span class="n">is_cf_compliant</span><span class="p">(</span><span class="n">demo_ds</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -456,17 +456,17 @@ True
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import pandas as pd
-df = pd.read_csv(&#39;https://storage.googleapis.com/cmip6/cmip6-zarr-consolidated-stores.csv&#39;)
-df
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://storage.googleapis.com/cmip6/cmip6-zarr-consolidated-stores.csv&#39;</span><span class="p">)</span>
+<span class="n">df</span>
 
-#Querry the data you need
-temperature_data = df.query(&quot;table_id== &#39;Amon&#39; &amp; source_id == &#39;EC-Earth3-Veg&#39; &amp; variable_id == &#39;tas&#39; &amp; experiment_id == &#39;historical&#39; &amp; member_id == &#39;r1i1p1f1&#39; &amp; activity_id == &#39;CMIP&#39;&quot;)
+<span class="c1">#Querry the data you need</span>
+<span class="n">temperature_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;table_id== &#39;Amon&#39; &amp; source_id == &#39;EC-Earth3-Veg&#39; &amp; variable_id == &#39;tas&#39; &amp; experiment_id == &#39;historical&#39; &amp; member_id == &#39;r1i1p1f1&#39; &amp; activity_id == &#39;CMIP&#39;&quot;</span><span class="p">)</span>
 
-#Load the data using the zstore link (note here the first (and only) row is used as the query returned a unique dataset)
-ds_ec_temp = xr.open_zarr(temperature_data.zstore.values[0])
-print(vp.cf_checks.is_cf_compliant(ds_ec_temp))
-ds_ec_temp
+<span class="c1">#Load the data using the zstore link (note here the first (and only) row is used as the query returned a unique dataset)</span>
+<span class="n">ds_ec_temp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">temperature_data</span><span class="o">.</span><span class="n">zstore</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vp</span><span class="o">.</span><span class="n">cf_checks</span><span class="o">.</span><span class="n">is_cf_compliant</span><span class="p">(</span><span class="n">ds_ec_temp</span><span class="p">))</span>
+<span class="n">ds_ec_temp</span>
 </pre></div>
 </div>
 </div>
@@ -1366,65 +1366,65 @@ seaIce: LIM3</dd><dt><span>source_id :</span></dt><dd>EC-Earth3-Veg</dd><dt><spa
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span>def warming_levels(ds, ref, levels=[1.5, 2.0], rol_years=21, freq_monthly=True):
-    &quot;&quot;&quot;
-    Calculate the crossing times for different warming levels - the time when the area average warming crosses a certain level compared to the reference period
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="k">def</span> <span class="nf">warming_levels</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span> <span class="n">rol_years</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">freq_monthly</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the crossing times for different warming levels - the time when the area average warming crosses a certain level compared to the reference period</span>
 
-    Parameters
-    ----------
-    ds : xarray.Dataset
-        Dataset containing the model data
-    ref : xarray.Dataset
-        Dataset containing the reference period
-    levels : list
-        List of warming levels to get crossing times for
-    rol_years : int
-        Number of years to use for the rolling mean
-    freq : str, optional
-        Frequency of the data (following pandas conventions), default is None and will be inferred from the data
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xarray.Dataset</span>
+<span class="sd">        Dataset containing the model data</span>
+<span class="sd">    ref : xarray.Dataset</span>
+<span class="sd">        Dataset containing the reference period</span>
+<span class="sd">    levels : list</span>
+<span class="sd">        List of warming levels to get crossing times for</span>
+<span class="sd">    rol_years : int</span>
+<span class="sd">        Number of years to use for the rolling mean</span>
+<span class="sd">    freq : str, optional</span>
+<span class="sd">        Frequency of the data (following pandas conventions), default is None and will be inferred from the data</span>
 
-    Returns
-    -------
-    crossingtimes : dict
-        Dictionary containing the crossing times for each warming level
-    temp_warming : xarray.DataArray
-        DataArray containing the area average warming compared to the reference period
-    &quot;&quot;&quot;
-    if not freq_monthly:
-        ds = ds.resample(time=&quot;ME&quot;).mean()
-    warming_ds = temp_warming(ds, ref, rol_amount=rol_years*12)
-    warming_ds = warming_ds.load() #Ensure that the warming_ds is only computed once (not every time it is accessed)
-    crossingtimes = {}
-    for level in levels:
-        try:
-            crossingtimes[level] = warming_ds.where(warming_ds&gt;level, drop=True).idxmin(&#39;time&#39;).astype(&#39;datetime64[ns]&#39;).values
-        except ValueError:
-            crossingtimes[level] = False
-    return warming_ds, crossingtimes
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    crossingtimes : dict</span>
+<span class="sd">        Dictionary containing the crossing times for each warming level</span>
+<span class="sd">    temp_warming : xarray.DataArray</span>
+<span class="sd">        DataArray containing the area average warming compared to the reference period</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">freq_monthly</span><span class="p">:</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s2">&quot;ME&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">warming_ds</span> <span class="o">=</span> <span class="n">temp_warming</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">rol_amount</span><span class="o">=</span><span class="n">rol_years</span><span class="o">*</span><span class="mi">12</span><span class="p">)</span>
+    <span class="n">warming_ds</span> <span class="o">=</span> <span class="n">warming_ds</span><span class="o">.</span><span class="n">load</span><span class="p">()</span> <span class="c1">#Ensure that the warming_ds is only computed once (not every time it is accessed)</span>
+    <span class="n">crossingtimes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">levels</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">crossingtimes</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="n">warming_ds</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">warming_ds</span><span class="o">&gt;</span><span class="n">level</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">idxmin</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64[ns]&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">crossingtimes</span><span class="p">[</span><span class="n">level</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">warming_ds</span><span class="p">,</span> <span class="n">crossingtimes</span>
 
-def temp_warming(ds, ref, rol_amount):
-    &quot;&quot;&quot;
-    Calculate the area average warming compared to the reference period
+<span class="k">def</span> <span class="nf">temp_warming</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">rol_amount</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the area average warming compared to the reference period</span>
 
-    Parameters
-    ----------
-    ds : xarray.Dataset
-        Dataset containing the model data
-    ref : xarray.Dataset
-        Dataset containing the reference period
-    rol_years : int
-        Number of years to use for the rolling mean
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xarray.Dataset</span>
+<span class="sd">        Dataset containing the model data</span>
+<span class="sd">    ref : xarray.Dataset</span>
+<span class="sd">        Dataset containing the reference period</span>
+<span class="sd">    rol_years : int</span>
+<span class="sd">        Number of years to use for the rolling mean</span>
 
-    Returns
-    -------
-    ds_temp_warming : xarray.DataArray
-        DataArray containing the area average warming compared to the reference period
-    &quot;&quot;&quot;
-    ref_temp = ref.tas.mean()
-    rol = ds.mean(dim=[&#39;lat&#39;,&#39;lon&#39;]).tas.rolling(time=rol_amount).mean()
-    ds_temp_warming = rol - ref_temp
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ds_temp_warming : xarray.DataArray</span>
+<span class="sd">        DataArray containing the area average warming compared to the reference period</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ref_temp</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">tas</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">rol</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span><span class="s1">&#39;lon&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">tas</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">rol_amount</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">ds_temp_warming</span> <span class="o">=</span> <span class="n">rol</span> <span class="o">-</span> <span class="n">ref_temp</span>
 
-    return ds_temp_warming
+    <span class="k">return</span> <span class="n">ds_temp_warming</span>
 </pre></div>
 </div>
 </div>
@@ -1432,17 +1432,17 @@ def temp_warming(ds, ref, rol_amount):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>def crossing_time_plot(tw_ds, ct, ax, **kwargs):
-    for level in ct:
-        if ct[level]:
-            ax.axhline(level, color=&#39;black&#39;, linestyle=&#39;--&#39;, alpha=0.5, label=f&#39;{level}°C warming level: {np.datetime_as_string(ct[level], unit=&quot;M&quot;)}&#39;)
-            ax.axvline(ct[level], color=&#39;black&#39;, linestyle=&#39;--&#39;, alpha=0.2)
-    tw_ds.plot(ax=ax, **kwargs)
-    max_temp = tw_ds.max()
-    ax.legend()
-    ax.set_ylabel(&#39;Temperature anomaly (°C) compared to 1850-1900&#39;)
-    ax.set_xlabel(&#39;Time&#39;)
-    return ax
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">crossing_time_plot</span><span class="p">(</span><span class="n">tw_ds</span><span class="p">,</span> <span class="n">ct</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">level</span> <span class="ow">in</span> <span class="n">ct</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ct</span><span class="p">[</span><span class="n">level</span><span class="p">]:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">level</span><span class="si">}</span><span class="s1">°C warming level: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">datetime_as_string</span><span class="p">(</span><span class="n">ct</span><span class="p">[</span><span class="n">level</span><span class="p">],</span><span class="w"> </span><span class="n">unit</span><span class="o">=</span><span class="s2">&quot;M&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">ct</span><span class="p">[</span><span class="n">level</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+    <span class="n">tw_ds</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">max_temp</span> <span class="o">=</span> <span class="n">tw_ds</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Temperature anomaly (°C) compared to 1850-1900&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span>
 </pre></div>
 </div>
 </div>
@@ -1454,12 +1454,12 @@ def temp_warming(ds, ref, rol_amount):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#Note that ds and rf are expected to be xarray datasets, add aditional arguments to your function if needed
-def your_diagnostic_function(ds: xr.Dataset, ref: xr.Dataset) -&gt; DataTree: #Replace DataTree with your expected output type!
-    pass #Replace this with your code
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Note that ds and rf are expected to be xarray datasets, add aditional arguments to your function if needed</span>
+<span class="k">def</span> <span class="nf">your_diagnostic_function</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataTree</span><span class="p">:</span> <span class="c1">#Replace DataTree with your expected output type!</span>
+    <span class="k">pass</span> <span class="c1">#Replace this with your code</span>
 
-def your_diagnostic_plotting_function():
-    pass #
+<span class="k">def</span> <span class="nf">your_diagnostic_plotting_function</span><span class="p">():</span>
+    <span class="k">pass</span> <span class="c1">#</span>
 </pre></div>
 </div>
 </div>
@@ -1468,7 +1468,7 @@ def your_diagnostic_plotting_function():
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#Test your function
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Test your function</span>
 </pre></div>
 </div>
 </div>
@@ -1480,7 +1480,7 @@ def your_diagnostic_plotting_function():
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>example_diag = vp.Model2Ref(warming_levels, crossing_time_plot, &#39;Warming levels&#39;, &#39;Calculate the crossing times for different warming levels&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_diag</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">Model2Ref</span><span class="p">(</span><span class="n">warming_levels</span><span class="p">,</span> <span class="n">crossing_time_plot</span><span class="p">,</span> <span class="s1">&#39;Warming levels&#39;</span><span class="p">,</span> <span class="s1">&#39;Calculate the crossing times for different warming levels&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1489,12 +1489,12 @@ def your_diagnostic_plotting_function():
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from dask.diagnostics import ProgressBar, Profiler, ResourceProfiler, CacheProfiler
-ref_temp = ds_ec_temp.sel(time=slice(&#39;1850&#39;, &#39;1900&#39;))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.diagnostics</span> <span class="kn">import</span> <span class="n">ProgressBar</span><span class="p">,</span> <span class="n">Profiler</span><span class="p">,</span> <span class="n">ResourceProfiler</span><span class="p">,</span> <span class="n">CacheProfiler</span>
+<span class="n">ref_temp</span> <span class="o">=</span> <span class="n">ds_ec_temp</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s1">&#39;1850&#39;</span><span class="p">,</span> <span class="s1">&#39;1900&#39;</span><span class="p">))</span>
 
-with ProgressBar():
-    with Profiler() as prof, ResourceProfiler(dt=0.25) as rprof, CacheProfiler() as cprof:
-        result_M2R = example_diag.apply(ds_ec_temp, ref_temp, levels=[0.5, 1, 1.5, 2, 3], rol_years=20)
+<span class="k">with</span> <span class="n">ProgressBar</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">Profiler</span><span class="p">()</span> <span class="k">as</span> <span class="n">prof</span><span class="p">,</span> <span class="n">ResourceProfiler</span><span class="p">(</span><span class="n">dt</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span> <span class="k">as</span> <span class="n">rprof</span><span class="p">,</span> <span class="n">CacheProfiler</span><span class="p">()</span> <span class="k">as</span> <span class="n">cprof</span><span class="p">:</span>
+        <span class="n">result_M2R</span> <span class="o">=</span> <span class="n">example_diag</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">ds_ec_temp</span><span class="p">,</span> <span class="n">ref_temp</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">rol_years</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1516,11 +1516,11 @@ with ProgressBar():
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
-fig, ax = plt.subplots()
-example_diag.visualize(result_M2R)
-plt.title(&#39;Warming levels for EC-Earth3-Veg&#39;)
-plt.show()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">example_diag</span><span class="o">.</span><span class="n">visualize</span><span class="p">(</span><span class="n">result_M2R</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Warming levels for EC-Earth3-Veg&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1546,21 +1546,21 @@ plt.show()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>ten=False
-if ten:#Still issues with some of these times being in cf_time instead of datetime64
-    CMIP6_tas_monthly_dict = {}
-    temperature_data = df.query(&quot;table_id== &#39;Amon&#39; &amp; variable_id == &#39;tas&#39; &amp; experiment_id == &#39;historical&#39; &amp; member_id == &#39;r1i1p1f1&#39; &amp; activity_id == &#39;CMIP&#39; &amp; grid_label==&#39;gr&#39;&quot;)
-    for index, row in temperature_data.iterrows():
-        ds = xr.open_zarr(row.zstore)
-        CMIP6_tas_monthly_dict[f&quot;CMIP6/{row.source_id}&quot;] = ds
-    dt = DataTree.from_dict(CMIP6_tas_monthly_dict)
-else:
-    import pandas as pd
-    df = pd.read_csv(&#39;https://storage.googleapis.com/cmip6/cmip6-zarr-consolidated-stores.csv&#39;)
-    temperature_data = df.query(&quot;table_id== &#39;Amon&#39; &amp;  source_id == &#39;MIROC6&#39;  &amp; variable_id == &#39;tas&#39; &amp; experiment_id == &#39;historical&#39; &amp; member_id == &#39;r1i1p1f1&#39; &amp; activity_id == &#39;CMIP&#39;&quot;)
-    ds_MIROC6_temp = xr.open_zarr(temperature_data.zstore.values[0])
-    dt = DataTree.from_dict({&#39;Ensemble/EC-Earth3-Veg&#39;: ds_ec_temp, &#39;Ensemble/MIROC6&#39;: ds_MIROC6_temp})
-dt
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ten</span><span class="o">=</span><span class="kc">False</span>
+<span class="k">if</span> <span class="n">ten</span><span class="p">:</span><span class="c1">#Still issues with some of these times being in cf_time instead of datetime64</span>
+    <span class="n">CMIP6_tas_monthly_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">temperature_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;table_id== &#39;Amon&#39; &amp; variable_id == &#39;tas&#39; &amp; experiment_id == &#39;historical&#39; &amp; member_id == &#39;r1i1p1f1&#39; &amp; activity_id == &#39;CMIP&#39; &amp; grid_label==&#39;gr&#39;&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">temperature_data</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">zstore</span><span class="p">)</span>
+        <span class="n">CMIP6_tas_monthly_dict</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;CMIP6/</span><span class="si">{</span><span class="n">row</span><span class="o">.</span><span class="n">source_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">DataTree</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">CMIP6_tas_monthly_dict</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://storage.googleapis.com/cmip6/cmip6-zarr-consolidated-stores.csv&#39;</span><span class="p">)</span>
+    <span class="n">temperature_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;table_id== &#39;Amon&#39; &amp;  source_id == &#39;MIROC6&#39;  &amp; variable_id == &#39;tas&#39; &amp; experiment_id == &#39;historical&#39; &amp; member_id == &#39;r1i1p1f1&#39; &amp; activity_id == &#39;CMIP&#39;&quot;</span><span class="p">)</span>
+    <span class="n">ds_MIROC6_temp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="n">temperature_data</span><span class="o">.</span><span class="n">zstore</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="n">DataTree</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s1">&#39;Ensemble/EC-Earth3-Veg&#39;</span><span class="p">:</span> <span class="n">ds_ec_temp</span><span class="p">,</span> <span class="s1">&#39;Ensemble/MIROC6&#39;</span><span class="p">:</span> <span class="n">ds_MIROC6_temp</span><span class="p">})</span>
+<span class="n">dt</span>
 </pre></div>
 </div>
 </div>
@@ -3821,8 +3821,8 @@ hdl:21.14100/8eafad89-f8c0-4266-b1eb-b5c103293111</dd><dt><span>version_id :</sp
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#Make a Ensemble2Ref diagnostic from the Model2Ref diagnostic
-example_diag_ensemble = vp.Ensemble2Ref.from_model2ref(example_diag)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Make a Ensemble2Ref diagnostic from the Model2Ref diagnostic</span>
+<span class="n">example_diag_ensemble</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">Ensemble2Ref</span><span class="o">.</span><span class="n">from_model2ref</span><span class="p">(</span><span class="n">example_diag</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3830,12 +3830,12 @@ example_diag_ensemble = vp.Ensemble2Ref.from_model2ref(example_diag)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from dask.diagnostics import ProgressBar, Profiler, ResourceProfiler, CacheProfiler
-ref_temp = ds_ec_temp.sel(time=slice(&#39;1850&#39;, &#39;1900&#39;)) #Either use a fixed reference for all models (In this case the EC-Earth3-Veg model)
-ref = dt.sel(time=slice(&#39;1850&#39;, &#39;1900&#39;)) #Or use a different reference for each model - the same data tree structure is expected
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.diagnostics</span> <span class="kn">import</span> <span class="n">ProgressBar</span><span class="p">,</span> <span class="n">Profiler</span><span class="p">,</span> <span class="n">ResourceProfiler</span><span class="p">,</span> <span class="n">CacheProfiler</span>
+<span class="n">ref_temp</span> <span class="o">=</span> <span class="n">ds_ec_temp</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s1">&#39;1850&#39;</span><span class="p">,</span> <span class="s1">&#39;1900&#39;</span><span class="p">))</span> <span class="c1">#Either use a fixed reference for all models (In this case the EC-Earth3-Veg model)</span>
+<span class="n">ref</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s1">&#39;1850&#39;</span><span class="p">,</span> <span class="s1">&#39;1900&#39;</span><span class="p">))</span> <span class="c1">#Or use a different reference for each model - the same data tree structure is expected</span>
 
-with ProgressBar():
-    result = example_diag_ensemble.apply(dt, ref, levels=[0.5, 1, 1.5, 2, 3], rol_years=21)
+<span class="k">with</span> <span class="n">ProgressBar</span><span class="p">():</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">example_diag_ensemble</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">rol_years</span><span class="o">=</span><span class="mi">21</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -3852,8 +3852,8 @@ with ProgressBar():
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>example_diag_ensemble.visualize(result, facetted=True)
-plt.show()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_diag_ensemble</span><span class="o">.</span><span class="n">visualize</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -3868,7 +3868,7 @@ plt.show()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>example_diag_ensemble.visualize(result, facetted=False)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">example_diag_ensemble</span><span class="o">.</span><span class="n">visualize</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

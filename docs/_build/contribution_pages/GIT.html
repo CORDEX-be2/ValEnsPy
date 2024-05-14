@@ -414,6 +414,50 @@ document.write(`
   <section id="mini-git-guide">
 <h1>Mini Git Guide<a class="headerlink" href="#mini-git-guide" title="Link to this heading">#</a></h1>
 <p>The purpose of this page is to provide links to resource for those who are new to git.</p>
+<section id="why-git-and-github">
+<h2>Why git and GitHub?<a class="headerlink" href="#why-git-and-github" title="Link to this heading">#</a></h2>
+<p>Git is a version control system that allows you to track changes in your code. This allows you to work on a project with multiple people simultaneously without overwriting each other’s work.</p>
+<p>GitHub is a platform that allows you to store your code online. It provides a way to collaborate with others through issues, pull requests, and much more.</p>
+</section>
+<section id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Link to this heading">#</a></h2>
+<p>An introduction to git</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://learngitbranching.js.org/">Intro to GIT</a>
+A beginner friendly interactive tutorial that teaches you the basics of git.</p></li>
+<li><p><a class="reference external" href="https://learngitbranching.js.org/">Interactively learn GIT</a>
+A git cheat sheet</p></li>
+<li><p><a class="reference external" href="https://education.github.com/git-cheat-sheet-education.pdf">Git cheat sheet</a>
+You can also use git in VSCode (a code editor) to make things easier.</p></li>
+<li><p><a class="reference external" href="https://code.visualstudio.com/docs/sourcecontrol/overview">VSCode</a></p></li>
+</ul>
+</section>
+<section id="cloning-this-repository">
+<h2>Cloning this repository<a class="headerlink" href="#cloning-this-repository" title="Link to this heading">#</a></h2>
+<p>One of the first things you will want to do is clone this repository.
+This essentially copies the repository (code, examples, etc.) from GitHub to you and will allow you to make changes to the code.</p>
+<p>To clone this repository, you will need to have an SSH key set up on your GitHub account. Follow these steps to set up an SSH key:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generate an SSH key</a> on your machine.</p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account">Add the SSH key to your GitHub account</a></p></li>
+</ul>
+<p>Now you can clone the repository, to do this run the following command in your terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:CORDEX-be2/ValEnsPy.git
+</pre></div>
+</div>
+<p>This will create a folder called ValEnsPy in your current directory. You can now navigate to this folder and start working on the code.</p>
+</section>
+<section id="branching">
+<h2>Branching<a class="headerlink" href="#branching" title="Link to this heading">#</a></h2>
+<p>Branching is a way to work on a feature or bugfix without affecting the main codebase.
+Note that ValEnsPy is protected and you will not be able to push directly to the main or dev branch.
+Therefore, you are safe to try out branching without worrying about breaking the code.</p>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">#</a></h2>
+<p>Now that you have cloned the repository and know some of the basics of git, you can start contributing to the codebase.
+To finish setting up your developer environment, follow the instructions in the <a class="reference internal" href="INSTALL.html"><span class="std std-doc">installation guide</span></a>.</p>
+</section>
 </section>
 
 
@@ -453,6 +497,22 @@ document.write(`
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-git-and-github">Why git and GitHub?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources">Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cloning-this-repository">Cloning this repository</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#branching">Branching</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
+</ul>
+  </nav></div>
 
   <div class="sidebar-secondary-item">
 

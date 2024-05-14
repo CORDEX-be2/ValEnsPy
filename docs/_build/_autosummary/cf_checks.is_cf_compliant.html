@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>diagnostic_visualizations &#8212; ValEnsPy documentation</title>
+    <title>cf_checks.is_cf_compliant &#8212; ValEnsPy documentation</title>
   
   
   
@@ -45,11 +45,11 @@
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/diagnostic_visualizations';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/cf_checks.is_cf_compliant';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="diagnostic_visualizations.plot_spatial_bias" href="diagnostic_visualizations.plot_spatial_bias.html" />
-    <link rel="prev" title="diagnostic.Model2Ref" href="diagnostic.Model2Ref.html" />
+    <link rel="next" title="diagnostic" href="diagnostic.html" />
+    <link rel="prev" title="cf_checks" href="cf_checks.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -349,8 +349,8 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="cf_checks.html">cf_checks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="cf_checks.is_cf_compliant.html">cf_checks.is_cf_compliant</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="cf_checks.html">cf_checks</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">cf_checks.is_cf_compliant</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="diagnostic.html">diagnostic</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -359,7 +359,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="diagnostic.Model2Ref.html">diagnostic.Model2Ref</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">diagnostic_visualizations</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="diagnostic_visualizations.html">diagnostic_visualizations</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="diagnostic_visualizations.plot_spatial_bias.html">diagnostic_visualizations.plot_spatial_bias</a></li>
 </ul>
 </li>
@@ -420,7 +420,10 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="../API_doc.html" class="nav-link">Modules</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">diagnostic_v...</li>
+    
+    <li class="breadcrumb-item"><a href="cf_checks.html" class="nav-link">cf_checks</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">cf_checks.is...</li>
   </ul>
 </nav>
 </div>
@@ -437,16 +440,36 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-diagnostic_visualizations">
-<span id="diagnostic-visualizations"></span><h1>diagnostic_visualizations<a class="headerlink" href="#module-diagnostic_visualizations" title="Link to this heading">#</a></h1>
-<p class="rubric">Functions</p>
-<table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="diagnostic_visualizations.plot_spatial_bias.html#diagnostic_visualizations.plot_spatial_bias" title="diagnostic_visualizations.plot_spatial_bias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_spatial_bias</span></code></a>(data, **kwargs)</p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
+  <section id="cf-checks-is-cf-compliant">
+<h1>cf_checks.is_cf_compliant<a class="headerlink" href="#cf-checks-is-cf-compliant" title="Link to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="cf_checks.is_cf_compliant">
+<span class="sig-name descname"><span class="pre">is_cf_compliant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">netCDF</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dataset</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/cf_checks.html#is_cf_compliant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cf_checks.is_cf_compliant" title="Link to this definition">#</a></dt>
+<dd><p>Check if a file is a CF compliant netCDF file. The following checks are performed:
+- Check if the file is a netCDF file (or an xarray dataset)
+- Check if the main metadata attributes exist (title, history)
+- Check if the variable metadata attributes exist (units, standard_name, long_name)
+- For each variable check if it is present in the predefined variables, if so check if the attributes match.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>netCDF</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>Path</em><em>, </em><em>xr.Dataset</em><em>]</em>) – The netCDF file to check or the xarray dataset to check</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the file is CF compliant, False otherwise</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">valenspy</span> <span class="k">as</span> <span class="nn">vp</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vp</span><span class="o">.</span><span class="n">cf_checks</span><span class="o">.</span><span class="n">is_cf_compliant</span><span class="p">(</span><span class="n">vp</span><span class="o">.</span><span class="n">demo_data_CF</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 
 
@@ -460,20 +483,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="diagnostic.Model2Ref.html"
+       href="cf_checks.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">diagnostic.Model2Ref</p>
+        <p class="prev-next-title">cf_checks</p>
       </div>
     </a>
     <a class="right-next"
-       href="diagnostic_visualizations.plot_spatial_bias.html"
+       href="diagnostic.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">diagnostic_visualizations.plot_spatial_bias</p>
+        <p class="prev-next-title">diagnostic</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -488,9 +511,21 @@ document.write(`
 
 
   <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cf_checks.is_cf_compliant"><code class="docutils literal notranslate"><span class="pre">is_cf_compliant</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/_autosummary/diagnostic_visualizations.rst.txt">
+    <a href="../_sources/_autosummary/cf_checks.is_cf_compliant.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
