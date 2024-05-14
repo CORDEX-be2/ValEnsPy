@@ -41,7 +41,7 @@
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -51,7 +51,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'doc_examples/workflow_example';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Modules" href="../API_doc.html" />
+    <link rel="next" title="Making a diagnostic" href="making_a_diagnostic.html" />
     <link rel="prev" title="Examples" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -355,6 +355,7 @@ document.write(`
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Workflow Example</a></li>
 
 
+<li class="toctree-l1"><a class="reference internal" href="making_a_diagnostic.html">Making a diagnostic</a></li>
 </ul>
 </div>
 </nav></div>
@@ -421,13 +422,13 @@ document.write(`
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from pathlib import Path
 
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">from</span> <span class="nn">datatree</span> <span class="kn">import</span> <span class="n">DataTree</span>
+import xarray as xr
+from datatree import DataTree
 
-<span class="kn">import</span> <span class="nn">valenspy</span> <span class="k">as</span> <span class="nn">vp</span> <span class="c1">#The Valenspy package</span>
-<span class="kn">from</span> <span class="nn">valenspy.inputconverter_functions</span> <span class="kn">import</span> <span class="n">_non_convertor</span>
+import valenspy as vp #The Valenspy package
+from valenspy.inputconverter_functions import _non_convertor
 </pre></div>
 </div>
 </div>
@@ -441,8 +442,8 @@ document.write(`
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Import Converter - This input converter will not do anything to the data.</span>
-<span class="n">ic</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">InputConverter</span><span class="p">(</span><span class="n">_non_convertor</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#Import Converter - This input converter will not do anything to the data.
+ic = vp.InputConverter(_non_convertor)
 </pre></div>
 </div>
 </div>
@@ -454,25 +455,25 @@ document.write(`
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Observational dataset</span>
-<span class="n">EOBS_data_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/dodrio/scratch/projects/2022_200/project_input/External/observations/EOBS/0.1deg/&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#Observational dataset
+EOBS_data_dir = Path(&quot;/dodrio/scratch/projects/2022_200/project_input/External/observations/EOBS/0.1deg/&quot;)
 
-<span class="n">EOBS_obs_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">EOBS_data_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*tg*mean*.nc&quot;</span><span class="p">))</span> <span class="c1">#Select all the netCDF files in the directory</span>
-<span class="n">EOBS_obs_files</span> <span class="o">=</span> <span class="n">ic</span><span class="o">.</span><span class="n">convert_input</span><span class="p">(</span><span class="n">EOBS_obs_files</span><span class="p">)</span> <span class="c1">#Convert the input to the correct format</span>
+EOBS_obs_files = list(EOBS_data_dir.glob(&quot;*tg*mean*.nc&quot;)) #Select all the netCDF files in the directory
+EOBS_obs_files = ic.convert_input(EOBS_obs_files) #Convert the input to the correct format
 
-<span class="n">EOBS_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">EOBS_obs_files</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s1">&#39;by_coords&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+EOBS_ds = xr.open_mfdataset(EOBS_obs_files, combine=&#39;by_coords&#39;, chunks=&#39;auto&#39;)
 
-<span class="c1">#THIS SHOULD ALL BE IN THE INPUT CONVERTER FOR THE DATASET</span>
-<span class="n">EOBS_ds</span> <span class="o">=</span> <span class="n">EOBS_ds</span><span class="o">.</span><span class="n">rename_vars</span><span class="p">({</span><span class="s2">&quot;tg&quot;</span><span class="p">:</span> <span class="s2">&quot;tas&quot;</span><span class="p">})</span>
-<span class="n">EOBS_ds</span> <span class="o">=</span> <span class="n">EOBS_ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">})</span>
-<span class="c1">#Convert from Celsius to Kelvin</span>
-<span class="n">EOBS_ds</span><span class="p">[</span><span class="s2">&quot;tas&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">EOBS_ds</span><span class="p">[</span><span class="s2">&quot;tas&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">273.15</span>
+#THIS SHOULD ALL BE IN THE INPUT CONVERTER FOR THE DATASET
+EOBS_ds = EOBS_ds.rename_vars({&quot;tg&quot;: &quot;tas&quot;})
+EOBS_ds = EOBS_ds.rename({&quot;latitude&quot;: &quot;lat&quot;, &quot;longitude&quot;: &quot;lon&quot;})
+#Convert from Celsius to Kelvin
+EOBS_ds[&quot;tas&quot;] = EOBS_ds[&quot;tas&quot;] + 273.15
 
-<span class="c1">#Select a small region covering Belgium for testing</span>
-<span class="n">EOBS_ds</span> <span class="o">=</span> <span class="n">EOBS_ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s2">&quot;1953-01-01&quot;</span><span class="p">,</span> <span class="s2">&quot;1954-12-31&quot;</span><span class="p">))</span>
-<span class="n">EOBS_ds</span> <span class="o">=</span> <span class="n">EOBS_ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="mi">51</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+#Select a small region covering Belgium for testing
+EOBS_ds = EOBS_ds.sel(time=slice(&quot;1953-01-01&quot;, &quot;1954-12-31&quot;))
+EOBS_ds = EOBS_ds.sel(lat=slice(49, 51), lon=slice(3, 5))
 
-<span class="n">EOBS_ds</span>
+EOBS_ds
 </pre></div>
 </div>
 </div>
@@ -986,13 +987,13 @@ Fri Mar 22 09:32:14 2024: ncks -O -d time,0,27027 /nobackup_1/users/besselaa/Dat
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#CMIP6 dataset</span>
-<span class="c1">#Now make an ensemble member object</span>
-<span class="n">EC_Earth3_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/ValEnsPy/tests/data&quot;</span><span class="p">)</span>
-<span class="n">EC_Earth3_hist_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">EC_Earth3_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*historical*.nc&quot;</span><span class="p">))</span> <span class="c1">#Select all the netCDF files in the directory</span>
-<span class="n">EC_Earth3_hist_files</span> <span class="o">=</span> <span class="n">ic</span><span class="o">.</span><span class="n">convert_input</span><span class="p">(</span><span class="n">EC_Earth3_hist_files</span><span class="p">)</span> <span class="c1">#Convert the input to the correct format</span>
-<span class="n">EC_Earth3_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">EC_Earth3_hist_files</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s1">&#39;by_coords&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
-<span class="n">EC_Earth3_ds</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#CMIP6 dataset
+#Now make an ensemble member object
+EC_Earth3_dir = Path(&quot;/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/ValEnsPy/tests/data&quot;)
+EC_Earth3_hist_files = list(EC_Earth3_dir.glob(&quot;*historical*.nc&quot;)) #Select all the netCDF files in the directory
+EC_Earth3_hist_files = ic.convert_input(EC_Earth3_hist_files) #Convert the input to the correct format
+EC_Earth3_ds = xr.open_mfdataset(EC_Earth3_hist_files, combine=&#39;by_coords&#39;, chunks=&#39;auto&#39;)
+EC_Earth3_ds
 </pre></div>
 </div>
 </div>
@@ -1742,11 +1743,11 @@ The cmor-fixer version v2.1 script has been applied.The cmor-fixer version v3.0 
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Now make an &quot;future&quot; ensemble member object</span>
-<span class="n">EC_Earth3_ssp_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">EC_Earth3_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*ssp245*.nc&quot;</span><span class="p">))</span> <span class="c1">#Select all the netCDF files in the directory</span>
-<span class="n">EC_Earth3_ssp_files</span> <span class="o">=</span> <span class="n">ic</span><span class="o">.</span><span class="n">convert_input</span><span class="p">(</span><span class="n">EC_Earth3_ssp_files</span><span class="p">)</span> <span class="c1">#Convert the input to the correct format</span>
-<span class="n">EC_Earth3_ssp_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">EC_Earth3_ssp_files</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s1">&#39;by_coords&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
-<span class="n">EC_Earth3_ssp_ds</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#Now make an &quot;future&quot; ensemble member object
+EC_Earth3_ssp_files = list(EC_Earth3_dir.glob(&quot;*ssp245*.nc&quot;)) #Select all the netCDF files in the directory
+EC_Earth3_ssp_files = ic.convert_input(EC_Earth3_ssp_files) #Convert the input to the correct format
+EC_Earth3_ssp_ds = xr.open_mfdataset(EC_Earth3_ssp_files, combine=&#39;by_coords&#39;, chunks=&#39;auto&#39;)
+EC_Earth3_ssp_ds
 </pre></div>
 </div>
 </div>
@@ -2500,8 +2501,8 @@ The cmor-fixer version v2.1 script has been applied.</dd></dl></div></li></ul></
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span> <span class="o">=</span> <span class="n">DataTree</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s2">&quot;obs/EOBS&quot;</span><span class="p">:</span> <span class="n">EOBS_ds</span><span class="p">,</span> <span class="s2">&quot;ensembles/cmip6/EC_Earth3/hist&quot;</span><span class="p">:</span> <span class="n">EC_Earth3_ds</span><span class="p">,</span> <span class="s2">&quot;ensembles/cmip6/EC_Earth3/ssp245&quot;</span><span class="p">:</span> <span class="n">EC_Earth3_ssp_ds</span><span class="p">})</span>
-<span class="n">dt</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>dt = DataTree.from_dict({&quot;obs/EOBS&quot;: EOBS_ds, &quot;ensembles/cmip6/EC_Earth3/hist&quot;: EC_Earth3_ds, &quot;ensembles/cmip6/EC_Earth3/ssp245&quot;: EC_Earth3_ssp_ds})
+dt
 </pre></div>
 </div>
 </div>
@@ -6247,10 +6248,10 @@ The cmor-fixer version v2.1 script has been applied.</dd></dl></div></li></ul></
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Apply some postprocessing operations on the datatree</span>
-<span class="n">pp</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">Preprocessor</span><span class="p">()</span>
-<span class="n">pp</span><span class="o">.</span><span class="n">add_preprocessing_task</span><span class="p">(</span><span class="n">vp</span><span class="o">.</span><span class="n">preprocessing_tasks</span><span class="o">.</span><span class="n">Regrid</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">EOBS</span><span class="o">.</span><span class="n">ds</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;to_obs&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Regrid the CMIP6 data to the EOBS grid&quot;</span><span class="p">))</span>
-<span class="n">pp</span><span class="o">.</span><span class="n">add_preprocessing_task</span><span class="p">(</span><span class="n">vp</span><span class="o">.</span><span class="n">preprocessing_tasks</span><span class="o">.</span><span class="n">Set_Domain</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">EOBS</span><span class="o">.</span><span class="n">ds</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;to_obs&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Select the common area of the EOBS grid&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#Apply some postprocessing operations on the datatree
+pp = vp.Preprocessor()
+pp.add_preprocessing_task(vp.preprocessing_tasks.Regrid(dt.obs.EOBS.ds, name=&quot;to_obs&quot;, description=&quot;Regrid the CMIP6 data to the EOBS grid&quot;))
+pp.add_preprocessing_task(vp.preprocessing_tasks.Set_Domain(dt.obs.EOBS.ds, name=&quot;to_obs&quot;, description=&quot;Select the common area of the EOBS grid&quot;))
 </pre></div>
 </div>
 </div>
@@ -6261,9 +6262,9 @@ The cmor-fixer version v2.1 script has been applied.</dd></dl></div></li></ul></
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dt</span><span class="o">.</span><span class="n">ensembles</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">apply_preprocessing</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">ensembles</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>dt.ensembles = pp.apply_preprocessing(dt.ensembles)
 
-<span class="n">dt</span>
+dt
 </pre></div>
 </div>
 </div>
@@ -10014,16 +10015,16 @@ The cmor-fixer version v2.1 script has been applied.</dd></dl></div></li></ul></
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Apply a diagnostic operation</span>
-<span class="c1">#First make a diagnostic object</span>
-<span class="kn">from</span> <span class="nn">valenspy.diagnostic_functions</span> <span class="kn">import</span> <span class="n">spatial_bias</span>
-<span class="kn">from</span> <span class="nn">valenspy.diagnostic_visualizations</span> <span class="kn">import</span> <span class="n">plot_spatial_bias</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#Apply a diagnostic operation
+#First make a diagnostic object
+from valenspy.diagnostic_functions import spatial_bias
+from valenspy.diagnostic_visualizations import plot_spatial_bias
 
-<span class="n">diag</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">Model2Ref</span><span class="p">(</span><span class="n">spatial_bias</span><span class="p">,</span> <span class="n">plot_spatial_bias</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;spatial_bias&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Calculate the time averaged spatial bias between the model and the observations&quot;</span><span class="p">)</span>
+diag = vp.Model2Ref(spatial_bias, plot_spatial_bias, name=&quot;spatial_bias&quot;, description=&quot;Calculate the time averaged spatial bias between the model and the observations&quot;)
 
-<span class="c1">#Apply the diagnostic</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">diag</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">ensembles</span><span class="o">.</span><span class="n">cmip6</span><span class="o">.</span><span class="n">EC_Earth3</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">EOBS</span><span class="p">)</span>
-<span class="n">ds</span>
+#Apply the diagnostic
+ds = diag.apply(dt.ensembles.cmip6.EC_Earth3.hist, dt.obs.EOBS)
+ds
 </pre></div>
 </div>
 </div>
@@ -10481,9 +10482,9 @@ Coordinates:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dask.diagnostics</span> <span class="kn">import</span> <span class="n">ProgressBar</span>
-<span class="k">with</span> <span class="n">ProgressBar</span><span class="p">():</span>
-    <span class="n">ds</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from dask.diagnostics import ProgressBar
+with ProgressBar():
+    ds.compute()
 </pre></div>
 </div>
 </div>
@@ -10502,7 +10503,7 @@ Coordinates:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">diag</span><span class="o">.</span><span class="n">visualize</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">ensembles</span><span class="o">.</span><span class="n">cmip6</span><span class="o">.</span><span class="n">EC_Earth3</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">EOBS</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>f = diag.visualize(dt.ensembles.cmip6.EC_Earth3.hist, dt.obs.EOBS)
 </pre></div>
 </div>
 </div>
@@ -10517,7 +10518,7 @@ Coordinates:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">diag</span><span class="o">.</span><span class="n">visualize</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">ensembles</span><span class="o">.</span><span class="n">cmip6</span><span class="o">.</span><span class="n">EC_Earth3</span><span class="o">.</span><span class="n">ssp245</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">EOBS</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>f = diag.visualize(dt.ensembles.cmip6.EC_Earth3.ssp245, dt.obs.EOBS)
 </pre></div>
 </div>
 </div>
@@ -10552,11 +10553,11 @@ Coordinates:
       </div>
     </a>
     <a class="right-next"
-       href="../API_doc.html"
+       href="making_a_diagnostic.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Modules</p>
+        <p class="prev-next-title">Making a diagnostic</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -10645,7 +10646,7 @@ Coordinates:
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     <br/>
   </p>
 </div>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Contributing VSC &#8212; ValEnsPy documentation</title>
+    <title>Installation &#8212; ValEnsPy documentation</title>
   
   
   
@@ -40,15 +40,15 @@
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'contribution_pages/CONTRIBUTING_VSC';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'contribution_pages/INSTALL';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Notes for developers" href="dev_notes.html" />
+    <link rel="next" title="Installation on the VSC" href="INSTALL_VSC.html" />
     <link rel="prev" title="Contributing" href="CONTRIBUTING.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -350,7 +350,9 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Contributing VSC</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL_VSC.html">Installation on the VSC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GIT.html">Mini Git Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev_notes.html">Notes for developers</a></li>
 </ul>
 </div>
@@ -392,7 +394,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Contribution and Dev notes</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Contributing VSC</li>
+    <li class="breadcrumb-item active" aria-current="page">Installation</li>
   </ul>
 </nav>
 </div>
@@ -409,100 +411,65 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="contributing-vsc">
-<h1>Contributing VSC<a class="headerlink" href="#contributing-vsc" title="Link to this heading">#</a></h1>
-<p>All contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.</p>
-<section id="ways-to-contribute">
-<h2>Ways to contribute<a class="headerlink" href="#ways-to-contribute" title="Link to this heading">#</a></h2>
-<p>There are many ways to contribute to the ValEnsPy package:</p>
-<ol class="arabic simple">
-<li><p>Partake in one of the <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/discussions">discussions</a> or create a new one.</p></li>
-<li><p>Create a new <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/issues">issue</a> to help us improve the package.</p></li>
-</ol>
-<ul class="simple">
-<li><p>New feature requests</p></li>
-<li><p>Bug Reports</p></li>
-</ul>
-<ol class="arabic simple" start="3">
-<li><p>Contribute to the codebase. This can be done by:</p></li>
-</ol>
-<ul class="simple">
-<li><p>Taking on an open issue</p></li>
-<li><p>Adding a new diagnostic (see ???)</p></li>
-</ul>
-<ol class="arabic simple" start="4">
-<li><p>Help improve the documentation. This can be done by:</p></li>
-</ol>
-<ul class="simple">
-<li><p>Adding a new example</p></li>
-<li><p>Improving the general documentation</p></li>
-</ul>
-</section>
-<section id="contribute-to-the-codebase">
-<h2>Contribute to the codebase<a class="headerlink" href="#contribute-to-the-codebase" title="Link to this heading">#</a></h2>
-<p>Ready to make code contributions? Here’s how to set up ValEnsPy for local development.
-Here you can find a guide for setting up a local development environment on the <strong>VSC (Vlaams Supercomputer Centrum) specifically</strong>.</p>
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
+<p>Currently, the package is in development and not yet available on <a class="reference external" href="https://pypi.org/">PyPI</a>.
+Therefore, to install the package locally, follow the instructions below.
+For usage on the VSC (Tier 1) platform, see the <a class="reference internal" href="INSTALL_VSC.html"><span class="std std-doc">VSC installation guide</span></a>.</p>
+<section id="local-installation">
+<h2>Local installation<a class="headerlink" href="#local-installation" title="Link to this heading">#</a></h2>
 <section id="required-software">
 <h3>Required software<a class="headerlink" href="#required-software" title="Link to this heading">#</a></h3>
 <p>The following software (or equivalent) is required to set up a developer environment:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://anaconda.org/">Anaconda</a></p></li>
 </ul>
-<p>On the VSC Miniconda can be used instead of Anaconda.
-To install Miniconda on the VSC, follow the instructions on the <a class="reference external" href="https://docs.vscentrum.be/software/python_package_management.html#install-miniconda">VSC website</a>.</p>
-<p>To test if Miniconda is installed correctly, the following command should provide the path to the conda executable ($VSC_data/miniconda3/bin/conda):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>which<span class="w"> </span>conda
+<blockquote>
+<div><p>[!TIP]
+Miniconda is small and easy to <a class="reference external" href="https://docs.anaconda.com/free/miniconda/#quick-command-line-install">install</a>.</p>
+</div></blockquote>
+<p>Make sure you have this software installed before proceeding:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>which<span class="w"> </span>conda<span class="w"> </span><span class="c1">#This should return the path to the conda executable</span>
 </pre></div>
 </div>
-</section>
-<section id="using-the-existing-conda-environment">
-<h3>Using the existing conda environment<a class="headerlink" href="#using-the-existing-conda-environment" title="Link to this heading">#</a></h3>
-<p>On the VSC, there is an existing conda environment that can be used. This environment is called <code class="docutils literal notranslate"><span class="pre">valenspy_dev</span></code>.
-This environment can be added to your conda environment list by adding the following path to your .conda/environments.txt file:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/install_test/valenspy_dev&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.conda/environments.txt
-</pre></div>
-</div>
-<p>You can now activate the environment:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/install_test/valenspy_dev
-</pre></div>
-</div>
-<p>This is ideaal for testing the package, and developing new features if no additional packages are required.
-If additional packages are required, a new conda environment should be created - see the next section.</p>
 </section>
 <section id="setup-a-developer-environment">
 <h3>Setup a developer environment<a class="headerlink" href="#setup-a-developer-environment" title="Link to this heading">#</a></h3>
-<ol class="arabic simple" start="0">
-<li><p>Choose a location for your development environment. Ideaaly this should be within the 2022_200 project directory.
-For example:</p></li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/dodrio/scratch/projects/2022_200/project_output/__INSTITUTE__/__VSC_USERNAME__
-</pre></div>
-</div>
 <ol class="arabic simple">
 <li><p>Clone the ValEnsPy repository locally:</p></li>
 </ol>
+<blockquote>
+<div><p>[!TIP]
+First time using git/github? Read this small git <a class="reference internal" href="GIT.html"><span class="std std-doc">guide</span></a> to get started.</p>
+</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:CORDEX-be2/ValEnsPy.git
 </pre></div>
 </div>
-<p>TODO: Add link to Git guide for cloning the repository (using SSH keys).</p>
 <ol class="arabic simple" start="2">
 <li><p>Create a conda environment and install the required packages.</p></li>
 </ol>
-<p>First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-p<span class="w"> </span>./valenspy_dev<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.9<span class="w"> </span>poetry
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>valenspy_dev<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.9<span class="w"> </span>poetry
 <span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>valenspy_dev
 </pre></div>
 </div>
-<p>Note that the conda environment is created in the current directory (./valenspy_dev) - this is optional and can be changed to a different location.</p>
-<p>Now install the required packages using poetry: All required packages are listed in the pyproject.toml file and automatically installed by poetry.</p>
+<p>Now install the required packages using poetry: All required packages are listed in the pyproject.toml file and will be installed automatically by poetry.</p>
+<blockquote>
+<div><p>[!WARNING]
+Make sure you are in the branch you want to work in before installing the packages as different branches may have different dependencies. The ‘dev’ branch is a good starting point.</p>
+</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>ValEnsPy
-git<span class="w"> </span>checkout<span class="w"> </span>dev<span class="w"> </span><span class="c1">#Or the branch you want to work on (e.g. structure)</span>
+git<span class="w"> </span>checkout<span class="w"> </span>dev
 poetry<span class="w"> </span>install
 </pre></div>
 </div>
+<p>To test if the installation was successful, run the tests:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tests/push_tests/import_test.py
+</pre></div>
+</div>
 <ol class="arabic simple" start="3">
-<li><p>Create a branch for local development which is a copy of the <strong>dev</strong> branch.:</p></li>
+<li><p>Create a branch for local development which is a copy of the <strong>dev</strong> branch.</p></li>
 </ol>
+<p>If this using git and branching is new to you, please read the <a class="reference internal" href="GIT.html"><span class="std std-doc">git guide</span></a> first.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># checkout the dev branch</span>
 git<span class="w"> </span>checkout<span class="w"> </span>dev
 git<span class="w"> </span>pull
@@ -516,6 +483,10 @@ git<span class="w"> </span>checkout<span class="w"> </span>name-of-your-bugfix-o
 <ol class="arabic simple" start="5">
 <li><p>Push your code online:</p></li>
 </ol>
+<blockquote>
+<div><p>[!TIP]
+Some IDEs (like VSCode) have a built-in git interface that can be used to commit and push changes.</p>
+</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add your changes to your commit</span>
 git<span class="w"> </span>add<span class="w"> </span>-A
 <span class="c1"># Write commit text</span>
@@ -529,20 +500,9 @@ git<span class="w"> </span>push
 </div>
 </section>
 </section>
-<section id="pull-request-guidelines">
-<h2>Pull Request Guidelines<a class="headerlink" href="#pull-request-guidelines" title="Link to this heading">#</a></h2>
-<p>Once your branch has been <em>pushed</em> to github, you can create a <em>Pull request</em> in github. Make sure that you have <strong>referred the corresponding issues</strong> to the <em>Pull request</em>.
-If your code adaptations are still <em>work-in-progress</em> add the <img alt="Static Badge" src="https://img.shields.io/badge/WIP%20-%20%23A21079" /> label to it. For each push, github will perform a list of checks (package building, version control, functionality test, os-tests, documentation build test), in order to merge your contributions these tests must all be successful.</p>
-<p>If your code is ready for review, you can add the <img alt="Static Badge" src="https://img.shields.io/badge/Ready_for_Review%20-%20%230315E4" /> label to it.</p>
-<p>After the code review, and all review marks are resolved, your contributions will be merged to the <em>dev</em> branch.</p>
-</section>
-<section id="versioning-tagging">
-<h2>Versioning/Tagging<a class="headerlink" href="#versioning-tagging" title="Link to this heading">#</a></h2>
-<p>From time to time the <em>dev</em> branch will be merged with the master with a new <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/releases"><em>Release tag</em></a>.</p>
-</section>
-<section id="acknowledgement">
-<h2>Acknowledgement<a class="headerlink" href="#acknowledgement" title="Link to this heading">#</a></h2>
-<p>This file is inspired by the <a class="reference external" href="https://github.com/CSHS-CWRA/RavenPy">RavenPy</a> project. Thank you for the inspiration!”.</p>
+<section id="additional-information">
+<h2>Additional information<a class="headerlink" href="#additional-information" title="Link to this heading">#</a></h2>
+<p>For additional developer guidelines see the Notes for developers page in the Contributing section of the documentation.</p>
 </section>
 </section>
 
@@ -566,11 +526,11 @@ If your code adaptations are still <em>work-in-progress</em> add the <img alt="S
       </div>
     </a>
     <a class="right-next"
-       href="dev_notes.html"
+       href="INSTALL_VSC.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Notes for developers</p>
+        <p class="prev-next-title">Installation on the VSC</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -592,23 +552,19 @@ If your code adaptations are still <em>work-in-progress</em> add the <img alt="S
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ways-to-contribute">Ways to contribute</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contribute-to-the-codebase">Contribute to the codebase</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-installation">Local installation</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#required-software">Required software</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-existing-conda-environment">Using the existing conda environment</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-a-developer-environment">Setup a developer environment</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pull-request-guidelines">Pull Request Guidelines</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#versioning-tagging">Versioning/Tagging</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgement">Acknowledgement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-information">Additional information</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/contribution_pages/CONTRIBUTING_VSC.md.txt">
+    <a href="../_sources/contribution_pages/INSTALL.md.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
@@ -648,7 +604,7 @@ If your code adaptations are still <em>work-in-progress</em> add the <img alt="S
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     <br/>
   </p>
 </div>

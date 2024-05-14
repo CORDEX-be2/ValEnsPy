@@ -21,11 +21,11 @@ Make use of the issue templates and labels to help us understand your issue bett
 
 ### Contribute to the codebase
 
-To contribute first follow the installation guidelines [INSTALL.md](docs/installation_pages/INSTALL.md).
+To contribute first follow the installation [guidelines](INSTALL.md).
 
 You can then contribute to the codebase by:
 - Taking on an open issue
-- Creating a new diagnostic: see [example](examples/making_a_diagnostic.ipynb)
+- Creating a new diagnostic: see [example](../doc_examples/making_a_diagnostic.ipynb)
 
 Create a new branch, a new pull request and link it to the issue(s) you are working on.
 Read the developer guidelines in the Contributing section of the documentation for more information on how your code will be integrated into the package.

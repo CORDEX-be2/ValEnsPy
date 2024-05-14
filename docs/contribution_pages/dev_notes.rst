@@ -102,7 +102,6 @@ and if you do not change them, the documentation will not change as well (trivia
 So this means that each time you make a code contribution, the documentation (only the API part), must be upated as well. This is the
 reason that every developer must know how to build the documentation form there working branch.
 
-
 To build the documentation, simply run the `deployment/dev_pipeline.sh` file.
 If you want to build the documentation without building the package, you must
 install all the dependencies for the documentation (see `deployment/dev_pipeline.sh`),

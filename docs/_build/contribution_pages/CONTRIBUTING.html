@@ -40,7 +40,7 @@
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -48,7 +48,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'contribution_pages/CONTRIBUTING';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Contributing VSC" href="CONTRIBUTING_VSC.html" />
+    <link rel="next" title="Installation" href="INSTALL.html" />
     <link rel="prev" title="Contribution and Dev notes" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -350,7 +350,9 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING_VSC.html">Contributing VSC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL_VSC.html">Installation on the VSC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GIT.html">Mini Git Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev_notes.html">Notes for developers</a></li>
 </ul>
 </div>
@@ -418,101 +420,42 @@ document.write(`
 <ol class="arabic simple">
 <li><p>Partake in one of the <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/discussions">discussions</a> or create a new one.</p></li>
 <li><p>Create a new <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/issues">issue</a> to help us improve the package.</p></li>
+<li><p>Contribute to the codebase.</p></li>
+<li><p>Help improve the documentation.</p></li>
 </ol>
-<ul class="simple">
-<li><p>New feature requests</p></li>
-<li><p>Bug Reports</p></li>
-</ul>
-<ol class="arabic simple" start="3">
-<li><p>Contribute to the codebase. This can be done by:</p></li>
-</ol>
-<ul class="simple">
-<li><p>Taking on an open issue</p></li>
-<li><p>Adding a new diagnostic (see ???)</p></li>
-</ul>
-<ol class="arabic simple" start="4">
-<li><p>Help improve the documentation. This can be done by:</p></li>
-</ol>
-<ul class="simple">
-<li><p>Adding a new example</p></li>
-<li><p>Improving the general documentation</p></li>
-</ul>
+<section id="partake-in-discussions">
+<h3>Partake in discussions<a class="headerlink" href="#partake-in-discussions" title="Link to this heading">#</a></h3>
+<p>Give your opinion in an existing discussion or create a new one. This is a great way to share your ideas and help us improve the package.
+Discussion highlight - <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/discussions/16">Choosing a name for the package</a>.</p>
+</section>
+<section id="create-a-new-issue">
+<h3>Create a new issue<a class="headerlink" href="#create-a-new-issue" title="Link to this heading">#</a></h3>
+<p>Create a new issue helps us fix bugs, add new features, and improve the package.
+Make use of the issue templates and labels to help us understand your issue better.</p>
 </section>
 <section id="contribute-to-the-codebase">
-<h2>Contribute to the codebase<a class="headerlink" href="#contribute-to-the-codebase" title="Link to this heading">#</a></h2>
-<p>Ready to make code contributions? Here’s how to set up ValEnsPy for local development.
-If you are planning to develop on the VSC see CONTRIBUTING_VSC.md for a VSC specific guide.</p>
-<section id="required-software">
-<h3>Required software<a class="headerlink" href="#required-software" title="Link to this heading">#</a></h3>
-<p>The following software (or equivalent) is required to set up a developer environment:</p>
+<h3>Contribute to the codebase<a class="headerlink" href="#contribute-to-the-codebase" title="Link to this heading">#</a></h3>
+<p>To contribute first follow the installation <a class="reference internal" href="INSTALL.html"><span class="std std-doc">guidelines</span></a>.</p>
+<p>You can then contribute to the codebase by:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://anaconda.org/">Anaconda</a></p></li>
+<li><p>Taking on an open issue</p></li>
+<li><p>Creating a new diagnostic: see <a class="reference internal" href="../doc_examples/making_a_diagnostic.html"><span class="std std-doc">example</span></a></p></li>
 </ul>
-<p>Make sure you have this software installed before proceeding.</p>
+<p>Create a new branch, a new pull request and link it to the issue(s) you are working on.
+Read the developer guidelines in the Contributing section of the documentation for more information on how your code will be integrated into the package.</p>
 </section>
-<section id="setup-a-developer-environment">
-<h3>Setup a developer environment<a class="headerlink" href="#setup-a-developer-environment" title="Link to this heading">#</a></h3>
-<ol class="arabic simple">
-<li><p>Clone the ValEnsPy locally:</p></li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:CORDEX-be2/ValEnsPy.git
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>Create a conda environment and install the required packages.</p></li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setup a developers&#39; environment</span>
-conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>valenspy_dev<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.9<span class="w"> </span>poetry
-conda<span class="w"> </span>activate<span class="w"> </span>valenspy_dev
-
-<span class="c1"># Install dependencies in the developers&#39; environment</span>
-<span class="nb">cd</span><span class="w"> </span>ValEnsPy
-poetry<span class="w"> </span>install
-</pre></div>
-</div>
-<ol class="arabic simple" start="3">
-<li><p>Create a branch for local development which is a copy of the <strong>dev</strong> branch.:</p></li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># checkout the dev branch</span>
-git<span class="w"> </span>checkout<span class="w"> </span>dev
-git<span class="w"> </span>pull
-
-<span class="c1"># Create a new local branch and switch to it.</span>
-git<span class="w"> </span>branch<span class="w"> </span>name-of-your-bugfix-or-feature
-git<span class="w"> </span>checkout<span class="w"> </span>name-of-your-bugfix-or-feature
-</pre></div>
-</div>
-<p>Now you can make local changes.</p>
-<ol class="arabic simple" start="5">
-<li><p>Push your code online:</p></li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add your changes to your commit</span>
-git<span class="w"> </span>add<span class="w"> </span>-A
-<span class="c1"># Write commit text</span>
-git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Some text describing your code changes in this commit&quot;</span>
-<span class="c1"># Push your branch online</span>
-<span class="c1">#only the first time:</span>
-git<span class="w"> </span>push<span class="w"> </span>--set-upstream<span class="w"> </span>origin<span class="w"> </span>name-of-your-bugfix-or-feature
-<span class="c1">#all other times</span>
-git<span class="w"> </span>push
-</pre></div>
-</div>
+<section id="help-improve-the-documentation">
+<h3>Help improve the documentation<a class="headerlink" href="#help-improve-the-documentation" title="Link to this heading">#</a></h3>
+<p>The docementation helps others help themselves and in turn help contribute to the package.
+You can help improve the documentation by:</p>
+<ul class="simple">
+<li><p>Adding a new example notebooks</p></li>
+<li><p>Improving the general documentation</p></li>
+<li><p>Reporting gaps in the documentation in an issue</p></li>
+<li><p>Document your code while you are developing it</p></li>
+</ul>
+<p>For additional developer guidelines see the Notes for developers page in the Contributing section of the documentation.</p>
 </section>
-</section>
-<section id="pull-request-guidelines">
-<h2>Pull Request Guidelines<a class="headerlink" href="#pull-request-guidelines" title="Link to this heading">#</a></h2>
-<p>Once your branch has been <em>pushed</em> to github, you can create a <em>Pull request</em> in github. Make sure that you have <strong>referred the corresponding issues</strong> to the <em>Pull request</em>.
-If your code adaptations are still <em>work-in-progress</em> add the <img alt="Static Badge" src="https://img.shields.io/badge/WIP%20-%20%23A21079" /> label to it. For each push, github will perform a list of checks (package building, version control, functionality test, os-tests, documentation build test), in order to merge your contributions these tests must all be successful.</p>
-<p>If your code is ready for review, you can add the <img alt="Static Badge" src="https://img.shields.io/badge/Ready_for_Review%20-%20%230315E4" /> label to it.</p>
-<p>After the code review, and all review marks are resolved, your contributions will be merged to the <em>dev</em> branch.</p>
-</section>
-<section id="versioning-tagging">
-<h2>Versioning/Tagging<a class="headerlink" href="#versioning-tagging" title="Link to this heading">#</a></h2>
-<p>From time to time the <em>dev</em> branch will be merged with the master with a new <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/releases"><em>Release tag</em></a>.</p>
-</section>
-<section id="acknowledgement">
-<h2>Acknowledgement<a class="headerlink" href="#acknowledgement" title="Link to this heading">#</a></h2>
-<p>This file is inspired by the <a class="reference external" href="https://github.com/CSHS-CWRA/RavenPy">RavenPy</a> project. Thank you for the inspiration!”.</p>
 </section>
 </section>
 
@@ -536,11 +479,11 @@ If your code adaptations are still <em>work-in-progress</em> add the <img alt="S
       </div>
     </a>
     <a class="right-next"
-       href="CONTRIBUTING_VSC.html"
+       href="INSTALL.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Contributing VSC</p>
+        <p class="prev-next-title">Installation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -562,15 +505,13 @@ If your code adaptations are still <em>work-in-progress</em> add the <img alt="S
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ways-to-contribute">Ways to contribute</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contribute-to-the-codebase">Contribute to the codebase</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#required-software">Required software</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-a-developer-environment">Setup a developer environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ways-to-contribute">Ways to contribute</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partake-in-discussions">Partake in discussions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-new-issue">Create a new issue</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contribute-to-the-codebase">Contribute to the codebase</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#help-improve-the-documentation">Help improve the documentation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pull-request-guidelines">Pull Request Guidelines</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#versioning-tagging">Versioning/Tagging</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgement">Acknowledgement</a></li>
 </ul>
   </nav></div>
 
@@ -617,7 +558,7 @@ If your code adaptations are still <em>work-in-progress</em> add the <img alt="S
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     <br/>
   </p>
 </div>

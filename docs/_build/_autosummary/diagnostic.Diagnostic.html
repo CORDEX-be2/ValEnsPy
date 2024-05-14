@@ -40,7 +40,7 @@
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -447,6 +447,16 @@ document.write(`
 <dt class="sig sig-object py" id="diagnostic.Diagnostic.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagnostic_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visualization_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diagnostic.html#Diagnostic.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diagnostic.Diagnostic.__init__" title="Link to this definition">#</a></dt>
 <dd><p>Initialize the Diagnostic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>diagnostic_function</strong> – The function that applies a diagnostic to the data.</p></li>
+<li><p><strong>visualization_function</strong> – The function that visualizes the results of the diagnostic.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the diagnostic.</p></li>
+<li><p><strong>description</strong> (<em>str</em>) – The description of the diagnostic.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <p class="rubric">Methods</p>
@@ -458,32 +468,33 @@ document.write(`
 <tr class="row-even"><td><p><a class="reference internal" href="#diagnostic.Diagnostic.apply" title="diagnostic.Diagnostic.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(data)</p></td>
 <td><p>Apply the diagnostic to the data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#diagnostic.Diagnostic.visualize" title="diagnostic.Diagnostic.visualize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualize</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#diagnostic.Diagnostic.visualize" title="diagnostic.Diagnostic.visualize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visualize</span></code></a>(result)</p></td>
 <td><p>Visualize the diagnostic.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="diagnostic.Diagnostic.apply">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataTree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diagnostic.html#Diagnostic.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diagnostic.Diagnostic.apply" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diagnostic.html#Diagnostic.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diagnostic.Diagnostic.apply" title="Link to this definition">#</a></dt>
 <dd><p>Apply the diagnostic to the data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>DataTree</em>) – The data to apply the diagnostic to.</p>
+<dd class="field-odd"><p><strong>data</strong> – The data to apply the diagnostic to.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The data after applying the diagnostic either as a DataTree, Dataset, DataArray, Scalar, or a pandas DataFrame.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Dataset</p>
+<dd class="field-odd"><p>Results</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="diagnostic.Diagnostic.visualize">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visualize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diagnostic.html#Diagnostic.visualize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diagnostic.Diagnostic.visualize" title="Link to this definition">#</a></dt>
-<dd><p>Visualize the diagnostic.</p>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">visualize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/diagnostic.html#Diagnostic.visualize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#diagnostic.Diagnostic.visualize" title="Link to this definition">#</a></dt>
+<dd><p>Visualize the diagnostic.
+:param Result: The output of the diagnostic function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The figure representing the diagnostic.</p>
@@ -596,7 +607,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     <br/>
   </p>
 </div>
