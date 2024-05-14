@@ -21,7 +21,10 @@ sys.path.append(BASE_PATH)
 # demo files
 
 demo_data_CF = os.path.join(
-    BASE_PATH, "valenspy", "datafiles", "tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc"
+    BASE_PATH,
+    "valenspy",
+    "datafiles",
+    "tas_Amon_EC-Earth3-Veg_historical_r1i1p1f1_gr_195301-195312.nc",
 )
 
 # =============================================================================

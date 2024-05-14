@@ -1,0 +1,6 @@
+cf\_checks.is\_cf\_compliant
+============================
+
+.. currentmodule:: cf_checks
+
+.. autofunction:: is_cf_compliant

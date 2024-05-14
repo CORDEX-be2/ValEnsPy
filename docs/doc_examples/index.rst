@@ -11,3 +11,4 @@ made as notbooks, and will be rendered as such.
    :maxdepth: 2
 
    workflow_example.ipynb
+   making_a_diagnostic.ipynb
