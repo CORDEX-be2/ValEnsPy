@@ -34,7 +34,6 @@ pre-commit = "^3.6.2"  # To ensure clean-coding standards
 
 # Documentation group
 [tool.poetry.group.docs]
-
 [tool.poetry.group.docs.dependencies]
 Sphinx = "^7.2.6"
 myst-parser = "^2.0.0"
@@ -54,4 +53,7 @@ poetry = "^1.8.2"
 
 [tool.poetry.group.examples.dependencies]
 bokeh = "^3.4.1"
+gcsfs = "^2024.3.1"
+zarr = "^2.18.0"
+ipykernel = "^6.29.4"
 
