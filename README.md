@@ -5,7 +5,7 @@ A Python package to validate gridded model data.
 
 Currently, the package is in development and not yet available on [PyPI](https://pypi.org/).
 
-To install the package locally, follow the instructions in the [INSTALL.md](docs/installation_pages/INSTALL.md) file.
+To install the package locally, follow the instructions in the [INSTALL.md](docs/contribution_pages/INSTALL.md) file.
 Interested in contributing? Take a look at [CONTRIBUTING.md](docs/contribution_pages/CONTRIBUTING.md) file to see how you can help.
 
 For additional developer guidelines see the Notes for developers page in the Contributing section of the documentation.
