@@ -28,11 +28,7 @@ def cf_status(netCDF: Union[str, Path, xr.Dataset]) -> None:
 
     ds = _load_xarray(netCDF)
 
-    print(
-        "The file is {status}ValEnsPy CF compliant.".format(
-            status="NOT " if not is_cf_compliant(ds) else ""
-        )
-    )
+    print("The file is {status}ValEnsPy CF compliant.".format(status="NOT " if not is_cf_compliant(ds, verbose=True) else ""))
 
     non_cf_compliant_vars = []
     cf_compliant_vars = []
