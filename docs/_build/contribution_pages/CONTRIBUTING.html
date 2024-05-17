@@ -9,20 +9,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Contributing &#8212; ValEnsPy documentation</title>
-  
-  
-  
+
+
+
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
-  
+
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 <link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
-  
+
   <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ccc20c01" />
-  
+
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
@@ -48,39 +48,39 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'contribution_pages/CONTRIBUTING';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Contributing VSC" href="CONTRIBUTING_VSC.html" />
+    <link rel="next" title="Installation" href="INSTALL.html" />
     <link rel="prev" title="Contribution and Dev notes" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
-  
-  
+
+
   <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-  
-  
+
+
   <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
-  
+
   <div id="pst-scroll-pixel-helper"></div>
-  
+
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
     Back to top
   </button>
 
-  
+
   <input type="checkbox"
           class="sidebar-toggle"
           name="__primary"
           id="__primary"/>
   <label class="overlay overlay-primary" for="__primary"></label>
-  
+
   <input type="checkbox"
           class="sidebar-toggle"
           name="__secondary"
           id="__secondary"/>
   <label class="overlay overlay-secondary" for="__secondary"></label>
-  
+
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
     <div class="search-button__search-container">
@@ -101,85 +101,85 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-  
+
     <header class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
     <span class="fa-solid fa-bars"></span>
   </label>
-  
-  
+
+
   <div class="col-lg-3 navbar-header-items__start">
-    
+
       <div class="navbar-item">
 
-  
+
 
 <a class="navbar-brand logo" href="../index.html">
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
     <p class="title logo__title">ValEnsPy documentation</p>
-  
+
 </a></div>
-    
+
   </div>
-  
+
   <div class="col-lg-9 navbar-header-items">
-    
+
     <div class="me-auto navbar-header-items__center">
-      
+
         <div class="navbar-item">
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
-    
+
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../index.html">
                         Home
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../getting_started.html">
                         Getting started
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../doc_examples/index.html">
                         Examples
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../API_doc.html">
                         API
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         Contributing
                       </a>
                     </li>
-                
+
   </ul>
 </nav></div>
-      
+
     </div>
-    
-    
+
+
     <div class="navbar-header-items__end">
-      
+
         <div class="navbar-item navbar-persistent--container">
-          
+
 
  <script>
  document.write(`
@@ -191,8 +191,8 @@
  `);
  </script>
         </div>
-      
-      
+
+
         <div class="navbar-item">
 
 <script>
@@ -204,28 +204,28 @@ document.write(`
   </button>
 `);
 </script></div>
-      
+
         <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
     aria-label="Icon Links">
         <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
+
+
           <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
-      
+
     </div>
-    
+
   </div>
-  
-  
+
+
     <div class="navbar-persistent--mobile">
 
  <script>
@@ -238,79 +238,79 @@ document.write(`
  `);
  </script>
     </div>
-  
 
-  
+
+
     <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
     </label>
-  
+
 </div>
 
     </header>
-  
+
 
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
-      
-      
-      
-      <div class="bd-sidebar-primary bd-sidebar">
-        
 
-  
+
+
+      <div class="bd-sidebar-primary bd-sidebar">
+
+
+
   <div class="sidebar-header-items sidebar-primary__section">
-    
-    
+
+
       <div class="sidebar-header-items__center">
-        
+
           <div class="navbar-item">
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
-    
+
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../index.html">
                         Home
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../getting_started.html">
                         Getting started
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../doc_examples/index.html">
                         Examples
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../API_doc.html">
                         API
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         Contributing
                       </a>
                     </li>
-                
+
   </ul>
 </nav></div>
-        
+
       </div>
-    
-    
-    
+
+
+
       <div class="sidebar-header-items__end">
-        
+
           <div class="navbar-item">
 
 <script>
@@ -322,27 +322,27 @@ document.write(`
   </button>
 `);
 </script></div>
-        
+
           <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
     aria-label="Icon Links">
         <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
+
+
           <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
-        
+
       </div>
-    
+
   </div>
-  
+
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 <nav class="bd-docs-nav bd-links"
@@ -350,65 +350,67 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING_VSC.html">Contributing VSC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL_VSC.html">Installation on the VSC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GIT.html">Mini Git Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dev_notes.html">Notes for developers</a></li>
 </ul>
 </div>
 </nav></div>
     </div>
-  
-  
+
+
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-  
+
   <div id="rtd-footer-container"></div>
 
 
       </div>
-      
+
       <main id="main-content" class="bd-main">
-        
-        
+
+
           <div class="bd-content">
             <div class="bd-article-container">
-              
+
               <div class="bd-header-article">
 <div class="header-article-items header-article__inner">
-  
+
     <div class="header-article-items__start">
-      
+
         <div class="header-article-item">
 
 
 
 <nav aria-label="Breadcrumb">
   <ul class="bd-breadcrumbs">
-    
+
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
+
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Contribution and Dev notes</a></li>
-    
+
     <li class="breadcrumb-item active" aria-current="page">Contributing</li>
   </ul>
 </nav>
 </div>
-      
+
     </div>
-  
-  
+
+
 </div>
 </div>
-              
-              
-              
-                
+
+
+
+
 <div id="searchbox"></div>
                 <article class="bd-article">
-                  
+
   <section id="contributing">
 <h1>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">#</a></h1>
 <p>All contributions are welcome, and they are greatly appreciated! Every little bit helps, and credit will always be given.</p>
@@ -418,113 +420,54 @@ document.write(`
 <ol class="arabic simple">
 <li><p>Partake in one of the <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/discussions">discussions</a> or create a new one.</p></li>
 <li><p>Create a new <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/issues">issue</a> to help us improve the package.</p></li>
+<li><p>Contribute to the codebase.</p></li>
+<li><p>Help improve the documentation.</p></li>
 </ol>
-<ul class="simple">
-<li><p>New feature requests</p></li>
-<li><p>Bug Reports</p></li>
-</ul>
-<ol class="arabic simple" start="3">
-<li><p>Contribute to the codebase. This can be done by:</p></li>
-</ol>
-<ul class="simple">
-<li><p>Taking on an open issue</p></li>
-<li><p>Adding a new diagnostic (see ???)</p></li>
-</ul>
-<ol class="arabic simple" start="4">
-<li><p>Help improve the documentation. This can be done by:</p></li>
-</ol>
-<ul class="simple">
-<li><p>Adding a new example</p></li>
-<li><p>Improving the general documentation</p></li>
-</ul>
+<section id="partake-in-discussions">
+<h3>Partake in discussions<a class="headerlink" href="#partake-in-discussions" title="Link to this heading">#</a></h3>
+<p>Give your opinion in an existing discussion or create a new one. This is a great way to share your ideas and help us improve the package.
+Discussion highlight - <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/discussions/16">Choosing a name for the package</a>.</p>
+</section>
+<section id="create-a-new-issue">
+<h3>Create a new issue<a class="headerlink" href="#create-a-new-issue" title="Link to this heading">#</a></h3>
+<p>Create a new issue helps us fix bugs, add new features, and improve the package.
+Make use of the issue templates and labels to help us understand your issue better.</p>
 </section>
 <section id="contribute-to-the-codebase">
-<h2>Contribute to the codebase<a class="headerlink" href="#contribute-to-the-codebase" title="Link to this heading">#</a></h2>
-<p>Ready to make code contributions? Here’s how to set up ValEnsPy for local development.
-If you are planning to develop on the VSC see CONTRIBUTING_VSC.md for a VSC specific guide.</p>
-<section id="required-software">
-<h3>Required software<a class="headerlink" href="#required-software" title="Link to this heading">#</a></h3>
-<p>The following software (or equivalent) is required to set up a developer environment:</p>
+<h3>Contribute to the codebase<a class="headerlink" href="#contribute-to-the-codebase" title="Link to this heading">#</a></h3>
+<p>To contribute first follow the installation <a class="reference internal" href="INSTALL.html"><span class="std std-doc">guidelines</span></a>.</p>
+<p>You can then contribute to the codebase by:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://anaconda.org/">Anaconda</a></p></li>
+<li><p>Taking on an open issue</p></li>
+<li><p>Creating a new diagnostic: see <a class="reference internal" href="../doc_examples/making_a_diagnostic.html"><span class="std std-doc">example</span></a></p></li>
 </ul>
-<p>Make sure you have this software installed before proceeding.</p>
+<p>Create a new branch, a new pull request and link it to the issue(s) you are working on.
+Read the developer guidelines in the Contributing section of the documentation for more information on how your code will be integrated into the package.</p>
 </section>
-<section id="setup-a-developer-environment">
-<h3>Setup a developer environment<a class="headerlink" href="#setup-a-developer-environment" title="Link to this heading">#</a></h3>
-<ol class="arabic simple">
-<li><p>Clone the ValEnsPy locally:</p></li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:CORDEX-be2/ValEnsPy.git
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>Create a conda environment and install the required packages.</p></li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setup a developers&#39; environment</span>
-conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>valenspy_dev<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.9<span class="w"> </span>poetry
-conda<span class="w"> </span>activate<span class="w"> </span>valenspy_dev
-
-<span class="c1"># Install dependencies in the developers&#39; environment</span>
-<span class="nb">cd</span><span class="w"> </span>ValEnsPy
-poetry<span class="w"> </span>install
-</pre></div>
-</div>
-<ol class="arabic simple" start="3">
-<li><p>Create a branch for local development which is a copy of the <strong>dev</strong> branch.:</p></li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># checkout the dev branch</span>
-git<span class="w"> </span>checkout<span class="w"> </span>dev
-git<span class="w"> </span>pull
-
-<span class="c1"># Create a new local branch and switch to it.</span>
-git<span class="w"> </span>branch<span class="w"> </span>name-of-your-bugfix-or-feature
-git<span class="w"> </span>checkout<span class="w"> </span>name-of-your-bugfix-or-feature
-</pre></div>
-</div>
-<p>Now you can make local changes.</p>
-<ol class="arabic simple" start="5">
-<li><p>Push your code online:</p></li>
-</ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add your changes to your commit</span>
-git<span class="w"> </span>add<span class="w"> </span>-A
-<span class="c1"># Write commit text</span>
-git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Some text describing your code changes in this commit&quot;</span>
-<span class="c1"># Push your branch online</span>
-<span class="c1">#only the first time:</span>
-git<span class="w"> </span>push<span class="w"> </span>--set-upstream<span class="w"> </span>origin<span class="w"> </span>name-of-your-bugfix-or-feature
-<span class="c1">#all other times</span>
-git<span class="w"> </span>push
-</pre></div>
-</div>
+<section id="help-improve-the-documentation">
+<h3>Help improve the documentation<a class="headerlink" href="#help-improve-the-documentation" title="Link to this heading">#</a></h3>
+<p>The docementation helps others help themselves and in turn help contribute to the package.
+You can help improve the documentation by:</p>
+<ul class="simple">
+<li><p>Adding a new example notebooks</p></li>
+<li><p>Improving the general documentation</p></li>
+<li><p>Reporting gaps in the documentation in an issue</p></li>
+<li><p>Document your code while you are developing it</p></li>
+</ul>
+<p>For additional developer guidelines see the Notes for developers page in the Contributing section of the documentation.</p>
 </section>
-</section>
-<section id="pull-request-guidelines">
-<h2>Pull Request Guidelines<a class="headerlink" href="#pull-request-guidelines" title="Link to this heading">#</a></h2>
-<p>Once your branch has been <em>pushed</em> to github, you can create a <em>Pull request</em> in github. Make sure that you have <strong>referred the corresponding issues</strong> to the <em>Pull request</em>.
-If your code adaptations are still <em>work-in-progress</em> add the <img alt="Static Badge" src="https://img.shields.io/badge/WIP%20-%20%23A21079" /> label to it. For each push, github will perform a list of checks (package building, version control, functionality test, os-tests, documentation build test), in order to merge your contributions these tests must all be successful.</p>
-<p>If your code is ready for review, you can add the <img alt="Static Badge" src="https://img.shields.io/badge/Ready_for_Review%20-%20%230315E4" /> label to it.</p>
-<p>After the code review, and all review marks are resolved, your contributions will be merged to the <em>dev</em> branch.</p>
-</section>
-<section id="versioning-tagging">
-<h2>Versioning/Tagging<a class="headerlink" href="#versioning-tagging" title="Link to this heading">#</a></h2>
-<p>From time to time the <em>dev</em> branch will be merged with the master with a new <a class="reference external" href="https://github.com/CORDEX-be2/ValEnsPy/releases"><em>Release tag</em></a>.</p>
-</section>
-<section id="acknowledgement">
-<h2>Acknowledgement<a class="headerlink" href="#acknowledgement" title="Link to this heading">#</a></h2>
-<p>This file is inspired by the <a class="reference external" href="https://github.com/CSHS-CWRA/RavenPy">RavenPy</a> project. Thank you for the inspiration!”.</p>
 </section>
 </section>
 
 
                 </article>
-              
-              
-              
-              
-              
+
+
+
+
+
                 <footer class="prev-next-footer">
-                  
+
 <div class="prev-next-area">
     <a class="left-prev"
        href="index.html"
@@ -536,21 +479,21 @@ If your code adaptations are still <em>work-in-progress</em> add the <img alt="S
       </div>
     </a>
     <a class="right-next"
-       href="CONTRIBUTING_VSC.html"
+       href="INSTALL.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Contributing VSC</p>
+        <p class="prev-next-title">Installation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
-              
+
             </div>
-            
-            
-              
+
+
+
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -562,15 +505,13 @@ If your code adaptations are still <em>work-in-progress</em> add the <img alt="S
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ways-to-contribute">Ways to contribute</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contribute-to-the-codebase">Contribute to the codebase</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#required-software">Required software</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-a-developer-environment">Setup a developer environment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ways-to-contribute">Ways to contribute</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#partake-in-discussions">Partake in discussions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-new-issue">Create a new issue</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contribute-to-the-codebase">Contribute to the codebase</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#help-improve-the-documentation">Help improve the documentation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pull-request-guidelines">Pull Request Guidelines</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#versioning-tagging">Versioning/Tagging</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgement">Acknowledgement</a></li>
 </ul>
   </nav></div>
 
@@ -584,57 +525,57 @@ If your code adaptations are still <em>work-in-progress</em> add the <img alt="S
 </div>
 
 </div></div>
-              
-            
+
+
           </div>
           <footer class="bd-footer-content">
-            
+
           </footer>
-        
+
       </main>
     </div>
   </div>
-  
+
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
   <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
 <script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
-  
+
     <div class="footer-items__start">
-      
+
         <div class="footer-item">
 
   <p class="copyright">
-    
+
       © Copyright 2024, Cordex-BE team.
       <br/>
-    
+
   </p>
 </div>
-      
+
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>
-      
+
     </div>
-  
-  
-  
+
+
+
     <div class="footer-items__end">
-      
+
         <div class="footer-item">
 <p class="theme-version">
   Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
 </p></div>
-      
+
     </div>
-  
+
 </div>
 
   </footer>

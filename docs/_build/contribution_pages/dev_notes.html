@@ -9,20 +9,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Notes for developers &#8212; ValEnsPy documentation</title>
-  
-  
-  
+
+
+
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
-  
+
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 <link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
-  
+
   <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
@@ -31,7 +31,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ccc20c01" />
-  
+
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
@@ -48,38 +48,38 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'contribution_pages/dev_notes';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Contributing VSC" href="CONTRIBUTING_VSC.html" />
+    <link rel="prev" title="Mini Git Guide" href="GIT.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
-  
-  
+
+
   <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-  
-  
+
+
   <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
-  
+
   <div id="pst-scroll-pixel-helper"></div>
-  
+
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
     Back to top
   </button>
 
-  
+
   <input type="checkbox"
           class="sidebar-toggle"
           name="__primary"
           id="__primary"/>
   <label class="overlay overlay-primary" for="__primary"></label>
-  
+
   <input type="checkbox"
           class="sidebar-toggle"
           name="__secondary"
           id="__secondary"/>
   <label class="overlay overlay-secondary" for="__secondary"></label>
-  
+
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
     <div class="search-button__search-container">
@@ -100,85 +100,85 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-  
+
     <header class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
     <span class="fa-solid fa-bars"></span>
   </label>
-  
-  
+
+
   <div class="col-lg-3 navbar-header-items__start">
-    
+
       <div class="navbar-item">
 
-  
+
 
 <a class="navbar-brand logo" href="../index.html">
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
     <p class="title logo__title">ValEnsPy documentation</p>
-  
+
 </a></div>
-    
+
   </div>
-  
+
   <div class="col-lg-9 navbar-header-items">
-    
+
     <div class="me-auto navbar-header-items__center">
-      
+
         <div class="navbar-item">
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
-    
+
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../index.html">
                         Home
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../getting_started.html">
                         Getting started
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../doc_examples/index.html">
                         Examples
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../API_doc.html">
                         API
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         Contributing
                       </a>
                     </li>
-                
+
   </ul>
 </nav></div>
-      
+
     </div>
-    
-    
+
+
     <div class="navbar-header-items__end">
-      
+
         <div class="navbar-item navbar-persistent--container">
-          
+
 
  <script>
  document.write(`
@@ -190,8 +190,8 @@
  `);
  </script>
         </div>
-      
-      
+
+
         <div class="navbar-item">
 
 <script>
@@ -203,28 +203,28 @@ document.write(`
   </button>
 `);
 </script></div>
-      
+
         <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
     aria-label="Icon Links">
         <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
+
+
           <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
-      
+
     </div>
-    
+
   </div>
-  
-  
+
+
     <div class="navbar-persistent--mobile">
 
  <script>
@@ -237,79 +237,79 @@ document.write(`
  `);
  </script>
     </div>
-  
 
-  
+
+
     <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
     </label>
-  
+
 </div>
 
     </header>
-  
+
 
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
-      
-      
-      
-      <div class="bd-sidebar-primary bd-sidebar">
-        
 
-  
+
+
+      <div class="bd-sidebar-primary bd-sidebar">
+
+
+
   <div class="sidebar-header-items sidebar-primary__section">
-    
-    
+
+
       <div class="sidebar-header-items__center">
-        
+
           <div class="navbar-item">
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
-    
+
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../index.html">
                         Home
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../getting_started.html">
                         Getting started
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../doc_examples/index.html">
                         Examples
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../API_doc.html">
                         API
                       </a>
                     </li>
-                
+
 
                     <li class="nav-item current active">
                       <a class="nav-link nav-internal" href="index.html">
                         Contributing
                       </a>
                     </li>
-                
+
   </ul>
 </nav></div>
-        
+
       </div>
-    
-    
-    
+
+
+
       <div class="sidebar-header-items__end">
-        
+
           <div class="navbar-item">
 
 <script>
@@ -321,27 +321,27 @@ document.write(`
   </button>
 `);
 </script></div>
-        
+
           <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
     aria-label="Icon Links">
         <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
+
+
+
+
+
+
+
+
           <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
-        
+
       </div>
-    
+
   </div>
-  
+
     <div class="sidebar-primary-items__start sidebar-primary__section">
         <div class="sidebar-primary-item">
 <nav class="bd-docs-nav bd-links"
@@ -349,71 +349,88 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING_VSC.html">Contributing VSC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL_VSC.html">Installation on the VSC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GIT.html">Mini Git Guide</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Notes for developers</a></li>
 </ul>
 </div>
 </nav></div>
     </div>
-  
-  
+
+
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-  
+
   <div id="rtd-footer-container"></div>
 
 
       </div>
-      
+
       <main id="main-content" class="bd-main">
-        
-        
+
+
           <div class="bd-content">
             <div class="bd-article-container">
-              
+
               <div class="bd-header-article">
 <div class="header-article-items header-article__inner">
-  
+
     <div class="header-article-items__start">
-      
+
         <div class="header-article-item">
 
 
 
 <nav aria-label="Breadcrumb">
   <ul class="bd-breadcrumbs">
-    
+
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    
+
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Contribution and Dev notes</a></li>
-    
+
     <li class="breadcrumb-item active" aria-current="page">Notes for developers</li>
   </ul>
 </nav>
 </div>
-      
+
     </div>
-  
-  
+
+
 </div>
 </div>
-              
-              
-              
-                
+
+
+
+
 <div id="searchbox"></div>
                 <article class="bd-article">
-                  
+
   <section id="notes-for-developers">
 <h1>Notes for developers<a class="headerlink" href="#notes-for-developers" title="Link to this heading">#</a></h1>
 <p>Here is a page dedicated for developers to share notes and instructions for
 other developers.</p>
 <p>On general, the <cite>deployment</cite> folder contains executable (bash) scripts, to
 streamline some typical development procedures.</p>
+<section id="merging-and-pull-requests">
+<h2>Merging and Pull Requests<a class="headerlink" href="#merging-and-pull-requests" title="Link to this heading">#</a></h2>
+<p>Once you are satisfied with your code and are ready to share it with the rest of the team, you can create a <em>Pull request</em> in github.
+A <em>Pull request</em> is a request to merge your code into the <em>dev</em> branch. It allows other developers to review your code and suggest changes.
+Even if you are not ready to merge your code, you can still create a <em>Pull request</em>. This is useful to have an overview of incoming changes.</p>
+<p>Here are some guidelines for creating a <em>Pull request</em>:
+- Make sure that you have referred the corresponding issues to the <em>Pull request</em> (if any).
+- If your code adaptations are still <em>work-in-progress</em>, add the ![Static Badge](<a class="reference external" href="https://img.shields.io/badge/WIP%20-%20%23A21079">https://img.shields.io/badge/WIP%20-%20%23A21079</a>) label to it - this will indicate to other developers that the code is not ready for review.
+- If your code is ready for review, you can add the ![Static Badge](<a class="reference external" href="https://img.shields.io/badge/Ready_for_Review%20-%20%230315E4">https://img.shields.io/badge/Ready_for_Review%20-%20%230315E4</a>) label to it.</p>
+<p>After the code review, and all review marks are resolved, your contributions will be merged to the <em>dev</em> branch.</p>
+</section>
+<section id="versioning-tagging">
+<h2>Versioning/Tagging<a class="headerlink" href="#versioning-tagging" title="Link to this heading">#</a></h2>
+<p>From time to time the <em>dev</em> branch will be merged with the master with a new [<em>Release tag</em>](<a class="github reference external" href="https://github.com/CORDEX-be2/ValEnsPy/releases">CORDEX-be2/ValEnsPy</a>).</p>
+</section>
 <section id="packaging">
 <h2>Packaging<a class="headerlink" href="#packaging" title="Link to this heading">#</a></h2>
 <p>ValEnsPy is desinged to be packaged. This is done automatically on github
@@ -518,30 +535,30 @@ they indicate syntax and formatting issues.</p>
 
 
                 </article>
-              
-              
-              
-              
-              
+
+
+
+
+
                 <footer class="prev-next-footer">
-                  
+
 <div class="prev-next-area">
     <a class="left-prev"
-       href="CONTRIBUTING_VSC.html"
+       href="GIT.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Contributing VSC</p>
+        <p class="prev-next-title">Mini Git Guide</p>
       </div>
     </a>
 </div>
                 </footer>
-              
+
             </div>
-            
-            
-              
+
+
+
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -553,6 +570,8 @@ they indicate syntax and formatting issues.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-and-pull-requests">Merging and Pull Requests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#versioning-tagging">Versioning/Tagging</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#packaging">Packaging</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-dependencies">Handling Dependencies</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation-builds">Documentation builds</a></li>
@@ -571,57 +590,57 @@ they indicate syntax and formatting issues.</p>
 </div>
 
 </div></div>
-              
-            
+
+
           </div>
           <footer class="bd-footer-content">
-            
+
           </footer>
-        
+
       </main>
     </div>
   </div>
-  
+
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
   <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
 <script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
-  
+
     <div class="footer-items__start">
-      
+
         <div class="footer-item">
 
   <p class="copyright">
-    
+
       © Copyright 2024, Cordex-BE team.
       <br/>
-    
+
   </p>
 </div>
-      
+
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>
-      
+
     </div>
-  
-  
-  
+
+
+
     <div class="footer-items__end">
-      
+
         <div class="footer-item">
 <p class="theme-version">
   Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
 </p></div>
-      
+
     </div>
-  
+
 </div>
 
   </footer>

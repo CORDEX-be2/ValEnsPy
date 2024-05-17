@@ -5,16 +5,19 @@ from typing import Union
 
 
 class Regrid(PreprocessingTask):
-    REGRID_METHODS_XARRAY = {"linear", "nearest"} #Native xarray regridding methods (for n-dimensional data)
+    REGRID_METHODS_XARRAY = {
+        "linear",
+        "nearest",
+    }  # Native xarray regridding methods (for n-dimensional data)
     """A regrid preprocessing task."""
 
     def __init__(self, target_grid: Union[xr.Dataset, str], name="", description=None):
         """Initialize the Regrid task.
-        
+
         Parameters
         ----------
         target_grid : xr.Dataset or str
-            The target grid to regrid to. This can be a string representation of a global grid resolution (e.g. "1x1") 
+            The target grid to regrid to. This can be a string representation of a global grid resolution (e.g. "1x1")
             or an xr.Dataset with lat and lon coordinates.
         """
         super().__init__("regrid_" + name, description)
@@ -64,6 +67,7 @@ def parse_global_grid(mxn="1x1"):
     m, n = mxn.split("x")
     return int(m), int(n)
 
+
 # Stock xarray - global grid extents (degrees).
 _LAT_MIN = -90.0
 _LAT_MAX = 90.0
@@ -72,10 +76,11 @@ _LON_MIN = 0.0
 _LON_MAX = 360.0
 _LON_RANGE = _LON_MAX - _LON_MIN
 
+
 def create_global_grid(m, n, lat_offset=True, lon_offset=True):
     """Create a global lat-lon grid on a standard mxn grid.
 
-    The longitude range is from 0 to 360 degrees, and the latitude range is from -90 to 90 degrees. 
+    The longitude range is from 0 to 360 degrees, and the latitude range is from -90 to 90 degrees.
 
     Parameters
     ----------
@@ -96,8 +101,12 @@ def create_global_grid(m, n, lat_offset=True, lon_offset=True):
     lat_offset_val = m / 2 if lat_offset else 0
     lon_offset_val = n / 2 if lon_offset else 0
 
-    lat = np.linspace(_LAT_MIN + lat_offset_val, _LAT_MAX - lat_offset_val, num=int(_LAT_RANGE//m))
-    lon = np.linspace(_LON_MIN + lon_offset_val, _LON_MAX - lon_offset_val, num=int(_LON_RANGE//n))
+    lat = np.linspace(
+        _LAT_MIN + lat_offset_val, _LAT_MAX - lat_offset_val, num=int(_LAT_RANGE // m)
+    )
+    lon = np.linspace(
+        _LON_MIN + lon_offset_val, _LON_MAX - lon_offset_val, num=int(_LON_RANGE // n)
+    )
 
     grid = xr.Dataset(
         coords={
@@ -108,8 +117,6 @@ def create_global_grid(m, n, lat_offset=True, lon_offset=True):
     grid["lat"].attrs = {"units": "degrees_north", "long_name": "latitude"}
     grid["lon"].attrs = {"units": "degrees_east", "long_name": "longitude"}
 
-    #TODO: Add lat_bnds and lon_bnds
+    # TODO: Add lat_bnds and lon_bnds
 
     return grid
-
-

@@ -16,15 +16,15 @@ version = "0.1.0"
 [tool.poetry.dependencies]
 dask = "^2024.3.1"
 matplotlib = "^3.8.3"
+nc-time-axis = "^1.4.1"
 netCDF4 = "^1.6.5"
 pandas = "^2.2.1"
+pooch = "^1.8.1"
 python = "^3.9"
 scipy = "^1.13.0"
 shapely = "^2.0.3"
 xarray = "^2024.2.0"
 xarray-datatree = "^0.0.14"
-pooch = "^1.8.1"
-nc-time-axis = "^1.4.1"
 
 # Development group
 [tool.poetry.group.dev]
@@ -43,15 +43,17 @@ pydata-sphinx-theme = "^0.15.2"
 sphinx-copybutton = "^0.5.2"
 sphinx-rtd-theme = "^2.0.0"
 
-# Packaging group
-[tool.poetry.group.packaging]
-
-[tool.poetry.group.packaging.dependencies]
-poetry = "^1.8.2"
-
 # Examples group
 [tool.poetry.group.examples]
 
 [tool.poetry.group.examples.dependencies]
 bokeh = "^3.4.1"
+gcsfs = "^2024.3.1"
+ipykernel = "^6.29.4"
+zarr = "^2.18.0"
 
+# Packaging group
+[tool.poetry.group.packaging]
+
+[tool.poetry.group.packaging.dependencies]
+poetry = "^1.8.2"
