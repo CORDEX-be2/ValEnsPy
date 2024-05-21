@@ -1,0 +1,79 @@
+﻿Adapted from ;https://is-enes-data.github.io/CORDEX_variables_requirement_table.pdf;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;
+variable_name;units;"Additional subdaily frq
+[1/day]";"Subdaily frq
+[1/day]";ag;"Daily frq
+[1/day]";ag;"Monthly frq
+[1/mon]";ag;"Seasonal frq
+[1/sem]";ag;fx;long_name;comment;standard_name;direction of positive fluxes;"cell-method: area
+(optional)"
+tas;K;;8;i;1;8;1;m*8;1;s*8;;Near-Surface Air Temperature;;air_temperature;;
+tds;K;;24;i;;;;;;;;2m Dew Point Temperature;;dew_point_temperature;;
+tasmax;K;;;a;1;;1;m;1;s;;Daily Maximum Near-Surface Air Temperature;;air_temperature;;
+tasmin;K;;;a;1;;1;m;1;s;;Daily Minimum Near-Surface Air Temperature;;air_temperature;;
+pr;kg m-2 s-1;;8;a;1;;1;;1;;;Precipitation;;precipitation_flux;;
+ps;Pa;;8;i;1;8;;;;;;Surface Air Pressure;;surface_air_pressure;;
+psl;Pa;;8;i;1;8;1;m*8;1;s*8;;Sea Level Pressure;;air_pressure_at_sea_level;;
+huss;1;;8;i;1;8;1;m*8;1;s*8;;Near-Surface Specific Humidity;;specific_humidity;;
+hurs;%;;8;i;1;8;1;m*8;1;s*8;;Near-Surface Relative Humidity;;relative_humidity;;
+sfcWind;m s-1;;8;i;1;8;1;m*8;1;s*8;;Near-Surface Wind Speed;;wind_speed;;
+sfcWindmax;m s-1;;;a;1;;1;m;1;s;;Daily Maximum Near-Surface Wind Speed;;wind_speed;;
+clt;%;;8;a;1;;1;;1;;;Total Cloud Fraction;;cloud_area_fraction;;
+sund;s;;8;a;1;;1;;1;;;Duration of Sunshine;;duration_of_sunshine;;
+rsds;W m-2;;8;a;1;;1;;1;;;Surface Downwelling Shortwave Radiation;;surface_downwelling_shortwave_flux_in_air;down;
+rlds;W m-2;;8;a;1;;1;;1;;;Surface Downwelling Longwave Radiation;;surface_downwelling_longwave_flux_in_air;down;
+hfls;W m-2;;8;a;1;;1;;1;;;Surface Upward Latent Heat Flux;;surface_upward_latent_heat_flux;up;
+hfss;W m-2;;8;a;1;;1;;1;;;Surface Upward Sensible Heat Flux;;surface_upward_sensible_heat_flux;up;
+rsus;W m-2;;8;a;1;;1;;1;;;Surface Upwelling Shortwave Radiation;;surface_upwelling_shortwave_flux_in_air;up;
+rlus;W m-2;;8;a;1;;1;;1;;;Surface Upwelling Longwave Radiation;;surface_upwelling_longwave_flux_in_air;up;
+evspsbl;kg m-2 s-1;;4;a;1;;1;;1;;;Evaporation;;water_evaporation_flux;;
+evspsblpot;kg m-2 s-1;;4;a;1;;;;;;;Potential Evapotranspiration;;water_potential_evaporation_flux;;
+mrfso;kg m-2;;4;i;1;4;1;m*4;1;s*4;;Soil Frozen Water Content;;soil_frozen_water_content;;mean where land
+mrros;kg m-2 s-1;;4;a;1;;1;;1;;;Surface Runoff;;surface_runoff_flux;;mean where land
+mrro;kg m-2 s-1;;4;a;1;;1;;1;;;Total Runoff;;runoff_flux;;mean where land
+mrso;kg m-2;;4;i;1;4;1;m*4;1;s*4;;Total Soil Moisture Content;;soil_moisture_content;;mean where land
+snw;kg m-2;;4;i;1;4;1;m*4;1;s*4;;Surface Snow Amount;;surface_snow_amount;;mean where land
+snm;kg m-2 s-1;;4;a;1;4;1;;1;;;Surface Snow Melt;;surface_snow_melt_flux;;mean where land
+prhmax;kg m-2 s-1;;;a;1;;;;;;;Daily Maximum Hourly Precipitation Rate;;precipitation_flux;;
+prc;kg m-2 s-1;;8;a;1;;;;;;;Convective Precipitation;;convective_precipitation_flux;;
+rlut;W m-2;;4;a;1;;1;;1;;;TOA Outgoing Longwave Radiation;;toa_outgoing_longwave_flux;up;
+rsdt;W m-2;;4;a;1;;1;;1;;;TOA Incident Shortwave Radiation;;toa_incoming_shortwave_flux;down;
+rsut;W m-2;;4;a;1;;1;;1;;;TOA Outgoing Shortwave Radiation;;toa_outgoing_shortwave_flux;up;
+uas;m s-1;;4;i;1;4;1;m*4;1;s*4;;Eastward Near-Surface Wind;;eastward_wind;;
+vas;m s-1;;4;i;1;4;1;m*4;1;s*4;;Northward Near-Surface Wind;;northward_wind;;
+wsgsmax;m s-1;;;a;1;;;;;;;Daily Maximum Near-Surface Wind Speed of Gust;;wind_speed_of_gust;;
+tauu;Pa;;4;a;1;;;;;;;Surface Downward Eastward Wind Stress;;surface_downward_eastward_stress;down;
+tauv;Pa;;4;a;1;;;;;;;Surface Downward Northward Wind Stress;;surface_downward_northward_stress;down;
+ts;K;;4;i;1;4;;;;;;Surface Temperature;;surface_temperature;;
+zmla;m;;4;i;1;4;;;;;;Height of Boundary Layer;;atmosphere_boundary_layer_thickness;;
+prw;kg m-2;;4;i;1;4;;;;;;Water Vapor Path;;atmosphere_water_vapor_content;;
+clwvi;kg m-2;;4;i;1;4;;;;;;Condensed Water Path;;atmosphere_cloud_condensed_water_content;;
+clivi;kg m-2;;4;i;1;4;;;;;;Ice Water Path;;atmosphere_cloud_ice_content;;
+ua850;m s-1;;4;i;1;4;1;m*4;1;s*4;;Eastward Wind;;eastward_wind;;
+va850;m s-1;;4;i;1;4;1;m*4;1;s*4;;Northward Wind;;northward_wind;;
+ta850;K;;4;i;1;4;1;m*4;1;s*4;;Air Temperature;;air_temperature;;
+hus850;1;;4;i;1;4;1;m*4;1;s*4;;Specific Humidity;;specific_humidity;;
+ua500;m s-1;;4;i;1;4;1;m*4;1;s*4;;Eastward Wind;;eastward_wind;;
+va500;m s-1;;4;i;1;4;1;m*4;1;s*4;;Northward Wind;;northward_wind;;
+zg500;m;;4;i;1;4;1;m*4;1;s*4;;Geopotential Height;;geopotential_height;;
+ta500;K;;4;i;1;4;1;m*4;1;s*4;;Air Temperature;;air_temperature;;
+ua200;m s-1;;4;i;1;4;1;m*4;1;s*4;;Eastward Wind;;eastward_wind;;
+va200;m s-1;;4;i;1;4;1;m*4;1;s*4;;Northward Wind;;northward_wind;;
+ta200;K;;4;i;1;4;1;m*4;1;s*4;;Air Temperature;;air_temperature;;
+zg200;m;;4;i;1;4;1;m*4;1;s*4;;Geopotential Height;geopotential_height_at_200hPa;geopotential_height;;
+clh;%;;4;a;1;;;;;;;High Level Cloud Fraction;;cloud_area_fraction_in_atmosphere_layer;;
+clm;%;;4;a;1;;;;;;;Mid Level Cloud Fraction;;cloud_area_fraction_in_atmosphere_layer;;
+cll;%;;4;a;1;;;;;;;Low Level Cloud Fraction;;cloud_area_fraction_in_atmosphere_layer;;
+snc;%;;4;i;1;4;1;m*4;1;s*4;;Snow Area Fraction;;surface_snow_area_fraction;;
+snd;m;;4;i;1;4;1;m*4;1;s*4;;Snow Depth;;surface_snow_thickness;;mean where land
+sic;%;;;;1;;1;m;1;s;;Sea Ice Area Fraction;;sea_ice_area_fraction;;
+prsn;kg m-2 s-1;;;a;1;;;;;;;Snowfall Flux;;snowfall_flux;;
+areacella;m2;;;;;;;;;;0;Atmosphere Grid-Cell Area;;cell_area;;
+orog;m;;;;;;;;;;0;Surface Altitude;;surface_altitude;;
+sftlf;%;;;;;;;;;;0;Land Area Fraction;;land_area_fraction;;
+sftgif;%;;;;;;;;;;0;Fraction of Grid Cell Covered with Glacier;;land_ice_area_fraction;;
+mrsofc;kg m-2;;;;;;;;;;0;Capacity of Soil to Store Water;;soil_moisture_content_at_field_capacity;;
+rootd;m;;;;;;;;;;0;Maximum Root Depth;;root_depth;;
+cape;J kg-1;;8;i;;;;;;;;Convective available potential energy (CAPE);;atmosphere_convective_available_potential_energy_wrt_surface;;
+ua100m;m s-1;;24;i;;;;;;;;Eastward wind at 100 m;;eastward_wind;;
+va100m;m s-1;;24;i;;;;;;;;Northward wind at 100 m;;northward_wind;;
