@@ -37,7 +37,7 @@ psl:
 huss:
   obs_name: hu
   obs_long_name: daily averaged relative humidity
-  obs_units: %
+  obs_units: "%"
 
 sfcWind: 
   obs_name: fg
