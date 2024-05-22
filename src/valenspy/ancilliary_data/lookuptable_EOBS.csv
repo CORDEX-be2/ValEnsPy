@@ -1,9 +1,9 @@
-﻿variable_name;EOBS_name;EOBS_long_name
-tas;tg;daily mean temperature
-tasmax;tn;daily minimum temperature
-tasmin;tx;daily maximum temperature
-pr;rr;daily precipitation sum
-psl;pp;daily averaged sea level pressure
-huss;hu;daily averaged relative humidity
-sfcWind;fg;daily mean wind speed
-;qq;daily mean global radiation
+﻿variable_name;EOBS_name;EOBS_long_name;EOBS_unit
+tas;tg;daily mean temperature;Celcius
+tasmax;tn;daily minimum temperature;Celcius
+tasmin;tx;daily maximum temperature;Celcius
+pr;rr;daily precipitation sum;mm
+psl;pp;daily averaged sea level pressure;hPa
+huss;hu;daily averaged relative humidity;%
+sfcWind;fg;daily mean wind speed;m/s
+;qq;daily mean global radiation;W/m2
