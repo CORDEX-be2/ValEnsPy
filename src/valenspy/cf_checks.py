@@ -8,7 +8,7 @@ from pathlib import Path
 
 files = Path(__file__).resolve().parent
 
-with open(files / "data" / "CORDEX_variables.yml") as file:
+with open(files / "ancilliary_data" / "CORDEX_variables.yml") as file:
     CORDEX_VARIABLES = safe_load(file)
 
 #Expected metadata attributes
