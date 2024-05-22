@@ -40,7 +40,7 @@
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -48,7 +48,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'contribution_pages/dev_notes';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Contributing VSC" href="CONTRIBUTING_VSC.html" />
+    <link rel="prev" title="Mini Git Guide" href="GIT.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -349,7 +349,9 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING_VSC.html">Contributing VSC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="INSTALL_VSC.html">Installation on the VSC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GIT.html">Mini Git Guide</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Notes for developers</a></li>
 </ul>
 </div>
@@ -414,6 +416,21 @@ document.write(`
 other developers.</p>
 <p>On general, the <cite>deployment</cite> folder contains executable (bash) scripts, to
 streamline some typical development procedures.</p>
+<section id="merging-and-pull-requests">
+<h2>Merging and Pull Requests<a class="headerlink" href="#merging-and-pull-requests" title="Link to this heading">#</a></h2>
+<p>Once you are satisfied with your code and are ready to share it with the rest of the team, you can create a <em>Pull request</em> in github.
+A <em>Pull request</em> is a request to merge your code into the <em>dev</em> branch. It allows other developers to review your code and suggest changes.
+Even if you are not ready to merge your code, you can still create a <em>Pull request</em>. This is useful to have an overview of incoming changes.</p>
+<p>Here are some guidelines for creating a <em>Pull request</em>:
+- Make sure that you have referred the corresponding issues to the <em>Pull request</em> (if any).
+- If your code adaptations are still <em>work-in-progress</em>, add the ![Static Badge](<a class="reference external" href="https://img.shields.io/badge/WIP%20-%20%23A21079">https://img.shields.io/badge/WIP%20-%20%23A21079</a>) label to it - this will indicate to other developers that the code is not ready for review.
+- If your code is ready for review, you can add the ![Static Badge](<a class="reference external" href="https://img.shields.io/badge/Ready_for_Review%20-%20%230315E4">https://img.shields.io/badge/Ready_for_Review%20-%20%230315E4</a>) label to it.</p>
+<p>After the code review, and all review marks are resolved, your contributions will be merged to the <em>dev</em> branch.</p>
+</section>
+<section id="versioning-tagging">
+<h2>Versioning/Tagging<a class="headerlink" href="#versioning-tagging" title="Link to this heading">#</a></h2>
+<p>From time to time the <em>dev</em> branch will be merged with the master with a new [<em>Release tag</em>](<a class="github reference external" href="https://github.com/CORDEX-be2/ValEnsPy/releases">CORDEX-be2/ValEnsPy</a>).</p>
+</section>
 <section id="packaging">
 <h2>Packaging<a class="headerlink" href="#packaging" title="Link to this heading">#</a></h2>
 <p>ValEnsPy is desinged to be packaged. This is done automatically on github
@@ -527,12 +544,12 @@ they indicate syntax and formatting issues.</p>
 
 <div class="prev-next-area">
     <a class="left-prev"
-       href="CONTRIBUTING_VSC.html"
+       href="GIT.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Contributing VSC</p>
+        <p class="prev-next-title">Mini Git Guide</p>
       </div>
     </a>
 </div>
@@ -553,6 +570,8 @@ they indicate syntax and formatting issues.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#merging-and-pull-requests">Merging and Pull Requests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#versioning-tagging">Versioning/Tagging</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#packaging">Packaging</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-dependencies">Handling Dependencies</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation-builds">Documentation builds</a></li>
@@ -604,7 +623,7 @@ they indicate syntax and formatting issues.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

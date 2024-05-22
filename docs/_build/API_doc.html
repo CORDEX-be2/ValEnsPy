@@ -40,7 +40,7 @@
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
@@ -48,8 +48,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'API_doc';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="diagnostic" href="_autosummary/diagnostic.html" />
-    <link rel="prev" title="Workflow Example" href="doc_examples/workflow_example.html" />
+    <link rel="next" title="cf_checks" href="_autosummary/cf_checks.html" />
+    <link rel="prev" title="Making a diagnostic" href="doc_examples/making_a_diagnostic.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -349,10 +349,8 @@ document.write(`
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/diagnostic.html">diagnostic</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/diagnostic.Diagnostic.html">diagnostic.Diagnostic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/diagnostic.Ensemble2Ref.html">diagnostic.Ensemble2Ref</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/diagnostic.Model2Ref.html">diagnostic.Model2Ref</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/cf_checks.html">cf_checks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cf_checks.is_cf_compliant.html">cf_checks.is_cf_compliant</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/diagnostic_visualizations.html">diagnostic_visualizations</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -370,10 +368,6 @@ document.write(`
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/inputconverter_functions.html">inputconverter_functions</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/inputconverter_functions.EOBS_to_CF.html">inputconverter_functions.EOBS_to_CF</a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/preprocessor.html">preprocessor</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/preprocessor.Preprocessor.html">preprocessor.Preprocessor</a></li>
 </ul>
 </li>
 </ul>
@@ -435,7 +429,7 @@ document.write(`
 <h1>Modules<a class="headerlink" href="#modules" title="Link to this heading">#</a></h1>
 <table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/diagnostic.html#module-diagnostic" title="diagnostic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagnostic</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/cf_checks.html#module-cf_checks" title="cf_checks"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cf_checks</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary/diagnostic_visualizations.html#module-diagnostic_visualizations" title="diagnostic_visualizations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagnostic_visualizations</span></code></a></p></td>
@@ -448,9 +442,6 @@ document.write(`
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/inputconverter_functions.html#module-inputconverter_functions" title="inputconverter_functions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inputconverter_functions</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/preprocessor.html#module-preprocessor" title="preprocessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocessor</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -468,20 +459,20 @@ document.write(`
 
 <div class="prev-next-area">
     <a class="left-prev"
-       href="doc_examples/workflow_example.html"
+       href="doc_examples/making_a_diagnostic.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Workflow Example</p>
+        <p class="prev-next-title">Making a diagnostic</p>
       </div>
     </a>
     <a class="right-next"
-       href="_autosummary/diagnostic.html"
+       href="_autosummary/cf_checks.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">diagnostic</p>
+        <p class="prev-next-title">cf_checks</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -538,7 +529,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

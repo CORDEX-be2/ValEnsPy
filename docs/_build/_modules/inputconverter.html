@@ -39,7 +39,7 @@
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
@@ -394,21 +394,21 @@ document.write(`
 <span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Union</span>
 
+
 <div class="viewcode-block" id="InputConverter">
 <a class="viewcode-back" href="../_autosummary/inputconverter.InputConverter.html#inputconverter.InputConverter">[docs]</a>
 <span class="k">class</span> <span class="nc">InputConverter</span><span class="p">:</span>
-
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A class that converts input files to netCDF files in CF convention.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="InputConverter.__init__">
 <a class="viewcode-back" href="../_autosummary/inputconverter.InputConverter.html#inputconverter.InputConverter.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">converter</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the InputProcessor with a converter function.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        converter : function</span>
-<span class="sd">            The function to convert the input file(s) to a netCDF file in CF convention. </span>
+<span class="sd">            The function to convert the input file(s) to a netCDF file in CF convention.</span>
 <span class="sd">            The function should take a string or list of strings as input and return a netCDF file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">converter</span> <span class="o">=</span> <span class="n">converter</span></div>
@@ -418,7 +418,7 @@ document.write(`
 <a class="viewcode-back" href="../_autosummary/inputconverter.InputConverter.html#inputconverter.InputConverter.convert_input">[docs]</a>
     <span class="k">def</span> <span class="nf">convert_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the input file to CF convention.</span>
-<span class="sd">        </span>
+
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        input : Path or list(Path)</span>
@@ -430,13 +430,14 @@ document.write(`
 </div>
 
 
-<span class="c1">#Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.</span>
 
-<span class="c1">#Needed: </span>
+<span class="c1"># Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.</span>
+
+<span class="c1"># Needed:</span>
 <span class="c1">#  - Some helper functions to extend input to glob arguments, str arguments etc.</span>
 <span class="c1">#  - CF Checker functionality</span>
 
-<span class="c1">#To be discussed -&gt; Do we expect inputconvertor function to work at the file level? Or should they be able to manage a collection of files?</span>
+<span class="c1"># To be discussed -&gt; Do we expect inputconvertor function to work at the file level? Or should they be able to manage a collection of files?</span>
 <span class="c1"># If file level the InputConverter can seperately provide them to the function and handel concetanating/joining these.</span>
 </pre></div>
 
@@ -490,7 +491,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>

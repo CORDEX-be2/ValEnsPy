@@ -59,7 +59,7 @@ rm *.tar.gz
 
 cd ${WORKDIR} #(maybe this is not needed)
 poetry update #to update the poetry.lock file (aka use the latest, valid, dependencies)
-poerty install --all-extras
+poetry install --all-extras
 poetry show #print out some dep. information
 
 cd ${DISTDIR}

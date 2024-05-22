@@ -40,11 +40,13 @@
     <script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script src="_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -374,7 +376,14 @@ document.write(`
 </div>
 <section id="description">
 <h2>Description<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>Some info on the package and the developers funding etc.</p>
+<p>The package is designed to validate gridded climate model data.
+The building-blocks are xarray and dask, in particular xarray-DataTrees are used to manage multiple models and gridded observations.
+It contains three main components:
+* <strong>Input processor</strong>: Reads the input data and prepares it into a CF-compliant format.
+* <strong>Pre-processor</strong>: Transforms all input datasets to enable intercomparison.
+* <strong>Diagnostic</strong>: Calculates the diagnostic metrics and plots the results.</p>
+<p>The package is designed to be modular, allowing users to use the components independently or together.</p>
+<p>A visual representation of the package structure is shown below.</p>
 <a class="reference internal image-reference" href="_images/package_structure.png"><img alt="logo" src="_images/package_structure.png" style="width: 700px;" /></a>
 </section>
 <section id="indices-and-tables">
@@ -445,7 +454,7 @@ document.write(`
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
     <br/>
   </p>
 </div>
