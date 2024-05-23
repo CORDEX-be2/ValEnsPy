@@ -13,6 +13,7 @@ Modules
    :template: custom-module-template.rst
    :recursive:
 
+   cf_checks
    diagnostic
    diagnostic_visualizations
    diagnostic_functions

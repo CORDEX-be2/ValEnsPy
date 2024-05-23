@@ -117,4 +117,3 @@ jobs:
          run: |
            echo "version tags are not aligned!"
            exit 1
-
