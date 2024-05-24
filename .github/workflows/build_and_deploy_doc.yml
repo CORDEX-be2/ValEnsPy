@@ -29,7 +29,7 @@ jobs:
               pip install poetry
         - name: Install dependencies and build
           run: |
-              poetry install --all-extras
+              poetry install --with dev --with docs
               poetry run sphinx-build -a -E docs _build
         #WHEN PUBLIC, UNCOMMENT FOR DEPLOYING DOC TO GH-PAGES!!!!
         #- name: deploy documentation
