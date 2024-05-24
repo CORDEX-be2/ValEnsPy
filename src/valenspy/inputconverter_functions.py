@@ -51,39 +51,41 @@ def EOBS_to_CF(file: Path) -> Path:
         # Get the CORDEX variable in the observational dataset using the observational lookup table  
         var = next((k for k, v in obs_LOOKUP.items() if v.get('obs_name') == var_obs), None)
 
-        # update variable name to CORDEX variable name
-        ds = ds.rename_vars({obs_LOOKUP[var]["obs_name"]: var})
+        if var: #Dont processes variables that are not in the lookup table.
 
-        # from here on, use CORDEX variable name to access data array and do rest of conversion
+            # update variable name to CORDEX variable name
+            ds = ds.rename_vars({obs_LOOKUP[var]["obs_name"]: var})
 
-        # Unit conversion - hard coded EOBS units for units different to CORDEX
-        if obs_LOOKUP[var]['obs_units'] == 'Celcius': 
-            ds[var] = _convert_Celcius_to_Kelvin(ds[var]) 
-        elif obs_LOOKUP[var]['obs_units'] == 'hPa': 
-            ds[var] = _convert_hPa_to_Pa(ds[var]) # hPa to Pa
-        elif obs_LOOKUP[var]['obs_units'] == 'mm': # ! note observations remain daily time frequency
-            ds[var] = _convert_mm_to_kg_m2_s1(ds[var]) # mm to kg m^-2 s^-1 
+            # from here on, use CORDEX variable name to access data array and do rest of conversion
 
-        # update unit attribute
-        ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"] # from the CORDEX look-up table 
+            # Unit conversion - hard coded EOBS units for units different to CORDEX
+            if obs_LOOKUP[var]['obs_units'] == 'Celcius': 
+                ds[var] = _convert_Celcius_to_Kelvin(ds[var]) 
+            elif obs_LOOKUP[var]['obs_units'] == 'hPa': 
+                ds[var] = _convert_hPa_to_Pa(ds[var]) # hPa to Pa
+            elif obs_LOOKUP[var]['obs_units'] == 'mm': # ! note observations remain daily time frequency
+                ds[var] = _convert_mm_to_kg_m2_s1(ds[var]) # mm to kg m^-2 s^-1 
 
-        # add necessary metadata
-        ds[var].attrs["standard_name"]      = CORDEX_VARIABLES[var]["standard_name"]  # from the CORDEX look-up table
-        ds[var].attrs["long_name"]          = CORDEX_VARIABLES[var]["long_name"]  # from the CORDEX look-up table
-        ds[var].attrs["original_name"]      = obs_LOOKUP[var]["obs_name"]
-        ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
+            # update unit attribute
+            ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"] # from the CORDEX look-up table 
 
-        # rename dimensions
-        ds[var] = ds[var].rename({"latitude": "lat", "longitude": "lon"})
+            # add necessary metadata
+            ds[var].attrs["standard_name"]      = CORDEX_VARIABLES[var]["standard_name"]  # from the CORDEX look-up table
+            ds[var].attrs["long_name"]          = CORDEX_VARIABLES[var]["long_name"]  # from the CORDEX look-up table
+            ds[var].attrs["original_name"]      = obs_LOOKUP[var]["obs_name"]
+            ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
-        # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user? 
-        ds[var]['time'] = pd.to_datetime(ds[var].time)
+            # rename dimensions
+            ds[var] = ds[var].rename({"latitude": "lat", "longitude": "lon"})
+
+            # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user? 
+            ds[var]['time'] = pd.to_datetime(ds[var].time)
 
 
-        # additional attributes -- hard coded for EOBS
-        ds[var].attrs["freq"]               = "daily"  # possible values: daily, hourly, monthly, yearly
-        ds[var].attrs["spatial_resolution"] = "0.1deg"  
-        ds[var].attrs["domain"]             = "europe"
+            # additional attributes -- hard coded for EOBS
+            ds[var].attrs["freq"]               = "daily"  # possible values: daily, hourly, monthly, yearly
+            ds[var].attrs["spatial_resolution"] = "0.1deg"  
+            ds[var].attrs["domain"]             = "europe"
 
     
     # Soft check for CF compliance 
