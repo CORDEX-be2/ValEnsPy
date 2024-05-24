@@ -6,10 +6,6 @@
 # 3 update dependencies and build package
 # 4 build the documentation
 
-
-
-
-
 # ----- Setup paths ---------
 #Run this from the root of the project
 WORKDIR=$(pwd)
@@ -46,6 +42,11 @@ poetry add --group docs 'sphinx_copybutton'
 poetry add --group docs 'myst_parser'
 poetry add --group docs 'nbsphinx'
 poetry add --group docs 'pydata-sphinx-theme'
+
+#add to the examples group
+poetry add --group examples gcsfs
+poetry add --group examples zarr
+poetry add --group examples jinja2
 
 # ==============================================================================
 # Build the package
