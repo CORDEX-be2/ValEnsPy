@@ -30,15 +30,16 @@ git clone git@github.com:CORDEX-be2/ValEnsPy.git
 ```
 
 2. Create a conda environment and install the required packages.
+Note! Replace -n valenspy_dev with -p /path/to/conda/env if you want to install the environment in a specific location!
 
 ```bash
-conda create -n valenspy_dev python==3.9 poetry
+conda create -n valenspy_dev -c conda-forge python==3.9 poetry=1.8
 source activate valenspy_dev
 ```
 Now install the required packages using poetry: All required packages are listed in the pyproject.toml file and will be installed automatically by poetry.
 
 > [!WARNING]
-> Make sure you are in the branch you want to work in before installing the packages as different branches may have different dependencies. The 'dev' branch is a good starting point.
+> Make sure you are in the branch you want to work in before installing the packages, as different branches may have different dependencies. The 'dev' branch is a good starting point.
 
 ```bash
 
