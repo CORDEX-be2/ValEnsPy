@@ -1,12 +1,13 @@
 from pathlib import Path
 import xarray as xr
 from yaml import safe_load
+from valenspy.cf_checks import is_cf_compliant, cf_status
 
-# get current path
-files = Path(__file__).resolve().parent 
+# get path of source code (current path)
+src_path = Path(__file__).resolve().parent 
 
 # open CORDEX variable lookup dictionary
-with open(files / "ancilliary_data" / "CORDEX_variables.yml") as file:
+with open(src_path / "ancilliary_data" / "CORDEX_variables.yml") as file:
     CORDEX_VARIABLES = safe_load(file)
 
 
@@ -34,43 +35,58 @@ def EOBS_to_CF(file: Path) -> Path:
     """
 
     # open the observation dataset
-    ds = xr.open_mfdataset(files, combine='by_coords', chunks='auto')
+    ds = xr.open_mfdataset(file, combine='by_coords', chunks='auto')
 
     # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator? 
     obsdata_name = "EOBS"
 
-    with open(files / "ancilliary_data" / Path(obsdata_name+"_lookup.yml")) as file:
+    with open(src_path / "ancilliary_data" / Path(obsdata_name+"_lookup.yml")) as file:
         obs_LOOKUP = safe_load(file)
 
     
     # make EOBS CF compliant
 
-    # update variable name 
-    ds = ds.rename_vars({obs_var: variable})
-    ds = ds.rename({"latitude": "lat", "longitude": "lon"})
+    for var_obs in ds.data_vars: 
 
-    # Unit conversion - hard coded EOBS units for units different to CORDEX
-    if obs_LOOKUP[variable]['obs_units'] == 'Celcius': 
-        ds[variable] = ds[variable] + 273.15 # Celcius to Kelvin
-    elif obs_LOOPUP[variable]['obs_units'] == 'hPa': 
-        ds[variable] = ds[variable] * 100 # hPa to Pa
-    elif obs_LOOPUP[variable]['obs_units'] == 'mm': # ! note observations remain daily time frequency
-        ds[variable] = ds[variable] / 86400 # mm to kg m^-2 s^-1 
+        # Get the CORDEX variable in the observational dataset using the observational lookup table  
+        var = next((k for k, v in obs_LOOKUP.items() if v.get('obs_name') == var_obs), None)
 
-    # update unit attribute
-    ds.attrs["units"] = CORDEX_VARIABLES[variable]["units"] # from the CORDEX look-up table 
+        # update variable name to CORDEX variable name
+        ds = ds.rename_vars({obs_LOOKUP[var]["obs_name"]: var})
 
-    # add necessary metadata
-    ds.attrs["standard_name"]      = CORDEX_VARIABLES[variable]["standard_name"]  # from the CORDEX look-up table
-    ds.attrs["long_name"]          = CORDEX_VARIABLES[variable]["long_name"]  # from the CORDEX look-up table
-    ds.attrs["original_name"]      = obs_LOOKUP[variable]["obs_name"]
-    ds.attrs["original_long_name"] = obs_LOOKUP[variable]["obs_long_name"]
+        # from here on, use CORDEX variable name to access data array and do rest of conversion
 
-    # additional attributes -- hard coded for EOBS
-    ds.attrs["time_freq"]          = "daily"  # possible values: daily, hourly, monthly, yearly
-    ds.attrs["spatial_resolution"] = "0.1deg"  
-    ds.attrs["domain"]             = "europe"
+        # Unit conversion - hard coded EOBS units for units different to CORDEX
+        if obs_LOOKUP[var]['obs_units'] == 'Celcius': 
+            ds[var] = ds[var] + 273.15 # Celcius to Kelvin
+        elif obs_LOOKPUP[var]['obs_units'] == 'hPa': 
+            ds[var] = ds[var] * 100 # hPa to Pa
+        elif obs_LOOKPUP[var]['obs_units'] == 'mm': # ! note observations remain daily time frequency
+            ds[var] = ds[var] / 86400 # mm to kg m^-2 s^-1 
 
-    ## question: check for CF compliance to be done here? 
+        # update unit attribute
+        ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"] # from the CORDEX look-up table 
+
+        # add necessary metadata
+        ds[var].attrs["standard_name"]      = CORDEX_VARIABLES[var]["standard_name"]  # from the CORDEX look-up table
+        ds[var].attrs["long_name"]          = CORDEX_VARIABLES[var]["long_name"]  # from the CORDEX look-up table
+        ds[var].attrs["original_name"]      = obs_LOOKUP[var]["obs_name"]
+        ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
+
+        # rename dimensions
+        ds[var] = ds[var].rename({"latitude": "lat", "longitude": "lon"})
+
+        # additional attributes -- hard coded for EOBS
+        ds[var].attrs["time_freq"]          = "daily"  # possible values: daily, hourly, monthly, yearly
+        ds[var].attrs["spatial_resolution"] = "0.1deg"  
+        ds[var].attrs["domain"]             = "europe"
+
+    
+    # Soft check for CF compliance 
+    cf_status(ds)
 
     return ds
+
+
+
+
