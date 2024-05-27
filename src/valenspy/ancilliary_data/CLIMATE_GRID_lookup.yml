@@ -7,7 +7,7 @@
 #    obs_long_name: 
 #    obs_units: 
 
-# More info on CLIMATE_GRID: https://opendata.meteo.be/geonetwork/srv/eng/catalog.search#/metadata/RMI_DATASET_GRIDDEDOBS ls
+# More info on CLIMATE_GRID: https://opendata.meteo.be/geonetwork/srv/eng/catalog.search#/metadata/RMI_DATASET_GRIDDEDOBS 
 
 
 tas: 
@@ -47,7 +47,32 @@ sfcWind:
   obs_units: m s-1
 
 rsds: 
-  obs_name: qq
+  obs_name: SHORT_WAVE_FROM_SKY
   obs_standard_name: surface_downwelling_shortwave_flux_in_air
   obs_long_name: Surface Downwelling Shortwave Radiation
   obs_units: W m-2
+
+# here missing information to be filled. 
+prhmax:
+  obs_name: PRECIP_1H_MAX
+  obs_standard_name: 
+  obs_long_name: 
+  obs_units: mm/day 
+
+evspsbl: 
+  obs_name: EVAPOTRANS_REF
+  obs_standard_name: 
+  obs_long_name: 
+  obs_units: mm/day 
+
+sfcWindmax: 
+  obs_name: WIND_PEAK_SPEED
+  obs_standard_name: 
+  obs_long_name: 
+  obs_units: m/s 
+
+psl: 
+  obs_name: PRESSURE
+  obs_standard_name: 
+  obs_long_name: 
+  obs_units: hPa
