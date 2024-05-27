@@ -7,7 +7,8 @@
 #    obs_long_name: 
 #    obs_units: 
 
-# More info on EOBS: https://www.ecad.eu/download/ensembles/download.php
+# More info on ERA5: https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview
+# ERA5-Land: https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview
 
 pr: 
     obs_name: total_precipitation
