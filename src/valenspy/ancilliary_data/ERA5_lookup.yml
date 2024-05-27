@@ -1,0 +1,127 @@
+# ERA5 variable name conversion table based on CORDEX variables
+
+# Format
+
+# CORDEX VariableName:
+#    obs_name: 
+#    obs_long_name: 
+#    obs_units: 
+
+# More info on EOBS: https://www.ecad.eu/download/ensembles/download.php
+
+pr: 
+    obs_name: total_precipitation
+    obs_units: m/hr
+
+prhmax:
+    obs_name: total_precipitation_max
+    obs_units: m/hr
+
+prsn: 
+    obs_name: snowfall
+    obs_units: m/hr
+
+prw:
+    obs_name: total_column_water_vapour
+    obs_units: mm
+
+snw:
+    obs_name: snow_depth
+    obs_units: cm
+
+snd:
+    obs_name: snow_depth_water_equivalent
+    obs_units: m
+
+mrso:
+    obs_name: volumetric_soil_water_layer_1
+    obs_units: m
+
+mrros:
+    obs_name: surface_runoff
+    obs_units: m/hr
+
+mrro:
+    obs_name: runoff
+    obs_units: m/hr
+
+tas:
+    obs_name: 2m_temperature
+    obs_units: K
+
+tasmax:
+    obs_name: 2m_temperature_max
+    obs_units: K
+
+tasmin: 
+    obs_name: 2m_temperature_min
+    obs_units: K
+
+ts:
+    obs_name: skin_temperature
+    obs_units: K
+ 
+evspsbl:
+    obs_name: evaporation
+    obs_units: m/hr
+
+evspsblpot:
+    obs_name: potential_evaporation
+    obs_units: m/hr
+
+uas:
+    obs_name: 10m_w_component_of_wind
+    obs_units: m/s
+
+sfcWind:
+    obs_name: 10m_v_component_of_wind
+    obs_units: m/s
+
+sfcWindmax:
+    obs_name: 10m_w_component_of_wind_max
+    obs_units: m/s
+
+wsgsmax:
+    obs_name: 10m_wind_gust_since_previous_post_processing_max
+    obs_units: m/s
+
+hfls: 
+    obs_name: surface_latent_heat_flux
+    obs_units: J/m^2
+
+hfss:
+    obs_name: surface_sensible_heat_flux
+    obs_units: J/m^2
+
+rsds:
+    obs_name: surface_solar_radiation_downwards
+    obs_units: J/m^2
+
+rlds:
+    obs_name: surface_thermal_radiation_downwards
+    obs_units: J/m^2
+
+ps:
+    obs_name: surface_pressure
+    obs_units: Pa
+
+psl:
+    obs_name: mean_sea_level_pressure
+    obs_units: Pa
+
+zmla: 
+    obs_name: boundary_layer_height
+    obs_units: m
+
+clt:
+    obs_name: total_cloud_cover
+    obs_units: 1
+ 
+rsdt: 
+    obs_name: toa_incident_solar_radiation
+    obs_units: J/m^2
+
+hurs: 
+    obs_name: 
+    obs_units: 
+
