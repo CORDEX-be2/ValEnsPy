@@ -10,23 +10,19 @@ src_path = Path(__file__).resolve().parent
 with open(src_path / "ancilliary_data" / "CORDEX_variables.yml") as file:
     CORDEX_VARIABLES = safe_load(file)
 
+def _non_convertor(paths):
+    """A dummy function that does not convert the input paths."""
+    return xr.open_mfdataset(paths, combine='by_coords', chunks='auto')
 
-
-def _non_convertor(file: Path) -> Path:
-    """A dummy function that does not convert the input file as it already is in the correct format."""
-    return file
-
-
-
-def EOBS_to_CF(file: Path) -> Path:
+def EOBS_to_CF(paths) -> xr.Dataset:
 
     """
-    Convert the EOBS netCDF file to a netCDF file in CF convention 
+    Convert the EOBS netCDF paths to an xarray netCDF in CF convention 
 
     Parameters
     ----------
-    file : Path
-        The path to the netCDF file of specific variable to convert 
+    paths : Path or a list of Paths
+        The path(s) to the netCDF file of specific variable to convert 
     
     Returns
     -------
@@ -35,7 +31,7 @@ def EOBS_to_CF(file: Path) -> Path:
     """
 
     # open the observation dataset
-    ds = xr.open_mfdataset(file, combine='by_coords', chunks='auto')
+    ds = xr.open_mfdataset(paths, combine='by_coords', chunks='auto')
 
     # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator? 
     obsdata_name = "EOBS"
