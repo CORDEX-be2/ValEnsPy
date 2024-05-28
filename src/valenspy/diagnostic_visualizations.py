@@ -6,15 +6,13 @@ import matplotlib.pyplot as plt
 ##################################
 
 
-def plot_spatial_bias(data: xr.DataArray, **kwargs):
-    fig, ax = plt.subplots(1, 1, figsize=(10, 5))
-
+def plot_spatial_bias(data: xr.DataArray, ax, **kwargs):
     data.plot(
         ax=ax, cmap="coolwarm", cbar_kwargs={"label": "Temperature bias (K)"}, **kwargs
     )
     ax.set_title("Spatial Bias")
 
-    return fig
+    return ax
 
 
 # Standard matplotlib settings
