@@ -14,9 +14,9 @@ A clear and concise description of what the bug is.
 A clear and concise description of what you expected to happen.
 
 **Environment**
-(super) computer - 
-Branch - 
-Conda environment - 
+(super) computer -
+Branch -
+Conda environment -
 Other relevant environment information:
 
 **Minimal Reproducible Example**
