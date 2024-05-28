@@ -1,0 +1,6 @@
+cf\_checks.cf\_status
+=====================
+
+.. currentmodule:: cf_checks
+
+.. autofunction:: cf_status

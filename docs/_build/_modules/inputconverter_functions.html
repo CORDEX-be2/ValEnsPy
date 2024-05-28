@@ -8,20 +8,20 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>inputconverter_functions &#8212; ValEnsPy documentation</title>
-
-
-
+  
+  
+  
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
   </script>
-
+  
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 <link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
-
+  
   <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
@@ -30,7 +30,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ccc20c01" />
-
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
@@ -50,34 +50,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
-
-
+  
+  
   <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-
-
+  
+  
   <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
-
+  
   <div id="pst-scroll-pixel-helper"></div>
-
+  
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>
     Back to top
   </button>
 
-
+  
   <input type="checkbox"
           class="sidebar-toggle"
           name="__primary"
           id="__primary"/>
   <label class="overlay overlay-primary" for="__primary"></label>
-
+  
   <input type="checkbox"
           class="sidebar-toggle"
           name="__secondary"
           id="__secondary"/>
   <label class="overlay overlay-secondary" for="__secondary"></label>
-
+  
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
     <div class="search-button__search-container">
@@ -98,85 +98,85 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
-
+  
     <header class="bd-header navbar navbar-expand-lg bd-navbar">
 <div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
     <span class="fa-solid fa-bars"></span>
   </label>
-
-
+  
+  
   <div class="col-lg-3 navbar-header-items__start">
-
+    
       <div class="navbar-item">
 
-
+  
 
 <a class="navbar-brand logo" href="../index.html">
-
-
-
-
-
-
+  
+  
+  
+  
+  
+  
     <p class="title logo__title">ValEnsPy documentation</p>
-
+  
 </a></div>
-
+    
   </div>
-
+  
   <div class="col-lg-9 navbar-header-items">
-
+    
     <div class="me-auto navbar-header-items__center">
-
+      
         <div class="navbar-item">
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
-
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../index.html">
                         Home
                       </a>
                     </li>
-
+                
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../getting_started.html">
                         Getting started
                       </a>
                     </li>
-
+                
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../doc_examples/index.html">
                         Examples
                       </a>
                     </li>
-
+                
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../API_doc.html">
                         API
                       </a>
                     </li>
-
+                
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../contribution_pages/index.html">
                         Contributing
                       </a>
                     </li>
-
+                
   </ul>
 </nav></div>
-
+      
     </div>
-
-
+    
+    
     <div class="navbar-header-items__end">
-
+      
         <div class="navbar-item navbar-persistent--container">
-
+          
 
  <script>
  document.write(`
@@ -188,8 +188,8 @@
  `);
  </script>
         </div>
-
-
+      
+      
         <div class="navbar-item">
 
 <script>
@@ -201,28 +201,28 @@ document.write(`
   </button>
 `);
 </script></div>
-
+      
         <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
     aria-label="Icon Links">
         <li class="nav-item">
-
-
-
-
-
-
-
-
+          
+          
+          
+          
+          
+          
+          
+          
           <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
-
+      
     </div>
-
+    
   </div>
-
-
+  
+  
     <div class="navbar-persistent--mobile">
 
  <script>
@@ -235,77 +235,77 @@ document.write(`
  `);
  </script>
     </div>
+  
 
-
-
+  
 </div>
 
     </header>
-
+  
 
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
-
-
-
-
-
+      
+      
+      
+        
+      
       <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
 
-
-
+  
   <div class="sidebar-header-items sidebar-primary__section">
-
-
+    
+    
       <div class="sidebar-header-items__center">
-
+        
           <div class="navbar-item">
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
-
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../index.html">
                         Home
                       </a>
                     </li>
-
+                
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../getting_started.html">
                         Getting started
                       </a>
                     </li>
-
+                
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../doc_examples/index.html">
                         Examples
                       </a>
                     </li>
-
+                
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../API_doc.html">
                         API
                       </a>
                     </li>
-
+                
 
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../contribution_pages/index.html">
                         Contributing
                       </a>
                     </li>
-
+                
   </ul>
 </nav></div>
-
+        
       </div>
-
-
-
+    
+    
+    
       <div class="sidebar-header-items__end">
-
+        
           <div class="navbar-item">
 
 <script>
@@ -317,148 +317,357 @@ document.write(`
   </button>
 `);
 </script></div>
-
+        
           <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
     aria-label="Icon Links">
         <li class="nav-item">
-
-
-
-
-
-
-
-
+          
+          
+          
+          
+          
+          
+          
+          
           <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i></span>
             <span class="sr-only">GitHub</span></a>
         </li>
 </ul></div>
-
+        
       </div>
-
+    
   </div>
-
-
+  
+  
   <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-
+  
   <div id="rtd-footer-container"></div>
 
 
       </div>
-
+      
       <main id="main-content" class="bd-main">
-
-
+        
+        
           <div class="bd-content">
             <div class="bd-article-container">
-
+              
               <div class="bd-header-article">
 <div class="header-article-items header-article__inner">
-
+  
     <div class="header-article-items__start">
-
+      
         <div class="header-article-item">
 
 
 
 <nav aria-label="Breadcrumb">
   <ul class="bd-breadcrumbs">
-
+    
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../index.html" class="nav-link" aria-label="Home">
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-
+    
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Module code</a></li>
-
+    
     <li class="breadcrumb-item active" aria-current="page">inputconvert...</li>
   </ul>
 </nav>
 </div>
-
+      
     </div>
-
-
+  
+  
 </div>
 </div>
-
-
-
-
+              
+              
+              
+                
 <div id="searchbox"></div>
                 <article class="bd-article">
-
+                  
   <h1>Source code for inputconverter_functions</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">safe_load</span>
+<span class="kn">from</span> <span class="nn">valenspy.cf_checks</span> <span class="kn">import</span> <span class="n">is_cf_compliant</span><span class="p">,</span> <span class="n">cf_status</span>
 
+<span class="c1"># get path of source code (current path)</span>
+<span class="n">src_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span> 
 
-<span class="k">def</span> <span class="nf">_non_convertor</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A dummy function that does not convert the input file as it already is in the correct format.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">file</span>
+<span class="c1"># open CORDEX variable lookup dictionary</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_path</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="s2">&quot;CORDEX_variables.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">CORDEX_VARIABLES</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
+<span class="k">def</span> <span class="nf">_non_convertor</span><span class="p">(</span><span class="n">paths</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A dummy function that does not convert the input paths.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s1">&#39;by_coords&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="EOBS_to_CF">
 <a class="viewcode-back" href="../_autosummary/inputconverter_functions.EOBS_to_CF.html#inputconverter_functions.EOBS_to_CF">[docs]</a>
-<span class="k">def</span> <span class="nf">EOBS_to_CF</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert the EOBS netCDF file to a netCDF file in CF convention.&quot;&quot;&quot;</span>
-    <span class="c1"># Open the EOBS file</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">EOBS_to_CF</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
 
-    <span class="c1"># Rename the dimensions</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename_dims</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">})</span></div>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert the EOBS netCDF paths to an xarray netCDF in CF convention </span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    paths : Path or a list of Paths</span>
+<span class="sd">        The path(s) to the netCDF file of specific variable to convert </span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Dataset</span>
+<span class="sd">        The CF compliant EOBS observations for the specified variable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># open the observation dataset</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s1">&#39;by_coords&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+
+    <span class="c1"># open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator? </span>
+    <span class="n">obsdata_name</span> <span class="o">=</span> <span class="s2">&quot;EOBS&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_path</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">obsdata_name</span><span class="o">+</span><span class="s2">&quot;_lookup.yml&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">obs_LOOKUP</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+    
+    <span class="c1"># make EOBS CF compliant</span>
+
+    <span class="k">for</span> <span class="n">var_obs</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span> 
+
+        <span class="c1"># Get the CORDEX variable in the observational dataset using the observational lookup table  </span>
+        <span class="n">var</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obs_LOOKUP</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;obs_name&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="n">var_obs</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">var</span><span class="p">:</span> <span class="c1">#Dont processes variables that are not in the lookup table.</span>
+
+            <span class="c1"># update variable name to CORDEX variable name</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename_vars</span><span class="p">({</span><span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_name&quot;</span><span class="p">]:</span> <span class="n">var</span><span class="p">})</span>
+
+            <span class="c1"># from here on, use CORDEX variable name to access data array and do rest of conversion</span>
+
+            <span class="c1"># Unit conversion - hard coded EOBS units for units different to CORDEX</span>
+            <span class="k">if</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s1">&#39;obs_units&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Celcius&#39;</span><span class="p">:</span> 
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_Celcius_to_Kelvin</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span> 
+            <span class="k">elif</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s1">&#39;obs_units&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;hPa&#39;</span><span class="p">:</span> 
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_hPa_to_Pa</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span> <span class="c1"># hPa to Pa</span>
+            <span class="k">elif</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s1">&#39;obs_units&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;mm&#39;</span><span class="p">:</span> <span class="c1"># ! note observations remain daily time frequency</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_mm_to_kg_m2_s1</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span> <span class="c1"># mm to kg m^-2 s^-1 </span>
+
+            <span class="c1"># update unit attribute</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="c1"># from the CORDEX look-up table </span>
+
+            <span class="c1"># add necessary metadata</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;standard_name&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;standard_name&quot;</span><span class="p">]</span>  <span class="c1"># from the CORDEX look-up table</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span>          <span class="o">=</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span>  <span class="c1"># from the CORDEX look-up table</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;original_name&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_name&quot;</span><span class="p">]</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;original_long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_long_name&quot;</span><span class="p">]</span>
+
+            <span class="c1"># rename dimensions</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">})</span>
+
+            <span class="c1"># convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user? </span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+
+
+            <span class="c1"># additional attributes -- hard coded for EOBS</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span>               <span class="o">=</span> <span class="s2">&quot;daily&quot;</span>  <span class="c1"># possible values: daily, hourly, monthly, yearly</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spatial_resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0.1deg&quot;</span>  
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;domain&quot;</span><span class="p">]</span>             <span class="o">=</span> <span class="s2">&quot;europe&quot;</span>
+
+    
+    <span class="c1"># Soft check for CF compliance </span>
+    <span class="n">cf_status</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ds</span></div>
+
+
+
+
+<span class="c1"># helper functions for unit conversion - can be moved to more appropriate place </span>
+
+<span class="c1">## imports for helpen functions</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Do we want other possible inputs than data arrays? </span>
+<span class="k">def</span> <span class="nf">_convert_Celcius_to_Kelvin</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span> 
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert values in xarray DataArray from °C to K</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">+</span> <span class="mf">273.15</span> <span class="c1"># Celcius to Kelvin</span>
+
+    <span class="c1"># update units attribute --  naming of units defined in ./src/valenspy/ancilliary_data/CORDEX_variables.yml</span>
+    <span class="n">da</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;K&quot;</span> 
+
+    <span class="k">return</span> <span class="n">da</span>
+
+<span class="k">def</span> <span class="nf">_convert_Kelvin_to_Celcius</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span> 
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert values in xarray DataArray from K to °C</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">-</span> <span class="mf">273.15</span> <span class="c1"># Kelvin to Celcius</span>
+
+    <span class="c1"># update units attribute</span>
+    <span class="n">da</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;°C&quot;</span> 
+
+    <span class="k">return</span> <span class="n">da</span>
+
+<span class="k">def</span> <span class="nf">_convert_hPa_to_Pa</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span> 
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert values in xarray DataArray from hPa to Pa</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">*</span> <span class="mi">100</span> 
+
+    <span class="c1"># update units attribute</span>
+    <span class="n">da</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Pa&quot;</span> 
+
+    <span class="k">return</span> <span class="n">da</span>
+
+<span class="k">def</span> <span class="nf">_convert_Pa_to_hPa</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span> 
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert values in xarray DataArray from Pa to hPa</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">/</span> <span class="mi">100</span> 
+
+    <span class="c1"># update units attribute</span>
+    <span class="n">da</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hPa&quot;</span> 
+
+    <span class="k">return</span> <span class="n">da</span>
+
+
+<span class="c1"># better function name welcome! </span>
+<span class="k">def</span> <span class="nf">_convert_mm_to_kg_m2_s1</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span> 
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds</span>
+    <span class="n">timestep_nseconds</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span>  <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">/</span> <span class="n">timestep_nseconds</span> <span class="c1"># mm to kg m^-2 s^-1  </span>
+
+    <span class="c1"># update units attribute</span>
+    <span class="n">da</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;kg m-2 s-1&quot;</span> 
+
+    <span class="k">return</span> <span class="n">da</span>
 </pre></div>
 
                 </article>
-
-
-
-
-
+              
+              
+              
+              
+              
                 <footer class="prev-next-footer">
-
+                  
 <div class="prev-next-area">
 </div>
                 </footer>
-
+              
             </div>
-
-
-
+            
+            
+              
                 <div class="bd-sidebar-secondary bd-toc"></div>
-
-
+              
+            
           </div>
           <footer class="bd-footer-content">
-
+            
           </footer>
-
+        
       </main>
     </div>
   </div>
-
+  
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
   <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
 <script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
-
+  
     <div class="footer-items__start">
-
+      
         <div class="footer-item">
 
   <p class="copyright">
-
+    
       © Copyright 2024, Cordex-BE team.
       <br/>
-
+    
   </p>
 </div>
-
+      
         <div class="footer-item">
 
   <p class="sphinx-version">
@@ -466,20 +675,20 @@ document.write(`
     <br/>
   </p>
 </div>
-
+      
     </div>
-
-
-
+  
+  
+  
     <div class="footer-items__end">
-
+      
         <div class="footer-item">
 <p class="theme-version">
   Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
 </p></div>
-
+      
     </div>
-
+  
 </div>
 
   </footer>
