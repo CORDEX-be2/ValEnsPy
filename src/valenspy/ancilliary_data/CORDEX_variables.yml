@@ -127,14 +127,10 @@ sftlf:
   standard_name: land_area_fraction
   long_name: Percentage of the Grid Cell Occupied by Land
   realm: atmos
-  
+
 #################################
 ## Atmosphere Tier 1 Variables ##
 #################################
 
 
 #To Do - Add Tier 1 and Tier 2 Variables
-
-###############################
-## Atmosphere Tier 2 Variables  ##
-###############################

@@ -446,16 +446,17 @@ First time using git/github? Read this small git <a class="reference internal" h
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
-<li><p>Create a conda environment and install the required packages.</p></li>
+<li><p>Create a conda environment and install the required packages.
+Note! Replace -n valenspy_dev with -p /path/to/conda/env if you want to install the environment in a specific location!</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>valenspy_dev<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.9<span class="w"> </span>poetry
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>valenspy_dev<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.9<span class="w"> </span><span class="nv">poetry</span><span class="o">=</span><span class="m">1</span>.8
 <span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>valenspy_dev
 </pre></div>
 </div>
 <p>Now install the required packages using poetry: All required packages are listed in the pyproject.toml file and will be installed automatically by poetry.</p>
 <blockquote>
 <div><p>[!WARNING]
-Make sure you are in the branch you want to work in before installing the packages as different branches may have different dependencies. The ‘dev’ branch is a good starting point.</p>
+Make sure you are in the branch you want to work in before installing the packages, as different branches may have different dependencies. The ‘dev’ branch is a good starting point.</p>
 </div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>ValEnsPy
 git<span class="w"> </span>checkout<span class="w"> </span>dev

@@ -11,9 +11,10 @@ files = Path(__file__).resolve().parent
 with open(files / "ancilliary_data" / "CORDEX_variables.yml") as file:
     CORDEX_VARIABLES = safe_load(file)
 
-#Expected metadata attributes
+# Expected metadata attributes
 MAIN_METADATA = ["Conventions", "history"]
 VARIABLE_METADATA = ["units", "standard_name", "long_name"]
+
 
 def cf_status(netCDF: Union[str, Path, xr.Dataset]) -> None:
     """
@@ -27,7 +28,11 @@ def cf_status(netCDF: Union[str, Path, xr.Dataset]) -> None:
 
     ds = _load_xarray(netCDF)
 
-    print("The file is {status}ValEnsPy CF compliant.".format(status="NOT " if not is_cf_compliant(ds) else ""))
+    print(
+        "The file is {status}ValEnsPy CF compliant.".format(
+            status="NOT " if not is_cf_compliant(ds) else ""
+        )
+    )
 
     non_cf_compliant_vars = []
     cf_compliant_vars = []
@@ -41,23 +46,28 @@ def cf_status(netCDF: Union[str, Path, xr.Dataset]) -> None:
             else:
                 unknown_vars.append(var)
 
-    print(f"{len(cf_compliant_vars)/len(ds.data_vars)*100:.2f}% of the variables are ValEnsPy CF compliant")
-    if cf_compliant_vars: 
+    print(
+        f"{len(cf_compliant_vars)/len(ds.data_vars)*100:.2f}% of the variables are ValEnsPy CF compliant"
+    )
+    if cf_compliant_vars:
         print(f"ValEnsPy CF compliant: {cf_compliant_vars}")
-    if non_cf_compliant_vars: 
+    if non_cf_compliant_vars:
         print(f"NOT ValEnsPy CF compliant: {non_cf_compliant_vars}")
-    if unknown_vars: 
+    if unknown_vars:
         print(f"Unknown to ValEnsPy: {unknown_vars}")
-    
+
     for var in non_cf_compliant_vars:
-        print(f"The following attributes are missing or incorrect for the variable {var}:")
+        print(
+            f"The following attributes are missing or incorrect for the variable {var}:"
+        )
         print("{:<15} {:<25} {:<25}".format("Attribute", "Actual", "Expected"))
-        print("-"*65)
+        print("-" * 65)
         for attr in VARIABLE_METADATA:
-            actual = ds[var].attrs.get(attr, 'Not present')
-            expected = CORDEX_VARIABLES.get(var).get(attr, 'Not present')
+            actual = ds[var].attrs.get(attr, "Not present")
+            expected = CORDEX_VARIABLES.get(var).get(attr, "Not present")
             if actual != expected:
                 print("{:<15} {:<25} {:<25}".format(attr, actual, expected))
+
 
 def is_cf_compliant(netCDF: Union[str, Path, xr.Dataset], verbose=False) -> bool:
     """
@@ -100,7 +110,11 @@ def is_cf_compliant(netCDF: Union[str, Path, xr.Dataset], verbose=False) -> bool
     )
     main_meta_data_ok = _check_main_metadata(ds)
     cordex_vars_data_ok = all(
-        [_check_variable_by_name(ds[var]) for var in ds.data_vars if var in CORDEX_VARIABLES]
+        [
+            _check_variable_by_name(ds[var])
+            for var in ds.data_vars
+            if var in CORDEX_VARIABLES
+        ]
     )
 
     if verbose:
@@ -110,9 +124,9 @@ def is_cf_compliant(netCDF: Union[str, Path, xr.Dataset], verbose=False) -> bool
             print("Main metadata is missing or incorrect")
         if not cordex_vars_data_ok:
             print("Variable attributes are missing or incorrect")
-    
 
     return var_meta_data_ok and main_meta_data_ok and cordex_vars_data_ok
+
 
 def _load_xarray(netCDF: Union[str, Path, xr.Dataset]):
     """
@@ -146,6 +160,7 @@ def _load_xarray(netCDF: Union[str, Path, xr.Dataset]):
     else:
         raise TypeError("The input is not a valid type")
     return ds
+
 
 def _check_variable_by_name(da: xr.DataArray):
     """

@@ -3,13 +3,13 @@
 # Format
 
 # CORDEX VariableName:
-#    obs_name: 
-#    obs_long_name: 
-#    obs_units: 
+#    obs_name:
+#    obs_long_name:
+#    obs_units:
 
 # More info on EOBS: https://www.ecad.eu/download/ensembles/download.php
 
-tas: 
+tas:
   obs_name: tg
   obs_long_name: daily mean temperature
   obs_units: Celcius
@@ -39,7 +39,7 @@ huss:
   obs_long_name: daily averaged relative humidity
   obs_units: "%"
 
-sfcWind: 
+sfcWind:
   obs_name: fg
   obs_long_name: daily mean wind speed
   obs_units: m/s
