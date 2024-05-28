@@ -66,7 +66,7 @@ def EOBS_to_CF(paths) -> xr.Dataset:
             elif (
                 obs_LOOKUP[var]["obs_units"] == "mm"
             ):  # ! note observations remain daily time frequency
-                ds[var] = _convert_mm_to_kg_m2_s1(ds[var])  # mm to kg m^-2 s^-1
+                ds[var] = _convert_mm_to_kg_m2s(ds[var])  # mm to kg m^-2 s^-1
 
             # update unit attribute
             ds[var].attrs["units"] = CORDEX_VARIABLES[var][
@@ -80,6 +80,7 @@ def EOBS_to_CF(paths) -> xr.Dataset:
             ds[var].attrs["long_name"] = CORDEX_VARIABLES[var][
                 "long_name"
             ]  # from the CORDEX look-up table
+            
             ds[var].attrs["original_name"] = obs_LOOKUP[var]["obs_name"]
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
@@ -93,6 +94,8 @@ def EOBS_to_CF(paths) -> xr.Dataset:
             ds[var].attrs[
                 "freq"
             ] = "daily"  # possible values: daily, hourly, monthly, yearly
+
+        
             ds[var].attrs["spatial_resolution"] = "0.1deg"
             ds[var].attrs["domain"] = "europe"
 
@@ -146,7 +149,7 @@ def ERA5_to_CF(file: Path) -> Path:
             elif obs_LOOKUP[var]['obs_units'] == 'hPa': 
                 ds[var] = _convert_hPa_to_Pa(ds[var]) # hPa to Pa
             elif obs_LOOKUP[var]['obs_units'] == 'mm': # ! note observations remain daily time frequency
-                ds[var] = _convert_mm_to_kg_m2_s1(ds[var]) # mm to kg m^-2 s^-1 
+                ds[var] = _convert_mm_to_kg_m2s(ds[var]) # mm to kg m^-2 s^-1 
 
             # update unit attribute
             ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"] # from the CORDEX look-up table 
@@ -292,7 +295,35 @@ def _convert_Pa_to_hPa(da: xr.DataArray):
 
 
 # better function name welcome!
-def _convert_mm_to_kg_m2_s1(da: xr.DataArray):
+def _convert_mm_to_kg_m2s(da: xr.DataArray):
+    """
+    Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The xarray DataArray to convert
+
+    Returns
+    -------
+    xr.DataArray
+        The  converted xarray DataArray
+    """
+
+    # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
+    timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
+
+    # do conversion
+    da = da / timestep_nseconds  # mm to kg m^-2 s^-1
+
+    # update units attribute
+    da["units"] = "kg m-2 s-1"
+
+    return da
+
+
+# better function name welcome!
+def _convert_mm_hr_to_kg_m2s(da: xr.DataArray):
     """
     Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
 
