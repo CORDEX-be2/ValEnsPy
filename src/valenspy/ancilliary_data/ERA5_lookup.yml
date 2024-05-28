@@ -1,5 +1,7 @@
 # ERA5 variable name conversion table based on CORDEX variables
 
+# Note: this table is not complete!
+
 # Format
 
 # CORDEX VariableName:
@@ -26,7 +28,7 @@ prsn:
     obs_units: m/hr
 
 prw:
-    obs_name: 
+    obs_name: tcwv
     obs_long_name: total_column_water_vapour
     obs_units: mm
 
@@ -46,12 +48,12 @@ mrso:
     obs_units: m
 
 mrros:
-    obs_name: 
+    obs_name: sro
     obs_long_name: surface_runoff
     obs_units: m/hr
 
 mrro:
-    obs_name: 
+    obs_name: ro
     obs_long_name: runoff
     obs_units: m/hr
 
@@ -71,17 +73,17 @@ tasmin:
     obs_units: K
 
 ts:
-    obs_name: 
+    obs_name: skt
     obs_long_name: skin_temperature
     obs_units: K
  
-evspsbl:
-    obs_name: 
+evspsbl: 
+    obs_name: e
     obs_long_name: evaporation
     obs_units: m/hr
 
-evspsblpot:
-    obs_name: 
+evspsblpot: 
+    obs_name: pev
     obs_long_name: potential_evaporation
     obs_units: m/hr
 
@@ -91,7 +93,7 @@ uas:
     obs_units: m/s
 
 sfcWind:
-    obs_name: 
+    obs_name: v10
     obs_long_name: 10m_v_component_of_wind
     obs_units: m/s
 

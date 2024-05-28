@@ -111,7 +111,66 @@ def ERA5_to_CF(file: Path) -> Path:
 
     # open the observation dataset
     ds = xr.open_mfdataset(file, combine='by_coords', chunks='auto')
+    
+    # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator? 
+    obsdata_name = "ERA5"
 
+    with open(src_path / "ancilliary_data" / Path(obsdata_name+"_lookup.yml")) as file:
+        obs_LOOKUP = safe_load(file)
+    
+    # make observation CF compliant
+
+    for var_obs in ds.data_vars: 
+
+        # Get the CORDEX variable in the observational dataset using the observational lookup table  
+        var = next((k for k, v in obs_LOOKUP.items() if v.get('obs_name') == var_obs), None)
+
+        if var: # Dont processes variables that are not in the lookup table.
+
+            # update variable name to CORDEX variable name
+            ds = ds.rename_vars({obs_LOOKUP[var]["obs_name"]: var})
+
+            # from here on, use CORDEX variable name to access data array and do rest of conversion
+
+            # Unit conversion - hard coded ERA5 units for units different to CORDEX: this needs to be made more autolatic for different units!
+            if (obs_LOOKUP[var]['obs_units'] == 'Celcius') or (obs_LOOKUP[var]['obs_units'] == 'degC'): 
+                ds[var] = _convert_Celcius_to_Kelvin(ds[var]) 
+            elif obs_LOOKUP[var]['obs_units'] == 'hPa': 
+                ds[var] = _convert_hPa_to_Pa(ds[var]) # hPa to Pa
+            elif obs_LOOKUP[var]['obs_units'] == 'mm': # ! note observations remain daily time frequency
+                ds[var] = _convert_mm_to_kg_m2_s1(ds[var]) # mm to kg m^-2 s^-1 
+
+            # update unit attribute
+            ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"] # from the CORDEX look-up table 
+
+            # add necessary metadata
+            ds[var].attrs["standard_name"]      = CORDEX_VARIABLES[var]["standard_name"]  # from the CORDEX look-up table
+            ds[var].attrs["long_name"]          = CORDEX_VARIABLES[var]["long_name"]  # from the CORDEX look-up table
+            ds[var].attrs["original_name"]      = obs_LOOKUP[var]["obs_name"]
+            ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
+
+            # rename dimensions
+            ds[var] = ds[var].rename({"latitude": "lat", "longitude": "lon"})
+
+            # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user? 
+            ds[var]['time'] = pd.to_datetime(ds[var].time)
+
+
+            # additional attributes -- hard coded for EOBS
+            if obsdata_name == 'E_OBS': 
+                
+                ds[var].attrs["freq"]               = "daily"  # possible values: daily, hourly, monthly, yearly
+                ds[var].attrs["spatial_resolution"] = "0.1deg"  
+                ds[var].attrs["domain"]             = "europe"
+            
+            elif obsdata_name == "ERA5": 
+                
+                ds[var].attrs["freq"]               = "daily"  # possible values: daily, hourly, monthly, yearly
+                ds[var].attrs["spatial_resolution"] = "0.1deg"  
+                ds[var].attrs["domain"]             = "europe"
+            
+
+   
     # Soft check for CF compliance 
     cf_status(ds)
     
