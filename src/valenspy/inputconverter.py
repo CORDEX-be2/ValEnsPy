@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Callable, Union
+from valenspy.inputconverter_functions import EOBS_to_CF, ERA5_to_CF
 
 
 class InputConverter:
@@ -28,6 +29,8 @@ class InputConverter:
 
         return paths
 
+
+INPUT_CONVERTORS = {"ERA5": InputConverter(ERA5_to_CF), "EOBS": InputConverter(EOBS_to_CF)}
 
 # Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.
 
