@@ -87,18 +87,21 @@ def EOBS_to_CF(paths) -> xr.Dataset:
             # rename dimensions
             ds = ds.rename({"latitude": "lat", "longitude": "lon"})
 
-            # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
+            # convert the time dimension to a pandas datetime index 
             ds[var]["time"] = pd.to_datetime(ds[var].time)
 
-            # additional attributes -- hard coded for EOBS
-            ds[var].attrs[
-                "freq"
-            ] = "daily"  # possible values: daily, hourly, monthly, yearly
-
+            # additional attributes, both global (dataset) and data-array level -- hard coded for EOBS
+            ds[var].attrs["freq"] = "daily"  
+            ds.attrs["freq"]      = "daily" 
         
             ds[var].attrs["spatial_resolution"] = "0.1deg"
+            ds[var].attrs["spatial_resolution"] = "0.1deg"
+
             ds[var].attrs["domain"]             = "europe"
+            ds.attrs["domain"]                  = "europe"
+
             ds[var].attrs["dataset"]            = obsdata_name
+            ds.attrs["dataset"]                 = obsdata_name
 
     # Soft check for CF compliance
     cf_status(ds)
@@ -185,26 +188,40 @@ def ERA5_to_CF(file: Path) -> Path:
             ds[var]['time'] = pd.to_datetime(ds[var].time)
 
 
-            # additional attributes --         
+            # additional attributes -- set both globally at dataset level as at data array level.          
             if obsdata_name == "ERA5": 
 
                 # Extract relevant parts assuming freq and domain are always after the first dash and second dash respectively
                 ds[var].attrs["freq"]               = filename_parts[1] if len(filename_parts) > 1 else None  # read from file name 
+                ds.attrs["freq"]                    = filename_parts[1] if len(filename_parts) > 1 else None  # read from file name 
+                
                 ds[var].attrs["domain"]             = filename_parts[2] if len(filename_parts) > 2 else None
+                ds.attrs["domain"]                  = filename_parts[2] if len(filename_parts) > 2 else None
+                
                 ds[var].attrs["dataset"]            = obsdata_name
+                ds.attrs["dataset"]                 = obsdata_name
+                
+                ds[var].attrs["spatial_resolution"] = "0.25deg"  # hard coded spatial resolution
+                ds.attrs["spatial_resolution"]      = "0.25deg"  # hard coded spatial resolution
 
-                # hard coded spatial resolution
-                ds[var].attrs["spatial_resolution"] = "0.25deg"  
             
             elif obsdata_name == "ERA5-Land": 
 
                 # Extract relevant parts assuming freq and domain are always after the second dash and third dash respectively
                 ds[var].attrs["freq"]               = filename_parts[2] if len(filename_parts) > 2 else None  # read from file name 
-                ds[var].attrs["domain"]             = filename_parts[3] if len(filename_parts) > 3 else None
+                ds.attrs["freq"]                    = filename_parts[2] if len(filename_parts) > 2 else None  # read from file name 
 
-                # hard coded spatial resolution
-                ds[var].attrs["spatial_resolution"] = "0.1deg"  
+                ds[var].attrs["domain"]             = filename_parts[3] if len(filename_parts) > 3 else None
+                ds.attrs["domain"]                  = filename_parts[3] if len(filename_parts) > 3 else None
+
                 ds[var].attrs["dataset"]            = obsdata_name
+                ds.attrs["dataset"]                 = obsdata_name
+                
+                ds[var].attrs["spatial_resolution"] = "0.1deg"  # hard coded
+                ds.attrs["spatial_resolution"]      = "0.1deg"  # hard coded
+
+                # set global attributes too
+
    
     # Soft check for CF compliance 
     cf_status(ds)
