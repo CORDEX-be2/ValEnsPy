@@ -85,7 +85,7 @@ def EOBS_to_CF(paths) -> xr.Dataset:
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
             # rename dimensions
-            ds[var] = ds[var].rename({"latitude": "lat", "longitude": "lon"})
+            ds = ds.rename({"latitude": "lat", "longitude": "lon"})
 
             # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
             ds[var]["time"] = pd.to_datetime(ds[var].time)
@@ -179,7 +179,7 @@ def ERA5_to_CF(file: Path) -> Path:
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
             # rename dimensions
-            ds[var] = ds[var].rename({"latitude": "lat", "longitude": "lon"})
+            ds = ds.rename({"latitude": "lat", "longitude": "lon"})
 
             # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user? 
             ds[var]['time'] = pd.to_datetime(ds[var].time)
