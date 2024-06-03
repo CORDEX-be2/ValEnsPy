@@ -101,6 +101,31 @@ def EOBS_to_CF(paths) -> xr.Dataset:
 
     return ds
 
+def ERA5_to_CF(file: Path) -> Path:
+
+    """
+    Convert the ERA5 netCDF file to a xarray Dataset in CF convention 
+
+    Parameters
+    ----------
+    file : Path
+        The path to the netCDF file of specific variable to convert 
+    
+    Returns
+    -------
+    Dataset
+        The CF compliant EOBS observations for the specified variable.
+    """
+
+    # open the observation dataset
+    ds = xr.open_mfdataset(file, combine='by_coords', chunks='auto')
+
+    # Soft check for CF compliance 
+    cf_status(ds)
+    
+    return ds
+
+
 
 # helper functions for unit conversion - can be moved to more appropriate place
 
