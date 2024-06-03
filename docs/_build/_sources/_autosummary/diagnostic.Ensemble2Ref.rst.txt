@@ -1,0 +1,28 @@
+diagnostic.Ensemble2Ref
+=======================
+
+.. currentmodule:: diagnostic
+
+.. autoclass:: Ensemble2Ref
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+
+   .. automethod:: __init__
+
+
+   .. rubric:: Methods
+
+   .. autosummary::
+
+      ~Ensemble2Ref.__init__
+      ~Ensemble2Ref.apply
+      ~Ensemble2Ref.from_model2ref
+      ~Ensemble2Ref.visualize
+
+
+
+
+
+

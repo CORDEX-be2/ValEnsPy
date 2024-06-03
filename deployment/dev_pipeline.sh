@@ -27,7 +27,6 @@ poetry add pandas
 poetry add shapely
 poetry add xarray-datatree
 poetry add matplotlib
-poetry add netcdf4
 
 #add to dev (= development) group
 poetry add --group dev 'pre-commit'
