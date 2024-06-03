@@ -1,6 +1,8 @@
 # ERA5 variable name conversion table based on CORDEX variables
 
-# Note: this table is not complete!
+# Note: this table is based on the var_era5_cordex.csv table of Bert Van Schaeybroeck. 
+# This is not complete, when downloading or using additional ERA5(-Land) data, this needs to be filled.
+# please push the additions, so that they become usefull for future users.  
 
 # Format
 
@@ -10,20 +12,18 @@
 #    obs_units: 
 
 # More info on ERA5: https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview
+# Overview of ERA5 parameter listings: https://confluence.ecmwf.int/display/CKB/ERA5%3A+data+documentation#ERA5:datadocumentation-Parameterlistings 
 # ERA5-Land: https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview
+# Overview of ERA5-Land parameter listings: https://confluence.ecmwf.int/display/CKB/ERA5-Land%3A+data+documentation#ERA5Land:datadocumentation-parameterlistingParameterlistings 
+
 
 pr: 
     obs_name: tp
     obs_long_name: total_precipitation
     obs_units: m/hr
 
-prhmax:
-    obs_name: 
-    obs_long_name: total_precipitation_max
-    obs_units: m/hr
-
 prsn: 
-    obs_name: 
+    obs_name: sf
     obs_long_name: snowfall
     obs_units: m/hr
 
@@ -33,18 +33,13 @@ prw:
     obs_units: mm
 
 snw:
-    obs_name: 
+    obs_name: sd
     obs_long_name: snow_depth
     obs_units: cm
 
 snd:
-    obs_name: 
+    obs_name: sd
     obs_long_name: snow_depth_water_equivalent
-    obs_units: m
-
-mrso:
-    obs_name: 
-    obs_long_name: volumetric_soil_water_layer_1
     obs_units: m
 
 mrros:
@@ -60,16 +55,6 @@ mrro:
 tas:
     obs_name: t2m
     obs_long_name: 2m_temperature
-    obs_units: K
-
-tasmax:
-    obs_name: 
-    obs_long_name: 2m_temperature_max
-    obs_units: K
-
-tasmin: 
-    obs_name: 
-    obs_long_name: 2m_temperature_min
     obs_units: K
 
 ts:
@@ -88,23 +73,14 @@ evspsblpot:
     obs_units: m/hr
 
 uas:
-    obs_name: 
-    obs_long_name: 10m_w_component_of_wind
+    obs_name: 10u
+    obs_long_name: 10m_u_component_of_wind
     obs_units: m/s
 
 sfcWind:
-    obs_name: v10
+    obs_name: 10v
     obs_long_name: 10m_v_component_of_wind
-    obs_units: m/s
-
-sfcWindmax:
-    obs_long_name: 10m_w_component_of_wind_max
-    obs_units: m/s
-
-wsgsmax:
-    obs_name: 
-    obs_long_name: 10m_wind_gust_since_previous_post_processing_max
-    obs_units: m/s
+    obs_units: m/s 
 
 hfls: 
     obs_name: slhf
@@ -152,6 +128,42 @@ rsdt:
     obs_units: J/m^2
 
 hurs: 
-    obs_long_name: 
-    obs_units: 
+    obs_name: r
+    obs_long_name: relative_humidity
+    obs_units: '%'
 
+
+# Variables to double check when needed by user. 
+
+# aggregation
+prhmax:
+    obs_name: 
+    obs_long_name: total_precipitation_max
+    obs_units: m/hr
+
+tasmax:
+    obs_name: 
+    obs_long_name: 2m_temperature_max
+    obs_units: K
+
+tasmin: 
+    obs_name: 
+    obs_long_name: 2m_temperature_min
+    obs_units: K
+
+sfcWindmax:
+    obs_name: 
+    obs_long_name: 10m_w_component_of_wind_max
+    obs_units: m/s
+
+# is cordex unit correct? 
+wsgsmax:
+    obs_name: 10fg
+    obs_long_name: 10m_wind_gust_since_previous_post_processing_max
+    obs_units: m/s
+
+# mrso is total soil moisture content in CORDEX, not corresponding to volumetric_soil_water of first layer + check units! 
+ mrso:
+    obs_name: 
+    obs_long_name: volumetric_soil_water_layer_1
+    obs_units: m
