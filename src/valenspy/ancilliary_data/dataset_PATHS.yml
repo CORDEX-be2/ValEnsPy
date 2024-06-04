@@ -1,0 +1,13 @@
+# Paths to datasets on different machines
+# For now, only for observational data, later to be added more
+
+# Format
+
+# machine:
+#    dataset_name : path
+
+hortense:
+  ERA5:         /dodrio/scratch/projects/2022_200/project_input/External/observations/era5/
+  ERA5-Land:    /dodrio/scratch/projects/2022_200/project_input/External/observations/era5-land/
+  EOBS:         /dodrio/scratch/projects/2022_200/project_input/External/observations/EOBS/0.1deg/
+  CLIMATE_GRID: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/CLIMATE_GRID
