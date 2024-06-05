@@ -3,6 +3,8 @@ from yaml import safe_load
 from pathlib import Path
 from itertools import permutations
 import xarray as xr
+import re
+import glob
 
 from valenspy.inputconverter import INPUT_CONVERTORS
 
@@ -19,7 +21,7 @@ class InputManager:
         self.machine = machine
         self.dataset_paths = DATASET_PATHS[machine]
 
-    def load_data(self, dataset_name, variables=["tas"], period=None, freq="daily", cf_convert=True, path_identifiers=[]):
+    def load_data(self, dataset_name, variables=["tas"], period=None, freq=None, cf_convert=True, path_identifiers=[]):
         """
         Load the data for the specified dataset, variables, period and frequency and transform it into ValEnsPy CF-Compliant format.
         
@@ -73,15 +75,18 @@ class InputManager:
             files = self._get_file_paths(dataset_name, variables=variables, period=period, freq=freq, path_identifiers=path_identifiers)
             if not files:
                 raise FileNotFoundError(f"No files found for dataset {dataset_name}, variables {variables}, period {period}, frequency {freq} and path_identifiers {path_identifiers}.")
+            print("File paths found:")
+            for f in files:
+                print(f)
             if cf_convert:
                 input_converter = INPUT_CONVERTORS[dataset_name]
                 ds = input_converter.convert_input(files)
             else:
-                ds = xr.open_mfdataset(files)
+                ds = xr.open_mfdataset(files, chunks="auto")
         return ds
            
 
-    def _get_file_paths(self, dataset_name, variables=["tas"], period=None, freq="daily", path_identifiers=[]):
+    def _get_file_paths(self, dataset_name, variables=["tas"], period=None, freq=None, path_identifiers=[]):
         """Get the file paths for the specified dataset, variables, period and frequency."""
         with open(src_path / "ancilliary_data" / f"{dataset_name}_lookup.yml") as file:
             obs_LOOKUP = safe_load(file)
@@ -89,23 +94,20 @@ class InputManager:
         file_paths = []
         for variable in variables:
             obs_long_name = obs_LOOKUP[variable]["obs_long_name"]
+            obs_name = obs_LOOKUP[variable]["obs_name"]
+            var_regex = f"({obs_long_name}|{obs_name}_|{variable}_)"
+            components = [var_regex]+path_identifiers
             if period:
-                for year in range(period[0], period[1]+1):
-                    for pattern in generate_regex([obs_long_name, year, freq] + path_identifiers):
-                        file_paths+=dataset_path.glob(pattern)
-            else:
-                for pattern in generate_regex([obs_long_name, freq] + path_identifiers):
-                    file_paths+=dataset_path.glob(pattern)
-        return set(file_paths)
+                year_regex = f"({'|'.join([str(year) for year in range(period[0], period[1]+1)])})"
+                components.append(year_regex)
+            if freq:
+                components.append(freq)
+            file_paths+=[f for f in dataset_path.glob("**/*.nc") if all(re.search(f"{dataset_path}/.*{component}.*", str(f)) for component in components)]
+
+        return list(set(file_paths))
 
     def _is_valid_dataset_name(self, dataset_name):
         """Check if the dataset name is valid for the machine."""
         if not dataset_name in self.dataset_paths:
             raise ValueError(f"Dataset name {dataset_name} is not valid for machine {self.machine}. Valid dataset names are {list(self.dataset_paths.keys())}. See dataset_PATHS.yml.")
         return True
-
-def generate_regex(components, extension=".nc"):
-    """Generate regex patterns for all permutations of the components with the given extension."""
-    perm = permutations([str(c) for c in components])    
-    patterns = [f"**/*{'*'.join(p)}*{extension}" for p in perm]
-    return patterns
