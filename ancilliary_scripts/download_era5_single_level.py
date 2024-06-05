@@ -1,4 +1,4 @@
-# Script to download ERA5
+# Script to download ERA5 or ERA5-Land
 """
 Python script to download ERA5 through the CDS API
 
@@ -9,9 +9,10 @@ Adapted for Hortense, direct download to the shared s4c project_input folder of 
 Resolution of ERA5: 0.25° x 0.25° 
 Horizontal resolution ERA5-Land: 0.1° x 0.1° 
 
-credits: based on the "era_single_level by Bert Van Schaeybroeck, edited by Inne Vanderkelen, May 2024 
+credits: based on the era_single_level by Bert Van Schaeybroeck, edited by Inne Vanderkelen, May 2024 
 
 """
+
 
 
 import cdsapi
