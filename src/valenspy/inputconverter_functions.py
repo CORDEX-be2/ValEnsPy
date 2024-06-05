@@ -68,11 +68,6 @@ def EOBS_to_CF(paths) -> xr.Dataset:
             ):  # ! note observations remain daily time frequency
                 ds[var] = _convert_mm_to_kg_m2s(ds[var])  # mm to kg m^-2 s^-1
 
-            # update unit attribute
-            ds[var].attrs["units"] = CORDEX_VARIABLES[var][
-                "units"
-            ]  # from the CORDEX look-up table
-
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
                 "standard_name"
@@ -84,24 +79,26 @@ def EOBS_to_CF(paths) -> xr.Dataset:
             ds[var].attrs["original_name"] = obs_LOOKUP[var]["obs_name"]
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
-            # rename dimensions
-            ds = ds.rename({"latitude": "lat", "longitude": "lon"})
+            # rename dimensions if not yet renamed
+            if "lon" not in ds.coords: 
+                ds = ds.rename({"longitude": "lon"})
+            if "lat" not in ds.coords: 
+                ds = ds.rename({"latitude": "lat"})
 
             # convert the time dimension to a pandas datetime index
             ds[var]["time"] = pd.to_datetime(ds[var].time)
 
-            # additional attributes, both global (dataset) and data-array level -- hard coded for EOBS
+            # additional attributes, on data-array level -- hard coded for EOBS
             ds[var].attrs["freq"] = "daily"
-            ds.attrs["freq"] = "daily"
-
             ds[var].attrs["spatial_resolution"] = "0.1deg"
-            ds[var].attrs["spatial_resolution"] = "0.1deg"
-
             ds[var].attrs["region"] = "europe"
-            ds.attrs["region"] = "europe"
-
             ds[var].attrs["dataset"] = obsdata_name
-            ds.attrs["dataset"] = obsdata_name
+    
+    # set global attributes for whole dataset
+    ds.attrs["freq"] = "daily"
+    ds.attrs["spatial_resolution"] = "0.1deg"
+    ds.attrs["region"] = "europe"
+    ds.attrs["dataset"] = obsdata_name
 
     # Soft check for CF compliance
     cf_status(ds)
@@ -184,11 +181,6 @@ def ERA5_to_CF(file: Path) -> Path:
                     ds[var]
                 )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
 
-            # update unit attribute
-            ds[var].attrs["units"] = CORDEX_VARIABLES[var][
-                "units"
-            ]  # from the CORDEX look-up table
-
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
                 "standard_name"
@@ -199,38 +191,43 @@ def ERA5_to_CF(file: Path) -> Path:
             ds[var].attrs["original_name"] = obs_LOOKUP[var]["obs_name"]
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
-            # rename dimensions
-            ds = ds.rename({"latitude": "lat", "longitude": "lon"})
+            # rename dimensions if not yet renamed
+            if "lon" not in ds[var].coords: 
+                ds = ds.rename({"longitude": "lon"})
+            if "lat" not in ds[var].coords: 
+                ds = ds.rename({"latitude": "lat"})
 
             # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
             ds[var]["time"] = pd.to_datetime(ds[var].time)
 
-            # additional attributes -- set both globally at dataset level as at data array level.
+            # additional attributes at data array level.
          
-
             # Extract relevant parts assuming freq and region are always after the second dash and third dash respectively
             ds[var].attrs["freq"] = (
                 filename_parts[2] if len(filename_parts) > 2 else None
             )  # read from file name
-            ds.attrs["freq"] = (
-                filename_parts[2] if len(filename_parts) > 2 else None
-            )  # read from file name
+  # read from file name
 
             ds[var].attrs["region"] = (
                 filename_parts[3] if len(filename_parts) > 3 else None
             )
-            ds.attrs["region"] = (
-                filename_parts[3] if len(filename_parts) > 3 else None
-            )
 
             ds[var].attrs["dataset"] = obsdata_name
-            ds.attrs["dataset"] = obsdata_name
 
             ds[var].attrs["spatial_resolution"] = "0.1deg"  # hard coded
-            ds.attrs["spatial_resolution"]      = "0.1deg"  # hard coded
 
             # set global attributes too
+    
 
+    # set attributes in whole dataset 
+    ds.attrs["dataset"] = obsdata_name
+    ds.attrs["spatial_resolution"]      = "0.1deg"  # hard coded
+    ds.attrs["freq"] = (
+        filename_parts[2] if len(filename_parts) > 2 else None
+    )
+    ds.attrs["region"] = (
+        filename_parts[3] if len(filename_parts) > 3 else None
+    )
     # Soft check for CF compliance
     cf_status(ds)
 
@@ -238,7 +235,7 @@ def ERA5_to_CF(file: Path) -> Path:
 
 
 
-def ERA5-Land_to_CF(file: Path) -> Path:
+def ERA5Land_to_CF(file: Path) -> Path:
     """
     Convert the ERA5-Land netCDF file to a xarray Dataset in CF convention
 
@@ -313,11 +310,6 @@ def ERA5-Land_to_CF(file: Path) -> Path:
                     ds[var]
                 )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
 
-            # update unit attribute
-            ds[var].attrs["units"] = CORDEX_VARIABLES[var][
-                "units"
-            ]  # from the CORDEX look-up table
-
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
                 "standard_name"
@@ -328,8 +320,11 @@ def ERA5-Land_to_CF(file: Path) -> Path:
             ds[var].attrs["original_name"] = obs_LOOKUP[var]["obs_name"]
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
-            # rename dimensions
-            ds = ds.rename({"latitude": "lat", "longitude": "lon"})
+            # rename dimensions if not yet renamed
+            if "lon" not in ds.coords: 
+                ds = ds.rename({"longitude": "lon"})
+            if "lat" not in ds.coords: 
+                ds = ds.rename({"latitude": "lat"})
 
             # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
             ds[var]["time"] = pd.to_datetime(ds[var].time)
@@ -411,7 +406,7 @@ def _convert_Celcius_to_Kelvin(da: xr.DataArray):
     da = da + 273.15  # Celcius to Kelvin
 
     # update units attribute --  naming of units defined in ./src/valenspy/ancilliary_data/CORDEX_variables.yml
-    da["units"] = "K"
+    da.attrs["units"] = "K"
 
     return da
 
@@ -435,7 +430,7 @@ def _convert_Kelvin_to_Celcius(da: xr.DataArray):
     da = da - 273.15  # Kelvin to Celcius
 
     # update units attribute
-    da["units"] = "°C"
+    da.attrs["units"] = "°C"
 
     return da
 
@@ -459,7 +454,7 @@ def _convert_hPa_to_Pa(da: xr.DataArray):
     da = da * 100
 
     # update units attribute
-    da["units"] = "Pa"
+    da.attrs["units"] = "Pa"
 
     return da
 
@@ -483,7 +478,7 @@ def _convert_Pa_to_hPa(da: xr.DataArray):
     da = da / 100
 
     # update units attribute
-    da["units"] = "hPa"
+    da.attrs["units"] = "hPa"
 
     return da
 
@@ -510,7 +505,7 @@ def _convert_mm_to_kg_m2s(da: xr.DataArray):
     da = da / timestep_nseconds  # mm to kg m^-2 s^-1
 
     # update units attribute
-    da["units"] = "kg m-2 s-1"
+    da.attrs["units"] = "kg m-2 s-1"
 
     return da
 
@@ -534,7 +529,7 @@ def _convert_m_to_kg_m2s(da: xr.DataArray):
     da = da * 1000 / 3600  # mm hr^-1 to kg m^-2 s^-1
 
     # update units attribute
-    da["units"] = "kg m-2 s-1"
+    da.attrs["units"] = "kg m-2 s-1"
 
     return da
 
@@ -563,6 +558,6 @@ def _convert_J_m2_to_W_m2(da: xr.DataArray):
     da = da / timestep_nseconds  # J m^2 to W m^2
 
     # update units attribute
-    da["units"] = "W m-2"
+    da.attrs["units"] = "W m-2"
 
     return da
