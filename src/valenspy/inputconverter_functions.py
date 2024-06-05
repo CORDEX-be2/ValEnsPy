@@ -97,8 +97,8 @@ def EOBS_to_CF(paths) -> xr.Dataset:
             ds[var].attrs["spatial_resolution"] = "0.1deg"
             ds[var].attrs["spatial_resolution"] = "0.1deg"
 
-            ds[var].attrs["domain"] = "europe"
-            ds.attrs["domain"] = "europe"
+            ds[var].attrs["region"] = "europe"
+            ds.attrs["region"] = "europe"
 
             ds[var].attrs["dataset"] = obsdata_name
             ds.attrs["dataset"] = obsdata_name
@@ -121,7 +121,7 @@ def ERA5_to_CF(file: Path) -> Path:
     Returns
     -------
     Dataset
-        The CF compliant EOBS observations for the specified variable.
+        The CF compliant ERA5 observations for the specified variable.
     """
 
     # based on the filename in the path, get the name of the dataset
@@ -131,10 +131,8 @@ def ERA5_to_CF(file: Path) -> Path:
     # Split the directory name by '-' (! era and land are also separated by '-', so order is different from era5)
     filename_parts = filename.split("-")
 
-    if filename_parts[1] == "land":
-        obsdata_name = "ERA5-Land"
-    else:
-        obsdata_name = "ERA5"
+    obsdata_name = "ERA5"
+
 
     # open the observation dataset
     ds = xr.open_mfdataset(file, combine="by_coords", chunks="auto")
@@ -208,57 +206,156 @@ def ERA5_to_CF(file: Path) -> Path:
             ds[var]["time"] = pd.to_datetime(ds[var].time)
 
             # additional attributes -- set both globally at dataset level as at data array level.
-            if obsdata_name == "ERA5":
+         
 
-                # Extract relevant parts assuming freq and domain are always after the first dash and second dash respectively
-                ds[var].attrs["freq"] = (
-                    filename_parts[1] if len(filename_parts) > 1 else None
-                )  # read from file name
-                ds.attrs["freq"] = (
-                    filename_parts[1] if len(filename_parts) > 1 else None
-                )  # read from file name
+            # Extract relevant parts assuming freq and region are always after the second dash and third dash respectively
+            ds[var].attrs["freq"] = (
+                filename_parts[2] if len(filename_parts) > 2 else None
+            )  # read from file name
+            ds.attrs["freq"] = (
+                filename_parts[2] if len(filename_parts) > 2 else None
+            )  # read from file name
 
-                ds[var].attrs["domain"] = (
-                    filename_parts[2] if len(filename_parts) > 2 else None
-                )
-                ds.attrs["domain"] = (
-                    filename_parts[2] if len(filename_parts) > 2 else None
-                )
+            ds[var].attrs["region"] = (
+                filename_parts[3] if len(filename_parts) > 3 else None
+            )
+            ds.attrs["region"] = (
+                filename_parts[3] if len(filename_parts) > 3 else None
+            )
 
-                ds[var].attrs["dataset"] = obsdata_name
-                ds.attrs["dataset"] = obsdata_name
+            ds[var].attrs["dataset"] = obsdata_name
+            ds.attrs["dataset"] = obsdata_name
 
-                ds[var].attrs[
-                    "spatial_resolution"
-                ] = "0.25deg"  # hard coded spatial resolution
-                ds.attrs["spatial_resolution"] = (
-                    "0.25deg"  # hard coded spatial resolution
-                )
+            ds[var].attrs["spatial_resolution"] = "0.1deg"  # hard coded
+            ds.attrs["spatial_resolution"]      = "0.1deg"  # hard coded
 
-            elif obsdata_name == "ERA5-Land":
+            # set global attributes too
 
-                # Extract relevant parts assuming freq and domain are always after the second dash and third dash respectively
-                ds[var].attrs["freq"] = (
-                    filename_parts[2] if len(filename_parts) > 2 else None
-                )  # read from file name
-                ds.attrs["freq"] = (
-                    filename_parts[2] if len(filename_parts) > 2 else None
-                )  # read from file name
+    # Soft check for CF compliance
+    cf_status(ds)
 
-                ds[var].attrs["domain"] = (
-                    filename_parts[3] if len(filename_parts) > 3 else None
-                )
-                ds.attrs["domain"] = (
-                    filename_parts[3] if len(filename_parts) > 3 else None
-                )
+    return ds
 
-                ds[var].attrs["dataset"] = obsdata_name
-                ds.attrs["dataset"] = obsdata_name
 
-                ds[var].attrs["spatial_resolution"] = "0.1deg"  # hard coded
-                ds.attrs["spatial_resolution"] = "0.1deg"  # hard coded
 
-                # set global attributes too
+def ERA5-Land_to_CF(file: Path) -> Path:
+    """
+    Convert the ERA5-Land netCDF file to a xarray Dataset in CF convention
+
+    Parameters
+    ----------
+    file : Path
+        The path to the netCDF file of specific variable to convert
+
+    Returns
+    -------
+    Dataset
+        The CF compliant ERA5-Land observations for the specified variable.
+    """
+
+    # based on the filename in the path, get the name of the dataset
+    # Extract the relevant file name
+    filename = file[0].stem
+
+    # Split the directory name by '-' (! era and land are also separated by '-', so order is different from era5)
+    filename_parts = filename.split("-")
+
+    obsdata_name = "ERA5-Land"
+
+
+    # open the observation dataset
+    ds = xr.open_mfdataset(file, combine="by_coords", chunks="auto")
+
+    # open observational specific lookup dictionary
+    with open(src_path / "ancilliary_data" / Path("ERA5_lookup.yml")) as lookup_file:
+        obs_LOOKUP = safe_load(lookup_file)
+
+    # make observation CF compliant
+    for var_obs in ds.data_vars:
+
+        # Get the CORDEX variable in the observational dataset using the observational lookup table
+        var = next(
+            (k for k, v in obs_LOOKUP.items() if v.get("obs_name") == var_obs), None
+        )
+
+        if var:  # Dont processes variables that are not in the lookup table.
+
+            # update variable name to CORDEX variable name
+            ds = ds.rename_vars({obs_LOOKUP[var]["obs_name"]: var})
+
+            # from here on, use CORDEX variable name to access data array and do rest of conversion
+
+            # Unit conversion - hard coded ERA5 units for CORDEX CORE, double check beyond.
+            if (obs_LOOKUP[var]["obs_units"] == "Celcius") or (
+                obs_LOOKUP[var]["obs_units"] == "degC"
+            ):
+                ds[var] = _convert_Celcius_to_Kelvin(ds[var])
+
+            elif obs_LOOKUP[var]["obs_units"] == "hPa":
+                ds[var] = _convert_hPa_to_Pa(ds[var])  # hPa to Pa
+
+            elif (obs_LOOKUP[var]["obs_units"] == "mm") or (
+                obs_LOOKUP[var]["obs_units"] == "mm/hr"
+            ):
+                ds[var] = _convert_mm_to_kg_m2s(
+                    ds[var]
+                )  # mm to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
+
+            elif (obs_LOOKUP[var]["obs_units"] == "m") or (
+                obs_LOOKUP[var]["obs_units"] == "m/hr"
+            ):
+                ds[var] = _convert_m_to_kg_m2s(
+                    ds[var]
+                )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
+
+            elif obs_LOOKUP[var]["obs_units"] == "J/m^2":
+                ds[var] = _convert_m_to_kg_m2s(
+                    ds[var]
+                )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
+
+            # update unit attribute
+            ds[var].attrs["units"] = CORDEX_VARIABLES[var][
+                "units"
+            ]  # from the CORDEX look-up table
+
+            # add necessary metadata
+            ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
+                "standard_name"
+            ]  # from the CORDEX look-up table
+            ds[var].attrs["long_name"] = CORDEX_VARIABLES[var][
+                "long_name"
+            ]  # from the CORDEX look-up table
+            ds[var].attrs["original_name"] = obs_LOOKUP[var]["obs_name"]
+            ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
+
+            # rename dimensions
+            ds = ds.rename({"latitude": "lat", "longitude": "lon"})
+
+            # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
+            ds[var]["time"] = pd.to_datetime(ds[var].time)
+
+            # additional attributes -- set both globally at dataset level as at data array level
+
+            # Extract relevant parts assuming freq and region are always after the second dash and third dash respectively
+            ds[var].attrs["freq"] = (
+                filename_parts[2] if len(filename_parts) > 2 else None
+            )  # read from file name
+            ds.attrs["freq"] = (
+                filename_parts[2] if len(filename_parts) > 2 else None
+            )  # read from file name
+
+            ds[var].attrs["region"] = (
+                filename_parts[3] if len(filename_parts) > 3 else None
+            )
+            ds.attrs["region"] = (
+                filename_parts[3] if len(filename_parts) > 3 else None
+            )
+
+            ds[var].attrs["dataset"] = obsdata_name
+            ds.attrs["dataset"] = obsdata_name
+
+            ds[var].attrs["spatial_resolution"] = "0.1deg"  # hard coded
+            ds.attrs["spatial_resolution"] = "0.1deg"  # hard coded
 
     # Soft check for CF compliance
     cf_status(ds)
