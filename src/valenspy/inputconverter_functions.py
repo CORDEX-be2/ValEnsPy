@@ -11,12 +11,12 @@ with open(src_path / "ancilliary_data" / "CORDEX_variables.yml") as file:
     CORDEX_VARIABLES = safe_load(file)
 
 
-def _non_convertor(paths):
+def _non_convertor(paths,  metadata_info=None: dict):
     """A dummy function that does not convert the input paths."""
     return xr.open_mfdataset(paths, combine="by_coords", chunks="auto")
 
 
-def EOBS_to_CF(paths) -> xr.Dataset:
+def EOBS_to_CF(paths,  metadata_info=None: dict) -> xr.Dataset:
     """
     Convert the EOBS netCDF paths to an xarray netCDF in CF convention
 
@@ -235,7 +235,7 @@ def ERA5_to_CF(file: Path, metadata_info=None: dict) -> Path:
 
 
 
-def ERA5Land_to_CF(file: Path) -> Path:
+def ERA5Land_to_CF(file: Path,  metadata_info=None: dict) -> Path:
     """
     Convert the ERA5-Land netCDF file to a xarray Dataset in CF convention
 
@@ -358,7 +358,7 @@ def ERA5Land_to_CF(file: Path) -> Path:
     return ds
 
 
-def CLIMATE_GRID_to_CF(paths) -> xr.Dataset:
+def CLIMATE_GRID_to_CF(paths,  metadata_info=None: dict) -> xr.Dataset:
     """
     Convert the CLIMATE_GRID netCDF paths to an xarray netCDF in CF convention
 
