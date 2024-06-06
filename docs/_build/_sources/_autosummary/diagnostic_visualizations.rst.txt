@@ -15,13 +15,3 @@ diagnostic\_visualizations
       :toctree:
 
       plot_spatial_bias
-
-
-
-
-
-
-
-
-
-
