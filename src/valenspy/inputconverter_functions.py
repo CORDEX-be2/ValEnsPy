@@ -106,7 +106,7 @@ def EOBS_to_CF(paths) -> xr.Dataset:
     return ds
 
 
-def ERA5_to_CF(file: Path) -> Path:
+def ERA5_to_CF(file: Path, metadata_info=None: dict) -> Path:
     """
     Convert the ERA5 netCDF file to a xarray Dataset in CF convention
 
