@@ -1,7 +1,9 @@
 
 # personal testing notebooks
 notebooks/
-
+examples/Belgium_shapefile/
+examples/DTM_20m/
+examples/precipitation_plots/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
