@@ -221,7 +221,7 @@ def ERA5_to_CF(file: Path, metadata_info=None) -> Path:
 
             # if not, include hard-coded attributes (dataset dependent!)
             else: 
-                ds[var].attrs["freq"] = determine_time_interval(ds[var])
+                ds[var].attrs["freq"] = _determine_time_interval(ds[var])
     
 
 
@@ -235,7 +235,7 @@ def ERA5_to_CF(file: Path, metadata_info=None) -> Path:
 
     # if not, include hard-coded attributes (dataset dependent!)
     else: 
-        ds.attrs["freq"] = determine_time_interval(ds) # automatically check on time interval based on time axis. 
+        ds.attrs["freq"] = _determine_time_interval(ds) # automatically check on time interval based on time axis. 
 
     # Soft check for CF compliance
     cf_status(ds)
@@ -339,7 +339,7 @@ def ERA5Land_to_CF(file: Path,  metadata_info=None) -> Path:
 
             # if not, include hard-coded attributes (dataset dependent!)
             else: 
-                ds[var].attrs["freq"] = determine_time_interval(ds[var])
+                ds[var].attrs["freq"] = _determine_time_interval(ds[var])
 
     # set attributes in whole dataset 
     ds.attrs["dataset"] = obsdata_name
@@ -351,7 +351,7 @@ def ERA5Land_to_CF(file: Path,  metadata_info=None) -> Path:
 
     # if not, include hard-coded attributes (dataset dependent!)
     else: 
-        ds.attrs["freq"] = determine_time_interval(ds) # automatically check on time interval based on time axis. 
+        ds.attrs["freq"] = _determine_time_interval(ds) # automatically check on time interval based on time axis. 
 
     # Soft check for CF compliance
     cf_status(ds)
@@ -608,7 +608,7 @@ def _convert_J_m2_to_W_m2(da: xr.DataArray):
 
     return da
 
-def determine_time_interval(da: xr.DataArray): 
+def _determine_time_interval(da: xr.DataArray): 
 
     """
     Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances. 
