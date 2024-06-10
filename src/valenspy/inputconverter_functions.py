@@ -11,12 +11,12 @@ with open(src_path / "ancilliary_data" / "CORDEX_variables.yml") as file:
     CORDEX_VARIABLES = safe_load(file)
 
 
-def _non_convertor(paths,  metadata_info=None):
+def _non_convertor(paths, metadata_info=None):
     """A dummy function that does not convert the input paths."""
     return xr.open_mfdataset(paths, combine="by_coords", chunks="auto")
 
 
-def EOBS_to_CF(paths,  metadata_info=None) -> xr.Dataset:
+def EOBS_to_CF(paths, metadata_info=None) -> xr.Dataset:
     """
     Convert the EOBS netCDF paths to an xarray netCDF in CF convention
 
@@ -80,9 +80,9 @@ def EOBS_to_CF(paths,  metadata_info=None) -> xr.Dataset:
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
             # rename dimensions if not yet renamed
-            if "lon" not in ds.coords: 
+            if "lon" not in ds.coords:
                 ds = ds.rename({"longitude": "lon"})
-            if "lat" not in ds.coords: 
+            if "lat" not in ds.coords:
                 ds = ds.rename({"latitude": "lat"})
 
             # convert the time dimension to a pandas datetime index
@@ -90,34 +90,31 @@ def EOBS_to_CF(paths,  metadata_info=None) -> xr.Dataset:
 
             # additional attributes, on data-array level -- hard coded for EOBS
             ds[var].attrs["dataset"] = obsdata_name
-            
+
             # if metadata_info is given, create global attributes
-            if metadata_info: 
-                for key, value in metadata_info.items(): 
+            if metadata_info:
+                for key, value in metadata_info.items():
                     ds[var].attrs[key] = value
 
             # if not, include hard-coded attributes (dataset dependent!)
-            else: 
+            else:
                 ds[var].attrs["freq"] = "daily"
                 ds[var].attrs["spatial_resolution"] = "0.1deg"
                 ds[var].attrs["region"] = "europe"
-    
-
 
     # set global attributes for whole dataset
     ds.attrs["dataset"] = obsdata_name
 
     # if metadata_info is given, create global attributes
-    if metadata_info: 
-        for key, value in metadata_info.items(): 
+    if metadata_info:
+        for key, value in metadata_info.items():
             ds.attrs[key] = value
 
     # if not, include hard-coded attributes (dataset dependent!)
-    else: 
-        ds.attrs["freq"] = "daily"  
+    else:
+        ds.attrs["freq"] = "daily"
         ds.attrs["spatial_resolution"] = "0.1deg"
         ds.attrs["region"] = "europe"
-
 
     # Soft check for CF compliance
     cf_status(ds)
@@ -141,7 +138,6 @@ def ERA5_to_CF(file: Path, metadata_info=None) -> Path:
     """
 
     obsdata_name = "ERA5"
-
 
     # open the observation dataset
     ds = xr.open_mfdataset(file, combine="by_coords", chunks="auto")
@@ -204,9 +200,9 @@ def ERA5_to_CF(file: Path, metadata_info=None) -> Path:
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
             # rename dimensions if not yet renamed
-            if "lon" not in ds[var].coords: 
+            if "lon" not in ds[var].coords:
                 ds = ds.rename({"longitude": "lon"})
-            if "lat" not in ds[var].coords: 
+            if "lat" not in ds[var].coords:
                 ds = ds.rename({"latitude": "lat"})
 
             # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
@@ -215,27 +211,27 @@ def ERA5_to_CF(file: Path, metadata_info=None) -> Path:
             # additional attributes at data array level.
             ds[var].attrs["dataset"] = obsdata_name
 
-            if metadata_info: 
-                for key, value in metadata_info.items(): 
+            if metadata_info:
+                for key, value in metadata_info.items():
                     ds[var].attrs[key] = value
 
             # if not, include hard-coded attributes (dataset dependent!)
-            else: 
+            else:
                 ds[var].attrs["freq"] = _determine_time_interval(ds[var])
-    
 
-
-    # set attributes in whole dataset 
+    # set attributes in whole dataset
     ds.attrs["dataset"] = obsdata_name
 
     # if metadata_info is given, create global attributes
-    if metadata_info: 
-        for key, value in metadata_info.items(): 
+    if metadata_info:
+        for key, value in metadata_info.items():
             ds.attrs[key] = value
 
     # if not, include hard-coded attributes (dataset dependent!)
-    else: 
-        ds.attrs["freq"] = _determine_time_interval(ds) # automatically check on time interval based on time axis. 
+    else:
+        ds.attrs["freq"] = _determine_time_interval(
+            ds
+        )  # automatically check on time interval based on time axis.
 
     # Soft check for CF compliance
     cf_status(ds)
@@ -243,8 +239,7 @@ def ERA5_to_CF(file: Path, metadata_info=None) -> Path:
     return ds
 
 
-
-def ERA5Land_to_CF(file: Path,  metadata_info=None) -> Path:
+def ERA5Land_to_CF(file: Path, metadata_info=None) -> Path:
     """
     Convert the ERA5-Land netCDF file to a xarray Dataset in CF convention
 
@@ -322,9 +317,9 @@ def ERA5Land_to_CF(file: Path,  metadata_info=None) -> Path:
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
             # rename dimensions if not yet renamed
-            if "lon" not in ds.coords: 
+            if "lon" not in ds.coords:
                 ds = ds.rename({"longitude": "lon"})
-            if "lat" not in ds.coords: 
+            if "lat" not in ds.coords:
                 ds = ds.rename({"latitude": "lat"})
 
             # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
@@ -333,25 +328,27 @@ def ERA5Land_to_CF(file: Path,  metadata_info=None) -> Path:
             # additional attributes -- set both globally at dataset level as at data array level
             ds[var].attrs["dataset"] = obsdata_name
 
-            if metadata_info: 
-                for key, value in metadata_info.items(): 
+            if metadata_info:
+                for key, value in metadata_info.items():
                     ds[var].attrs[key] = value
 
             # if not, include hard-coded attributes (dataset dependent!)
-            else: 
+            else:
                 ds[var].attrs["freq"] = _determine_time_interval(ds[var])
 
-    # set attributes in whole dataset 
+    # set attributes in whole dataset
     ds.attrs["dataset"] = obsdata_name
 
     # if metadata_info is given, create global attributes
-    if metadata_info: 
-        for key, value in metadata_info.items(): 
+    if metadata_info:
+        for key, value in metadata_info.items():
             ds.attrs[key] = value
 
     # if not, include hard-coded attributes (dataset dependent!)
-    else: 
-        ds.attrs["freq"] = _determine_time_interval(ds) # automatically check on time interval based on time axis. 
+    else:
+        ds.attrs["freq"] = _determine_time_interval(
+            ds
+        )  # automatically check on time interval based on time axis.
 
     # Soft check for CF compliance
     cf_status(ds)
@@ -359,7 +356,7 @@ def ERA5Land_to_CF(file: Path,  metadata_info=None) -> Path:
     return ds
 
 
-def CLIMATE_GRID_to_CF(file: Path,  metadata_info=None) -> xr.Dataset:
+def CLIMATE_GRID_to_CF(file: Path, metadata_info=None) -> xr.Dataset:
     """
     Convert the CLIMATE_GRID netCDF paths to an xarray netCDF in CF convention
 
@@ -374,13 +371,15 @@ def CLIMATE_GRID_to_CF(file: Path,  metadata_info=None) -> xr.Dataset:
         The CF compliant CLIMATE_GRID observations for the specified variable.
     """
 
-    obsdata_name = "CLIMATE_GRID"       
-    
+    obsdata_name = "CLIMATE_GRID"
+
     # open the observation dataset
     ds = xr.open_mfdataset(file, combine="by_coords", chunks="auto")
 
     # open observational specific lookup dictionary
-    with open(src_path / "ancilliary_data" / Path(obsdata_name+"_lookup.yml")) as lookup_file:
+    with open(
+        src_path / "ancilliary_data" / Path(obsdata_name + "_lookup.yml")
+    ) as lookup_file:
         obs_LOOKUP = safe_load(lookup_file)
 
     # make observation CF compliant
@@ -392,35 +391,33 @@ def CLIMATE_GRID_to_CF(file: Path,  metadata_info=None) -> xr.Dataset:
         )
 
         if var:  # Dont processes variables that are not in the lookup table.
-    
+
             # additional attributes -- set both globally at dataset level as at data array level
             ds[var].attrs["dataset"] = obsdata_name
 
-            if metadata_info: 
-                for key, value in metadata_info.items(): 
+            if metadata_info:
+                for key, value in metadata_info.items():
                     ds[var].attrs[key] = value
 
             # if not, include hard-coded attributes (dataset dependent!)
-            else: 
+            else:
                 ds[var].attrs["freq"] = "daily"
                 ds[var].attrs["spatial_resolution"] = "5km"
-                ds[var].attrs["region"] = "belgium" # leave empty per default. 
-    
+                ds[var].attrs["region"] = "belgium"  # leave empty per default.
 
-
-    # set attributes in whole dataset 
+    # set attributes in whole dataset
     ds.attrs["dataset"] = obsdata_name
 
     # if metadata_info is given, create global attributes
-    if metadata_info: 
-        for key, value in metadata_info.items(): 
+    if metadata_info:
+        for key, value in metadata_info.items():
             ds[var].attrs[key] = value
 
     # if not, include hard-coded attributes (dataset dependent!)
-    else: 
+    else:
         ds.attrs["freq"] = "daily"
         ds.attrs["spatial_resolution"] = "5km"
-        ds.attrs["region"] = "belgium" # leave empty per default. 
+        ds.attrs["region"] = "belgium"  # leave empty per default.
 
     return ds
 
@@ -431,6 +428,7 @@ def CLIMATE_GRID_to_CF(file: Path,  metadata_info=None) -> xr.Dataset:
 import xarray as xr
 import pandas as pd
 import numpy as np
+
 
 # Do we want other possible inputs than data arrays?
 def _convert_Celcius_to_Kelvin(da: xr.DataArray):
@@ -608,10 +606,10 @@ def _convert_J_m2_to_W_m2(da: xr.DataArray):
 
     return da
 
-def _determine_time_interval(da: xr.DataArray): 
 
+def _determine_time_interval(da: xr.DataArray):
     """
-    Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances. 
+    Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances.
 
     Parameters
     ----------
@@ -627,15 +625,17 @@ def _determine_time_interval(da: xr.DataArray):
     diff = da.time.diff(dim="time").values[0]
 
     # Check for exact differences
-    if diff == np.timedelta64(1, 'h'):
-        freq="hourly"
-    elif diff == np.timedelta64(1, 'D'):
-        freq="daily"
-    elif diff == np.timedelta64(1, 'M'):
-        freq="monthly"
-    elif diff == np.timedelta64(1, 'Y'):
-        freq="yearly"
+    if diff == np.timedelta64(1, "h"):
+        freq = "hourly"
+    elif diff == np.timedelta64(1, "D"):
+        freq = "daily"
+    elif diff == np.timedelta64(1, "M"):
+        freq = "monthly"
+    elif diff == np.timedelta64(1, "Y"):
+        freq = "yearly"
     else:
-        return "Difference does not match exact hourly, daily, monthly, or yearly units."
+        return (
+            "Difference does not match exact hourly, daily, monthly, or yearly units."
+        )
 
     return freq

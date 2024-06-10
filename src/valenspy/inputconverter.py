@@ -16,7 +16,9 @@ class InputConverter:
         """
         self.converter = converter
 
-    def convert_input(self, paths: Union[Path, list[Path]],  metadata_info=None ) -> Union[Path, list[Path]]:
+    def convert_input(
+        self, paths: Union[Path, list[Path]], metadata_info=None
+    ) -> Union[Path, list[Path]]:
         """Convert the paths file to CF convention.
 
         Parameters
@@ -24,7 +26,7 @@ class InputConverter:
         paths : Path or list(Path)
             The input file or list of input files to convert.
         """
-        paths = self.converter(paths,  metadata_info)
+        paths = self.converter(paths, metadata_info)
 
         return paths
 
