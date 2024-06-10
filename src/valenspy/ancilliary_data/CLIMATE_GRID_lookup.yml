@@ -12,67 +12,55 @@
 
 tas: 
   obs_name: TEMP_AVG
-  obs_standard_name: air_temperature
   obs_long_name: Near-Surface Air Temperature
   obs_units: degC
 
 tasmax:
   obs_name: TEMP_MAX
-  obs_standard_name: air_temperature
   obs_long_name: Daily Maximum Near-Surface Air Temperature
   obs_units: degC
 
 tasmin:
   obs_name: TEMP_MIN
-  obs_standard_name: air_temperature
   obs_long_name: Daily Minimum Near-Surface Air Temperature
   obs_units: degC
 
 pr:
   obs_name: PRECIP_QUANTITY
-  obs_standard_name: precipitation_flux
-  obs_long_name: Precipitation
-  obs_units: kg m-2 s-1
+  obs_long_name: precipitation quantity
+  obs_units: mm
 
 huss:
   obs_name: HUMIDITY_RELATIVE
-  obs_standard_name: relative_humidity
   obs_long_name: Near-Surface Relative Humidity
-  obs_units: "%"
+  obs_units: "percentage"
 
 sfcWind: 
   obs_name: WIND_SPEED
-  obs_standard_name: wind_speed
-  obs_long_name: Near-Surface Wind Speed
+  obs_long_name: average wind speed
   obs_units: m s-1
 
 rsds: 
   obs_name: SHORT_WAVE_FROM_SKY
-  obs_standard_name: surface_downwelling_shortwave_flux_in_air
-  obs_long_name: Surface Downwelling Shortwave Radiation
-  obs_units: W m-2
+  obs_long_name: average daily global solar radiation 
+  obs_units: kWh/m2/day
 
-# here missing information to be filled. 
 prhmax:
   obs_name: PRECIP_1H_MAX
-  obs_standard_name: 
-  obs_long_name: 
-  obs_units: mm/day 
+  obs_long_name: maximum precipitation quantity in one hour
+  obs_units: mm
 
 evspsbl: 
   obs_name: EVAPOTRANS_REF
-  obs_standard_name: 
-  obs_long_name: 
-  obs_units: mm/day 
+  obs_long_name: reference evapotranspiration ET0
+  obs_units: mm
 
 sfcWindmax: 
   obs_name: WIND_PEAK_SPEED
-  obs_standard_name: 
-  obs_long_name: 
+  obs_long_name: maximum gusts speed from the closest station
   obs_units: m/s 
 
 psl: 
   obs_name: PRESSURE
-  obs_standard_name: 
-  obs_long_name: 
+  obs_long_name: sea level pressure
   obs_units: hPa
