@@ -21,7 +21,7 @@ class InputManager:
         self.machine = machine
         self.dataset_paths = DATASET_PATHS[machine]
 
-    def load_data(self, dataset_name, variables=["tas"], period=None, freq=None, cf_convert=True, path_identifiers=[]):
+    def load_data(self, dataset_name, variables=["tas"], period=None, freq=None, region=None, cf_convert=True, path_identifiers=[], metadata_info={}):
         """
         Load the data for the specified dataset, variables, period and frequency and transform it into ValEnsPy CF-Compliant format.
         
@@ -46,11 +46,15 @@ class InputManager:
         period : list, optional
             The period to load start and end dates. The default is None.
         freq : str, optional
-            The frequency of the data. The default is "daily".
+            The frequency of the data. The default is None.
+        region : str, optional
+            The region to load. The default is None.
         cf_convert : bool, optional
             Whether to convert the data to CF-Compliant format. The default is True.
         path_identifiers : list, optional
             Other identifiers to match in the file paths. These are on top the variable long name, year and frequency. The default is [].
+        other_metadata_info : dict, optional
+            Other metadata information to pass to the input converter. The default is {}.
 
         Returns
         -------
@@ -72,21 +76,29 @@ class InputManager:
         >>> ds = manager.load_data("ERA5", variables=["tas"], period=[2000,2001], path_identifiers=["max"])
         """
         if self._is_valid_dataset_name(dataset_name):
-            files = self._get_file_paths(dataset_name, variables=variables, period=period, freq=freq, path_identifiers=path_identifiers)
+            files = self._get_file_paths(dataset_name, variables=variables, period=period, freq=freq, region=region, path_identifiers=path_identifiers)
             if not files:
-                raise FileNotFoundError(f"No files found for dataset {dataset_name}, variables {variables}, period {period}, frequency {freq} and path_identifiers {path_identifiers}.")
+                raise FileNotFoundError(f"No files found for dataset {dataset_name}, variables {variables}, period {period}, frequency {freq}, region {region} and path_identifiers {path_identifiers}.")
             print("File paths found:")
             for f in files:
                 print(f)
             if cf_convert:
                 input_converter = INPUT_CONVERTORS[dataset_name]
-                ds = input_converter.convert_input(files)
+                if period:
+                    metadata_info["period"] = period
+                if freq:
+                    metadata_info["freq"] = freq
+                if region:
+                    metadata_info["region"] = region
+                if path_identifiers:
+                    metadata_info["path_identifiers"] = path_identifiers
+                ds = input_converter.convert_input(files, metadata_info=metadata_info)
             else:
                 ds = xr.open_mfdataset(files, chunks="auto")
         return ds
            
 
-    def _get_file_paths(self, dataset_name, variables=["tas"], period=None, freq=None, path_identifiers=[]):
+    def _get_file_paths(self, dataset_name, variables=["tas"], period=None, freq=None, region=None, path_identifiers=[]):
         """Get the file paths for the specified dataset, variables, period and frequency."""
         with open(src_path / "ancilliary_data" / f"{dataset_name}_lookup.yml") as file:
             obs_LOOKUP = safe_load(file)
@@ -102,6 +114,8 @@ class InputManager:
                 components.append(year_regex)
             if freq:
                 components.append(freq)
+            if region:
+                components.append(region)
             file_paths+=[f for f in dataset_path.glob("**/*.nc") if all(re.search(f"{dataset_path}/.*{component}.*", str(f)) for component in components)]
 
         return list(set(file_paths))
