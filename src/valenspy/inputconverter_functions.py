@@ -392,7 +392,57 @@ def CLIMATE_GRID_to_CF(file: Path,  metadata_info=None) -> xr.Dataset:
         )
 
         if var:  # Dont processes variables that are not in the lookup table.
-    
+            # update variable name to CORDEX variable name
+            ds = ds.rename_vars({obs_LOOKUP[var]["obs_name"]: var})
+
+            # from here on, use CORDEX variable name to access data array and do rest of conversion
+
+            # Unit conversion - hard coded ERA5 units for CORDEX CORE, double check beyond.
+            if (obs_LOOKUP[var]["obs_units"] == "Celcius") or (
+                obs_LOOKUP[var]["obs_units"] == "degC"
+            ):
+                ds[var] = _convert_Celcius_to_Kelvin(ds[var])
+
+            elif obs_LOOKUP[var]["obs_units"] == "hPa":
+                ds[var] = _convert_hPa_to_Pa(ds[var])  # hPa to Pa
+
+            elif (obs_LOOKUP[var]["obs_units"] == "mm") or (
+                obs_LOOKUP[var]["obs_units"] == "mm/hr"
+            ):
+                ds[var] = _convert_mm_to_kg_m2s(
+                    ds[var]
+                )  # mm to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
+
+            elif (obs_LOOKUP[var]["obs_units"] == "m") or (
+                obs_LOOKUP[var]["obs_units"] == "m/hr"
+            ):
+                ds[var] = _convert_m_to_kg_m2s(
+                    ds[var]
+                )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
+
+            elif obs_LOOKUP[var]["obs_units"] == "kWh/m2/day":
+                ds[var] = _convert_kWh_m2_day_to_W_m2(
+                    ds[var]
+                ) 
+
+            # add necessary metadata
+            ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
+                "standard_name"
+            ]  # from the CORDEX look-up table
+            ds[var].attrs["long_name"] = CORDEX_VARIABLES[var][
+                "long_name"
+            ]  # from the CORDEX look-up table
+            ds[var].attrs["original_name"] = obs_LOOKUP[var]["obs_name"]
+            ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
+
+            # rename dimensions if not yet renamed
+            if "lon" not in ds.coords: 
+                ds = ds.rename({"longitude": "lon"})
+            if "lat" not in ds.coords: 
+                ds = ds.rename({"latitude": "lat"})
+
+            # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
+            ds[var]["time"] = pd.to_datetime(ds[var].time)    
             # additional attributes -- set both globally at dataset level as at data array level
             ds[var].attrs["dataset"] = obsdata_name
 
@@ -431,6 +481,8 @@ def CLIMATE_GRID_to_CF(file: Path,  metadata_info=None) -> xr.Dataset:
 import xarray as xr
 import pandas as pd
 import numpy as np
+
+
 
 # Do we want other possible inputs than data arrays?
 def _convert_Celcius_to_Kelvin(da: xr.DataArray):
@@ -602,6 +654,30 @@ def _convert_J_m2_to_W_m2(da: xr.DataArray):
 
     # do conversion
     da = da / timestep_nseconds  # J m^2 to W m^2
+
+    # update units attribute
+    da.attrs["units"] = "W m-2"
+
+    return da
+
+def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
+    """
+    Convert values in xarray DataArray from kWh/m2/day to W m^2
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The xarray DataArray to convert
+
+    Returns
+    -------
+    xr.DataArray
+        The  converted xarray DataArray
+    """
+
+
+    # do conversion
+    da = da *1000 / 86400   # kWh/m2/day to W m^2
 
     # update units attribute
     da.attrs["units"] = "W m-2"

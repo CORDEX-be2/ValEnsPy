@@ -126,7 +126,7 @@ for variable in variables:
 	# convert to dataset and give dataset attributes
 	ds = da.to_dataset(name=variable)
 	d_attrs = {"creation_date": date.today().strftime("%d-%m-%Y"), "creators": "Ghilain N., Van Schaeybroeck B., Vanderkelen I.", 
-	"contact": "inne.vanderkelen@meteo.be", "version": "1.1", "affiliation": "Royal Meteorological Institute of Belgium"}
+	"contact": "inne.vanderkelen@meteo.be", "version": "1.1","horizontal resolution": "5 by 5 km",  "affiliation": "Royal Meteorological Institute of Belgium"}
 	ds.attrs = d_attrs
 
 	# export to netcdf

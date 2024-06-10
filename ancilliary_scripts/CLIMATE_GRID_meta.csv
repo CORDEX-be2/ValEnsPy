@@ -22,7 +22,7 @@ RAIN20_DAYS;;number of days with at least 20mm of precipitation;
 LAST_MODIFICATION;;timestamp of last update;
 DEGREE_DAY_15;;"degree days in basis 15°C ";(derived from TEMP_AVG)
 WIND_SPEED;m/s;average wind speed;
-HUMIDITY_RELATIVE;percentage;average relative humidity;
+HUMIDITY_RELATIVE;%;average relative humidity;
 PRESSURE;hPa;sea level pressure;
 EVAPOTRANS_REF;mm;reference evapotranspiration ET0;
 PRECIP_DURATION;hours;precipitation duration estimated from 5-min rain gauges data;

@@ -33,12 +33,12 @@ pr:
 huss:
   obs_name: HUMIDITY_RELATIVE
   obs_long_name: Near-Surface Relative Humidity
-  obs_units: "percentage"
+  obs_units: "%"
 
 sfcWind: 
   obs_name: WIND_SPEED
   obs_long_name: average wind speed
-  obs_units: m s-1
+  obs_units: m/s
 
 rsds: 
   obs_name: SHORT_WAVE_FROM_SKY
