@@ -3,6 +3,7 @@ from yaml import safe_load
 from pathlib import Path
 from itertools import permutations
 import xarray as xr
+from datatree import DataTree
 import re
 import glob
 
@@ -20,6 +21,56 @@ class InputManager:
     def __init__(self, machine):
         self.machine = machine
         self.dataset_paths = DATASET_PATHS[machine]
+
+    def load_m_data(self, datasets_dict, variables=["tas"], cf_convert=True, metadata_info={}):
+        """
+        Load multiple datasets and variables and return a DataTree object.
+
+        Each dataset is passed to the load_data method and the resulting datasets are combined into a DataTree object.
+
+        Parameters
+        ----------
+        datasets_dict : dict
+            A dictionary of datasets to load. The keys are the dataset names and the values are dictionaries containing the period, frequency, 
+            region and path_identifiers as keys.
+        variables : list
+            The variables to load. The default is ["tas"]. These should be CORDEX variables defined in CORDEX_variables.yml.
+        cf_convert : bool, optional
+            Whether to convert the data to CF-Compliant format. The default is True.
+        metadata_info : dict, optional
+            Other metadata information to pass to the input converter. The default is {}.
+        
+        Returns
+        -------
+        DataTree
+            A DataTree object containing the loaded datasets.
+
+        Examples
+        --------
+        >>> manager = InputManager(machine='hortense')
+        >>> # Get all ERA5 tas (temperature at 2m) at a daily frequency for the years 2000 and 2001. The paths must include "max".
+        >>> data_request_dict={ 
+            "EOBS":
+                {"path_identifiers":["mean"]},
+            "ERA5":
+                {"period":[2000,2001],
+                "freq":"daily",
+                "region":"europe",
+                "path_identifiers":["min"]} 
+            }
+        >>> dt = manager.load_m_data(data_request_dict, variables=["tas","pr"])
+        """
+
+        ds_dict = {}
+        for dataset_name, dataset_info in datasets_dict.items():
+            #pass all the dataset info as kwargs to the load_data method
+            print(f"Loading data for {dataset_name}...")
+            ds_dict[dataset_name] = self.load_data(dataset_name,
+                                                    variables=variables, 
+                                                    cf_convert=cf_convert,
+                                                    metadata_info=metadata_info,
+                                                    **dataset_info)
+        return DataTree.from_dict(ds_dict)
 
     def load_data(self, dataset_name, variables=["tas"], period=None, freq=None, region=None, cf_convert=True, path_identifiers=[], metadata_info={}):
         """
