@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
 # Script to load the CLIMATE DATA .Rdata files and grid them and convert them to netcdf files per variable
-# based on the .RData files retrieved from the RMI Oracle databse through the climate_grid_daily.txt script from Bert Van Schaeybroeck
-# needs following metadata files: grid_5kmx5km.csv, lambert_coordinates_full_grid.csv and CLIMATE_GRID_meta.csv
+# uses the .RData files retrieved from the RMI Oracle databse through the climate_grid_daily.txt script from Bert Van Schaeybroeck
 
 # I. Vanderkelen, June 2024
 
@@ -20,8 +19,6 @@ pandas2ri.activate()
 # user settings
 variables = ["TEMP_MAX"]
 #"EVAPOTRANS_REF", "SUN_INT", "SUN_DURATION", "PRECIP_DURATION", "WIND_PEAK_SPEED", "PRECIP_1H_MAX", "EVAPOTRANS_REF", "TEMP_MAX","HUMIDITY_RELATIVE","TEMP_MIN", "TEMP_AVG", "WIND_SPEED", "PRESSURE", "SHORT_WAVE_FROM_SKY", "SUN_INT_HORIZ", "PRECIP_QUANTITY"]
-
-data_dir = '/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/CLIMATE_GRID/'
 
 
 # INFO ON GRID
@@ -57,6 +54,7 @@ df_coords_points['LAMBERT_X_INDEX'] = df_coords_points['LAMBERT_X'].apply(lambda
 df_coords_points['LAMBERT_Y_INDEX'] = df_coords_points['LAMBERT_Y'].apply(lambda x: find_nearest(lambert_y_grid, x))
 
 
+data_dir = '/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/CLIMATE_GRID/'
 
 for variable in variables: 
 	print('Converting '+ variable)
@@ -74,16 +72,23 @@ for variable in variables:
 	# load the vector data
 	data = robjects.r['grid.vec']
 
-	# create empty array to fill with gridded data
+	# create empty array to fill with gridded data - also for lat and lon
 	grid_data = np.full(( len(dates),  len(lambert_y_grid),len(lambert_x_grid)  ), np.nan)
+
+	lat_2d = np.full((len(lambert_y_grid),len(lambert_x_grid)  ), np.nan)
+	lon_2d = np.full((len(lambert_y_grid),len(lambert_x_grid)  ), np.nan)
 
 	# Fill the grid data array
 	for index, row in df_coords_points.iterrows():
 		lambert_x_idx = int(row['LAMBERT_Y_INDEX'])
 		lambert_y_idx = int(row['LAMBERT_X_INDEX'])
+
 		pixel_id = int(row['PIXEL_ID'])
 		
 		grid_data[:, lambert_x_idx, lambert_y_idx ] = data[int(pixel_id) - 1, :]
+
+		lat_2d[ lambert_x_idx, lambert_y_idx ] = df_coords_points[df_coords_points['PIXEL_ID'] == pixel_id]["LAT"].values[0]
+		lon_2d[ lambert_x_idx, lambert_y_idx ] = df_coords_points[df_coords_points['PIXEL_ID'] == pixel_id]["LON"].values[0]
 
 
 	# get metadata from meta dataframe
@@ -111,11 +116,37 @@ for variable in variables:
 	da['x'].attrs = {'units':"E[east]: Easting (meters)", 'long_name': " x coordinate Lambert Conic Conformal (2SP)"}
 	da['y'].attrs = {'units':"N[north]: Northing (meters)", 'long_name': "y coordinate Lambert Conic Conformal (2SP)"}
 
-	#da['lat'].attrs = {'units':"degrees_north", 'long_name': "latitude"}
-	#da['lon'].attrs = {'units':"degrees_east", 'long_name': "longitude"}
-
 	# convert to dataset and give dataset attributes
 	ds = da.to_dataset(name=variable)
+
+	# add 2d lat and lon in lambert coordinates as well
+	ds["lat"] = xr.DataArray(
+		data=lat_2d,
+		dims=["y", "x"],
+		coords=dict(
+			y=lambert_y_grid,
+			x=lambert_x_grid,
+		),
+		attrs=dict(
+			long_name="latitude",
+			description = "WGS84 latitude, from values of CLIMATE_GRID, provided per grid point",
+			units="degrees_north",
+		),
+	)
+
+	ds["lon"] = xr.DataArray(
+		data=lon_2d,
+		dims=["y", "x"],
+		coords=dict(
+			y=lambert_y_grid,
+			x=lambert_x_grid,
+		),
+		attrs=dict(
+			long_name="longitude",
+			description = "WGS84 longitude, from values of CLIMATE_GRID, provided per grid point",
+			units="degrees_east",
+		),
+	)
 	d_attrs = {"creation_date": date.today().strftime("%d-%m-%Y"),
 	"creators": "Ghilain N., Van Schaeybroeck B., Vanderkelen I.", 
 	"contact": "inne.vanderkelen@meteo.be",
