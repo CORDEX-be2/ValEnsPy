@@ -8,17 +8,19 @@
 import rpy2.robjects as robjects
 from rpy2.robjects import pandas2ri
 import xarray as xr
+import rioxarray
 import pandas as pd
 from datetime import date
 import numpy as np
+import cartopy.crs as ccrs
+
 
 # activate r to pandas convertor
 pandas2ri.activate()
 
 
 # user settings
-variables = ["TEMP_MAX"]
-#"EVAPOTRANS_REF", "SUN_INT", "SUN_DURATION", "PRECIP_DURATION", "WIND_PEAK_SPEED", "PRECIP_1H_MAX", "EVAPOTRANS_REF", "TEMP_MAX","HUMIDITY_RELATIVE","TEMP_MIN", "TEMP_AVG", "WIND_SPEED", "PRESSURE", "SHORT_WAVE_FROM_SKY", "SUN_INT_HORIZ", "PRECIP_QUANTITY"]
+variables = ["EVAPOTRANS_REF", "SUN_INT", "SUN_DURATION", "PRECIP_DURATION", "WIND_PEAK_SPEED", "PRECIP_1H_MAX", "EVAPOTRANS_REF", "TEMP_MAX","HUMIDITY_RELATIVE","TEMP_MIN", "TEMP_AVG", "WIND_SPEED", "PRESSURE", "SHORT_WAVE_FROM_SKY", "SUN_INT_HORIZ", "PRECIP_QUANTITY"]
 
 
 # INFO ON GRID
