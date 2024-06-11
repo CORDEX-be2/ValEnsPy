@@ -309,7 +309,7 @@ def ERA5Land_to_CF(file: Path,  metadata_info=None) -> Path:
             elif obs_LOOKUP[var]["obs_units"] == "J/m^2":
                 ds[var] = _convert_J_m2_to_W_m2(
                     ds[var]
-                )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
+                )  # J to W m2 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
 
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
@@ -435,11 +435,7 @@ def CLIMATE_GRID_to_CF(file: Path,  metadata_info=None) -> xr.Dataset:
             ds[var].attrs["original_name"] = obs_LOOKUP[var]["obs_name"]
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
-            # rename dimensions if not yet renamed
-            if "lon" not in ds.coords: 
-                ds = ds.rename({"longitude": "lon"})
-            if "lat" not in ds.coords: 
-                ds = ds.rename({"latitude": "lat"})
+            # regrid to lat lon 
 
             # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
             ds[var]["time"] = pd.to_datetime(ds[var].time)    

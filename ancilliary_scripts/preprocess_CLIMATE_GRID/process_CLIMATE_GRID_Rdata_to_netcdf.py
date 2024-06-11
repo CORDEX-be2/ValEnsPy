@@ -28,7 +28,7 @@ meta = pd.read_csv('CLIMATE_GRID_meta.csv', delimiter=";")
 # load information on projection used 
 proj_string = "+proj=lcc +lat_1=49.83333388888889 +lat_2=51.16666722222222 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +units=m +no_defs"
 # load the pixel lat and lon variable and use this to transpose to own defined grid
-df_coords_points = pd.read_csv('grid_5kmx5km.csv',header=1,delimiter=' ') # these are the lat lons and lambert coordinates for all pixels in CLIMATE_DATA
+df_coords_points = pd.read_csv('grid_5kmx5km.csv', header=1, delimiter=' ') # these are the lat lons and lambert coordinates for all pixels in CLIMATE_DATA
 
 
 # load the full grid, creased based on the proj_string and following bounding points:
@@ -133,6 +133,9 @@ for variable in variables:
 			units="degrees_north",
 		),
 	)
+	
+	# interpolatie to also have lat values outside of Belgium
+	ds['lat'] = ds['lat'].interpolate_na(dim='x', method='linear', fill_value="extrapolate")
 
 	ds["lon"] = xr.DataArray(
 		data=lon_2d,
@@ -153,6 +156,12 @@ for variable in variables:
 	"version": "1.1", "affiliation": "Royal Meteorological Institute of Belgium", 
 	"projection":proj_string}
 	ds.attrs = d_attrs
+
+	# interpolatie to also have lon values outside of Belgium
+	ds['lon'] = ds['lon'].interpolate_na(dim='x', method='linear', fill_value="extrapolate")
+
+	# also pass crs using rioxarray - passing the spatial_ref
+	ds.rio.write_crs(ccrs.Projection(proj_string), inplace=True)
 
 	# export to netcdf
 	filename_out = str(variable)+'_CLIMATE_GRID_'+str(dates.year.min())+'_'+str(dates.year.max())+'_daily.nc'
