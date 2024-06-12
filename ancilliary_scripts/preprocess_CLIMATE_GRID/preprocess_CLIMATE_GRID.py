@@ -33,11 +33,17 @@ download_from_oracle = True # if True, has to be executed on kili
 # User settings
 data_dir = '/scratch/invander/CLIMATE_GRID/'
 dataset = "CLIMATE_GRID"
-variables = ["SUN_INT", "SUN_DURATION"]  # Example variables, can add more if needed
+variables = ["EVAPOTRANS_REF", "SUN_INT", "SUN_DURATION", "PRECIP_DURATION", "WIND_PEAK_SPEED", "PRECIP_1H_MAX", "EVAPOTRANS_REF", "TEMP_MAX","HUMIDITY_RELATIVE","TEMP_MIN", "TEMP_AVG", "WIND_SPEED", "PRESSURE", "SHORT_WAVE_FROM_SKY", "SUN_INT_HORIZ", "PRECIP_QUANTITY"]
+ # Example variables, can add more if needed
 
 # Initial and end year for the data request
 init_yr = 1950
 end_yr = 2023
+
+if download_from_oracle:
+    # Oracle database connection - user interference only once
+    username = getpass.getpass("Enter oracle username: ")
+    password = getpass.getpass("Enter password: ")
 
 # Process data for each variable
 for variable in variables:
@@ -46,9 +52,6 @@ for variable in variables:
     filename_municipalities_csv = f'climate_atlas_{variable}_{dataset}_municipalities_{init_yr}_{end_yr}.csv'
 
     if download_from_oracle:
-        # Oracle database connection
-        username = getpass.getpass("Enter oracle username: ")
-        password = getpass.getpass("Enter password: ")
 
         host = "delphi.oma.be"
         service_name = "rmidbs1.oma.be"
