@@ -31,7 +31,7 @@ import cartopy.crs as ccrs
 download_from_oracle = True # if True, has to be executed on kili
 
 # User settings
-data_dir = '/scratch/invander/CLIMATE_GRID/'
+data_dir = '/mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID/'
 dataset = "CLIMATE_GRID"
 variables = ["EVAPOTRANS_REF", "SUN_INT", "SUN_DURATION", "PRECIP_DURATION", "WIND_PEAK_SPEED", "PRECIP_1H_MAX", "EVAPOTRANS_REF", "TEMP_MAX","HUMIDITY_RELATIVE","TEMP_MIN", "TEMP_AVG", "WIND_SPEED", "PRESSURE", "SHORT_WAVE_FROM_SKY", "SUN_INT_HORIZ", "PRECIP_QUANTITY"]
  # Example variables, can add more if needed
@@ -50,8 +50,9 @@ for variable in variables:
     # Define filenames for intermediate files
     filename_csv = f'climate_atlas_{variable}_{dataset}_{init_yr}_{end_yr}.csv'
     filename_municipalities_csv = f'climate_atlas_{variable}_{dataset}_municipalities_{init_yr}_{end_yr}.csv'
-
-    if download_from_oracle:
+    
+                
+    if download_from_oracle and not os.path.isfile(data_dir+filename_csv):
 
         host = "delphi.oma.be"
         service_name = "rmidbs1.oma.be"
@@ -95,6 +96,7 @@ for variable in variables:
         # Save intermediate data
         df_gridcells.to_csv(data_dir + filename_csv)
         df_municipality.to_csv(data_dir + filename_municipalities_csv)
+
     else:
         print(f"Loading csv file: {data_dir + filename_csv}")
         df_gridcells = pd.read_csv(data_dir + filename_csv)
@@ -220,7 +222,7 @@ for variable in variables:
         "projection": proj_string
     }
 
-    # Export to netcdf
     filename_out = f'{variable}_CLIMATE_GRID_{dates.year.min()}_{dates.year.max()}_daily.nc'
+    # Export to netcdf
     ds.to_netcdf(data_dir + filename_out, encoding={'time': {'dtype': 'int32'}})
     print(f'Saved as: {data_dir + filename_out}')
