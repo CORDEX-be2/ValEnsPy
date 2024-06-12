@@ -449,7 +449,7 @@ def CLIMATE_GRID_to_CF(file: Path,  metadata_info=None) -> xr.Dataset:
             # if not, include hard-coded attributes (dataset dependent!)
             else: 
                 ds[var].attrs["freq"] = "daily"
-                ds[var].attrs["spatial_resolution"] = "5km"
+                ds[var].attrs["spatial_resolution"] = "~5km, regridded to regular lat, lon grid"
                 ds[var].attrs["region"] = "belgium" # leave empty per default. 
     
 
@@ -465,7 +465,7 @@ def CLIMATE_GRID_to_CF(file: Path,  metadata_info=None) -> xr.Dataset:
     # if not, include hard-coded attributes (dataset dependent!)
     else: 
         ds.attrs["freq"] = "daily"
-        ds.attrs["spatial_resolution"] = "5km"
+        ds.attrs["spatial_resolution"] = "5 km"
         ds.attrs["region"] = "belgium" # leave empty per default. 
 
     return ds
