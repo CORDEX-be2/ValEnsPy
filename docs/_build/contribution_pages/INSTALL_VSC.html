@@ -471,7 +471,7 @@ First time using git/github? Read this small git <a class="reference internal" h
 <li><p>Create a conda environment and install the required packages.</p></li>
 </ol>
 <p>First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-p<span class="w"> </span>./valenspy_dev<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.9<span class="w"> </span>poetry
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-p<span class="w"> </span>./valenspy_dev<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.9<span class="w"> </span><span class="nv">poetry</span><span class="o">=</span><span class="m">1</span>.8
 <span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>valenspy_dev
 </pre></div>
 </div>

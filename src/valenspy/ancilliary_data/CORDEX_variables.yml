@@ -127,10 +127,15 @@ sftlf:
   standard_name: land_area_fraction
   long_name: Percentage of the Grid Cell Occupied by Land
   realm: atmos
-  
+
 #################################
 ## Atmosphere Tier 1 Variables ##
 #################################
 
 
+hfls:
+  units: W m-2
+  standard_name: surface_upward_latent_heat_flux
+  long_name: Surface Upward Latent Heat Flux
+  realm:
 #To Do - Add Tier 1 and Tier 2 Variables
