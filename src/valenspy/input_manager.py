@@ -151,7 +151,14 @@ class InputManager:
 
     def _get_file_paths(self, dataset_name, variables=["tas"], period=None, freq=None, region=None, path_identifiers=[]):
         """Get the file paths for the specified dataset, variables, period and frequency."""
-        with open(src_path / "ancilliary_data" / f"{dataset_name}_lookup.yml") as file:
+
+        # ERA5Land has same lookuptable as ERA5
+        if dataset_name=='ERA5-Land': 
+            dataset_name_lookup = "ERA5"
+        else: 
+            dataset_name_lookup = dataset_name
+            
+        with open(src_path / "ancilliary_data" / f"{dataset_name_lookup}_lookup.yml") as file:
             obs_LOOKUP = safe_load(file)
         dataset_path = Path(self.dataset_paths[dataset_name])
         file_paths = []
