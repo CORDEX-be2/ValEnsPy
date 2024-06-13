@@ -155,6 +155,7 @@ class InputManager:
             obs_LOOKUP = safe_load(file)
         dataset_path = Path(self.dataset_paths[dataset_name])
         file_paths = []
+        variables = [variables] if isinstance(variables, str) else variables # if single variable inputted as string, convert to list
         for variable in variables:
             obs_long_name = obs_LOOKUP[variable]["obs_long_name"]
             obs_name = obs_LOOKUP[variable]["obs_name"]
