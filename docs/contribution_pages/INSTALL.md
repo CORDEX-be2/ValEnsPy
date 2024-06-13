@@ -30,7 +30,11 @@ git clone git@github.com:CORDEX-be2/ValEnsPy.git
 ```
 
 2. Create a conda environment and install the required packages.
-Note! Replace -n valenspy_dev with -p /path/to/conda/env if you want to install the environment in a specific location!
+
+> [!Note] You can specify the location that you want to install the conda environment. The default location is in the home directory, which is often limited in size. 
+> ```bash
+> conda config --add envs_dirs /path/to/your/envs
+> ```
 
 ```bash
 conda create -n valenspy_dev -c conda-forge python==3.9 poetry=1.8
