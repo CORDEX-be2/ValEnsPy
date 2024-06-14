@@ -15,13 +15,3 @@ inputconverter\_functions
       :toctree:
 
       EOBS_to_CF
-
-
-
-
-
-
-
-
-
-
