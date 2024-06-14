@@ -19,4 +19,5 @@ Modules
    diagnostic_functions
    inputconverter
    inputconverter_functions
+   input_manager
    preprocessor

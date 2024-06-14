@@ -13,28 +13,28 @@
 
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
 
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
 
-  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=ccc20c01" />
 
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
     <script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
@@ -56,27 +56,23 @@
 
 
 
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
 
   <div id="pst-scroll-pixel-helper"></div>
 
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
 
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
 
   <input type="checkbox"
           class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
 
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
@@ -99,11 +95,16 @@
 </form></div>
   </div>
 
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
 
 
   <div class="col-lg-3 navbar-header-items__start">
@@ -133,39 +134,39 @@
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../index.html">
-                        Home
-                      </a>
-                    </li>
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../index.html">
+    Home
+  </a>
+</li>
 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../getting_started.html">
-                        Getting started
-                      </a>
-                    </li>
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started
+  </a>
+</li>
 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../doc_examples/index.html">
-                        Examples
-                      </a>
-                    </li>
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../doc_examples/index.html">
+    Examples
+  </a>
+</li>
 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../API_doc.html">
-                        API
-                      </a>
-                    </li>
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../API_doc.html">
+    API
+  </a>
+</li>
 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../contribution_pages/index.html">
-                        Contributing
-                      </a>
-                    </li>
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../contribution_pages/index.html">
+    Contributing
+  </a>
+</li>
 
   </ul>
 </nav></div>
@@ -259,46 +260,49 @@ document.write(`
 
       <div class="sidebar-header-items__center">
 
-          <div class="navbar-item">
+
+
+            <div class="navbar-item">
 <nav class="navbar-nav">
   <ul class="bd-navbar-elements navbar-nav">
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../index.html">
-                        Home
-                      </a>
-                    </li>
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../index.html">
+    Home
+  </a>
+</li>
 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../getting_started.html">
-                        Getting started
-                      </a>
-                    </li>
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../getting_started.html">
+    Getting started
+  </a>
+</li>
 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../doc_examples/index.html">
-                        Examples
-                      </a>
-                    </li>
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../doc_examples/index.html">
+    Examples
+  </a>
+</li>
 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../API_doc.html">
-                        API
-                      </a>
-                    </li>
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../API_doc.html">
+    API
+  </a>
+</li>
 
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../contribution_pages/index.html">
-                        Contributing
-                      </a>
-                    </li>
+<li class="nav-item pst-header-nav-item">
+  <a class="nav-link nav-internal" href="../contribution_pages/index.html">
+    Contributing
+  </a>
+</li>
 
   </ul>
 </nav></div>
+
 
       </div>
 
@@ -347,13 +351,13 @@ document.write(`
 
       </div>
 
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
 
 
           <div class="bd-content">
             <div class="bd-article-container">
 
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
 
     <div class="header-article-items__start">
@@ -362,7 +366,7 @@ document.write(`
 
 
 
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
 
     <li class="breadcrumb-item breadcrumb-home">
@@ -391,28 +395,85 @@ document.write(`
                 <article class="bd-article">
 
   <h1>Source code for cf_checks</h1><div class="highlight"><pre>
-<span></span><span class="c1">#Create functionality which checks if the an xarray dataset is a CF compliant dataset</span>
+<span></span><span class="c1"># Create functionality which checks if the an xarray dataset is a ValEnsPy CF compliant dataset</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">safe_load</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="c1">#Get the current file directory and load the variables.yml file</span>
+<span class="c1"># Get the current file directory and load the variables.yml file</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
 <span class="n">files</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">files</span> <span class="o">/</span> <span class="s1">&#39;data&#39;</span> <span class="o">/</span> <span class="s1">&#39;CORDEX_variables.yml&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">files</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="s2">&quot;CORDEX_variables.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
     <span class="n">CORDEX_VARIABLES</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
-<span class="n">MAIN_METADATA</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Conventions&#39;</span><span class="p">,</span> <span class="s1">&#39;history&#39;</span><span class="p">]</span>
-<span class="n">VARIABLE_METADATA</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;standard_name&#39;</span><span class="p">,</span> <span class="s1">&#39;long_name&#39;</span><span class="p">]</span>
+<span class="c1"># Expected metadata attributes</span>
+<span class="n">MAIN_METADATA</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Conventions&quot;</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">]</span>
+<span class="n">VARIABLE_METADATA</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="s2">&quot;standard_name&quot;</span><span class="p">,</span> <span class="s2">&quot;long_name&quot;</span><span class="p">]</span>
 
-<span class="c1">#Currently only a True or False: True if the file is CF compliant, False otherwise</span>
-<span class="c1">#Should be extended to return a list of errors if the file is not CF compliant. Maybe each check should through warning separately?</span>
+
+<div class="viewcode-block" id="cf_status">
+<a class="viewcode-back" href="../_autosummary/cf_checks.cf_status.html#cf_checks.cf_status">[docs]</a>
+<span class="k">def</span> <span class="nf">cf_status</span><span class="p">(</span><span class="n">netCDF</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Provides an overview of the degree of CF compliance of the netCDF file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    netCDF : Union[str, Path, xr.Dataset]</span>
+<span class="sd">        The netCDF file to check or the xarray dataset to check</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">_load_xarray</span><span class="p">(</span><span class="n">netCDF</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">&quot;The file is </span><span class="si">{status}</span><span class="s2">ValEnsPy CF compliant.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">status</span><span class="o">=</span><span class="s2">&quot;NOT &quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_cf_compliant</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">non_cf_compliant_vars</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">cf_compliant_vars</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">unknown_vars</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">_check_variable_by_name</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]):</span>
+            <span class="n">cf_compliant_vars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">CORDEX_VARIABLES</span><span class="p">:</span>
+                <span class="n">non_cf_compliant_vars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">unknown_vars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cf_compliant_vars</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% of the variables are ValEnsPy CF compliant&quot;</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">cf_compliant_vars</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ValEnsPy CF compliant: </span><span class="si">{</span><span class="n">cf_compliant_vars</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">non_cf_compliant_vars</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;NOT ValEnsPy CF compliant: </span><span class="si">{</span><span class="n">non_cf_compliant_vars</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">unknown_vars</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown to ValEnsPy: </span><span class="si">{</span><span class="n">unknown_vars</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">non_cf_compliant_vars</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;The following attributes are missing or incorrect for the variable </span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s2">:&quot;</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:&lt;15}</span><span class="s2"> </span><span class="si">{:&lt;25}</span><span class="s2"> </span><span class="si">{:&lt;25}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;Attribute&quot;</span><span class="p">,</span> <span class="s2">&quot;Actual&quot;</span><span class="p">,</span> <span class="s2">&quot;Expected&quot;</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">65</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">VARIABLE_METADATA</span><span class="p">:</span>
+            <span class="n">actual</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="s2">&quot;Not present&quot;</span><span class="p">)</span>
+            <span class="n">expected</span> <span class="o">=</span> <span class="n">CORDEX_VARIABLES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">var</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="s2">&quot;Not present&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">actual</span> <span class="o">!=</span> <span class="n">expected</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:&lt;15}</span><span class="s2"> </span><span class="si">{:&lt;25}</span><span class="s2"> </span><span class="si">{:&lt;25}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">actual</span><span class="p">,</span> <span class="n">expected</span><span class="p">))</span></div>
+
+
+
 <div class="viewcode-block" id="is_cf_compliant">
 <a class="viewcode-back" href="../_autosummary/cf_checks.is_cf_compliant.html#cf_checks.is_cf_compliant">[docs]</a>
-<span class="k">def</span> <span class="nf">is_cf_compliant</span><span class="p">(</span><span class="n">netCDF</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">is_cf_compliant</span><span class="p">(</span><span class="n">netCDF</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if a file is a CF compliant netCDF file. The following checks are performed:</span>
+<span class="sd">    Check if a file is a ValEnsPy CF compliant netCDF file. The following checks are performed:</span>
 <span class="sd">    - Check if the file is a netCDF file (or an xarray dataset)</span>
 <span class="sd">    - Check if the main metadata attributes exist (title, history)</span>
 <span class="sd">    - Check if the variable metadata attributes exist (units, standard_name, long_name)</span>
@@ -422,11 +483,13 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    netCDF : Union[str, Path, xr.Dataset]</span>
 <span class="sd">        The netCDF file to check or the xarray dataset to check</span>
-<span class="sd">    </span>
+<span class="sd">    verbose : bool, optional</span>
+<span class="sd">        If True, print the results of the checks, by default False</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    bool</span>
-<span class="sd">        True if the file is CF compliant, False otherwise</span>
+<span class="sd">        True if the file is ValEnsPy CF compliant, False otherwise</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -436,45 +499,98 @@ document.write(`
 <span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &gt;&gt;&gt; vp.cf_checks.is_cf_compliant(vp.demo_data_CF)</span>
 <span class="sd">        True</span>
-<span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">netCDF</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">netCDF</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">_check_file_extension</span><span class="p">(</span><span class="n">netCDF</span><span class="p">):</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">netCDF</span><span class="p">)</span>
-            <span class="k">except</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">netCDF</span>
 
-    <span class="n">var_meta_data_ok</span> <span class="o">=</span> <span class="nb">all</span><span class="p">([</span><span class="n">_check_variable_metadata</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span> <span class="k">if</span> <span class="s2">&quot;_bnds&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">var</span><span class="p">])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">_load_xarray</span><span class="p">(</span><span class="n">netCDF</span><span class="p">)</span>
+
+    <span class="n">var_meta_data_ok</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">_check_variable_metadata</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span>
+            <span class="k">if</span> <span class="s2">&quot;_bnds&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">var</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
     <span class="n">main_meta_data_ok</span> <span class="o">=</span> <span class="n">_check_main_metadata</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
-    <span class="n">cordex_vars_data_ok</span> <span class="o">=</span> <span class="nb">all</span><span class="p">([</span><span class="n">_check_variable_by_name</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">])</span>
+    <span class="n">cordex_vars_data_ok</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">_check_variable_by_name</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span>
+            <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">CORDEX_VARIABLES</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">var_meta_data_ok</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Variable metadata is missing or incorrect&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">main_meta_data_ok</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Main metadata is missing or incorrect&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cordex_vars_data_ok</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Variable attributes are missing or incorrect&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">var_meta_data_ok</span> <span class="ow">and</span> <span class="n">main_meta_data_ok</span> <span class="ow">and</span> <span class="n">cordex_vars_data_ok</span></div>
 
 
+
+<span class="k">def</span> <span class="nf">_load_xarray</span><span class="p">(</span><span class="n">netCDF</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load an xarray dataset from a file or return the dataset if it is already an xarray dataset.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    netCDF : Union[str, Path, xr.Dataset]</span>
+<span class="sd">        The netCDF file to load or the xarray dataset</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The xarray dataset</span>
+
+<span class="sd">    Errors</span>
+<span class="sd">    ------</span>
+<span class="sd">    IOError</span>
+<span class="sd">        If the file does not have the correct extension</span>
+<span class="sd">    TypeError</span>
+<span class="sd">        If the input is not a valid type - str, Path or xr.Dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">netCDF</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">netCDF</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">_check_file_extension</span><span class="p">(</span><span class="n">netCDF</span><span class="p">):</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">netCDF</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;The file does not have the correct extension&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">netCDF</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">netCDF</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;The input is not a valid type&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ds</span>
+
+
 <span class="k">def</span> <span class="nf">_check_variable_by_name</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if the variable is a CORDEX variable. </span>
+<span class="sd">    Check if the variable is a CORDEX variable.</span>
 <span class="sd">    If it is check if the attributes in the datarray match the corresponding attributes in the CORDEX_VARIABLES dictionary</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    da : xr.DataArray</span>
 <span class="sd">        The data array to check</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    bool</span>
 <span class="sd">        True if the variable is a CORDEX variable and the attributes match or if the variable is not a CORDEX variable, False otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">da</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">CORDEX_VARIABLES</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">da</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span> <span class="o">==</span> <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">attrs</span> <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">da</span><span class="o">.</span><span class="n">name</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">da</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="n">attr</span><span class="p">]</span> <span class="o">==</span> <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">attrs</span>
+                <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">da</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
 
 <span class="k">def</span> <span class="nf">_check_main_metadata</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -484,7 +600,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    ds : xr.Dataset</span>
 <span class="sd">        The dataset to check</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    bool</span>
@@ -492,6 +608,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="n">attr</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">MAIN_METADATA</span><span class="p">])</span>
+
 
 <span class="k">def</span> <span class="nf">_check_variable_metadata</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -501,7 +618,7 @@ document.write(`
 <span class="sd">    ----------</span>
 <span class="sd">    da : xr.DataArray</span>
 <span class="sd">        The data array to check</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    bool</span>
@@ -510,12 +627,13 @@ document.write(`
 
     <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="n">attr</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">attrs</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">VARIABLE_METADATA</span><span class="p">])</span>
 
+
 <span class="k">def</span> <span class="nf">_check_file_extension</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the file extension is netcdf (.nc)&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.nc&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.nc&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.nc&#39;</span>
+        <span class="k">return</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.nc&quot;</span>
 </pre></div>
 
                 </article>
@@ -524,7 +642,7 @@ document.write(`
 
 
 
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
 
 <div class="prev-next-area">
 </div>
@@ -533,8 +651,6 @@ document.write(`
             </div>
 
 
-
-                <div class="bd-sidebar-secondary bd-toc"></div>
 
 
           </div>
@@ -547,8 +663,8 @@ document.write(`
   </div>
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -581,7 +697,7 @@ document.write(`
 
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.3.
 </p></div>
 
     </div>

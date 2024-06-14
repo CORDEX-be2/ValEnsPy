@@ -60,7 +60,7 @@ git clone git@github.com:CORDEX-be2/ValEnsPy.git
 First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).
 
 ```bash
-conda create -p ./valenspy_dev python==3.9 poetry
+conda create -p ./valenspy_dev -c conda-forge python==3.9 poetry=1.8
 source activate valenspy_dev
 ```
 > [!NOTE]
