@@ -23,9 +23,10 @@ import numpy as np
 import getpass
 import oracledb
 import xarray as xr
-import rioxarray
 from datetime import date
 import cartopy.crs as ccrs
+# import rioxarray
+
 
 # User option: download raw oracle data. If False, load intermediate .csv files
 download_from_oracle = True # if True, has to be executed on kili
@@ -33,7 +34,7 @@ download_from_oracle = True # if True, has to be executed on kili
 # User settings
 data_dir = '/mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID/'
 dataset = "CLIMATE_GRID"
-variables = ["EVAPOTRANS_REF", "SUN_INT", "SUN_DURATION", "PRECIP_DURATION", "WIND_PEAK_SPEED", "PRECIP_1H_MAX", "EVAPOTRANS_REF", "TEMP_MAX","HUMIDITY_RELATIVE","TEMP_MIN", "TEMP_AVG", "WIND_SPEED", "PRESSURE", "SHORT_WAVE_FROM_SKY", "SUN_INT_HORIZ", "PRECIP_QUANTITY"]
+variables = ["EVAPOTRANS_REF", "SUN_INT", "SUN_DURATION", "PRECIP_DURATION", "WIND_PEAK_SPEED", "PRECIP_1H_MAX", "EVAPOTRANS_REF", "TEMP_MAX","HUMIDITY_RELATIVE", "TEMP_AVG", "WIND_SPEED", "PRESSURE", "SHORT_WAVE_FROM_SKY", "SUN_INT_HORIZ", "PRECIP_QUANTITY", "TEMP_MIN"]
  # Example variables, can add more if needed
 
 # Initial and end year for the data request
@@ -50,8 +51,8 @@ for variable in variables:
     # Define filenames for intermediate files
     filename_csv = f'climate_atlas_{variable}_{dataset}_{init_yr}_{end_yr}.csv'
     filename_municipalities_csv = f'climate_atlas_{variable}_{dataset}_municipalities_{init_yr}_{end_yr}.csv'
-    
-                
+
+
     if download_from_oracle and not os.path.isfile(data_dir+filename_csv):
 
         host = "delphi.oma.be"
@@ -151,6 +152,9 @@ for variable in variables:
     unit = meta.loc[meta['variable'] == variable, 'unit'].values[0]
     long_name = meta.loc[meta['variable'] == variable, 'long_name'].values[0]
     description = meta.loc[meta['variable'] == variable, 'description'].values[0]
+    
+    # this is necessary for remapping by cdo
+    coordinates = "lat lon"
 
     # Create data array
     da = xr.DataArray(
@@ -165,6 +169,7 @@ for variable in variables:
             long_name=long_name,
             description=description,
             units=unit,
+            coordinates=coordinates
         ),
     )
 
@@ -209,8 +214,8 @@ for variable in variables:
     # Interpolate to also have lon values outside of Belgium
     ds['lon'] = ds['lon'].interpolate_na(dim='x', method='linear', fill_value="extrapolate")
 
-    # Pass CRS using rioxarray
-    ds.rio.write_crs(ccrs.Projection(proj_string), inplace=True)
+    # Pass CRS using rioxarray - don't do this because it inhibits regridding using CDO. 
+    # ds.rio.write_crs(ccrs.Projection(proj_string), inplace=True)
 
     # Add global attributes
     ds.attrs = {
