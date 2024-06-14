@@ -29,7 +29,7 @@ import cartopy.crs as ccrs
 
 
 # User option: download raw oracle data. If False, load intermediate .csv files
-download_from_oracle = True # if True, has to be executed on kili
+download_from_oracle = False # if True, has to be executed on kili
 
 # User settings
 data_dir = '/mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID/'
@@ -191,6 +191,8 @@ for variable in variables:
             long_name="latitude",
             description="WGS84 latitude, from values of CLIMATE_GRID, provided per grid point",
             units="degrees_north",
+            bounds = 'lat_bounds'
+
         ),
     )
 
@@ -208,6 +210,7 @@ for variable in variables:
             long_name="longitude",
             description="WGS84 longitude, from values of CLIMATE_GRID, provided per grid point",
             units="degrees_east",
+            bounds = 'lon_bounds'
         ),
     )
 
@@ -216,6 +219,65 @@ for variable in variables:
 
     # Pass CRS using rioxarray - don't do this because it inhibits regridding using CDO. 
     # ds.rio.write_crs(ccrs.Projection(proj_string), inplace=True)
+
+    # add lat and lon bounds (necessary for conservative remapping)
+
+    def estimate_corners(lat, lon):
+        """
+        Estimate the corners of each grid cell for 2D curvilinear grids.
+        The corners are estimated by averaging the midpoints of neighboring cells.
+        Args:
+            lat (np.array): 2D array of latitudes for cell midpoints.
+            lon (np.array): 2D array of longitudes for cell midpoints.
+        Returns:
+            lat_corners, lon_corners: 2D arrays of shape (nlat, nlon, 4) containing the estimated
+                                    latitude and longitude of each corner for each grid cell.
+        """
+        nlat, nlon = lat.shape
+        lat_corners = np.zeros((nlat, nlon, 4))  # Initialize arrays for corners
+        lon_corners = np.zeros((nlat, nlon, 4))
+
+        # Internal cells
+        for i in range(0, nlat):
+            for j in range(0, nlon):
+                im1=np.max([0,i-1])
+                ip1=np.min([nlat-1,i+1])
+                jm1=np.max([0,j-1])
+                jp1=np.min([nlon-1,j+1])
+                
+                # Average to get the SW corner of the (i, j) cell
+                lat_corners[i, j, 0] = (lat[i, j] + lat[i, jm1] + lat[im1, j] + lat[im1, jm1]) / 4
+                lon_corners[i, j, 0] = (lon[i, j] + lon[i, jm1] + lon[im1, j] + lon[im1, jm1]) / 4
+
+                # Average to get the NW corner of the (i, j) cell
+                lat_corners[i, j, 1] = (lat[i, j] + lat[i, jp1] + lat[im1, j] + lat[im1, jp1]) / 4
+                lon_corners[i, j, 1] = (lon[i, j] + lon[i, jp1] + lon[im1, j] + lon[im1, jp1]) / 4            
+                
+                # Average to get the NE corner of the (i, j) cell
+                lat_corners[i, j, 2] = (lat[i, j] + lat[i, jp1] + lat[ip1, j] + lat[ip1, jp1]) / 4
+                lon_corners[i, j, 2] = (lon[i, j] + lon[i, jp1] + lon[ip1, j] + lon[ip1, jp1]) / 4
+
+                # Average to get the SE corner of the (i, j) cell
+                lat_corners[i, j, 3] = (lat[i, j] + lat[i, jm1] + lat[ip1, j] + lat[ip1, jm1]) / 4
+                lon_corners[i, j, 3] = (lon[i, j] + lon[i, jm1] + lon[ip1, j] + lon[ip1, jm1]) / 4    
+
+        return lat_corners, lon_corners
+
+    lat_bounds, lon_bounds = estimate_corners(ds['lat'].values, ds['lon'].values)
+
+    ds["lat_bounds"] = xr.DataArray(
+        data=lat_bounds,
+        dims=["y", "x", "nv"],
+        coords=dict(
+            y=lambert_y_grid,
+            x=lambert_x_grid))
+
+    ds["lon_bounds"] = xr.DataArray(
+        data=lon_bounds,
+        dims=["y", "x", "nv"],
+        coords=dict(
+            y=lambert_y_grid,
+            x=lambert_x_grid))
 
     # Add global attributes
     ds.attrs = {
@@ -228,6 +290,7 @@ for variable in variables:
     }
 
     filename_out = f'{variable}_CLIMATE_GRID_{dates.year.min()}_{dates.year.max()}_daily.nc'
+
     # Export to netcdf
     ds.to_netcdf(data_dir + filename_out, encoding={'time': {'dtype': 'int32'}})
     print(f'Saved as: {data_dir + filename_out}')
