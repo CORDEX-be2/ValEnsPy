@@ -18,18 +18,29 @@ class InputConverter:
         self.converter = converter
 
     def convert_input(
-        self, paths: Union[Path, list[Path]], metadata_info=None
-    ) -> Union[Path, list[Path]]:
-        """Convert the paths file to CF convention.
+        self, inputs, metadata_info=None
+    ):
+        """Convert the input file(s)/xarray dataset to CF convention.
 
         Parameters
         ----------
-        paths : Path or list(Path)
+        input : Path or list(Path) or xarray.Dataset
             The input file or list of input files to convert.
-        """
-        paths = self.converter(paths, metadata_info)
 
-        return paths
+        Returns
+        -------
+        xarray.Dataset
+            An xarray dataset in CF convention.
+        """
+        if isinstance(inputs, Path) or isinstance(paths, list):
+            ds = xr.open_mfdataset(paths, combine="by_coords", chunks="auto")
+        elif isinstance(inputs, xr.Dataset):
+            ds = inputs
+        else:
+            raise ValueError(
+                "The input should be a Path or list of Paths or an xarray dataset."
+            )
+        return self.converter(ds, metadata_info)
 
 
 INPUT_CONVERTORS = {"ERA5": InputConverter(ERA5_to_CF),"ERA5-Land":InputConverter(ERA5Land_to_CF), "EOBS": InputConverter(EOBS_to_CF), "CLIMATE_GRID": InputConverter(CLIMATE_GRID_to_CF)}
