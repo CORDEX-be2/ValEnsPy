@@ -163,7 +163,7 @@ wsgsmax:
     obs_units: m/s
 
 # mrso is total soil moisture content in CORDEX, not corresponding to volumetric_soil_water of first layer + check units! 
- mrso:
+mrso:
     obs_name: 
     obs_long_name: volumetric_soil_water_layer_1
     obs_units: m
