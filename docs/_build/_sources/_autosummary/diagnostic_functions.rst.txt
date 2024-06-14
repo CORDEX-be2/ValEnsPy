@@ -3,16 +3,29 @@ diagnostic\_functions
 
 .. automodule:: diagnostic_functions
 
+   
+   
+   
 
-
-
-
-
-
+   
+   
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
-
+   
       bias
       spatial_bias
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

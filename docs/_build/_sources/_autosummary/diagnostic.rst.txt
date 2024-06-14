@@ -3,22 +3,31 @@ diagnostic
 
 .. automodule:: diagnostic
 
+   
+   
+   
 
+   
+   
+   
 
-
-
-
-
-
-
-
-
+   
+   
    .. rubric:: Classes
 
    .. autosummary::
       :toctree:
       :template: custom-class-template.rst
-
+   
       Diagnostic
       Ensemble2Ref
       Model2Ref
+   
+   
+
+   
+   
+   
+
+
+

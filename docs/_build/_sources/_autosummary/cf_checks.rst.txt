@@ -3,16 +3,29 @@ cf\_checks
 
 .. automodule:: cf_checks
 
+   
+   
+   
 
-
-
-
-
-
+   
+   
    .. rubric:: Functions
 
    .. autosummary::
       :toctree:
-
+   
       cf_status
       is_cf_compliant
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
