@@ -1,0 +1,28 @@
+input\_manager
+==============
+
+.. automodule:: input_manager
+
+
+
+
+
+
+
+
+
+
+
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+
+      InputManager
+
+
+
+
+
+
