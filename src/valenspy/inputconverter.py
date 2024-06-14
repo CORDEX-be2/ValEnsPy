@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Callable, Union
+import xarray as xr
 from valenspy.inputconverter_functions import (
     EOBS_to_CF,
     ERA5_to_CF,
@@ -37,8 +38,8 @@ class InputConverter:
         xarray.Dataset
             An xarray dataset in CF convention.
         """
-        if isinstance(inputs, Path) or isinstance(paths, list):
-            ds = xr.open_mfdataset(paths, combine="by_coords", chunks="auto")
+        if isinstance(inputs, Path) or isinstance(inputs, list):
+            ds = xr.open_mfdataset(inputs, combine="by_coords", chunks="auto")
         elif isinstance(inputs, xr.Dataset):
             ds = inputs
         else:
