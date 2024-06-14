@@ -131,11 +131,90 @@ sftlf:
 #################################
 ## Atmosphere Tier 1 Variables ##
 #################################
-
+ts:
+  units: K
+  standard_name: surface_temperature
+  long_name: Surface Temperature
+  realm: atmos
+  aggregation: i
 
 hfls:
   units: W m-2
   standard_name: surface_upward_latent_heat_flux
   long_name: Surface Upward Latent Heat Flux
-  realm:
-#To Do - Add Tier 1 and Tier 2 Variables
+  realm: atmos
+
+prsn:
+  units: kg m-2 s-1
+  standard_name: snowfall_flux
+  long_name: Snowfall Flux
+  realm: atmos
+  aggregation: a
+
+prw:
+  units: kg m-2
+  standard_name: atmosphere_mass_content_of_water_vapor
+  long_name: Water Vapor Path
+  realm: atmos
+  aggregation: i
+
+snw:
+  units: kg m-2
+  standard_name: surface_snow_amount
+  long_name: Surface Snow Amount
+  realm: atmos
+  aggregation: i
+
+snd:
+  units: m
+  standard_name: surface_snow_thickness
+  long_name: Snow Depth
+  realm: atmos
+  aggregation: i
+
+mrros:
+  units: kg m-2 s-1
+  standard_name: surface_runoff_flux
+  long_name: Surface Runoff
+  realm: atmos
+  aggregation: a
+
+mrro:
+  units: kg m-2 s-1
+  standard_name: runoff_flux
+  long_name: Total Runoff
+  realm: atmos
+  aggregation: a
+
+hfss:
+  units: W m-2
+  standard_name: surface_upward_sensible_heat_flux
+  long_name: Surface Upward Sensible Heat Flux
+  realm: atmos
+  aggregation: a
+
+zmla:
+  units: m
+  standard_name: atmosphere_boundary_layer_thickness
+  long_name: Height of Boundary Layer
+  realm: atmos
+  aggregation: i
+
+rsdt:
+  units: W m-2
+  standard_name: toa_incoming_shortwave_flux
+  long_name: TOA Incident Shortwave Radiation
+  realm: atmos
+  aggregation: a
+
+#################################
+## Atmosphere Tier 2 Variables ##
+#################################
+
+evspsblpot:
+  units: kg m-2 s-1
+  standard_name: water_potential_evaporation_flux
+  long_name: Potential Evapotranspiration
+  realm: atmos
+
+
