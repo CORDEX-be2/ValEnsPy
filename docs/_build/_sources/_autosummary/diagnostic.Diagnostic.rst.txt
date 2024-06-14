@@ -19,3 +19,9 @@ diagnostic.Diagnostic
       ~Diagnostic.__init__
       ~Diagnostic.apply
       ~Diagnostic.visualize
+
+
+
+
+
+
