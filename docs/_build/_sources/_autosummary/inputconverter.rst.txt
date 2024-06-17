@@ -20,9 +20,3 @@ inputconverter
       :template: custom-class-template.rst
 
       InputConverter
-
-
-
-
-
-
