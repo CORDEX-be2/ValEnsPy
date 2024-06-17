@@ -11,19 +11,16 @@ with open(src_path / "ancilliary_data" / "CORDEX_variables.yml") as file:
     CORDEX_VARIABLES = safe_load(file)
 
 
-def _non_convertor(paths, metadata_info=None):
-    """A dummy function that does not convert the input paths."""
-    return xr.open_mfdataset(paths, combine="by_coords", chunks="auto")
-
-
-def EOBS_to_CF(paths, metadata_info=None) -> xr.Dataset:
+def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
-    Convert the EOBS netCDF paths to an xarray netCDF in CF convention
+    Convert the EOBS xarray netCDF to a CF compliant xarray Dataset
 
     Parameters
     ----------
-    paths : Path or a list of Paths
-        The path(s) to the netCDF file of specific variable to convert
+    ds : xr.Dataset
+        The xarray Dataset of EOBS observations to convert
+    metadata_info : dict, optional
+        A dictionary containing additional metadata information to add to the dataset
 
     Returns
     -------
@@ -31,16 +28,13 @@ def EOBS_to_CF(paths, metadata_info=None) -> xr.Dataset:
         The CF compliant EOBS observations for the specified variable.
     """
 
-    # open the observation dataset
-    ds = xr.open_mfdataset(paths, combine="by_coords", chunks="auto")
-
     # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator?
     obsdata_name = "EOBS"
 
     with open(
         src_path / "ancilliary_data" / Path(obsdata_name + "_lookup.yml")
-    ) as file:
-        obs_LOOKUP = safe_load(file)
+    ) as lookup_file:
+        obs_LOOKUP = safe_load(lookup_file)
 
     # make EOBS CF compliant
 
@@ -122,14 +116,16 @@ def EOBS_to_CF(paths, metadata_info=None) -> xr.Dataset:
     return ds
 
 
-def ERA5_to_CF(file: Path, metadata_info=None) -> Path:
+def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
     """
-    Convert the ERA5 netCDF file to a xarray Dataset in CF convention
+    Convert the ERA5 xarray dataset to a xarray Dataset in CF convention
 
     Parameters
     ----------
-    file : Path
-        The path to the netCDF file of specific variable to convert
+    ds : xr.Dataset
+        The xarray Dataset of ERA5 observations to convert
+    metadata_info : dict, optional
+        A dictionary containing additional metadata information to add to the dataset
 
     Returns
     -------
@@ -138,9 +134,6 @@ def ERA5_to_CF(file: Path, metadata_info=None) -> Path:
     """
 
     obsdata_name = "ERA5"
-
-    # open the observation dataset
-    ds = xr.open_mfdataset(file, combine="by_coords", chunks="auto")
 
     # open observational specific lookup dictionary
     with open(src_path / "ancilliary_data" / Path("ERA5_lookup.yml")) as lookup_file:
@@ -239,14 +232,16 @@ def ERA5_to_CF(file: Path, metadata_info=None) -> Path:
     return ds
 
 
-def ERA5Land_to_CF(file: Path, metadata_info=None) -> Path:
+def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
     """
-    Convert the ERA5-Land netCDF file to a xarray Dataset in CF convention
+    Convert the ERA5-Land xarray dataset to a xarray Dataset in CF convention
 
     Parameters
     ----------
-    file : Path
-        The path to the netCDF file of specific variable to convert
+    ds : xr.Dataset
+        The xarray Dataset of ERA5-Land observations to convert
+    metadata_info : dict, optional
+        A dictionary containing additional metadata information to add to the dataset
 
     Returns
     -------
@@ -255,9 +250,6 @@ def ERA5Land_to_CF(file: Path, metadata_info=None) -> Path:
     """
 
     obsdata_name = "ERA5-Land"
-
-    # open the observation dataset
-    ds = xr.open_mfdataset(file, combine="by_coords", chunks="auto")
 
     # open observational specific lookup dictionary
     with open(src_path / "ancilliary_data" / Path("ERA5_lookup.yml")) as lookup_file:
@@ -356,14 +348,16 @@ def ERA5Land_to_CF(file: Path, metadata_info=None) -> Path:
     return ds
 
 
-def CLIMATE_GRID_to_CF(file: Path, metadata_info=None) -> xr.Dataset:
+def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
-    Convert the CLIMATE_GRID netCDF paths to an xarray netCDF in CF convention
+    Convert the CLIMATE_GRID xarray dataset to a xarray Dataset in CF convention
 
     Parameters
     ----------
-    paths : Path or a list of Paths
-        The path(s) to the netCDF file of specific variable to convert
+    ds : xr.Dataset
+        The xarray Dataset of CLIMATE_GRID observations to convert
+    metadata_info : dict, optional
+        A dictionary containing additional metadata information to add to the dataset
 
     Returns
     -------
@@ -372,9 +366,6 @@ def CLIMATE_GRID_to_CF(file: Path, metadata_info=None) -> xr.Dataset:
     """
 
     obsdata_name = "CLIMATE_GRID"
-
-    # open the observation dataset
-    ds = xr.open_mfdataset(file, combine="by_coords", chunks="auto")
 
     # open observational specific lookup dictionary
     with open(

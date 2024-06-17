@@ -20,9 +20,3 @@ input\_manager
       :template: custom-class-template.rst
 
       InputManager
-
-
-
-
-
-

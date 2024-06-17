@@ -18,9 +18,3 @@ inputconverter.InputConverter
 
       ~InputConverter.__init__
       ~InputConverter.convert_input
-
-
-
-
-
-
