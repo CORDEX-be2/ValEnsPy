@@ -18,13 +18,3 @@ inputconverter\_functions
       EOBS_to_CF
       ERA5Land_to_CF
       ERA5_to_CF
-
-
-
-
-
-
-
-
-
-

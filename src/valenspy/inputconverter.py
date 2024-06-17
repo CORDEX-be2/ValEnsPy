@@ -23,9 +23,7 @@ class InputConverter:
         """
         self.converter = converter
 
-    def convert_input(
-        self, inputs, metadata_info=None
-    ):
+    def convert_input(self, inputs, metadata_info=None):
         """Convert the input file(s)/xarray dataset to CF convention.
 
         Parameters

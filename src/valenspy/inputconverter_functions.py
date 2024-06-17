@@ -10,6 +10,7 @@ src_path = Path(__file__).resolve().parent
 with open(src_path / "ancilliary_data" / "CORDEX_variables.yml") as file:
     CORDEX_VARIABLES = safe_load(file)
 
+
 def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
     Convert the EOBS xarray netCDF to a CF compliant xarray Dataset
