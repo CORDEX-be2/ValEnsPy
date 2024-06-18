@@ -35,7 +35,6 @@ download_from_oracle = False # if True, has to be executed on kili
 data_dir = '/mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID/'
 dataset = "CLIMATE_GRID"
 variables = ["EVAPOTRANS_REF", "SUN_INT", "SUN_DURATION", "PRECIP_DURATION", "WIND_PEAK_SPEED", "PRECIP_1H_MAX", "EVAPOTRANS_REF", "TEMP_MAX","HUMIDITY_RELATIVE", "TEMP_AVG", "WIND_SPEED", "PRESSURE", "SHORT_WAVE_FROM_SKY", "SUN_INT_HORIZ", "PRECIP_QUANTITY", "TEMP_MIN"]
- # Example variables, can add more if needed
 
 # Initial and end year for the data request
 init_yr = 1950
