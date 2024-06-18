@@ -349,6 +349,7 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
 
 
 def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
+
     """
     Convert the CLIMATE_GRID xarray dataset to a xarray Dataset in CF convention
 
@@ -383,6 +384,46 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
         if var:  # Dont processes variables that are not in the lookup table.
 
+            # update variable name to CORDEX variable name
+            ds = ds.rename_vars({obs_LOOKUP[var]["obs_name"]: var})
+
+            # from here on, use CORDEX variable name to access data array and do rest of conversion
+
+            # Unit conversion - hard coded ERA5 units for CORDEX CORE, double check beyond.
+            if (obs_LOOKUP[var]["obs_units"] == "Celcius") or (
+                obs_LOOKUP[var]["obs_units"] == "degC"
+            ):
+                ds[var] = _convert_Celcius_to_Kelvin(ds[var])
+
+            elif obs_LOOKUP[var]["obs_units"] == "hPa":
+                ds[var] = _convert_hPa_to_Pa(ds[var])  # hPa to Pa
+
+            elif (obs_LOOKUP[var]["obs_units"] == "mm") or (
+                obs_LOOKUP[var]["obs_units"] == "mm/hr"
+            ):
+                ds[var] = _convert_mm_to_kg_m2s(
+                    ds[var]
+                )  # mm to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
+
+            elif obs_LOOKUP[var]["obs_units"] == "kWh/m2/day":
+                ds[var] = _convert_kWh_m2_day_to_W_m2(
+                    ds[var]
+                )  # kWh/m2/day to W m^-2 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
+
+            # add necessary metadata
+            ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
+                "standard_name"
+            ]  # from the CORDEX look-up table
+            ds[var].attrs["long_name"] = CORDEX_VARIABLES[var][
+                "long_name"
+            ]  # from the CORDEX look-up table
+            ds[var].attrs["original_name"] = obs_LOOKUP[var]["obs_name"]
+            ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
+
+            # convert the time dimension to a pandas datetime index 
+            ds[var]["time"] = pd.to_datetime(ds[var].time)
+
+
             # additional attributes -- set both globally at dataset level as at data array level
             ds[var].attrs["dataset"] = obsdata_name
 
@@ -393,8 +434,8 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
             # if not, include hard-coded attributes (dataset dependent!)
             else:
                 ds[var].attrs["freq"] = "daily"
-                ds[var].attrs["spatial_resolution"] = "5km"
-                ds[var].attrs["region"] = "belgium"  # leave empty per default.
+                ds[var].attrs["spatial_resolution"] = "0.07° x 0.045° (~5km)"
+                ds[var].attrs["region"] = "belgium"  
 
     # set attributes in whole dataset
     ds.attrs["dataset"] = obsdata_name
@@ -407,9 +448,12 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     # if not, include hard-coded attributes (dataset dependent!)
     else:
         ds.attrs["freq"] = "daily"
-        ds.attrs["spatial_resolution"] = "5km"
+        ds.attrs["spatial_resolution"] = "0.07° x 0.045° (~5km)"
         ds.attrs["region"] = "belgium"  # leave empty per default.
 
+    # Soft check for CF compliance
+    cf_status(ds)
+    
     return ds
 
 
