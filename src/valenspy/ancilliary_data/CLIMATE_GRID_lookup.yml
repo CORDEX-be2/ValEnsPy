@@ -30,7 +30,7 @@ pr:
   obs_long_name: precipitation quantity
   obs_units: mm
 
-huss:
+hurs:
   obs_name: HUMIDITY_RELATIVE
   obs_long_name: Near-Surface Relative Humidity
   obs_units: "%"
@@ -58,7 +58,7 @@ evspsblpot:
 sfcWindmax: 
   obs_name: WIND_PEAK_SPEED
   obs_long_name: maximum gusts speed from the closest station
-  obs_units: m/s 
+  obs_units: m/s
 
 psl: 
   obs_name: PRESSURE

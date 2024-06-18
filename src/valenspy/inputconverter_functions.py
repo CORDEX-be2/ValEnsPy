@@ -409,6 +409,9 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
                 ds[var] = _convert_kWh_m2_day_to_W_m2(
                     ds[var]
                 )  # kWh/m2/day to W m^-2 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
+            
+            elif obs_LOOKUP[var]["obs_units"] == "m/s":
+               ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"]  # put units as m s-1
 
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
