@@ -1,0 +1,263 @@
+{
+  "build": "pyhd8ed1ab_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "python >=3.6,<4.0"
+  ],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/crashtest-0.4.1-pyhd8ed1ab_0",
+  "files": [
+    "lib/python3.9/site-packages/crashtest-0.4.1.dist-info/INSTALLER",
+    "lib/python3.9/site-packages/crashtest-0.4.1.dist-info/LICENSE",
+    "lib/python3.9/site-packages/crashtest-0.4.1.dist-info/METADATA",
+    "lib/python3.9/site-packages/crashtest-0.4.1.dist-info/RECORD",
+    "lib/python3.9/site-packages/crashtest-0.4.1.dist-info/REQUESTED",
+    "lib/python3.9/site-packages/crashtest-0.4.1.dist-info/WHEEL",
+    "lib/python3.9/site-packages/crashtest-0.4.1.dist-info/direct_url.json",
+    "lib/python3.9/site-packages/crashtest-0.4.1.dist-info/top_level.txt",
+    "lib/python3.9/site-packages/crashtest/__init__.py",
+    "lib/python3.9/site-packages/crashtest/contracts/__init__.py",
+    "lib/python3.9/site-packages/crashtest/contracts/base_solution.py",
+    "lib/python3.9/site-packages/crashtest/contracts/has_solutions_for_exception.py",
+    "lib/python3.9/site-packages/crashtest/contracts/provides_solution.py",
+    "lib/python3.9/site-packages/crashtest/contracts/solution.py",
+    "lib/python3.9/site-packages/crashtest/contracts/solution_provider_repository.py",
+    "lib/python3.9/site-packages/crashtest/frame.py",
+    "lib/python3.9/site-packages/crashtest/frame_collection.py",
+    "lib/python3.9/site-packages/crashtest/inspector.py",
+    "lib/python3.9/site-packages/crashtest/py.typed",
+    "lib/python3.9/site-packages/crashtest/solution_providers/__init__.py",
+    "lib/python3.9/site-packages/crashtest/solution_providers/solution_provider_repository.py",
+    "lib/python3.9/site-packages/crashtest/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/contracts/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/contracts/__pycache__/base_solution.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/contracts/__pycache__/has_solutions_for_exception.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/contracts/__pycache__/provides_solution.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/contracts/__pycache__/solution.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/contracts/__pycache__/solution_provider_repository.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/__pycache__/frame.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/__pycache__/frame_collection.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/__pycache__/inspector.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/solution_providers/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/crashtest/solution_providers/__pycache__/solution_provider_repository.cpython-39.pyc"
+  ],
+  "fn": "crashtest-0.4.1-pyhd8ed1ab_0.tar.bz2",
+  "license": "MIT",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/crashtest-0.4.1-pyhd8ed1ab_0",
+    "type": 1
+  },
+  "md5": "709a2295dd907bb34afb57d54320642f",
+  "name": "crashtest",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/crashtest-0.4.1-pyhd8ed1ab_0.tar.bz2",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/crashtest-0.4.1.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "site-packages/crashtest-0.4.1.dist-info/LICENSE",
+        "path_type": "hardlink",
+        "sha256": "f1978133782b90f4733bc308ddb19267c3fe04797c88d9ed3bc219032495a982",
+        "sha256_in_prefix": "f1978133782b90f4733bc308ddb19267c3fe04797c88d9ed3bc219032495a982",
+        "size_in_bytes": 1062
+      },
+      {
+        "_path": "site-packages/crashtest-0.4.1.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "19705b75b7fe0a055ea23bb4e7276cd7527c98f51466ef2d2e9117498d9c2b04",
+        "sha256_in_prefix": "19705b75b7fe0a055ea23bb4e7276cd7527c98f51466ef2d2e9117498d9c2b04",
+        "size_in_bytes": 645
+      },
+      {
+        "_path": "site-packages/crashtest-0.4.1.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "795ab81dfec62a925ae3a90e710d2d0f8b5189fd4fb5a1f8083b04f0a0220bf7",
+        "sha256_in_prefix": "795ab81dfec62a925ae3a90e710d2d0f8b5189fd4fb5a1f8083b04f0a0220bf7",
+        "size_in_bytes": 2640
+      },
+      {
+        "_path": "site-packages/crashtest-0.4.1.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/crashtest-0.4.1.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "1b5e87e00dc87a84269cead8578b9e6462928e18a95f1f3373c9eef451a5bcc0",
+        "sha256_in_prefix": "1b5e87e00dc87a84269cead8578b9e6462928e18a95f1f3373c9eef451a5bcc0",
+        "size_in_bytes": 92
+      },
+      {
+        "_path": "site-packages/crashtest-0.4.1.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "3414b86e0938712dec3127325bfdedb61d1f6bfbce8e990ad700c4ebb934b1b4",
+        "sha256_in_prefix": "3414b86e0938712dec3127325bfdedb61d1f6bfbce8e990ad700c4ebb934b1b4",
+        "size_in_bytes": 105
+      },
+      {
+        "_path": "site-packages/crashtest-0.4.1.dist-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "415b52c39ce9f74cecb6f50be51a751765d99a78a00abc90bf89ab12fa3cbe92",
+        "sha256_in_prefix": "415b52c39ce9f74cecb6f50be51a751765d99a78a00abc90bf89ab12fa3cbe92",
+        "size_in_bytes": 10
+      },
+      {
+        "_path": "site-packages/crashtest/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "a273054fc2bb6f5bc1b8ac94ffb026b7249039164049409d098e3652902290c3",
+        "sha256_in_prefix": "a273054fc2bb6f5bc1b8ac94ffb026b7249039164049409d098e3652902290c3",
+        "size_in_bytes": 59
+      },
+      {
+        "_path": "site-packages/crashtest/contracts/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/crashtest/contracts/base_solution.py",
+        "path_type": "hardlink",
+        "sha256": "7768a374042b3cf743aecc26596dbe7830e5f9ae26c1321a761a6b2d432cb3a7",
+        "sha256_in_prefix": "7768a374042b3cf743aecc26596dbe7830e5f9ae26c1321a761a6b2d432cb3a7",
+        "size_in_bytes": 554
+      },
+      {
+        "_path": "site-packages/crashtest/contracts/has_solutions_for_exception.py",
+        "path_type": "hardlink",
+        "sha256": "7bc1a2351c2dc9ebce7522ea798235affdd276541e5a291179e9224fb4d1fa48",
+        "sha256_in_prefix": "7bc1a2351c2dc9ebce7522ea798235affdd276541e5a291179e9224fb4d1fa48",
+        "size_in_bytes": 374
+      },
+      {
+        "_path": "site-packages/crashtest/contracts/provides_solution.py",
+        "path_type": "hardlink",
+        "sha256": "4c4a67242a5583cfde4aabb27ec314ec4f7fe4710b1ba3dbf9ccb6d9633c7be7",
+        "sha256_in_prefix": "4c4a67242a5583cfde4aabb27ec314ec4f7fe4710b1ba3dbf9ccb6d9633c7be7",
+        "size_in_bytes": 255
+      },
+      {
+        "_path": "site-packages/crashtest/contracts/solution.py",
+        "path_type": "hardlink",
+        "sha256": "25157655461f737cec0728a39463b4181f5cdc9a72eae1cfaf02071593c4dd13",
+        "sha256_in_prefix": "25157655461f737cec0728a39463b4181f5cdc9a72eae1cfaf02071593c4dd13",
+        "size_in_bytes": 333
+      },
+      {
+        "_path": "site-packages/crashtest/contracts/solution_provider_repository.py",
+        "path_type": "hardlink",
+        "sha256": "ab116c857a3ea76902ab0791ffa7fd952c07657341d5835edd269d61d8b40872",
+        "sha256_in_prefix": "ab116c857a3ea76902ab0791ffa7fd952c07657341d5835edd269d61d8b40872",
+        "size_in_bytes": 615
+      },
+      {
+        "_path": "site-packages/crashtest/frame.py",
+        "path_type": "hardlink",
+        "sha256": "cc0f74ebd0c3a1be85cabc964e1e8dc9925bacc816178af341f0bbc0515c533d",
+        "sha256_in_prefix": "cc0f74ebd0c3a1be85cabc964e1e8dc9925bacc816178af341f0bbc0515c533d",
+        "size_in_bytes": 2231
+      },
+      {
+        "_path": "site-packages/crashtest/frame_collection.py",
+        "path_type": "hardlink",
+        "sha256": "72eb267f613ad8fd13e43de25b9b04b4a0ab8cd2c0e4956be7a4092e96fb049e",
+        "sha256_in_prefix": "72eb267f613ad8fd13e43de25b9b04b4a0ab8cd2c0e4956be7a4092e96fb049e",
+        "size_in_bytes": 2207
+      },
+      {
+        "_path": "site-packages/crashtest/inspector.py",
+        "path_type": "hardlink",
+        "sha256": "9d8c0f6777956b2e89b6cfe32153c864abc9d8417dfef9f9207f2963d183c6ed",
+        "sha256_in_prefix": "9d8c0f6777956b2e89b6cfe32153c864abc9d8417dfef9f9207f2963d183c6ed",
+        "size_in_bytes": 1337
+      },
+      {
+        "_path": "site-packages/crashtest/py.typed",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/crashtest/solution_providers/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/crashtest/solution_providers/solution_provider_repository.py",
+        "path_type": "hardlink",
+        "sha256": "c8cedc91c56617c9d4f3360096812c609cb7256ede2c8363df9bcc9d4e097f0a",
+        "sha256_in_prefix": "c8cedc91c56617c9d4f3360096812c609cb7256ede2c8363df9bcc9d4e097f0a",
+        "size_in_bytes": 2145
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/contracts/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/contracts/__pycache__/base_solution.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/contracts/__pycache__/has_solutions_for_exception.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/contracts/__pycache__/provides_solution.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/contracts/__pycache__/solution.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/contracts/__pycache__/solution_provider_repository.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/__pycache__/frame.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/__pycache__/frame_collection.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/__pycache__/inspector.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/solution_providers/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/crashtest/solution_providers/__pycache__/solution_provider_repository.cpython-39.pyc",
+        "path_type": "pyc_file"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "2f05954a3faf0700c14c1deddc085385160ee32abe111699c78d9cb277e915cc",
+  "size": 10161,
+  "subdir": "noarch",
+  "timestamp": 1667467145000,
+  "url": "https://conda.anaconda.org/conda-forge/noarch/crashtest-0.4.1-pyhd8ed1ab_0.tar.bz2",
+  "version": "0.4.1"
+}

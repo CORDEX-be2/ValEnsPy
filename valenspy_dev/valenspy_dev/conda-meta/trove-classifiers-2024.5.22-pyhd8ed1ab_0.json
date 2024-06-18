@@ -1,0 +1,133 @@
+{
+  "build": "pyhd8ed1ab_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "python >=3.7"
+  ],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/trove-classifiers-2024.5.22-pyhd8ed1ab_0",
+  "files": [
+    "lib/python3.9/site-packages/trove_classifiers-2024.5.22.dist-info/INSTALLER",
+    "lib/python3.9/site-packages/trove_classifiers-2024.5.22.dist-info/LICENSE",
+    "lib/python3.9/site-packages/trove_classifiers-2024.5.22.dist-info/METADATA",
+    "lib/python3.9/site-packages/trove_classifiers-2024.5.22.dist-info/RECORD",
+    "lib/python3.9/site-packages/trove_classifiers-2024.5.22.dist-info/REQUESTED",
+    "lib/python3.9/site-packages/trove_classifiers-2024.5.22.dist-info/WHEEL",
+    "lib/python3.9/site-packages/trove_classifiers-2024.5.22.dist-info/direct_url.json",
+    "lib/python3.9/site-packages/trove_classifiers-2024.5.22.dist-info/top_level.txt",
+    "lib/python3.9/site-packages/trove_classifiers/__init__.py",
+    "lib/python3.9/site-packages/trove_classifiers/__main__.py",
+    "lib/python3.9/site-packages/trove_classifiers/py.typed",
+    "lib/python3.9/site-packages/trove_classifiers/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/trove_classifiers/__pycache__/__main__.cpython-39.pyc"
+  ],
+  "fn": "trove-classifiers-2024.5.22-pyhd8ed1ab_0.conda",
+  "license": "Apache-2.0",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/trove-classifiers-2024.5.22-pyhd8ed1ab_0",
+    "type": 1
+  },
+  "md5": "a887538e7f6697ed52a487dbaa0ebff5",
+  "name": "trove-classifiers",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/trove-classifiers-2024.5.22-pyhd8ed1ab_0.conda",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/trove_classifiers-2024.5.22.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "site-packages/trove_classifiers-2024.5.22.dist-info/LICENSE",
+        "path_type": "hardlink",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "sha256_in_prefix": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size_in_bytes": 11357
+      },
+      {
+        "_path": "site-packages/trove_classifiers-2024.5.22.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "061e49a0f89c359f30bc2a62ceddaff7e076c62bc49bc0d295feb4bc4fcff3d3",
+        "sha256_in_prefix": "061e49a0f89c359f30bc2a62ceddaff7e076c62bc49bc0d295feb4bc4fcff3d3",
+        "size_in_bytes": 2158
+      },
+      {
+        "_path": "site-packages/trove_classifiers-2024.5.22.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "65476806324668cd517f9366a61cad1ac180f46a5e0d0e2ec47aa3901362dafb",
+        "sha256_in_prefix": "65476806324668cd517f9366a61cad1ac180f46a5e0d0e2ec47aa3901362dafb",
+        "size_in_bytes": 1147
+      },
+      {
+        "_path": "site-packages/trove_classifiers-2024.5.22.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/trove_classifiers-2024.5.22.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "189eedfe4581172c1b6a02b97a8f48a14c0b5baa3239e4ca990fbd8871553714",
+        "sha256_in_prefix": "189eedfe4581172c1b6a02b97a8f48a14c0b5baa3239e4ca990fbd8871553714",
+        "size_in_bytes": 92
+      },
+      {
+        "_path": "site-packages/trove_classifiers-2024.5.22.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "4c5ab96ef5c9bf3e0e77516a90e98dbecbd962261d58aecd1b3a7b9b7a8d25cf",
+        "sha256_in_prefix": "4c5ab96ef5c9bf3e0e77516a90e98dbecbd962261d58aecd1b3a7b9b7a8d25cf",
+        "size_in_bytes": 113
+      },
+      {
+        "_path": "site-packages/trove_classifiers-2024.5.22.dist-info/top_level.txt",
+        "path_type": "hardlink",
+        "sha256": "fd3bd7bff29905475c9493e0fb4ac09a94cc8100ed04e8cad2cd76c95fa15917",
+        "sha256_in_prefix": "fd3bd7bff29905475c9493e0fb4ac09a94cc8100ed04e8cad2cd76c95fa15917",
+        "size_in_bytes": 18
+      },
+      {
+        "_path": "site-packages/trove_classifiers/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "bad76f613b7037c7e8f7cd6eb717a15d5101d3fc2adfd3f011b730b3556cc2c9",
+        "sha256_in_prefix": "bad76f613b7037c7e8f7cd6eb717a15d5101d3fc2adfd3f011b730b3556cc2c9",
+        "size_in_bytes": 41433
+      },
+      {
+        "_path": "site-packages/trove_classifiers/__main__.py",
+        "path_type": "hardlink",
+        "sha256": "7ad88b5fae78e354f4f8e1f3afeafb6082e8ce7b47d30df059486f76ae60b8d0",
+        "sha256_in_prefix": "7ad88b5fae78e354f4f8e1f3afeafb6082e8ce7b47d30df059486f76ae60b8d0",
+        "size_in_bytes": 110
+      },
+      {
+        "_path": "site-packages/trove_classifiers/py.typed",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "lib/python3.9/site-packages/trove_classifiers/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/trove_classifiers/__pycache__/__main__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "f1bf2f01ab4cf799bc3c561eb9247709f7f63f8fc151a99ffd247bda50a5ee28",
+  "size": 18449,
+  "subdir": "noarch",
+  "timestamp": 1716451864000,
+  "url": "https://conda.anaconda.org/conda-forge/noarch/trove-classifiers-2024.5.22-pyhd8ed1ab_0.conda",
+  "version": "2024.5.22"
+}

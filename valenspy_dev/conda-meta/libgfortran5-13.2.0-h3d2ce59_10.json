@@ -1,0 +1,65 @@
+{
+  "build": "h3d2ce59_10",
+  "build_number": 10,
+  "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+  "constrains": [
+    "libgfortran-ng 13.2.0"
+  ],
+  "depends": [
+    "libgcc-ng >=13.2.0"
+  ],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/libgfortran5-13.2.0-h3d2ce59_10",
+  "files": [
+    "lib/libgfortran.so",
+    "lib/libgfortran.so.5",
+    "lib/libgfortran.so.5.0.0",
+    "share/licenses/libgfortran/RUNTIME.LIBRARY.EXCEPTION"
+  ],
+  "fn": "libgfortran5-13.2.0-h3d2ce59_10.conda",
+  "license": "GPL-3.0-only WITH GCC-exception-3.1",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/libgfortran5-13.2.0-h3d2ce59_10",
+    "type": 1
+  },
+  "md5": "e3896e5c2dd1cbabaf4abb3254df47b0",
+  "name": "libgfortran5",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/libgfortran5-13.2.0-h3d2ce59_10.conda",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "lib/libgfortran.so",
+        "path_type": "softlink",
+        "sha256": "7a67847278dba1e7c7837791622ed9fc4b8c10b80bc49512c367b0a319e80327",
+        "size_in_bytes": 6848672
+      },
+      {
+        "_path": "lib/libgfortran.so.5",
+        "path_type": "softlink",
+        "sha256": "7a67847278dba1e7c7837791622ed9fc4b8c10b80bc49512c367b0a319e80327",
+        "size_in_bytes": 6848672
+      },
+      {
+        "_path": "lib/libgfortran.so.5.0.0",
+        "path_type": "hardlink",
+        "sha256": "7a67847278dba1e7c7837791622ed9fc4b8c10b80bc49512c367b0a319e80327",
+        "sha256_in_prefix": "7a67847278dba1e7c7837791622ed9fc4b8c10b80bc49512c367b0a319e80327",
+        "size_in_bytes": 6848672
+      },
+      {
+        "_path": "share/licenses/libgfortran/RUNTIME.LIBRARY.EXCEPTION",
+        "path_type": "hardlink",
+        "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+        "sha256_in_prefix": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+        "size_in_bytes": 3324
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "be5f5873c392bc4c25bee25cef2d30a9dab69c0d82ff1ddf687f9ece6d36f56c",
+  "size": 1463819,
+  "subdir": "linux-64",
+  "timestamp": 1718485020000,
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/libgfortran5-13.2.0-h3d2ce59_10.conda",
+  "version": "13.2.0"
+}

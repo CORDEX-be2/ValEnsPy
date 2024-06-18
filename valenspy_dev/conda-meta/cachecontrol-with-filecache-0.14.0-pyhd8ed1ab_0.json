@@ -1,0 +1,35 @@
+{
+  "build": "pyhd8ed1ab_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "cachecontrol 0.14.0 pyhd8ed1ab_0",
+    "filelock >=3.8.0",
+    "python >=3.7"
+  ],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/cachecontrol-with-filecache-0.14.0-pyhd8ed1ab_0",
+  "files": [],
+  "fn": "cachecontrol-with-filecache-0.14.0-pyhd8ed1ab_0.conda",
+  "license": "Apache-2.0",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/cachecontrol-with-filecache-0.14.0-pyhd8ed1ab_0",
+    "type": 1
+  },
+  "md5": "4c08fa6e7d1d3f124ad815e21b2210e9",
+  "name": "cachecontrol-with-filecache",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/cachecontrol-with-filecache-0.14.0-pyhd8ed1ab_0.conda",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "89a9061aafc28c0e0e2db49a5b99e99797ed3a7127c31deda0cceb4696ae627f",
+  "size": 6724,
+  "subdir": "noarch",
+  "timestamp": 1706895358000,
+  "url": "https://conda.anaconda.org/conda-forge/noarch/cachecontrol-with-filecache-0.14.0-pyhd8ed1ab_0.conda",
+  "version": "0.14.0"
+}

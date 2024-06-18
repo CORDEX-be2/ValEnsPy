@@ -1,0 +1,31 @@
+{
+  "build": "4_cp39",
+  "build_number": 4,
+  "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+  "constrains": [
+    "python 3.9.* *_cpython"
+  ],
+  "depends": [],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/python_abi-3.9-4_cp39",
+  "files": [],
+  "fn": "python_abi-3.9-4_cp39.conda",
+  "license": "BSD-3-Clause",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/python_abi-3.9-4_cp39",
+    "type": 1
+  },
+  "md5": "bfe4b3259a8ac6cdf0037752904da6a7",
+  "name": "python_abi",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/python_abi-3.9-4_cp39.conda",
+  "paths_data": {
+    "paths": [],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "7e0157e35929711e1a986c18a8bfb7a38a2209cfada16b541ebb0481f74376d6",
+  "size": 6378,
+  "subdir": "linux-64",
+  "timestamp": 1695147399000,
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/python_abi-3.9-4_cp39.conda",
+  "version": "3.9"
+}

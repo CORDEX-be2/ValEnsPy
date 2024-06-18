@@ -1,0 +1,56 @@
+{
+  "build": "h77fa898_10",
+  "build_number": 10,
+  "channel": "https://conda.anaconda.org/conda-forge/linux-64",
+  "constrains": [],
+  "depends": [
+    "_libgcc_mutex 0.1 conda_forge"
+  ],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/libgomp-13.2.0-h77fa898_10",
+  "files": [
+    "lib/libgomp.so",
+    "lib/libgomp.so.1.0.0",
+    "share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION.gomp_copy"
+  ],
+  "fn": "libgomp-13.2.0-h77fa898_10.conda",
+  "license": "GPL-3.0-only WITH GCC-exception-3.1",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/libgomp-13.2.0-h77fa898_10",
+    "type": 1
+  },
+  "md5": "9404d1686e63142d41acc72ef876a588",
+  "name": "libgomp",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/libgomp-13.2.0-h77fa898_10.conda",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "lib/libgomp.so",
+        "path_type": "softlink",
+        "sha256": "5e2c1bc5a224b9956693c00d25e744d608895ba77f3108601c05359d82d72b2e",
+        "size_in_bytes": 1082744
+      },
+      {
+        "_path": "lib/libgomp.so.1.0.0",
+        "path_type": "hardlink",
+        "sha256": "5e2c1bc5a224b9956693c00d25e744d608895ba77f3108601c05359d82d72b2e",
+        "sha256_in_prefix": "5e2c1bc5a224b9956693c00d25e744d608895ba77f3108601c05359d82d72b2e",
+        "size_in_bytes": 1082744
+      },
+      {
+        "_path": "share/licenses/gcc-libs/RUNTIME.LIBRARY.EXCEPTION.gomp_copy",
+        "path_type": "hardlink",
+        "sha256": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+        "sha256_in_prefix": "9d6b43ce4d8de0c878bf16b54d8e7a10d9bd42b75178153e3af6a815bdc90f74",
+        "size_in_bytes": 3324
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "bcea6ddfea86f0e6a1a831d1d2c3f36f7613b5e447229e19f978ded0d184cf5a",
+  "size": 444719,
+  "subdir": "linux-64",
+  "timestamp": 1718484940000,
+  "url": "https://conda.anaconda.org/conda-forge/linux-64/libgomp-13.2.0-h77fa898_10.conda",
+  "version": "13.2.0"
+}

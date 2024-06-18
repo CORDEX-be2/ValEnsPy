@@ -1,0 +1,293 @@
+{
+  "build": "pyhd8ed1ab_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "python >=3.7"
+  ],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/python-installer-0.7.0-pyhd8ed1ab_0",
+  "files": [
+    "lib/python3.9/site-packages/installer-0.7.0.dist-info/INSTALLER",
+    "lib/python3.9/site-packages/installer-0.7.0.dist-info/LICENSE",
+    "lib/python3.9/site-packages/installer-0.7.0.dist-info/METADATA",
+    "lib/python3.9/site-packages/installer-0.7.0.dist-info/RECORD",
+    "lib/python3.9/site-packages/installer-0.7.0.dist-info/REQUESTED",
+    "lib/python3.9/site-packages/installer-0.7.0.dist-info/WHEEL",
+    "lib/python3.9/site-packages/installer-0.7.0.dist-info/direct_url.json",
+    "lib/python3.9/site-packages/installer/__init__.py",
+    "lib/python3.9/site-packages/installer/__main__.py",
+    "lib/python3.9/site-packages/installer/_core.py",
+    "lib/python3.9/site-packages/installer/_scripts/__init__.py",
+    "lib/python3.9/site-packages/installer/_scripts/t32.exe",
+    "lib/python3.9/site-packages/installer/_scripts/t64-arm.exe",
+    "lib/python3.9/site-packages/installer/_scripts/t64.exe",
+    "lib/python3.9/site-packages/installer/_scripts/t_arm.exe",
+    "lib/python3.9/site-packages/installer/_scripts/w32.exe",
+    "lib/python3.9/site-packages/installer/_scripts/w64-arm.exe",
+    "lib/python3.9/site-packages/installer/_scripts/w64.exe",
+    "lib/python3.9/site-packages/installer/_scripts/w_arm.exe",
+    "lib/python3.9/site-packages/installer/destinations.py",
+    "lib/python3.9/site-packages/installer/exceptions.py",
+    "lib/python3.9/site-packages/installer/py.typed",
+    "lib/python3.9/site-packages/installer/records.py",
+    "lib/python3.9/site-packages/installer/scripts.py",
+    "lib/python3.9/site-packages/installer/sources.py",
+    "lib/python3.9/site-packages/installer/utils.py",
+    "lib/python3.9/site-packages/installer/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/installer/__pycache__/__main__.cpython-39.pyc",
+    "lib/python3.9/site-packages/installer/__pycache__/_core.cpython-39.pyc",
+    "lib/python3.9/site-packages/installer/_scripts/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/installer/__pycache__/destinations.cpython-39.pyc",
+    "lib/python3.9/site-packages/installer/__pycache__/exceptions.cpython-39.pyc",
+    "lib/python3.9/site-packages/installer/__pycache__/records.cpython-39.pyc",
+    "lib/python3.9/site-packages/installer/__pycache__/scripts.cpython-39.pyc",
+    "lib/python3.9/site-packages/installer/__pycache__/sources.cpython-39.pyc",
+    "lib/python3.9/site-packages/installer/__pycache__/utils.cpython-39.pyc"
+  ],
+  "fn": "python-installer-0.7.0-pyhd8ed1ab_0.conda",
+  "license": "MIT",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/python-installer-0.7.0-pyhd8ed1ab_0",
+    "type": 1
+  },
+  "md5": "65dea78f903d686c8b0c2feaf0e15e1f",
+  "name": "python-installer",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/python-installer-0.7.0-pyhd8ed1ab_0.conda",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/installer-0.7.0.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "site-packages/installer-0.7.0.dist-info/LICENSE",
+        "path_type": "hardlink",
+        "sha256": "37b8b9f2569892fa54406383d431169dbb2115980d78b7efba6eeae5664c484f",
+        "sha256_in_prefix": "37b8b9f2569892fa54406383d431169dbb2115980d78b7efba6eeae5664c484f",
+        "size_in_bytes": 1057
+      },
+      {
+        "_path": "site-packages/installer-0.7.0.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "6f101e9a79475b3f341347b9a2d02cfbae5312c6c03fe30bd5f4db5dc6772a93",
+        "sha256_in_prefix": "6f101e9a79475b3f341347b9a2d02cfbae5312c6c03fe30bd5f4db5dc6772a93",
+        "size_in_bytes": 936
+      },
+      {
+        "_path": "site-packages/installer-0.7.0.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "f57830ba98bcd17c9ea861858e856160586f50401834a92614639d8bc258614f",
+        "sha256_in_prefix": "f57830ba98bcd17c9ea861858e856160586f50401834a92614639d8bc258614f",
+        "size_in_bytes": 2651
+      },
+      {
+        "_path": "site-packages/installer-0.7.0.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/installer-0.7.0.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "ad282afc9a4717d7c7475971e77ab083fd7ed8bca9644fea99cb976d552af78f",
+        "sha256_in_prefix": "ad282afc9a4717d7c7475971e77ab083fd7ed8bca9644fea99cb976d552af78f",
+        "size_in_bytes": 81
+      },
+      {
+        "_path": "site-packages/installer-0.7.0.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "a3eb63fffca85af96f21ef192b9746a376097c661031425e554e9994650af9ce",
+        "sha256_in_prefix": "a3eb63fffca85af96f21ef192b9746a376097c661031425e554e9994650af9ce",
+        "size_in_bytes": 112
+      },
+      {
+        "_path": "site-packages/installer/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "2d31b768ed73d8eebad2905a7cbf61a039a2ec57d5a81a47dc6e5e32d1da4294",
+        "sha256_in_prefix": "2d31b768ed73d8eebad2905a7cbf61a039a2ec57d5a81a47dc6e5e32d1da4294",
+        "size_in_bytes": 136
+      },
+      {
+        "_path": "site-packages/installer/__main__.py",
+        "path_type": "hardlink",
+        "sha256": "95a87bbfb415ac0bd9de95683caaf59f280ba0701de6f9be7e909e134e32d1bf",
+        "sha256_in_prefix": "95a87bbfb415ac0bd9de95683caaf59f280ba0701de6f9be7e909e134e32d1bf",
+        "size_in_bytes": 3008
+      },
+      {
+        "_path": "site-packages/installer/_core.py",
+        "path_type": "hardlink",
+        "sha256": "e7cc47b6a93f3427abbf7ce79942796cb892a14f644bb0140789af340d2698a8",
+        "sha256_in_prefix": "e7cc47b6a93f3427abbf7ce79942796cb892a14f644bb0140789af340d2698a8",
+        "size_in_bytes": 4657
+      },
+      {
+        "_path": "site-packages/installer/_scripts/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "222fa4998cbf4d2db71c35dfdd0530de947234ca4c66ca75c322f5d38875625f",
+        "sha256_in_prefix": "222fa4998cbf4d2db71c35dfdd0530de947234ca4c66ca75c322f5d38875625f",
+        "size_in_bytes": 81
+      },
+      {
+        "_path": "site-packages/installer/_scripts/t32.exe",
+        "path_type": "hardlink",
+        "sha256": "cbc62edf26a8eb366b10b606222b319219d02ce00ebe98977edf3f63d23cbf25",
+        "sha256_in_prefix": "cbc62edf26a8eb366b10b606222b319219d02ce00ebe98977edf3f63d23cbf25",
+        "size_in_bytes": 92672
+      },
+      {
+        "_path": "site-packages/installer/_scripts/t64-arm.exe",
+        "path_type": "hardlink",
+        "sha256": "f1618387a688f162408e7811350a72269076d52bf6d0f09860548d5b57d677ac",
+        "sha256_in_prefix": "f1618387a688f162408e7811350a72269076d52bf6d0f09860548d5b57d677ac",
+        "size_in_bytes": 180736
+      },
+      {
+        "_path": "site-packages/installer/_scripts/t64.exe",
+        "path_type": "hardlink",
+        "sha256": "aadd4ca4a3b634ba94f2dd650f54f47eb7c59b9cf01e6de6cfba4bbe627690c2",
+        "sha256_in_prefix": "aadd4ca4a3b634ba94f2dd650f54f47eb7c59b9cf01e6de6cfba4bbe627690c2",
+        "size_in_bytes": 102912
+      },
+      {
+        "_path": "site-packages/installer/_scripts/t_arm.exe",
+        "path_type": "hardlink",
+        "sha256": "62aee48069f0715f96da0dbe35eab7868d5cb149f62133141ab0e126d62b9cfe",
+        "sha256_in_prefix": "62aee48069f0715f96da0dbe35eab7868d5cb149f62133141ab0e126d62b9cfe",
+        "size_in_bytes": 86016
+      },
+      {
+        "_path": "site-packages/installer/_scripts/w32.exe",
+        "path_type": "hardlink",
+        "sha256": "7fdf04b6aff5822160210c6b121fac38078ef2a56d5aaa436c6c5d52e709ea9c",
+        "sha256_in_prefix": "7fdf04b6aff5822160210c6b121fac38078ef2a56d5aaa436c6c5d52e709ea9c",
+        "size_in_bytes": 89088
+      },
+      {
+        "_path": "site-packages/installer/_scripts/w64-arm.exe",
+        "path_type": "hardlink",
+        "sha256": "43f1ddcd5bbdcf161d6816b79b4889e7f75d2ce12ab4f7bcc77d16003a17cdaf",
+        "sha256_in_prefix": "43f1ddcd5bbdcf161d6816b79b4889e7f75d2ce12ab4f7bcc77d16003a17cdaf",
+        "size_in_bytes": 166400
+      },
+      {
+        "_path": "site-packages/installer/_scripts/w64.exe",
+        "path_type": "hardlink",
+        "sha256": "e87b3e5a7d2f5c11c0e9077be8895a96a617aab37cd0308fa5da1e210ccf466b",
+        "sha256_in_prefix": "e87b3e5a7d2f5c11c0e9077be8895a96a617aab37cd0308fa5da1e210ccf466b",
+        "size_in_bytes": 99840
+      },
+      {
+        "_path": "site-packages/installer/_scripts/w_arm.exe",
+        "path_type": "hardlink",
+        "sha256": "091feafac1542754885b1b2bc57bf8a66e89351e6aa2c05ebf053fd7b66a2aba",
+        "sha256_in_prefix": "091feafac1542754885b1b2bc57bf8a66e89351e6aa2c05ebf053fd7b66a2aba",
+        "size_in_bytes": 83968
+      },
+      {
+        "_path": "site-packages/installer/destinations.py",
+        "path_type": "hardlink",
+        "sha256": "92f40168439218e03a3802c6d27ab7caac4100a8b4e12a7ddc87cf59977e8558",
+        "sha256_in_prefix": "92f40168439218e03a3802c6d27ab7caac4100a8b4e12a7ddc87cf59977e8558",
+        "size_in_bytes": 10148
+      },
+      {
+        "_path": "site-packages/installer/exceptions.py",
+        "path_type": "hardlink",
+        "sha256": "630c75d5da3447e70500b8a6731a6d93fae183b4756c36f8b010ae11b94d94be",
+        "sha256_in_prefix": "630c75d5da3447e70500b8a6731a6d93fae183b4756c36f8b010ae11b94d94be",
+        "size_in_bytes": 248
+      },
+      {
+        "_path": "site-packages/installer/py.typed",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/installer/records.py",
+        "path_type": "hardlink",
+        "sha256": "1ed1699cdeae48ea03b094e892b29037b96458e360567f9324f18550870ac07c",
+        "sha256_in_prefix": "1ed1699cdeae48ea03b094e892b29037b96458e360567f9324f18550870ac07c",
+        "size_in_bytes": 6908
+      },
+      {
+        "_path": "site-packages/installer/scripts.py",
+        "path_type": "hardlink",
+        "sha256": "0be3309184ca75d9303c9e8e015b83fd45ebf37618625e83c19b730fe76eb2f6",
+        "sha256_in_prefix": "0be3309184ca75d9303c9e8e015b83fd45ebf37618625e83c19b730fe76eb2f6",
+        "size_in_bytes": 5249
+      },
+      {
+        "_path": "site-packages/installer/sources.py",
+        "path_type": "hardlink",
+        "sha256": "58bd0eb774f40936a1937c77cf8e29c1bd5902122354f31d5b05e248811e227e",
+        "sha256_in_prefix": "58bd0eb774f40936a1937c77cf8e29c1bd5902122354f31d5b05e248811e227e",
+        "size_in_bytes": 11519
+      },
+      {
+        "_path": "site-packages/installer/utils.py",
+        "path_type": "hardlink",
+        "sha256": "63cc404833b3262c1f753398b95b6e887ca255883d67825d55961a9dbf4d617b",
+        "sha256_in_prefix": "63cc404833b3262c1f753398b95b6e887ca255883d67825d55961a9dbf4d617b",
+        "size_in_bytes": 7728
+      },
+      {
+        "_path": "lib/python3.9/site-packages/installer/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/installer/__pycache__/__main__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/installer/__pycache__/_core.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/installer/_scripts/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/installer/__pycache__/destinations.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/installer/__pycache__/exceptions.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/installer/__pycache__/records.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/installer/__pycache__/scripts.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/installer/__pycache__/sources.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/installer/__pycache__/utils.cpython-39.pyc",
+        "path_type": "pyc_file"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "822f95b7786cfa61a6519153117b21d93194890e02a884b9f66ee4275e4f1c0a",
+  "size": 233285,
+  "subdir": "noarch",
+  "timestamp": 1679300488000,
+  "url": "https://conda.anaconda.org/conda-forge/noarch/python-installer-0.7.0-pyhd8ed1ab_0.conda",
+  "version": "0.7.0"
+}

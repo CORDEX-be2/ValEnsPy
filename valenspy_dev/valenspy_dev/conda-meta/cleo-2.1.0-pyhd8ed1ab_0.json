@@ -1,0 +1,1037 @@
+{
+  "build": "pyhd8ed1ab_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "crashtest >=0.4.1,<0.5.0",
+    "python >=3.7,<4.0",
+    "rapidfuzz >=3.0.0,<4.0.0"
+  ],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/cleo-2.1.0-pyhd8ed1ab_0",
+  "files": [
+    "lib/python3.9/site-packages/cleo-2.1.0.dist-info/INSTALLER",
+    "lib/python3.9/site-packages/cleo-2.1.0.dist-info/LICENSE",
+    "lib/python3.9/site-packages/cleo-2.1.0.dist-info/METADATA",
+    "lib/python3.9/site-packages/cleo-2.1.0.dist-info/RECORD",
+    "lib/python3.9/site-packages/cleo-2.1.0.dist-info/REQUESTED",
+    "lib/python3.9/site-packages/cleo-2.1.0.dist-info/WHEEL",
+    "lib/python3.9/site-packages/cleo-2.1.0.dist-info/direct_url.json",
+    "lib/python3.9/site-packages/cleo/__init__.py",
+    "lib/python3.9/site-packages/cleo/_compat.py",
+    "lib/python3.9/site-packages/cleo/_utils.py",
+    "lib/python3.9/site-packages/cleo/application.py",
+    "lib/python3.9/site-packages/cleo/color.py",
+    "lib/python3.9/site-packages/cleo/commands/__init__.py",
+    "lib/python3.9/site-packages/cleo/commands/base_command.py",
+    "lib/python3.9/site-packages/cleo/commands/command.py",
+    "lib/python3.9/site-packages/cleo/commands/completions/__init__.py",
+    "lib/python3.9/site-packages/cleo/commands/completions/templates.py",
+    "lib/python3.9/site-packages/cleo/commands/completions_command.py",
+    "lib/python3.9/site-packages/cleo/commands/help_command.py",
+    "lib/python3.9/site-packages/cleo/commands/list_command.py",
+    "lib/python3.9/site-packages/cleo/cursor.py",
+    "lib/python3.9/site-packages/cleo/descriptors/__init__.py",
+    "lib/python3.9/site-packages/cleo/descriptors/application_description.py",
+    "lib/python3.9/site-packages/cleo/descriptors/descriptor.py",
+    "lib/python3.9/site-packages/cleo/descriptors/text_descriptor.py",
+    "lib/python3.9/site-packages/cleo/events/__init__.py",
+    "lib/python3.9/site-packages/cleo/events/console_command_event.py",
+    "lib/python3.9/site-packages/cleo/events/console_error_event.py",
+    "lib/python3.9/site-packages/cleo/events/console_event.py",
+    "lib/python3.9/site-packages/cleo/events/console_events.py",
+    "lib/python3.9/site-packages/cleo/events/console_signal_event.py",
+    "lib/python3.9/site-packages/cleo/events/console_terminate_event.py",
+    "lib/python3.9/site-packages/cleo/events/event.py",
+    "lib/python3.9/site-packages/cleo/events/event_dispatcher.py",
+    "lib/python3.9/site-packages/cleo/exceptions/__init__.py",
+    "lib/python3.9/site-packages/cleo/formatters/__init__.py",
+    "lib/python3.9/site-packages/cleo/formatters/formatter.py",
+    "lib/python3.9/site-packages/cleo/formatters/style.py",
+    "lib/python3.9/site-packages/cleo/formatters/style_stack.py",
+    "lib/python3.9/site-packages/cleo/helpers.py",
+    "lib/python3.9/site-packages/cleo/io/__init__.py",
+    "lib/python3.9/site-packages/cleo/io/buffered_io.py",
+    "lib/python3.9/site-packages/cleo/io/inputs/__init__.py",
+    "lib/python3.9/site-packages/cleo/io/inputs/argument.py",
+    "lib/python3.9/site-packages/cleo/io/inputs/argv_input.py",
+    "lib/python3.9/site-packages/cleo/io/inputs/definition.py",
+    "lib/python3.9/site-packages/cleo/io/inputs/input.py",
+    "lib/python3.9/site-packages/cleo/io/inputs/option.py",
+    "lib/python3.9/site-packages/cleo/io/inputs/string_input.py",
+    "lib/python3.9/site-packages/cleo/io/inputs/token_parser.py",
+    "lib/python3.9/site-packages/cleo/io/io.py",
+    "lib/python3.9/site-packages/cleo/io/null_io.py",
+    "lib/python3.9/site-packages/cleo/io/outputs/__init__.py",
+    "lib/python3.9/site-packages/cleo/io/outputs/buffered_output.py",
+    "lib/python3.9/site-packages/cleo/io/outputs/null_output.py",
+    "lib/python3.9/site-packages/cleo/io/outputs/output.py",
+    "lib/python3.9/site-packages/cleo/io/outputs/section_output.py",
+    "lib/python3.9/site-packages/cleo/io/outputs/stream_output.py",
+    "lib/python3.9/site-packages/cleo/loaders/__init__.py",
+    "lib/python3.9/site-packages/cleo/loaders/command_loader.py",
+    "lib/python3.9/site-packages/cleo/loaders/factory_command_loader.py",
+    "lib/python3.9/site-packages/cleo/py.typed",
+    "lib/python3.9/site-packages/cleo/terminal.py",
+    "lib/python3.9/site-packages/cleo/testers/__init__.py",
+    "lib/python3.9/site-packages/cleo/testers/application_tester.py",
+    "lib/python3.9/site-packages/cleo/testers/command_tester.py",
+    "lib/python3.9/site-packages/cleo/ui/__init__.py",
+    "lib/python3.9/site-packages/cleo/ui/choice_question.py",
+    "lib/python3.9/site-packages/cleo/ui/component.py",
+    "lib/python3.9/site-packages/cleo/ui/confirmation_question.py",
+    "lib/python3.9/site-packages/cleo/ui/exception_trace.py",
+    "lib/python3.9/site-packages/cleo/ui/progress_bar.py",
+    "lib/python3.9/site-packages/cleo/ui/progress_indicator.py",
+    "lib/python3.9/site-packages/cleo/ui/question.py",
+    "lib/python3.9/site-packages/cleo/ui/table.py",
+    "lib/python3.9/site-packages/cleo/ui/table_cell.py",
+    "lib/python3.9/site-packages/cleo/ui/table_cell_style.py",
+    "lib/python3.9/site-packages/cleo/ui/table_separator.py",
+    "lib/python3.9/site-packages/cleo/ui/table_style.py",
+    "lib/python3.9/site-packages/cleo/ui/ui.py",
+    "lib/python3.9/site-packages/cleo/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/__pycache__/_compat.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/__pycache__/_utils.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/__pycache__/application.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/__pycache__/color.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/commands/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/commands/__pycache__/base_command.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/commands/__pycache__/command.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/commands/completions/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/commands/completions/__pycache__/templates.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/commands/__pycache__/completions_command.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/commands/__pycache__/help_command.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/commands/__pycache__/list_command.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/__pycache__/cursor.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/descriptors/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/descriptors/__pycache__/application_description.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/descriptors/__pycache__/descriptor.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/descriptors/__pycache__/text_descriptor.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/events/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/events/__pycache__/console_command_event.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/events/__pycache__/console_error_event.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/events/__pycache__/console_event.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/events/__pycache__/console_events.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/events/__pycache__/console_signal_event.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/events/__pycache__/console_terminate_event.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/events/__pycache__/event.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/events/__pycache__/event_dispatcher.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/exceptions/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/formatters/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/formatters/__pycache__/formatter.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/formatters/__pycache__/style.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/formatters/__pycache__/style_stack.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/__pycache__/helpers.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/__pycache__/buffered_io.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/argument.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/argv_input.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/definition.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/input.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/option.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/string_input.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/token_parser.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/__pycache__/io.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/__pycache__/null_io.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/buffered_output.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/null_output.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/output.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/section_output.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/stream_output.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/loaders/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/loaders/__pycache__/command_loader.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/loaders/__pycache__/factory_command_loader.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/__pycache__/terminal.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/testers/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/testers/__pycache__/application_tester.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/testers/__pycache__/command_tester.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/choice_question.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/component.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/confirmation_question.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/exception_trace.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/progress_bar.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/progress_indicator.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/question.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/table.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/table_cell.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/table_cell_style.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/table_separator.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/table_style.cpython-39.pyc",
+    "lib/python3.9/site-packages/cleo/ui/__pycache__/ui.cpython-39.pyc"
+  ],
+  "fn": "cleo-2.1.0-pyhd8ed1ab_0.conda",
+  "license": "MIT",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/cleo-2.1.0-pyhd8ed1ab_0",
+    "type": 1
+  },
+  "md5": "69569ea8a6d1465193345a40421d138b",
+  "name": "cleo",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/cleo-2.1.0-pyhd8ed1ab_0.conda",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/cleo-2.1.0.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "site-packages/cleo-2.1.0.dist-info/LICENSE",
+        "path_type": "hardlink",
+        "sha256": "a2b9e0f3a35c5549b0b82edabcc0e229721437994d265cca96185e9f99f3a698",
+        "sha256_in_prefix": "a2b9e0f3a35c5549b0b82edabcc0e229721437994d265cca96185e9f99f3a698",
+        "size_in_bytes": 1061
+      },
+      {
+        "_path": "site-packages/cleo-2.1.0.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "2d9c564491b5e153a13b34d527fa23cfef12005754de29c725e268d727ead4f8",
+        "sha256_in_prefix": "2d9c564491b5e153a13b34d527fa23cfef12005754de29c725e268d727ead4f8",
+        "size_in_bytes": 12817
+      },
+      {
+        "_path": "site-packages/cleo-2.1.0.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "90f8ec87de28779294df16de9f8ea10426fd4662486013353c435fec4f763114",
+        "sha256_in_prefix": "90f8ec87de28779294df16de9f8ea10426fd4662486013353c435fec4f763114",
+        "size_in_bytes": 10599
+      },
+      {
+        "_path": "site-packages/cleo-2.1.0.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo-2.1.0.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "6db537032be1437d76ad59bbcf34508ece9ac48d546160b79e6140d84e851522",
+        "sha256_in_prefix": "6db537032be1437d76ad59bbcf34508ece9ac48d546160b79e6140d84e851522",
+        "size_in_bytes": 88
+      },
+      {
+        "_path": "site-packages/cleo-2.1.0.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "e3feaee20296301f9ddce16850b3db9ca373b2c4d8a27a0e3f864c234c15a7d9",
+        "sha256_in_prefix": "e3feaee20296301f9ddce16850b3db9ca373b2c4d8a27a0e3f864c234c15a7d9",
+        "size_in_bytes": 100
+      },
+      {
+        "_path": "site-packages/cleo/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "bd4336e08639636027dcc2582c9463b832929b395b1887f5b8109cd4700f8878",
+        "sha256_in_prefix": "bd4336e08639636027dcc2582c9463b832929b395b1887f5b8109cd4700f8878",
+        "size_in_bytes": 59
+      },
+      {
+        "_path": "site-packages/cleo/_compat.py",
+        "path_type": "hardlink",
+        "sha256": "bbbf20d39a69d3ca9e898a73c86b9b482836f2da5edf30f69f4ceade03ed956b",
+        "sha256_in_prefix": "bbbf20d39a69d3ca9e898a73c86b9b482836f2da5edf30f69f4ceade03ed956b",
+        "size_in_bytes": 247
+      },
+      {
+        "_path": "site-packages/cleo/_utils.py",
+        "path_type": "hardlink",
+        "sha256": "cf60d2db2f0e129e6689ef1e969a22ec2d57695cefc55cadee6b92d420d33ec7",
+        "sha256_in_prefix": "cf60d2db2f0e129e6689ef1e969a22ec2d57695cefc55cadee6b92d420d33ec7",
+        "size_in_bytes": 2760
+      },
+      {
+        "_path": "site-packages/cleo/application.py",
+        "path_type": "hardlink",
+        "sha256": "d31a91069af4f6791ba1b073a50288c4b296b202757183f5807c1892637e0e51",
+        "sha256_in_prefix": "d31a91069af4f6791ba1b073a50288c4b296b202757183f5807c1892637e0e51",
+        "size_in_bytes": 20421
+      },
+      {
+        "_path": "site-packages/cleo/color.py",
+        "path_type": "hardlink",
+        "sha256": "e816b647b1bc70e658bb1f49f1fcc57ab4e6514676578bd2d89895d5f29b5d14",
+        "sha256_in_prefix": "e816b647b1bc70e658bb1f49f1fcc57ab4e6514676578bd2d89895d5f29b5d14",
+        "size_in_bytes": 4155
+      },
+      {
+        "_path": "site-packages/cleo/commands/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/commands/base_command.py",
+        "path_type": "hardlink",
+        "sha256": "09f8ffc3afad709838d45196871a9c931a9e6c4ddf33399935a5900e4f916960",
+        "sha256_in_prefix": "09f8ffc3afad709838d45196871a9c931a9e6c4ddf33399935a5900e4f916960",
+        "size_in_bytes": 3808
+      },
+      {
+        "_path": "site-packages/cleo/commands/command.py",
+        "path_type": "hardlink",
+        "sha256": "7df92c2995f1483c5d533c0155cdd3bcc2d046c6a1a9fb10cc6bdf7eac083bb8",
+        "sha256_in_prefix": "7df92c2995f1483c5d533c0155cdd3bcc2d046c6a1a9fb10cc6bdf7eac083bb8",
+        "size_in_bytes": 9136
+      },
+      {
+        "_path": "site-packages/cleo/commands/completions/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/commands/completions/templates.py",
+        "path_type": "hardlink",
+        "sha256": "21927375f5e216e3dc9564ec14cb4d99563b06141f4fd622e90367200ff71503",
+        "sha256_in_prefix": "21927375f5e216e3dc9564ec14cb4d99563b06141f4fd622e90367200ff71503",
+        "size_in_bytes": 2237
+      },
+      {
+        "_path": "site-packages/cleo/commands/completions_command.py",
+        "path_type": "hardlink",
+        "sha256": "910d6415933dc86380264b95eb2531b50429fa3d86a48010f2e56c8653714e9c",
+        "sha256_in_prefix": "910d6415933dc86380264b95eb2531b50429fa3d86a48010f2e56c8653714e9c",
+        "size_in_bytes": 13145
+      },
+      {
+        "_path": "site-packages/cleo/commands/help_command.py",
+        "path_type": "hardlink",
+        "sha256": "a228f454b43cddaa8678627ac4b2e1e47818329ce5e4b4da7526a7c992b15659",
+        "sha256_in_prefix": "a228f454b43cddaa8678627ac4b2e1e47818329ce5e4b4da7526a7c992b15659",
+        "size_in_bytes": 1284
+      },
+      {
+        "_path": "site-packages/cleo/commands/list_command.py",
+        "path_type": "hardlink",
+        "sha256": "34f3f19739366ed8dada7f791f1b34fdb4caf351ffca8f0ac236a16f8778c946",
+        "sha256_in_prefix": "34f3f19739366ed8dada7f791f1b34fdb4caf351ffca8f0ac236a16f8778c946",
+        "size_in_bytes": 826
+      },
+      {
+        "_path": "site-packages/cleo/cursor.py",
+        "path_type": "hardlink",
+        "sha256": "cb92084b4fb0dfa82c2a57063229f3768e755e7d1736a0f30829fe868a333bcf",
+        "sha256_in_prefix": "cb92084b4fb0dfa82c2a57063229f3768e755e7d1736a0f30829fe868a333bcf",
+        "size_in_bytes": 2352
+      },
+      {
+        "_path": "site-packages/cleo/descriptors/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/descriptors/application_description.py",
+        "path_type": "hardlink",
+        "sha256": "9642c18647175d528497aad0fb11cbfcee40339989631ed0984fdb0a75b93874",
+        "sha256_in_prefix": "9642c18647175d528497aad0fb11cbfcee40339989631ed0984fdb0a75b93874",
+        "size_in_bytes": 2699
+      },
+      {
+        "_path": "site-packages/cleo/descriptors/descriptor.py",
+        "path_type": "hardlink",
+        "sha256": "ef20b0963da5276e664886c65689d1f7db8b93179d6e5313099f297a120d972a",
+        "sha256_in_prefix": "ef20b0963da5276e664886c65689d1f7db8b93179d6e5313099f297a120d972a",
+        "size_in_bytes": 1727
+      },
+      {
+        "_path": "site-packages/cleo/descriptors/text_descriptor.py",
+        "path_type": "hardlink",
+        "sha256": "8b43bc45b95633b250f732e7561f40bf0794a95484983e4ec843e3a7c979dd7c",
+        "sha256_in_prefix": "8b43bc45b95633b250f732e7561f40bf0794a95484983e4ec843e3a7c979dd7c",
+        "size_in_bytes": 9409
+      },
+      {
+        "_path": "site-packages/cleo/events/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/events/console_command_event.py",
+        "path_type": "hardlink",
+        "sha256": "01e2d1c1b510b227370bae8e63969b9c1a445e45792c08ea75cf0885839dbb17",
+        "sha256_in_prefix": "01e2d1c1b510b227370bae8e63969b9c1a445e45792c08ea75cf0885839dbb17",
+        "size_in_bytes": 826
+      },
+      {
+        "_path": "site-packages/cleo/events/console_error_event.py",
+        "path_type": "hardlink",
+        "sha256": "14f2ab6e7059f9fb0316e96db091cc2401cad4cf52a731d2d6c49694d2364dd9",
+        "sha256_in_prefix": "14f2ab6e7059f9fb0316e96db091cc2401cad4cf52a731d2d6c49694d2364dd9",
+        "size_in_bytes": 1098
+      },
+      {
+        "_path": "site-packages/cleo/events/console_event.py",
+        "path_type": "hardlink",
+        "sha256": "dc7923d894502da5982800a2b43dadf46407d772b7f5161a6e99305bdf298a5f",
+        "sha256_in_prefix": "dc7923d894502da5982800a2b43dadf46407d772b7f5161a6e99305bdf298a5f",
+        "size_in_bytes": 584
+      },
+      {
+        "_path": "site-packages/cleo/events/console_events.py",
+        "path_type": "hardlink",
+        "sha256": "1769fe91f44ad52c18f8fcfc0228310690f18e62146cf3d905ecc087f7d93903",
+        "sha256_in_prefix": "1769fe91f44ad52c18f8fcfc0228310690f18e62146cf3d905ecc087f7d93903",
+        "size_in_bytes": 685
+      },
+      {
+        "_path": "site-packages/cleo/events/console_signal_event.py",
+        "path_type": "hardlink",
+        "sha256": "c43013f7c402876557ce1b5a7902754f640b0c406ca95bd71384a5ea12b04933",
+        "sha256_in_prefix": "c43013f7c402876557ce1b5a7902754f640b0c406ca95bd71384a5ea12b04933",
+        "size_in_bytes": 630
+      },
+      {
+        "_path": "site-packages/cleo/events/console_terminate_event.py",
+        "path_type": "hardlink",
+        "sha256": "4d3d583dd376bcd9268a2cdfd7e5cef9c86bbe36750612b132f583b85211697e",
+        "sha256_in_prefix": "4d3d583dd376bcd9268a2cdfd7e5cef9c86bbe36750612b132f583b85211697e",
+        "size_in_bytes": 656
+      },
+      {
+        "_path": "site-packages/cleo/events/event.py",
+        "path_type": "hardlink",
+        "sha256": "11aba096264cc64ec209b11c409f2f2af93e77c9d32331ffecd490a5c40b5e32",
+        "sha256_in_prefix": "11aba096264cc64ec209b11c409f2f2af93e77c9d32331ffecd490a5c40b5e32",
+        "size_in_bytes": 321
+      },
+      {
+        "_path": "site-packages/cleo/events/event_dispatcher.py",
+        "path_type": "hardlink",
+        "sha256": "38dc1b199be85d4171ca3c2ef233098140c011dfaf766fc8bde193f7c98bc08d",
+        "sha256_in_prefix": "38dc1b199be85d4171ca3c2ef233098140c011dfaf766fc8bde193f7c98bc08d",
+        "size_in_bytes": 2993
+      },
+      {
+        "_path": "site-packages/cleo/exceptions/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "0375aa5e7b7e2df5312dabf4e2f36b6706653437799f7853bfe988215c634442",
+        "sha256_in_prefix": "0375aa5e7b7e2df5312dabf4e2f36b6706653437799f7853bfe988215c634442",
+        "size_in_bytes": 2252
+      },
+      {
+        "_path": "site-packages/cleo/formatters/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/formatters/formatter.py",
+        "path_type": "hardlink",
+        "sha256": "65c1f2d7108a83aa8230b9eba9a6d1376f089324b99ba5fa98213e4b7f1efa04",
+        "sha256_in_prefix": "65c1f2d7108a83aa8230b9eba9a6d1376f089324b99ba5fa98213e4b7f1efa04",
+        "size_in_bytes": 6197
+      },
+      {
+        "_path": "site-packages/cleo/formatters/style.py",
+        "path_type": "hardlink",
+        "sha256": "8d563f53ad079c9b22032fba0a6677c9ae771b6aae3184171a31f3ec396b9d73",
+        "sha256_in_prefix": "8d563f53ad079c9b22032fba0a6677c9ae771b6aae3184171a31f3ec396b9d73",
+        "size_in_bytes": 2264
+      },
+      {
+        "_path": "site-packages/cleo/formatters/style_stack.py",
+        "path_type": "hardlink",
+        "sha256": "2af79e1bd14366118b864dc9c187c3a2dd552cf02ad39a3bd548c270d5ad6fed",
+        "sha256_in_prefix": "2af79e1bd14366118b864dc9c187c3a2dd552cf02ad39a3bd548c270d5ad6fed",
+        "size_in_bytes": 1120
+      },
+      {
+        "_path": "site-packages/cleo/helpers.py",
+        "path_type": "hardlink",
+        "sha256": "b9d50bf57bb499679706166abc4ee0563036ddd5a7eaa7b4a464e0c3d36638ca",
+        "sha256_in_prefix": "b9d50bf57bb499679706166abc4ee0563036ddd5a7eaa7b4a464e0c3d36638ca",
+        "size_in_bytes": 912
+      },
+      {
+        "_path": "site-packages/cleo/io/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/io/buffered_io.py",
+        "path_type": "hardlink",
+        "sha256": "67cef53e67c9eaa777eca7fb01de526159065ab053a7bec70e452665027c5b26",
+        "sha256_in_prefix": "67cef53e67c9eaa777eca7fb01de526159065ab053a7bec70e452665027c5b26",
+        "size_in_bytes": 1600
+      },
+      {
+        "_path": "site-packages/cleo/io/inputs/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/io/inputs/argument.py",
+        "path_type": "hardlink",
+        "sha256": "204d1824e979b6dd6dff455556033221daa5f4af40c51067446552515328923b",
+        "sha256_in_prefix": "204d1824e979b6dd6dff455556033221daa5f4af40c51067446552515328923b",
+        "size_in_bytes": 1743
+      },
+      {
+        "_path": "site-packages/cleo/io/inputs/argv_input.py",
+        "path_type": "hardlink",
+        "sha256": "40681183c5573bdfd6e9995d9c87b9b6cb15b757fd55536f585b958c9c2dc102",
+        "sha256_in_prefix": "40681183c5573bdfd6e9995d9c87b9b6cb15b757fd55536f585b958c9c2dc102",
+        "size_in_bytes": 9791
+      },
+      {
+        "_path": "site-packages/cleo/io/inputs/definition.py",
+        "path_type": "hardlink",
+        "sha256": "09167f0f3cbd3fba616f3a89b2050ce6b3e05337ac52f296751f5aed7507fa2c",
+        "sha256_in_prefix": "09167f0f3cbd3fba616f3a89b2050ce6b3e05337ac52f296751f5aed7507fa2c",
+        "size_in_bytes": 6659
+      },
+      {
+        "_path": "site-packages/cleo/io/inputs/input.py",
+        "path_type": "hardlink",
+        "sha256": "880fcc9a11da2479c07ccdbb99781d736e4091ca836a8434b21f98a92ac0093a",
+        "sha256_in_prefix": "880fcc9a11da2479c07ccdbb99781d736e4091ca836a8434b21f98a92ac0093a",
+        "size_in_bytes": 5176
+      },
+      {
+        "_path": "site-packages/cleo/io/inputs/option.py",
+        "path_type": "hardlink",
+        "sha256": "79887e642afc3565ca645ab4d2ae8c569aa4cd7b2c17eea76a562df82b5ab16a",
+        "sha256_in_prefix": "79887e642afc3565ca645ab4d2ae8c569aa4cd7b2c17eea76a562df82b5ab16a",
+        "size_in_bytes": 2459
+      },
+      {
+        "_path": "site-packages/cleo/io/inputs/string_input.py",
+        "path_type": "hardlink",
+        "sha256": "d74eb23dc5e993364eabc3a649b88365e04f470704a7ac71b857082055cba0f6",
+        "sha256_in_prefix": "d74eb23dc5e993364eabc3a649b88365e04f470704a7ac71b857082055cba0f6",
+        "size_in_bytes": 445
+      },
+      {
+        "_path": "site-packages/cleo/io/inputs/token_parser.py",
+        "path_type": "hardlink",
+        "sha256": "bd55f1f220ce80adbc664e7777772173fd761198452c388593d6f6233dd36244",
+        "sha256_in_prefix": "bd55f1f220ce80adbc664e7777772173fd761198452c388593d6f6233dd36244",
+        "size_in_bytes": 2767
+      },
+      {
+        "_path": "site-packages/cleo/io/io.py",
+        "path_type": "hardlink",
+        "sha256": "520ff6b381c1eea92e20b4af6717bc376ae3c981a09566c24027c5e0fbe41ca5",
+        "sha256_in_prefix": "520ff6b381c1eea92e20b4af6717bc376ae3c981a09566c24027c5e0fbe41ca5",
+        "size_in_bytes": 4174
+      },
+      {
+        "_path": "site-packages/cleo/io/null_io.py",
+        "path_type": "hardlink",
+        "sha256": "f850900c0d91d9bc328b5c2d22e9804ff4a4c1238ae0908254cb3056ca568815",
+        "sha256_in_prefix": "f850900c0d91d9bc328b5c2d22e9804ff4a4c1238ae0908254cb3056ca568815",
+        "size_in_bytes": 421
+      },
+      {
+        "_path": "site-packages/cleo/io/outputs/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/io/outputs/buffered_output.py",
+        "path_type": "hardlink",
+        "sha256": "1d53a6cbf8541d5d0dee9e5ed609c7121b6fa693545d28b96c29f8a9d2629629",
+        "sha256_in_prefix": "1d53a6cbf8541d5d0dee9e5ed609c7121b6fa693545d28b96c29f8a9d2629629",
+        "size_in_bytes": 1644
+      },
+      {
+        "_path": "site-packages/cleo/io/outputs/null_output.py",
+        "path_type": "hardlink",
+        "sha256": "b87ed0b99c9a3185084e08ae8fe921b348c7aa99cf3c4cd3363b15d829861428",
+        "sha256_in_prefix": "b87ed0b99c9a3185084e08ae8fe921b348c7aa99cf3c4cd3363b15d829861428",
+        "size_in_bytes": 1309
+      },
+      {
+        "_path": "site-packages/cleo/io/outputs/output.py",
+        "path_type": "hardlink",
+        "sha256": "9006b75340c5217e3f440e50552af1d48b9f9c4b35b7d0bcf33279a59f84ad6e",
+        "sha256_in_prefix": "9006b75340c5217e3f440e50552af1d48b9f9c4b35b7d0bcf33279a59f84ad6e",
+        "size_in_bytes": 3149
+      },
+      {
+        "_path": "site-packages/cleo/io/outputs/section_output.py",
+        "path_type": "hardlink",
+        "sha256": "5f7e343d72f1a0408e80e152dfa893b73449aabb980151b4ae7136f6dd4da595",
+        "sha256_in_prefix": "5f7e343d72f1a0408e80e152dfa893b73449aabb980151b4ae7136f6dd4da595",
+        "size_in_bytes": 3064
+      },
+      {
+        "_path": "site-packages/cleo/io/outputs/stream_output.py",
+        "path_type": "hardlink",
+        "sha256": "f4e02535edbe184f6558a3aa06c2c85fa6ee7756bc69b8eb36606cca3e083668",
+        "sha256_in_prefix": "f4e02535edbe184f6558a3aa06c2c85fa6ee7756bc69b8eb36606cca3e083668",
+        "size_in_bytes": 4283
+      },
+      {
+        "_path": "site-packages/cleo/loaders/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/loaders/command_loader.py",
+        "path_type": "hardlink",
+        "sha256": "4e8c79e68f458b67a8c383fcea240177912fad89c46362097df1cef96a2773cf",
+        "sha256_in_prefix": "4e8c79e68f458b67a8c383fcea240177912fad89c46362097df1cef96a2773cf",
+        "size_in_bytes": 572
+      },
+      {
+        "_path": "site-packages/cleo/loaders/factory_command_loader.py",
+        "path_type": "hardlink",
+        "sha256": "8429d2ed6a30f1192f590648f9d43c2cd548a73aa0f9496fdc35d1634801d8d1",
+        "sha256_in_prefix": "8429d2ed6a30f1192f590648f9d43c2cd548a73aa0f9496fdc35d1634801d8d1",
+        "size_in_bytes": 820
+      },
+      {
+        "_path": "site-packages/cleo/py.typed",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/terminal.py",
+        "path_type": "hardlink",
+        "sha256": "f98a9a376890df0c575fa2594d6d016a61415ad389668a9d2f2915953dfcbb6c",
+        "sha256_in_prefix": "f98a9a376890df0c575fa2594d6d016a61415ad389668a9d2f2915953dfcbb6c",
+        "size_in_bytes": 1915
+      },
+      {
+        "_path": "site-packages/cleo/testers/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/testers/application_tester.py",
+        "path_type": "hardlink",
+        "sha256": "a0d947c84e59b4ce68a58b25e817aef4bdbd7719fa2c675e5295ffa1b840501a",
+        "sha256_in_prefix": "a0d947c84e59b4ce68a58b25e817aef4bdbd7719fa2c675e5295ffa1b840501a",
+        "size_in_bytes": 1999
+      },
+      {
+        "_path": "site-packages/cleo/testers/command_tester.py",
+        "path_type": "hardlink",
+        "sha256": "d17553f1e4d64ea676cc393d93a3bc4133c7af739db711358695e5fd54dd133b",
+        "sha256_in_prefix": "d17553f1e4d64ea676cc393d93a3bc4133c7af739db711358695e5fd54dd133b",
+        "size_in_bytes": 2607
+      },
+      {
+        "_path": "site-packages/cleo/ui/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cleo/ui/choice_question.py",
+        "path_type": "hardlink",
+        "sha256": "e2ac3bf350ff90585dc53decf8c1b03f07a3288f06a15a3ce9e2d667ff43e62a",
+        "sha256_in_prefix": "e2ac3bf350ff90585dc53decf8c1b03f07a3288f06a15a3ce9e2d667ff43e62a",
+        "size_in_bytes": 4264
+      },
+      {
+        "_path": "site-packages/cleo/ui/component.py",
+        "path_type": "hardlink",
+        "sha256": "e17b6c58521d600fd7ef2b33bbdf6ed26eddbe276c931c334c4772e690c6222b",
+        "sha256_in_prefix": "e17b6c58521d600fd7ef2b33bbdf6ed26eddbe276c931c334c4772e690c6222b",
+        "size_in_bytes": 92
+      },
+      {
+        "_path": "site-packages/cleo/ui/confirmation_question.py",
+        "path_type": "hardlink",
+        "sha256": "6af0a55dfa2ab54f881ccf16d03e14f7099f0027bc2b864466a184fd5437f64e",
+        "sha256_in_prefix": "6af0a55dfa2ab54f881ccf16d03e14f7099f0027bc2b864466a184fd5437f64e",
+        "size_in_bytes": 1146
+      },
+      {
+        "_path": "site-packages/cleo/ui/exception_trace.py",
+        "path_type": "hardlink",
+        "sha256": "600b743bf336346c0239c2e704f4932d2eebf302fe87191fa741ebd37a1cb01e",
+        "sha256_in_prefix": "600b743bf336346c0239c2e704f4932d2eebf302fe87191fa741ebd37a1cb01e",
+        "size_in_bytes": 15086
+      },
+      {
+        "_path": "site-packages/cleo/ui/progress_bar.py",
+        "path_type": "hardlink",
+        "sha256": "765eb6a6b6e535bd240918a9ad026c2e62e2e6d1b86254d1db1d8193aaf19e9b",
+        "sha256_in_prefix": "765eb6a6b6e535bd240918a9ad026c2e62e2e6d1b86254d1db1d8193aaf19e9b",
+        "size_in_bytes": 12642
+      },
+      {
+        "_path": "site-packages/cleo/ui/progress_indicator.py",
+        "path_type": "hardlink",
+        "sha256": "2eb46de6c102867e8530c8fb088e6bf1e490a5de9e9ed982226d92fe60a4e5f2",
+        "sha256_in_prefix": "2eb46de6c102867e8530c8fb088e6bf1e490a5de9e9ed982226d92fe60a4e5f2",
+        "size_in_bytes": 5808
+      },
+      {
+        "_path": "site-packages/cleo/ui/question.py",
+        "path_type": "hardlink",
+        "sha256": "839bf81db4ca1ac286e96a3d99af899232a702c5b5d0d46800a7da8cc9e39eba",
+        "sha256_in_prefix": "839bf81db4ca1ac286e96a3d99af899232a702c5b5d0d46800a7da8cc9e39eba",
+        "size_in_bytes": 8147
+      },
+      {
+        "_path": "site-packages/cleo/ui/table.py",
+        "path_type": "hardlink",
+        "sha256": "75792b72014eb934eca8ab4423cbb167f8a9c26d0da446bd1cd60cb762d3f001",
+        "sha256_in_prefix": "75792b72014eb934eca8ab4423cbb167f8a9c26d0da446bd1cd60cb762d3f001",
+        "size_in_bytes": 24008
+      },
+      {
+        "_path": "site-packages/cleo/ui/table_cell.py",
+        "path_type": "hardlink",
+        "sha256": "eccf9c526e723aa94865d9eb66d16e2690a57384567a5c2879669dee3dc7b0ac",
+        "sha256_in_prefix": "eccf9c526e723aa94865d9eb66d16e2690a57384567a5c2879669dee3dc7b0ac",
+        "size_in_bytes": 882
+      },
+      {
+        "_path": "site-packages/cleo/ui/table_cell_style.py",
+        "path_type": "hardlink",
+        "sha256": "3af8d8d01cc04b21b34fe0a8a07a0114f7c05f56ff6d5cd11778bf08f7fcb835",
+        "sha256_in_prefix": "3af8d8d01cc04b21b34fe0a8a07a0114f7c05f56ff6d5cd11778bf08f7fcb835",
+        "size_in_bytes": 1217
+      },
+      {
+        "_path": "site-packages/cleo/ui/table_separator.py",
+        "path_type": "hardlink",
+        "sha256": "3d4dddb5ea3b4a92558360e2a928ea5b08c479c1ddff1496cef875464594f2f3",
+        "sha256_in_prefix": "3d4dddb5ea3b4a92558360e2a928ea5b08c479c1ddff1496cef875464594f2f3",
+        "size_in_bytes": 173
+      },
+      {
+        "_path": "site-packages/cleo/ui/table_style.py",
+        "path_type": "hardlink",
+        "sha256": "4524b8eac3ef269ebc4cfe799764c0275f00fe60aaa6b7223e9474b33a41206b",
+        "sha256_in_prefix": "4524b8eac3ef269ebc4cfe799764c0275f00fe60aaa6b7223e9474b33a41206b",
+        "size_in_bytes": 10743
+      },
+      {
+        "_path": "site-packages/cleo/ui/ui.py",
+        "path_type": "hardlink",
+        "sha256": "b882b9e7ed32953026ab53c2a8d983ab91c55408d301d1071cc30cc9db94780f",
+        "sha256_in_prefix": "b882b9e7ed32953026ab53c2a8d983ab91c55408d301d1071cc30cc9db94780f",
+        "size_in_bytes": 926
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/__pycache__/_compat.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/__pycache__/_utils.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/__pycache__/application.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/__pycache__/color.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/commands/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/commands/__pycache__/base_command.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/commands/__pycache__/command.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/commands/completions/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/commands/completions/__pycache__/templates.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/commands/__pycache__/completions_command.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/commands/__pycache__/help_command.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/commands/__pycache__/list_command.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/__pycache__/cursor.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/descriptors/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/descriptors/__pycache__/application_description.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/descriptors/__pycache__/descriptor.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/descriptors/__pycache__/text_descriptor.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/events/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/events/__pycache__/console_command_event.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/events/__pycache__/console_error_event.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/events/__pycache__/console_event.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/events/__pycache__/console_events.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/events/__pycache__/console_signal_event.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/events/__pycache__/console_terminate_event.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/events/__pycache__/event.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/events/__pycache__/event_dispatcher.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/exceptions/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/formatters/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/formatters/__pycache__/formatter.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/formatters/__pycache__/style.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/formatters/__pycache__/style_stack.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/__pycache__/helpers.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/__pycache__/buffered_io.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/argument.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/argv_input.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/definition.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/input.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/option.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/string_input.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/inputs/__pycache__/token_parser.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/__pycache__/io.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/__pycache__/null_io.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/buffered_output.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/null_output.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/output.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/section_output.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/io/outputs/__pycache__/stream_output.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/loaders/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/loaders/__pycache__/command_loader.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/loaders/__pycache__/factory_command_loader.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/__pycache__/terminal.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/testers/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/testers/__pycache__/application_tester.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/testers/__pycache__/command_tester.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/choice_question.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/component.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/confirmation_question.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/exception_trace.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/progress_bar.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/progress_indicator.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/question.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/table.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/table_cell.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/table_cell_style.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/table_separator.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/table_style.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cleo/ui/__pycache__/ui.cpython-39.pyc",
+        "path_type": "pyc_file"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "eed2d2cb8792b3ae6434ce49bf5fe1ae5d885253f6bd2e56da933c427705fcbc",
+  "size": 61274,
+  "subdir": "noarch",
+  "timestamp": 1698693769000,
+  "url": "https://conda.anaconda.org/conda-forge/noarch/cleo-2.1.0-pyhd8ed1ab_0.conda",
+  "version": "2.1.0"
+}

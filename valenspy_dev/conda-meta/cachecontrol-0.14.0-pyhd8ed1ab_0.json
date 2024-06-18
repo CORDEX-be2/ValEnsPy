@@ -1,0 +1,270 @@
+{
+  "build": "pyhd8ed1ab_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "msgpack-python >=0.5.2",
+    "python >=3.7",
+    "requests >=2.16.0"
+  ],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/cachecontrol-0.14.0-pyhd8ed1ab_0",
+  "files": [
+    "lib/python3.9/site-packages/cachecontrol-0.14.0.dist-info/INSTALLER",
+    "lib/python3.9/site-packages/cachecontrol-0.14.0.dist-info/LICENSE.txt",
+    "lib/python3.9/site-packages/cachecontrol-0.14.0.dist-info/METADATA",
+    "lib/python3.9/site-packages/cachecontrol-0.14.0.dist-info/RECORD",
+    "lib/python3.9/site-packages/cachecontrol-0.14.0.dist-info/REQUESTED",
+    "lib/python3.9/site-packages/cachecontrol-0.14.0.dist-info/WHEEL",
+    "lib/python3.9/site-packages/cachecontrol-0.14.0.dist-info/direct_url.json",
+    "lib/python3.9/site-packages/cachecontrol-0.14.0.dist-info/entry_points.txt",
+    "lib/python3.9/site-packages/cachecontrol/__init__.py",
+    "lib/python3.9/site-packages/cachecontrol/_cmd.py",
+    "lib/python3.9/site-packages/cachecontrol/adapter.py",
+    "lib/python3.9/site-packages/cachecontrol/cache.py",
+    "lib/python3.9/site-packages/cachecontrol/caches/__init__.py",
+    "lib/python3.9/site-packages/cachecontrol/caches/file_cache.py",
+    "lib/python3.9/site-packages/cachecontrol/caches/redis_cache.py",
+    "lib/python3.9/site-packages/cachecontrol/controller.py",
+    "lib/python3.9/site-packages/cachecontrol/filewrapper.py",
+    "lib/python3.9/site-packages/cachecontrol/heuristics.py",
+    "lib/python3.9/site-packages/cachecontrol/py.typed",
+    "lib/python3.9/site-packages/cachecontrol/serialize.py",
+    "lib/python3.9/site-packages/cachecontrol/wrapper.py",
+    "lib/python3.9/site-packages/cachecontrol/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/__pycache__/_cmd.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/__pycache__/adapter.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/__pycache__/cache.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/caches/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/caches/__pycache__/file_cache.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/caches/__pycache__/redis_cache.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/__pycache__/controller.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/__pycache__/filewrapper.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/__pycache__/heuristics.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/__pycache__/serialize.cpython-39.pyc",
+    "lib/python3.9/site-packages/cachecontrol/__pycache__/wrapper.cpython-39.pyc",
+    "bin/doesitcache"
+  ],
+  "fn": "cachecontrol-0.14.0-pyhd8ed1ab_0.conda",
+  "license": "Apache-2.0",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/cachecontrol-0.14.0-pyhd8ed1ab_0",
+    "type": 1
+  },
+  "md5": "a661c39e223bf3038b38126b0bbf43d9",
+  "name": "cachecontrol",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/cachecontrol-0.14.0-pyhd8ed1ab_0.conda",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/cachecontrol-0.14.0.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "site-packages/cachecontrol-0.14.0.dist-info/LICENSE.txt",
+        "path_type": "hardlink",
+        "sha256": "86eeee87be2a43f3ff1f56496f451f69243926f025fedbb033666c304c4c161b",
+        "sha256_in_prefix": "86eeee87be2a43f3ff1f56496f451f69243926f025fedbb033666c304c4c161b",
+        "size_in_bytes": 558
+      },
+      {
+        "_path": "site-packages/cachecontrol-0.14.0.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "a0b8e6a8bf07071b33eea3638430e1b9131a2ff91f25bc38103ef4b6734f0939",
+        "sha256_in_prefix": "a0b8e6a8bf07071b33eea3638430e1b9131a2ff91f25bc38103ef4b6734f0939",
+        "size_in_bytes": 3071
+      },
+      {
+        "_path": "site-packages/cachecontrol-0.14.0.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "bbf2837a226b6f747526dd4d50e79d0b4dfd9b852a4a184d9830b147505a5901",
+        "sha256_in_prefix": "bbf2837a226b6f747526dd4d50e79d0b4dfd9b852a4a184d9830b147505a5901",
+        "size_in_bytes": 2543
+      },
+      {
+        "_path": "site-packages/cachecontrol-0.14.0.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cachecontrol-0.14.0.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "1196c6921ec87b83e865f450f08d19b8ff5592537f4ef719e83484e546abe33e",
+        "sha256_in_prefix": "1196c6921ec87b83e865f450f08d19b8ff5592537f4ef719e83484e546abe33e",
+        "size_in_bytes": 81
+      },
+      {
+        "_path": "site-packages/cachecontrol-0.14.0.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "ed48213828deb787bc46636e8899d4d866fe8fa5501172790f88158b86a4222e",
+        "sha256_in_prefix": "ed48213828deb787bc46636e8899d4d866fe8fa5501172790f88158b86a4222e",
+        "size_in_bytes": 114
+      },
+      {
+        "_path": "site-packages/cachecontrol-0.14.0.dist-info/entry_points.txt",
+        "path_type": "hardlink",
+        "sha256": "d4db690436526ea30c6e423184c06dbd0a05edce4c99f77b104f6104f1bfb0bb",
+        "sha256_in_prefix": "d4db690436526ea30c6e423184c06dbd0a05edce4c99f77b104f6104f1bfb0bb",
+        "size_in_bytes": 54
+      },
+      {
+        "_path": "site-packages/cachecontrol/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "48c1ab251a57eca5077171a469e59d0e023b748d57017ccd3ce8abfa2e8a99c4",
+        "sha256_in_prefix": "48c1ab251a57eca5077171a469e59d0e023b748d57017ccd3ce8abfa2e8a99c4",
+        "size_in_bytes": 640
+      },
+      {
+        "_path": "site-packages/cachecontrol/_cmd.py",
+        "path_type": "hardlink",
+        "sha256": "e25d946caf4df3956bfca4e41782e3bd296cafe4d99ce5d37d3d8d38394832d7",
+        "sha256_in_prefix": "e25d946caf4df3956bfca4e41782e3bd296cafe4d99ce5d37d3d8d38394832d7",
+        "size_in_bytes": 1672
+      },
+      {
+        "_path": "site-packages/cachecontrol/adapter.py",
+        "path_type": "hardlink",
+        "sha256": "e399684008a2a16aaee0b32d330b4c3a47dbc4082841bdc7567b25fa99a3a2e0",
+        "sha256_in_prefix": "e399684008a2a16aaee0b32d330b4c3a47dbc4082841bdc7567b25fa99a3a2e0",
+        "size_in_bytes": 6247
+      },
+      {
+        "_path": "site-packages/cachecontrol/cache.py",
+        "path_type": "hardlink",
+        "sha256": "393423ef6b547fc0b5b8481ccdd97719cf2f925752cec4c84cab4318a331e33f",
+        "sha256_in_prefix": "393423ef6b547fc0b5b8481ccdd97719cf2f925752cec4c84cab4318a331e33f",
+        "size_in_bytes": 1952
+      },
+      {
+        "_path": "site-packages/cachecontrol/caches/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "dfe05a2415e376dfb88856effbbf7d5e3cd106c77acc5f70384a8e743b8002ba",
+        "sha256_in_prefix": "dfe05a2415e376dfb88856effbbf7d5e3cd106c77acc5f70384a8e743b8002ba",
+        "size_in_bytes": 279
+      },
+      {
+        "_path": "site-packages/cachecontrol/caches/file_cache.py",
+        "path_type": "hardlink",
+        "sha256": "ca570e1bdadefaf8f18818ba0e6ff034ff8ac8afe2d0d228a753aa1cc033e3ad",
+        "sha256_in_prefix": "ca570e1bdadefaf8f18818ba0e6ff034ff8ac8afe2d0d228a753aa1cc033e3ad",
+        "size_in_bytes": 5382
+      },
+      {
+        "_path": "site-packages/cachecontrol/caches/redis_cache.py",
+        "path_type": "hardlink",
+        "sha256": "f78430e08346c231dc083c0c9ce7b481b6dc3f67edb6b96e8be7b5f98bad725c",
+        "sha256_in_prefix": "f78430e08346c231dc083c0c9ce7b481b6dc3f67edb6b96e8be7b5f98bad725c",
+        "size_in_bytes": 1374
+      },
+      {
+        "_path": "site-packages/cachecontrol/controller.py",
+        "path_type": "hardlink",
+        "sha256": "327ff1af3456c2f7d4f225af4096ec232be15529bd47095bebd15e48671ef749",
+        "sha256_in_prefix": "327ff1af3456c2f7d4f225af4096ec232be15529bd47095bebd15e48671ef749",
+        "size_in_bytes": 18503
+      },
+      {
+        "_path": "site-packages/cachecontrol/filewrapper.py",
+        "path_type": "hardlink",
+        "sha256": "493b6d1a620f06f673b766f9d5d50ec28597e5cadc302a4a64e8ac3377f904d7",
+        "sha256_in_prefix": "493b6d1a620f06f673b766f9d5d50ec28597e5cadc302a4a64e8ac3377f904d7",
+        "size_in_bytes": 4292
+      },
+      {
+        "_path": "site-packages/cachecontrol/heuristics.py",
+        "path_type": "hardlink",
+        "sha256": "d0581c4dfcc5450f64510162ae16372ce220e7005652c081bb1c7f186aff52e4",
+        "sha256_in_prefix": "d0581c4dfcc5450f64510162ae16372ce220e7005652c081bb1c7f186aff52e4",
+        "size_in_bytes": 4822
+      },
+      {
+        "_path": "site-packages/cachecontrol/py.typed",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/cachecontrol/serialize.py",
+        "path_type": "hardlink",
+        "sha256": "74fe64fd42985006a7a3a4ca1bdaa56ca1db14ca27cf4015fe5611dc814218c8",
+        "sha256_in_prefix": "74fe64fd42985006a7a3a4ca1bdaa56ca1db14ca27cf4015fe5611dc814218c8",
+        "size_in_bytes": 5110
+      },
+      {
+        "_path": "site-packages/cachecontrol/wrapper.py",
+        "path_type": "hardlink",
+        "sha256": "2b2690e01ab546ab17fb3038a571fada799c539d751022069f9802be63488f6d",
+        "sha256_in_prefix": "2b2690e01ab546ab17fb3038a571fada799c539d751022069f9802be63488f6d",
+        "size_in_bytes": 1328
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/__pycache__/_cmd.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/__pycache__/adapter.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/__pycache__/cache.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/caches/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/caches/__pycache__/file_cache.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/caches/__pycache__/redis_cache.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/__pycache__/controller.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/__pycache__/filewrapper.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/__pycache__/heuristics.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/__pycache__/serialize.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/cachecontrol/__pycache__/wrapper.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "bin/doesitcache",
+        "path_type": "unix_python_entry_point"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "3318732d60456c5ecc0db14a7343a320ea88e05ae168aea4164d7f9ec7907142",
+  "size": 23734,
+  "subdir": "noarch",
+  "timestamp": 1706895342000,
+  "url": "https://conda.anaconda.org/conda-forge/noarch/cachecontrol-0.14.0-pyhd8ed1ab_0.conda",
+  "version": "0.14.0"
+}

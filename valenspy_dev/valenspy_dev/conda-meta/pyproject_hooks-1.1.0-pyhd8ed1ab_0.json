@@ -1,0 +1,144 @@
+{
+  "build": "pyhd8ed1ab_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [],
+  "depends": [
+    "python >=3.7",
+    "tomli >=1.1.0"
+  ],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/pyproject_hooks-1.1.0-pyhd8ed1ab_0",
+  "files": [
+    "lib/python3.9/site-packages/pyproject_hooks-1.1.0.dist-info/INSTALLER",
+    "lib/python3.9/site-packages/pyproject_hooks-1.1.0.dist-info/METADATA",
+    "lib/python3.9/site-packages/pyproject_hooks-1.1.0.dist-info/RECORD",
+    "lib/python3.9/site-packages/pyproject_hooks-1.1.0.dist-info/REQUESTED",
+    "lib/python3.9/site-packages/pyproject_hooks-1.1.0.dist-info/WHEEL",
+    "lib/python3.9/site-packages/pyproject_hooks-1.1.0.dist-info/direct_url.json",
+    "lib/python3.9/site-packages/pyproject_hooks/__init__.py",
+    "lib/python3.9/site-packages/pyproject_hooks/_impl.py",
+    "lib/python3.9/site-packages/pyproject_hooks/_in_process/__init__.py",
+    "lib/python3.9/site-packages/pyproject_hooks/_in_process/_in_process.py",
+    "lib/python3.9/site-packages/pyproject_hooks/py.typed",
+    "lib/python3.9/site-packages/pyproject_hooks/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/pyproject_hooks/__pycache__/_impl.cpython-39.pyc",
+    "lib/python3.9/site-packages/pyproject_hooks/_in_process/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/pyproject_hooks/_in_process/__pycache__/_in_process.cpython-39.pyc"
+  ],
+  "fn": "pyproject_hooks-1.1.0-pyhd8ed1ab_0.conda",
+  "license": "MIT",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/pyproject_hooks-1.1.0-pyhd8ed1ab_0",
+    "type": 1
+  },
+  "md5": "03736d8ced74deece64e54be348ddd3e",
+  "name": "pyproject_hooks",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/pyproject_hooks-1.1.0-pyhd8ed1ab_0.conda",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/pyproject_hooks-1.1.0.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "site-packages/pyproject_hooks-1.1.0.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "185b629001d11bb2231a05addb79f3ea8ae299b765318fcae4ce53ab5152bbda",
+        "sha256_in_prefix": "185b629001d11bb2231a05addb79f3ea8ae299b765318fcae4ce53ab5152bbda",
+        "size_in_bytes": 1288
+      },
+      {
+        "_path": "site-packages/pyproject_hooks-1.1.0.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "1abd214f77965bfd0d160a01e9aadfc7fa6e72b49a935472ab78812371e8bf36",
+        "sha256_in_prefix": "1abd214f77965bfd0d160a01e9aadfc7fa6e72b49a935472ab78812371e8bf36",
+        "size_in_bytes": 1220
+      },
+      {
+        "_path": "site-packages/pyproject_hooks-1.1.0.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/pyproject_hooks-1.1.0.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "1196c6921ec87b83e865f450f08d19b8ff5592537f4ef719e83484e546abe33e",
+        "sha256_in_prefix": "1196c6921ec87b83e865f450f08d19b8ff5592537f4ef719e83484e546abe33e",
+        "size_in_bytes": 81
+      },
+      {
+        "_path": "site-packages/pyproject_hooks-1.1.0.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "22d5c4c8dc6b28265cbbe4659458254da3c6f84ec589f3d3d1acddc1bf8d0aed",
+        "sha256_in_prefix": "22d5c4c8dc6b28265cbbe4659458254da3c6f84ec589f3d3d1acddc1bf8d0aed",
+        "size_in_bytes": 111
+      },
+      {
+        "_path": "site-packages/pyproject_hooks/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "953661dc4954058abdb038abd638cff1ec4d4fb1b10f4287c93b1b3fbf82e2ea",
+        "sha256_in_prefix": "953661dc4954058abdb038abd638cff1ec4d4fb1b10f4287c93b1b3fbf82e2ea",
+        "size_in_bytes": 691
+      },
+      {
+        "_path": "site-packages/pyproject_hooks/_impl.py",
+        "path_type": "hardlink",
+        "sha256": "8d8fab6b19e6c91c81e7baee022b6b25153311ec6e021193a6033282ac7aed9e",
+        "sha256_in_prefix": "8d8fab6b19e6c91c81e7baee022b6b25153311ec6e021193a6033282ac7aed9e",
+        "size_in_bytes": 14936
+      },
+      {
+        "_path": "site-packages/pyproject_hooks/_in_process/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "30934fa5f23170ef85821c6905bc641b5ac58907fa1ce51b5785399aad07167b",
+        "sha256_in_prefix": "30934fa5f23170ef85821c6905bc641b5ac58907fa1ce51b5785399aad07167b",
+        "size_in_bytes": 557
+      },
+      {
+        "_path": "site-packages/pyproject_hooks/_in_process/_in_process.py",
+        "path_type": "hardlink",
+        "sha256": "9ff293c22a67b25b39756b49af5266da1d7cbb95390ff395b9b2aab44bb650d4",
+        "sha256_in_prefix": "9ff293c22a67b25b39756b49af5266da1d7cbb95390ff395b9b2aab44bb650d4",
+        "size_in_bytes": 11603
+      },
+      {
+        "_path": "site-packages/pyproject_hooks/py.typed",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "lib/python3.9/site-packages/pyproject_hooks/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/pyproject_hooks/__pycache__/_impl.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/pyproject_hooks/_in_process/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/pyproject_hooks/_in_process/__pycache__/_in_process.cpython-39.pyc",
+        "path_type": "pyc_file"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "7431bd1c1273facccae3875218dff1faae5a717a0605326fc0370ea8f780ba40",
+  "size": 15301,
+  "subdir": "noarch",
+  "timestamp": 1714415314000,
+  "url": "https://conda.anaconda.org/conda-forge/noarch/pyproject_hooks-1.1.0-pyhd8ed1ab_0.conda",
+  "version": "1.1.0"
+}

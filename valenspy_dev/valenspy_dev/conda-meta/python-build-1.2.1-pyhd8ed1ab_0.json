@@ -1,0 +1,293 @@
+{
+  "build": "pyhd8ed1ab_0",
+  "build_number": 0,
+  "channel": "https://conda.anaconda.org/conda-forge/noarch",
+  "constrains": [
+    "build <0"
+  ],
+  "depends": [
+    "colorama",
+    "importlib-metadata >=4.6",
+    "packaging >=19.0",
+    "pyproject_hooks",
+    "python >=3.8",
+    "tomli >=1.1.0"
+  ],
+  "extracted_package_dir": "/home/invander/fileserver/home/miniconda3/pkgs/python-build-1.2.1-pyhd8ed1ab_0",
+  "files": [
+    "lib/python3.9/site-packages/build-1.2.1.dist-info/INSTALLER",
+    "lib/python3.9/site-packages/build-1.2.1.dist-info/LICENSE",
+    "lib/python3.9/site-packages/build-1.2.1.dist-info/METADATA",
+    "lib/python3.9/site-packages/build-1.2.1.dist-info/RECORD",
+    "lib/python3.9/site-packages/build-1.2.1.dist-info/REQUESTED",
+    "lib/python3.9/site-packages/build-1.2.1.dist-info/WHEEL",
+    "lib/python3.9/site-packages/build-1.2.1.dist-info/direct_url.json",
+    "lib/python3.9/site-packages/build-1.2.1.dist-info/entry_points.txt",
+    "lib/python3.9/site-packages/build/__init__.py",
+    "lib/python3.9/site-packages/build/__main__.py",
+    "lib/python3.9/site-packages/build/_builder.py",
+    "lib/python3.9/site-packages/build/_compat/__init__.py",
+    "lib/python3.9/site-packages/build/_compat/importlib.py",
+    "lib/python3.9/site-packages/build/_compat/tarfile.py",
+    "lib/python3.9/site-packages/build/_compat/tomllib.py",
+    "lib/python3.9/site-packages/build/_ctx.py",
+    "lib/python3.9/site-packages/build/_exceptions.py",
+    "lib/python3.9/site-packages/build/_types.py",
+    "lib/python3.9/site-packages/build/_util.py",
+    "lib/python3.9/site-packages/build/env.py",
+    "lib/python3.9/site-packages/build/py.typed",
+    "lib/python3.9/site-packages/build/util.py",
+    "lib/python3.9/site-packages/build/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/__pycache__/__main__.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/__pycache__/_builder.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/_compat/__pycache__/__init__.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/_compat/__pycache__/importlib.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/_compat/__pycache__/tarfile.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/_compat/__pycache__/tomllib.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/__pycache__/_ctx.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/__pycache__/_exceptions.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/__pycache__/_types.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/__pycache__/_util.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/__pycache__/env.cpython-39.pyc",
+    "lib/python3.9/site-packages/build/__pycache__/util.cpython-39.pyc",
+    "bin/python-build",
+    "bin/pyproject-build"
+  ],
+  "fn": "python-build-1.2.1-pyhd8ed1ab_0.conda",
+  "license": "MIT",
+  "link": {
+    "source": "/home/invander/fileserver/home/miniconda3/pkgs/python-build-1.2.1-pyhd8ed1ab_0",
+    "type": 1
+  },
+  "md5": "d657cde3b3943fcedf6038138eea84de",
+  "name": "python-build",
+  "noarch": "python",
+  "package_tarball_full_path": "/home/invander/fileserver/home/miniconda3/pkgs/python-build-1.2.1-pyhd8ed1ab_0.conda",
+  "package_type": "noarch_python",
+  "paths_data": {
+    "paths": [
+      {
+        "_path": "site-packages/build-1.2.1.dist-info/INSTALLER",
+        "path_type": "hardlink",
+        "sha256": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "sha256_in_prefix": "d0edee15f91b406f3f99726e44eb990be6e34fd0345b52b910c568e0eef6a2a8",
+        "size_in_bytes": 5
+      },
+      {
+        "_path": "site-packages/build-1.2.1.dist-info/LICENSE",
+        "path_type": "hardlink",
+        "sha256": "aaf9a29ca5907971ccf07de025375db34539a8d5eeebce20b46099805722106f",
+        "sha256_in_prefix": "aaf9a29ca5907971ccf07de025375db34539a8d5eeebce20b46099805722106f",
+        "size_in_bytes": 1113
+      },
+      {
+        "_path": "site-packages/build-1.2.1.dist-info/METADATA",
+        "path_type": "hardlink",
+        "sha256": "9f713846913f28e40818c120f7301864470b3c03873269a7fe17cff33fcdc9e9",
+        "sha256_in_prefix": "9f713846913f28e40818c120f7301864470b3c03873269a7fe17cff33fcdc9e9",
+        "size_in_bytes": 4324
+      },
+      {
+        "_path": "site-packages/build-1.2.1.dist-info/RECORD",
+        "path_type": "hardlink",
+        "sha256": "a2a449d03118ca659f933185829ab063a69e7231ea9f84a5fdf6d887300d3a5a",
+        "sha256_in_prefix": "a2a449d03118ca659f933185829ab063a69e7231ea9f84a5fdf6d887300d3a5a",
+        "size_in_bytes": 2405
+      },
+      {
+        "_path": "site-packages/build-1.2.1.dist-info/REQUESTED",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/build-1.2.1.dist-info/WHEEL",
+        "path_type": "hardlink",
+        "sha256": "1196c6921ec87b83e865f450f08d19b8ff5592537f4ef719e83484e546abe33e",
+        "sha256_in_prefix": "1196c6921ec87b83e865f450f08d19b8ff5592537f4ef719e83484e546abe33e",
+        "size_in_bytes": 81
+      },
+      {
+        "_path": "site-packages/build-1.2.1.dist-info/direct_url.json",
+        "path_type": "hardlink",
+        "sha256": "df7fb0e3d546bde487686d01f273012cfe783f5cedd3e9e16d098528f9506528",
+        "sha256_in_prefix": "df7fb0e3d546bde487686d01f273012cfe783f5cedd3e9e16d098528f9506528",
+        "size_in_bytes": 108
+      },
+      {
+        "_path": "site-packages/build-1.2.1.dist-info/entry_points.txt",
+        "path_type": "hardlink",
+        "sha256": "3186db33a24662e6e02234e070ba4d219a5cd0f59b8bd991016ed586d733952f",
+        "sha256_in_prefix": "3186db33a24662e6e02234e070ba4d219a5cd0f59b8bd991016ed586d733952f",
+        "size_in_bytes": 105
+      },
+      {
+        "_path": "site-packages/build/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "61137cd91dde82cd0dbca1b946a2bc55d9ae34bba7f4243a5cbad34f5d6be71c",
+        "sha256_in_prefix": "61137cd91dde82cd0dbca1b946a2bc55d9ae34bba7f4243a5cbad34f5d6be71c",
+        "size_in_bytes": 837
+      },
+      {
+        "_path": "site-packages/build/__main__.py",
+        "path_type": "hardlink",
+        "sha256": "a6fce563afabf155c7483de1ed28003484e5e6f0d5d5931d10fc7c9ff2f2b2e0",
+        "sha256_in_prefix": "a6fce563afabf155c7483de1ed28003484e5e6f0d5d5931d10fc7c9ff2f2b2e0",
+        "size_in_bytes": 14227
+      },
+      {
+        "_path": "site-packages/build/_builder.py",
+        "path_type": "hardlink",
+        "sha256": "f56987d75c9b5fb1d2e4278b35186a5b13f38a6249b2bf5d6a6fce1a9b7448d9",
+        "sha256_in_prefix": "f56987d75c9b5fb1d2e4278b35186a5b13f38a6249b2bf5d6a6fce1a9b7448d9",
+        "size_in_bytes": 13393
+      },
+      {
+        "_path": "site-packages/build/_compat/__init__.py",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/build/_compat/importlib.py",
+        "path_type": "hardlink",
+        "sha256": "99d518627e5c89abc143acc513eda08450e8b4a642e10b9f6ca3323e0e61dd62",
+        "sha256_in_prefix": "99d518627e5c89abc143acc513eda08450e8b4a642e10b9f6ca3323e0e61dd62",
+        "size_in_bytes": 467
+      },
+      {
+        "_path": "site-packages/build/_compat/tarfile.py",
+        "path_type": "hardlink",
+        "sha256": "f3eb039db1bef666793ac99254f02bc44e8a23a74f7b4c17db27f87ad0d2ab19",
+        "sha256_in_prefix": "f3eb039db1bef666793ac99254f02bc44e8a23a74f7b4c17db27f87ad0d2ab19",
+        "size_in_bytes": 816
+      },
+      {
+        "_path": "site-packages/build/_compat/tomllib.py",
+        "path_type": "hardlink",
+        "sha256": "253faaf5f06efef3ade1f3d62a1d9b20abdf928eb7df3ffbe05fd33ff635edcb",
+        "sha256_in_prefix": "253faaf5f06efef3ade1f3d62a1d9b20abdf928eb7df3ffbe05fd33ff635edcb",
+        "size_in_bytes": 255
+      },
+      {
+        "_path": "site-packages/build/_ctx.py",
+        "path_type": "hardlink",
+        "sha256": "404073418613d81bb28f478791328843718adcb115eab102fb68918ae538b13f",
+        "sha256_in_prefix": "404073418613d81bb28f478791328843718adcb115eab102fb68918ae538b13f",
+        "size_in_bytes": 2880
+      },
+      {
+        "_path": "site-packages/build/_exceptions.py",
+        "path_type": "hardlink",
+        "sha256": "971118af8d9e1bec207cb6dc321964b3871cd2ef8fdf330cf2c6d6ada20dc08e",
+        "sha256_in_prefix": "971118af8d9e1bec207cb6dc321964b3871cd2ef8fdf330cf2c6d6ada20dc08e",
+        "size_in_bytes": 1625
+      },
+      {
+        "_path": "site-packages/build/_types.py",
+        "path_type": "hardlink",
+        "sha256": "0ee8c71f8fed756e6ebce53ed2fc217d9372d61dc2d8c55530762ad77e1afc20",
+        "sha256_in_prefix": "0ee8c71f8fed756e6ebce53ed2fc217d9372d61dc2d8c55530762ad77e1afc20",
+        "size_in_bytes": 372
+      },
+      {
+        "_path": "site-packages/build/_util.py",
+        "path_type": "hardlink",
+        "sha256": "0f8c45c680383d3dbbc5a96ff5afb97e50ad66064734568aa6220cd97a5d33db",
+        "sha256_in_prefix": "0f8c45c680383d3dbbc5a96ff5afb97e50ad66064734568aa6220cd97a5d33db",
+        "size_in_bytes": 2325
+      },
+      {
+        "_path": "site-packages/build/env.py",
+        "path_type": "hardlink",
+        "sha256": "9437b71dfa8daf8048f66305b06629e186c5fc82721417ceef839fb45f352a63",
+        "sha256_in_prefix": "9437b71dfa8daf8048f66305b06629e186c5fc82721417ceef839fb45f352a63",
+        "size_in_bytes": 13473
+      },
+      {
+        "_path": "site-packages/build/py.typed",
+        "path_type": "hardlink",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha256_in_prefix": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_in_bytes": 0
+      },
+      {
+        "_path": "site-packages/build/util.py",
+        "path_type": "hardlink",
+        "sha256": "8811cfa54d76f28dc46f174539348eddae0d92d3bd0e74d6889a1705e76a9aed",
+        "sha256_in_prefix": "8811cfa54d76f28dc46f174539348eddae0d92d3bd0e74d6889a1705e76a9aed",
+        "size_in_bytes": 1776
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/__pycache__/__main__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/__pycache__/_builder.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/_compat/__pycache__/__init__.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/_compat/__pycache__/importlib.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/_compat/__pycache__/tarfile.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/_compat/__pycache__/tomllib.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/__pycache__/_ctx.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/__pycache__/_exceptions.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/__pycache__/_types.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/__pycache__/_util.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/__pycache__/env.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "lib/python3.9/site-packages/build/__pycache__/util.cpython-39.pyc",
+        "path_type": "pyc_file"
+      },
+      {
+        "_path": "bin/python-build",
+        "path_type": "unix_python_entry_point"
+      },
+      {
+        "_path": "bin/pyproject-build",
+        "path_type": "unix_python_entry_point"
+      }
+    ],
+    "paths_version": 1
+  },
+  "requested_spec": "None",
+  "sha256": "3104051be7279d1b15f0a4be79f4bfeaf3a42b2900d24a7ad8e980df903fe8db",
+  "size": 24434,
+  "subdir": "noarch",
+  "timestamp": 1711647439000,
+  "url": "https://conda.anaconda.org/conda-forge/noarch/python-build-1.2.1-pyhd8ed1ab_0.conda",
+  "version": "1.2.1"
+}
