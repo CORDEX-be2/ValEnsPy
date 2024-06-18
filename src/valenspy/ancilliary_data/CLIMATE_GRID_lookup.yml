@@ -50,7 +50,7 @@ prhmax:
   obs_long_name: maximum precipitation quantity in one hour
   obs_units: mm
 
-evspsbl: 
+evspsblpot: 
   obs_name: EVAPOTRANS_REF
   obs_long_name: reference evapotranspiration ET0
   obs_units: mm
