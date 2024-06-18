@@ -296,7 +296,7 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
             elif obs_LOOKUP[var]["obs_units"] == "J/m^2":
                 ds[var] = _convert_J_m2_to_W_m2(
                     ds[var]
-                )  # J to W m2 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
+                )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
 
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
@@ -382,7 +382,7 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
         )
 
         if var:  # Dont processes variables that are not in the lookup table.
-    
+
             # additional attributes -- set both globally at dataset level as at data array level
             ds[var].attrs["dataset"] = obsdata_name
 
@@ -394,9 +394,7 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
             else:
                 ds[var].attrs["freq"] = "daily"
                 ds[var].attrs["spatial_resolution"] = "5km"
-                ds[var].attrs["region"] = "belgium" # leave empty per default. 
-    
-
+                ds[var].attrs["region"] = "belgium"  # leave empty per default.
 
     # set attributes in whole dataset
     ds.attrs["dataset"] = obsdata_name
@@ -410,7 +408,7 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     else:
         ds.attrs["freq"] = "daily"
         ds.attrs["spatial_resolution"] = "5km"
-        ds.attrs["region"] = "belgium" # leave empty per default. 
+        ds.attrs["region"] = "belgium"  # leave empty per default.
 
     return ds
 
@@ -421,6 +419,7 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 import xarray as xr
 import pandas as pd
 import numpy as np
+
 
 # Do we want other possible inputs than data arrays?
 def _convert_Celcius_to_Kelvin(da: xr.DataArray):
@@ -598,8 +597,8 @@ def _convert_J_m2_to_W_m2(da: xr.DataArray):
 
     return da
 
-def _determine_time_interval(da: xr.DataArray): 
 
+def _determine_time_interval(da: xr.DataArray):
     """
     Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances.
 
