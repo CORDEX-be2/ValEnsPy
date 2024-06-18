@@ -5,7 +5,7 @@ Regrid CLIMATE_GRID to regular lon/lat grid
 
 Script to regrid CLIMATE_GRID from LAMBERT into own defined LAT/LON grid
 ! includes a user-defined regular lat-lon grid, as close as possible to the native CLIMATE_GRID
-
+Uses CDO regridding. 
 
 I. Vanderkelen, June 2024
 """
@@ -27,20 +27,10 @@ import numpy as np
 
 gridname = 'latlon_be_5km'
 
-resolution_lat = 0.045
-resolution_lon = 0.07
-
-#nlats = int(np.round(((ds['lat'].max()- ds['lat'].min())/resolution_lat).values))
-#nlons =  int(np.round(((ds['lon'].max()- ds['lon'].min())/resolution_lon).values))
-nlats=45
-nlons=60
-# Define the increments
 xinc = resolution_lon
 yinc = resolution_lat
-
-# Get min values for lat and lon
-#xfirst = ds['lon'].min().values
-#yfirst = ds['lat'].min().values
+nlats=45
+nlons=60
 xfirst=2.4
 yfirst=49.5
 
@@ -73,7 +63,6 @@ variables = ["EVAPOTRANS_REF", "SUN_INT", "SUN_DURATION", "PRECIP_DURATION", "WI
 
 # create regrid folder 
 directory_grid = str(directory)+'/regridded/'+gridname+'/'
-print(directory_grid)
 
 if not os.path.exists(directory_grid):
     os.makedirs(directory_grid) 
