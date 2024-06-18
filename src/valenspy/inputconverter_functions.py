@@ -178,9 +178,9 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
                 )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
 
             elif obs_LOOKUP[var]["obs_units"] == "J/m^2":
-                ds[var] = _convert_m_to_kg_m2s(
+                ds[var] = _convert_J_m2_to_W_m2(
                     ds[var]
-                )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
+                )  # J/m^2 to W m-2 
 
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
@@ -597,6 +597,28 @@ def _convert_J_m2_to_W_m2(da: xr.DataArray):
 
     return da
 
+def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
+    """
+    Convert values in xarray DataArray from kWh/m2/day to W m^2
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The xarray DataArray to convert
+
+    Returns
+    -------
+    xr.DataArray
+        The  converted xarray DataArray
+    """
+
+    # do conversion
+    da = da * (1000)/24
+
+    # update units attribute
+    da.attrs["units"] = "W m-2"
+
+    return da
 
 def _determine_time_interval(da: xr.DataArray):
     """
