@@ -56,7 +56,8 @@ df_coords_points['LAMBERT_X_INDEX'] = df_coords_points['LAMBERT_X'].apply(lambda
 df_coords_points['LAMBERT_Y_INDEX'] = df_coords_points['LAMBERT_Y'].apply(lambda x: find_nearest(lambert_y_grid, x))
 
 
-data_dir = '/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/CLIMATE_GRID/'
+data_dir = '/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/CLIMATE_GRID/' # datadir on hortense
+data_dir = '/mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID/' # datadir on kili
 
 for variable in variables: 
 	print('Converting '+ variable)

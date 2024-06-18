@@ -25,14 +25,14 @@ import numpy as np
 # regrid to lat lon grid
 # lat lon resolution, close to 5 km in Belgium - define grid based on this. 
 
-gridname = 'latlon_be_5km'
+gridname = 'latlon_5km'
 
 xinc = 0.07
 yinc = 0.045
-nlats=45
-nlons=60
-xfirst=2.4
-yfirst=49.5
+nlats=70
+nlons=75
+xfirst=2
+yfirst=49
 
 # save grid info as text
 # Create the content to write to the file
