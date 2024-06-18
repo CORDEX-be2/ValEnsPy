@@ -27,8 +27,8 @@ import numpy as np
 
 gridname = 'latlon_be_5km'
 
-xinc = resolution_lon
-yinc = resolution_lat
+xinc = 0.07
+yinc = 0.045
 nlats=45
 nlons=60
 xfirst=2.4
@@ -55,7 +55,12 @@ with open(gridname+".txt", "w") as file:
 
 # User settings
 dataset = "CLIMATE_GRID"
+
+# directory on kili
 directory = Path('/mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID/')
+
+#hortense directory
+#directory = Path('/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/CLIMATE_GRID/')
 
 remap_method = "remapcon" # cdo method
 
