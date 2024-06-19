@@ -30,7 +30,7 @@ def cf_status(netCDF: Union[str, Path, xr.Dataset]) -> None:
 
     print(
         "The file is {status}ValEnsPy CF compliant.".format(
-            status="NOT " if not is_cf_compliant(ds) else ""
+            status="NOT " if not is_cf_compliant(ds, verbose=True) else ""
         )
     )
 
@@ -116,6 +116,7 @@ def is_cf_compliant(netCDF: Union[str, Path, xr.Dataset], verbose=False) -> bool
             if var in CORDEX_VARIABLES
         ]
     )
+    time_dimension_ok = _check_time_dimension(ds)
 
     if verbose:
         if not var_meta_data_ok:
@@ -124,8 +125,10 @@ def is_cf_compliant(netCDF: Union[str, Path, xr.Dataset], verbose=False) -> bool
             print("Main metadata is missing or incorrect")
         if not cordex_vars_data_ok:
             print("Variable attributes are missing or incorrect")
+        if not time_dimension_ok:
+            print("Time dimension is missing or has an incorrect type")
 
-    return var_meta_data_ok and main_meta_data_ok and cordex_vars_data_ok
+    return var_meta_data_ok and main_meta_data_ok and cordex_vars_data_ok and time_dimension_ok
 
 
 def _load_xarray(netCDF: Union[str, Path, xr.Dataset]):
@@ -161,6 +164,21 @@ def _load_xarray(netCDF: Union[str, Path, xr.Dataset]):
         raise TypeError("The input is not a valid type")
     return ds
 
+def _check_time_dimension(ds: xr.Dataset):
+    """
+    Check if the time dimension is present and is of the type datetime64
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The dataset to check
+
+    Returns
+    -------
+    bool
+        True if the time dimension is present and is of the type datetime64, False otherwise
+    """
+    return "time" in ds.dims and ds.time.dtype == "datetime64[ns]"
 
 def _check_variable_by_name(da: xr.DataArray):
     """
