@@ -27,6 +27,7 @@ xarray = "^2024.2.0"
 xarray-datatree = "^0.0.14"
 
 # Development group
+regionmask = "^0.12.1"
 [tool.poetry.group.dev]
 optional = true
 
