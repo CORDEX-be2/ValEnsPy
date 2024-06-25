@@ -179,12 +179,12 @@ class Ensemble2Ref(Diagnostic):
             if isinstance(ref, DataTree):
                 for data_node, ref_node in zip(dt.leaves, ref.leaves):
                     ensemble_results[data_node.path] = model2ref.diagnostic_function(
-                        data_node.ds, ref_node.ds, **kwargs
+                        data_node.to_dataset(), ref_node.ds.to_dataset(), **kwargs
                     )
             else:
                 for data_node in dt.leaves:
                     ensemble_results[data_node.path] = model2ref.diagnostic_function(
-                        data_node.ds, ref, **kwargs
+                        data_node.to_dataset(), ref, **kwargs
                     )
             return ensemble_results
 
