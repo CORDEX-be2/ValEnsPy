@@ -1,0 +1,66 @@
+# CLIMATE_GRID variable name conversion table based on CORDEX variables
+
+# Format
+
+# CORDEX VariableName:
+#    obs_name:
+#    obs_long_name:
+#    obs_units:
+
+# More info on CLIMATE_GRID: https://opendata.meteo.be/geonetwork/srv/eng/catalog.search#/metadata/RMI_DATASET_GRIDDEDOBS
+
+
+tas:
+  obs_name: TEMP_AVG
+  obs_long_name: Near-Surface Air Temperature
+  obs_units: degC
+
+tasmax:
+  obs_name: TEMP_MAX
+  obs_long_name: Daily Maximum Near-Surface Air Temperature
+  obs_units: degC
+
+tasmin:
+  obs_name: TEMP_MIN
+  obs_long_name: Daily Minimum Near-Surface Air Temperature
+  obs_units: degC
+
+pr:
+  obs_name: PRECIP_QUANTITY
+  obs_long_name: precipitation quantity
+  obs_units: mm
+
+hurs:
+  obs_name: HUMIDITY_RELATIVE
+  obs_long_name: Near-Surface Relative Humidity
+  obs_units: "%"
+
+sfcWind:
+  obs_name: WIND_SPEED
+  obs_long_name: average wind speed
+  obs_units: m/s
+
+rsds:
+  obs_name: SHORT_WAVE_FROM_SKY
+  obs_long_name: average daily global solar radiation
+  obs_units: kWh/m2/day
+
+prhmax:
+  obs_name: PRECIP_1H_MAX
+  obs_long_name: maximum precipitation quantity in one hour
+  obs_units: mm
+
+evspsblpot:
+  obs_name: EVAPOTRANS_REF
+  obs_long_name: reference evapotranspiration ET0
+  obs_units: mm
+
+sfcWindmax:
+  obs_name: WIND_PEAK_SPEED
+  obs_long_name: maximum gusts speed from the closest station
+  obs_units: m/s
+
+psl:
+  obs_name: PRESSURE
+  obs_long_name: sea level pressure
+  obs_units: hPa
