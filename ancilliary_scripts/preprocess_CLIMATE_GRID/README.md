@@ -17,8 +17,6 @@ June 2024
 - **`remap_CLIMATE_GRID_to_latlon.py`**: 
   - Remaps the projected (raw) CLIMATE_GRID NetCDF data to a lat/lon grid.
   - The target grid can be user-defined within the script.
-- **`preprocess_CLIMATE_GRID_Rdata_to_netcdf.py`**: 
-  - Converts the Rdata downloaded from the Oracle database using Bert's script to a NetCDF file.
 
 ### Data Files
 - **`grid_5kmx5km.csv`**: 
