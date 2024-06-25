@@ -108,7 +108,12 @@ for variable in variables:
 
     # Load climate grid metadata on variables and units
     meta = pd.read_csv('CLIMATE_GRID_meta.csv', delimiter=";")
-    proj_string = "+proj=lcc +lat_1=49.83333388888889 +lat_2=51.16666722222222 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +units=m +no_defs"
+    
+    # OLD, wrong PROJ string corresponding to LAMBERT1972
+    #proj_string = "+proj=lcc +lat_1=49.83333388888889 +lat_2=51.16666722222222 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +units=m +no_defs"
+    
+    # LAMBERT2008 projection
+    proj_string = "+proj=lcc +lat_2=50.569898649999999 +lat_1=50.569898649999999 +lon_0=4.553615160000000 +units=m +no_defs +a=6371229.0 +b=6371229.0"
     
     # Load the pixel lat and lon variable and use this to transpose to own defined grid
     df_coords_points = pd.read_csv('grid_5kmx5km.csv', header=1, delimiter=' ') # Lat/lon and Lambert coordinates for all pixels in CLIMATE_DATA
