@@ -178,9 +178,7 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
                 )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
 
             elif obs_LOOKUP[var]["obs_units"] == "J/m^2":
-                ds[var] = _convert_J_m2_to_W_m2(
-                    ds[var]
-                )  # J/m^2 to W m-2 
+                ds[var] = _convert_J_m2_to_W_m2(ds[var])  # J/m^2 to W m-2
 
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
@@ -349,7 +347,6 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
 
 
 def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
-
     """
     Convert the CLIMATE_GRID xarray dataset to a xarray Dataset in CF convention
 
@@ -409,9 +406,11 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
                 ds[var] = _convert_kWh_m2_day_to_W_m2(
                     ds[var]
                 )  # kWh/m2/day to W m^-2 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
-            
+
             elif obs_LOOKUP[var]["obs_units"] == "m/s":
-               ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"]  # put units as m s-1
+                ds[var].attrs["units"] = CORDEX_VARIABLES[var][
+                    "units"
+                ]  # put units as m s-1
 
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
@@ -423,9 +422,8 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
             ds[var].attrs["original_name"] = obs_LOOKUP[var]["obs_name"]
             ds[var].attrs["original_long_name"] = obs_LOOKUP[var]["obs_long_name"]
 
-            # convert the time dimension to a pandas datetime index 
+            # convert the time dimension to a pandas datetime index
             ds[var]["time"] = pd.to_datetime(ds[var].time)
-
 
             # additional attributes -- set both globally at dataset level as at data array level
             ds[var].attrs["dataset"] = obsdata_name
@@ -438,7 +436,7 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
             else:
                 ds[var].attrs["freq"] = "daily"
                 ds[var].attrs["spatial_resolution"] = "0.07° x 0.045° (~5km)"
-                ds[var].attrs["region"] = "belgium"  
+                ds[var].attrs["region"] = "belgium"
 
     # set attributes in whole dataset
     ds.attrs["dataset"] = obsdata_name
@@ -456,7 +454,7 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     # Soft check for CF compliance
     cf_status(ds)
-    
+
     return ds
 
 
@@ -644,6 +642,7 @@ def _convert_J_m2_to_W_m2(da: xr.DataArray):
 
     return da
 
+
 def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
     """
     Convert values in xarray DataArray from kWh/m2/day to W m^2
@@ -660,12 +659,13 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
     """
 
     # do conversion
-    da = da * (1000)/24
+    da = da * (1000) / 24
 
     # update units attribute
     da.attrs["units"] = "W m-2"
 
     return da
+
 
 def _determine_time_interval(da: xr.DataArray):
     """
