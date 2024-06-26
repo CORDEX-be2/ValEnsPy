@@ -50,6 +50,8 @@ def spatial_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
         The data to calculate the spatial bias of.
     ref : xr.Dataset
         The reference data to compare the data to.
+    relative : bool, optional
+        If True, return the relative bias, by default False
 
     Returns
     -------
@@ -67,6 +69,8 @@ def temporal_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
         The data to calculate the temporal bias of.
     ref : xr.Dataset
         The reference data to compare the data to.
+    relative : bool, optional
+        If True, return the relative bias, by default False
 
     Returns
     -------
@@ -74,6 +78,28 @@ def temporal_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
         The temporal bias of the data compared to the reference.
     """
     return bias(_average_over_dims(data, ["lat", "lon"]), _average_over_dims(ref, ["lat", "lon"]), relative=relative)
+
+def daily_cycle_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
+    """Calculate the daily cycle bias of the data compared to the reference. If lat and lon are present, the daily cycle is averaged over the spatial dimensions lat and lon.
+
+    Parameters
+    ----------
+    data : DataTree
+        The data to calculate the daily cycle bias of.
+    ref : xr.Dataset
+        The reference data to compare the data to.
+    relative : bool, optional
+        If True, return the relative bias, by default False
+
+    Returns
+    -------
+    Dataset
+        The daily cycle bias of the data compared to the reference.
+    """
+    data = _average_over_dims(data, ["lat", "lon"])
+    ref = _average_over_dims(ref, ["lat", "lon"])
+    
+    return data.groupby("time.hour").mean("time") - ref.groupby("time.hour").mean("time")
 
 ##################################
 ####### Helper functions #########

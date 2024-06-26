@@ -226,10 +226,13 @@ class Ensemble2Ref(Diagnostic):
 # Pre-made diagnostics
 # =============================================================================
 
-from valenspy.diagnostic_functions import daily_cycle, spatial_bias, time_series_spatial_mean, temporal_bias
+from valenspy.diagnostic_functions import daily_cycle, spatial_bias, time_series_spatial_mean, temporal_bias, daily_cycle_bias
 from valenspy.diagnostic_visualizations import plot_daily_cycle, plot_spatial_bias, plot_time_series
 
+#Model2Self diagnostics
 vp_DailyCycle = Model2Self(daily_cycle, plot_daily_cycle, "Daily Cycle", "The daily cycle of the data.")
+vp_TimeSeriesSpatialMean = Model2Self(time_series_spatial_mean, plot_time_series, "Time Series Spatial Mean", "The time series of the spatial mean of the data.")
+#Model2Ref diagnostics
 vp_SpatialBias = Model2Ref(spatial_bias, plot_spatial_bias, "Spatial Bias", "The spatial bias of the data compared to the reference.")
 vp_TemporalBias = Model2Ref(temporal_bias, plot_time_series, "Temporal Bias", "The temporal bias of the data compared to the reference.")
-vp_TimeSeriesSpatialMean = Model2Self(time_series_spatial_mean, plot_time_series, "Time Series Spatial Mean", "The time series of the spatial mean of the data.")
+vp_DailyCycleBias = Model2Ref(daily_cycle_bias, plot_daily_cycle, "Daily Cycle Bias", "The daily cycle bias of the data compared to the reference.")
