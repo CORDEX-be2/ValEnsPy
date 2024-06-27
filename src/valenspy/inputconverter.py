@@ -1,5 +1,12 @@
 from pathlib import Path
 from typing import Callable, Union
+import xarray as xr
+from valenspy.inputconverter_functions import (
+    EOBS_to_CF,
+    ERA5_to_CF,
+    ERA5Land_to_CF,
+    CLIMATE_GRID_to_CF,
+)
 
 
 class InputConverter:
@@ -16,23 +23,42 @@ class InputConverter:
         """
         self.converter = converter
 
-    def convert_input(self, input: Union[Path, list[Path]]) -> Union[Path, list[Path]]:
-        """Convert the input file to CF convention.
+    def convert_input(self, inputs, metadata_info=None):
+        """Convert the input file(s)/xarray dataset to CF convention.
 
         Parameters
         ----------
-        input : Path or list(Path)
+        input : Path or list(Path) or xarray.Dataset
             The input file or list of input files to convert.
+
+        Returns
+        -------
+        xarray.Dataset
+            An xarray dataset in CF convention.
         """
-        input = self.converter(input)
+        if isinstance(inputs, Path) or isinstance(inputs, list):
+            ds = xr.open_mfdataset(inputs, combine="by_coords", chunks="auto")
+        elif isinstance(inputs, xr.Dataset):
+            ds = inputs
+        else:
+            raise ValueError(
+                "The input should be a Path or list of Paths or an xarray dataset."
+            )
+        return self.converter(ds, metadata_info)
 
-        return input
 
+INPUT_CONVERTORS = {
+    "ERA5": InputConverter(ERA5_to_CF),
+    "ERA5-Land": InputConverter(ERA5Land_to_CF),
+    "EOBS": InputConverter(EOBS_to_CF),
+    "CLIMATE_GRID": InputConverter(CLIMATE_GRID_to_CF),
+}
 
 # Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.
 
 # Needed:
 #  - Some helper functions to extend input to glob arguments, str arguments etc.
+#  - Extend input so that already loaded datasets can also be input
 #  - CF Checker functionality
 
 # To be discussed -> Do we expect inputconvertor function to work at the file level? Or should they be able to manage a collection of files?

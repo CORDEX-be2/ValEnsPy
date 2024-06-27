@@ -1,0 +1,234 @@
+# This file contains the list of CORDEX variables and their attributes
+
+# Format:
+#VariableName:
+#  units:
+#  standard_name:
+#  long_name:
+#  realm:
+#  aggregation(optional): i: instantaneous, a:averaged over output interval
+
+#List based on CORDEX-CMIP6 Request "https://cordex.org/wp-content/uploads/2022/09/CORDEX_CMIP6_Atmosphere_Variable_List.xlsx"
+
+###############################
+## Atmosphere CORE Variables ##
+###############################
+
+tas:
+  units: K
+  standard_name: air_temperature
+  long_name: Near-Surface Air Temperature
+  realm: atmos
+  aggregation: i
+
+tasmax:
+  units: K
+  standard_name: air_temperature
+  long_name: Maximum Near-Surface Air Temperature
+  realm: atmos
+
+tasmin:
+  units: K
+  standard_name: air_temperature
+  long_name: Minimum Near-Surface Air Temperature
+  realm: atmos
+
+pr:
+  units: kg m-2 s-1
+  standard_name: precipitation_flux
+  long_name: Precipitation
+  realm: atmos
+  aggregation: a
+
+evspsbl:
+  units: kg m-2 s-1
+  standard_name: water_evaporation_flux
+  long_name: Evaporation
+  realm: atmos
+
+huss:
+  units: 1
+  standard_name: specific_humidity
+  long_name: Near-Surface Specific Humidity
+  realm: atmos
+  aggregation: i
+
+hurs:
+  units: "%"
+  standard_name: relative_humidity
+  long_name: Near-Surface Relative Humidity
+  realm: atmos
+  aggregation: i
+
+ps:
+  units: Pa
+  standard_name: surface_air_pressure
+  long_name: Surface Air Pressure
+  realm: atmos
+  aggregation: i
+
+psl:
+  units: Pa
+  standard_name: air_pressure_at_sea_level
+  long_name: Sea Level Pressure
+  realm: atmos
+  aggregation: i
+
+sfcWind:
+  units: m s-1
+  standard_name: wind_speed
+  long_name: Near-Surface Wind Speed
+  realm: atmos
+  aggregation: i
+
+uas:
+  units: m s-1
+  standard_name: eastward_wind
+  long_name: Eastward Near-Surface Wind
+  realm: atmos
+  aggregation: i
+
+vas:
+  units: m s-1
+  standard_name: northward_wind
+  long_name: Northward Near-Surface Wind
+  realm: atmos
+  aggregation: i
+
+clt:
+  units: "%"
+  standard_name: cloud_area_fraction
+  long_name: Total Cloud Cover Percentage
+  realm: atmos
+  aggregation: a
+
+rsds:
+  units: W m-2
+  standard_name: surface_downwelling_shortwave_flux_in_air
+  long_name: Surface Downwelling Shortwave Radiation
+  realm: atmos
+  aggregation: a
+
+rlds:
+  units: W m-2
+  standard_name: surface_downwelling_longwave_flux_in_air
+  long_name: Surface Downwelling Longwave Radiation
+  realm: atmos
+  aggregation: a
+
+orog:
+  units: m
+  standard_name: surface_altitude
+  long_name: Surface Altitude
+  realm: atmos
+
+sftlf:
+  units: "%"
+  standard_name: land_area_fraction
+  long_name: Percentage of the Grid Cell Occupied by Land
+  realm: atmos
+
+#################################
+## Atmosphere Tier 1 Variables ##
+#################################
+ts:
+  units: K
+  standard_name: surface_temperature
+  long_name: Surface Temperature
+  realm: atmos
+  aggregation: i
+
+hfls:
+  units: W m-2
+  standard_name: surface_upward_latent_heat_flux
+  long_name: Surface Upward Latent Heat Flux
+  realm: atmos
+
+prsn:
+  units: kg m-2 s-1
+  standard_name: snowfall_flux
+  long_name: Snowfall Flux
+  realm: atmos
+  aggregation: a
+
+prw:
+  units: kg m-2
+  standard_name: atmosphere_mass_content_of_water_vapor
+  long_name: Water Vapor Path
+  realm: atmos
+  aggregation: i
+
+snw:
+  units: kg m-2
+  standard_name: surface_snow_amount
+  long_name: Surface Snow Amount
+  realm: atmos
+  aggregation: i
+
+snd:
+  units: m
+  standard_name: surface_snow_thickness
+  long_name: Snow Depth
+  realm: atmos
+  aggregation: i
+
+mrros:
+  units: kg m-2 s-1
+  standard_name: surface_runoff_flux
+  long_name: Surface Runoff
+  realm: atmos
+  aggregation: a
+
+mrro:
+  units: kg m-2 s-1
+  standard_name: runoff_flux
+  long_name: Total Runoff
+  realm: atmos
+  aggregation: a
+
+hfss:
+  units: W m-2
+  standard_name: surface_upward_sensible_heat_flux
+  long_name: Surface Upward Sensible Heat Flux
+  realm: atmos
+  aggregation: a
+
+zmla:
+  units: m
+  standard_name: atmosphere_boundary_layer_thickness
+  long_name: Height of Boundary Layer
+  realm: atmos
+  aggregation: i
+
+rsdt:
+  units: W m-2
+  standard_name: toa_incoming_shortwave_flux
+  long_name: TOA Incident Shortwave Radiation
+  realm: atmos
+  aggregation: a
+
+prhmax:
+  units: kg m-2 s-1
+  standard_name: precipitation_flux
+  long_name: Daily Maximum Hourly Precipitation Rate
+  realm: atmos
+  aggregation:
+
+sfcWindmax:
+  units: m s-1
+  standard_name: wind_speed
+  long_name: Daily Maximum Near-Surface Wind Speed
+  realm: atmos
+  aggregation:
+
+
+#################################
+## Atmosphere Tier 2 Variables ##
+#################################
+
+evspsblpot:
+  units: kg m-2 s-1
+  standard_name: water_potential_evaporation_flux
+  long_name: Potential Evapotranspiration
+  realm: atmos
+  aggregation: a

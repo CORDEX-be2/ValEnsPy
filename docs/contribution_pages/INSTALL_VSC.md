@@ -57,10 +57,18 @@ git clone git@github.com:CORDEX-be2/ValEnsPy.git
 
 2. Create a conda environment and install the required packages.
 
+First specify the location that you want to install the conda environment. The default location is in the home directory, which is often limited in size. 
+We recommend installing the conda environment in the project scratch directory.
+
+```bash
+mkdir -p conda_envs
+conda config --add envs_dirs /dodrio/scratch/projects/2022_200/project_output/__INSTITUTE__/__VSC_USERNAME__/conda_envs
+```
+
 First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).
 
 ```bash
-conda create -p ./valenspy_dev python==3.9 poetry
+conda create -n valenspy_dev -c conda-forge python==3.9 poetry=1.8
 source activate valenspy_dev
 ```
 > [!NOTE]

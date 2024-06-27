@@ -14,14 +14,5 @@ cf\_checks
    .. autosummary::
       :toctree:
 
+      cf_status
       is_cf_compliant
-
-
-
-
-
-
-
-
-
-
