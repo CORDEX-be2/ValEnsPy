@@ -9,7 +9,7 @@ class Diagnostic:
     """An abstract class representing a diagnostic."""
 
     def __init__(
-        self, diagnostic_function, visualization_function, name=None, description=None
+        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Diagnostic.
 
@@ -17,7 +17,7 @@ class Diagnostic:
         ----------
         diagnostic_function
             The function that applies a diagnostic to the data.
-        visualization_function
+        plotting_function
             The function that visualizes the results of the diagnostic.
         name : str
             The name of the diagnostic.
@@ -27,7 +27,7 @@ class Diagnostic:
         self.name = name
         self._description = description
         self.diagnostic_function = diagnostic_function
-        self.visualization_function = visualization_function
+        self.plotting_function = plotting_function
 
     @abstractmethod
     def apply(self, data):
@@ -45,8 +45,8 @@ class Diagnostic:
         """
         pass
 
-    def visualize(self, result, ax=None, **kwargs):
-        """Visualize the diagnostic.
+    def plot(self, result, ax=None, **kwargs):
+        """Plot the diagnostic.
 
         Parameters
         ----------
@@ -61,24 +61,24 @@ class Diagnostic:
         if ax is None:
             ax = plt.gca()
         if isinstance(result, tuple):
-            ax = self.visualization_function(*result, ax=ax, **kwargs)
+            ax = self.plotting_function(*result, ax=ax, **kwargs)
         else:
-            ax = self.visualization_function(result, ax=ax, **kwargs)
+            ax = self.plotting_function(result, ax=ax, **kwargs)
         return ax
 
     @property
     def description(self):
         """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
-        return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.visualization_function.__name__}\n {self.visualization_function.__doc__}"
+        return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
 
 class Model2Self(Diagnostic):
     """A class representing a diagnostic that compares a model to itself."""
 
     def __init__(
-        self, diagnostic_function, visualization_function, name=None, description=None
+        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Model2Self diagnostic."""
-        super().__init__(diagnostic_function, visualization_function, name, description)
+        super().__init__(diagnostic_function, plotting_function, name, description)
     
     def apply(self, data: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data.
@@ -99,10 +99,10 @@ class Model2Ref(Diagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
 
     def __init__(
-        self, diagnostic_function, visualization_function, name=None, description=None
+        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Model2Ref diagnostic."""
-        super().__init__(diagnostic_function, visualization_function, name, description)
+        super().__init__(diagnostic_function, plotting_function, name, description)
 
     def apply(self, data: xr.Dataset, ref: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data.
@@ -126,10 +126,10 @@ class Ensemble2Ref(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
 
     def __init__(
-        self, diagnostic_function, visualization_function, name=None, description=None
+        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Ensemble2Ref diagnostic."""
-        super().__init__(diagnostic_function, visualization_function, name, description)
+        super().__init__(diagnostic_function, plotting_function, name, description)
 
     def apply(self, data: xr.Dataset, ref: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data.
@@ -148,13 +148,13 @@ class Ensemble2Ref(Diagnostic):
         """
         return self.diagnostic_function(data, ref, **kwargs)
 
-    def visualize(self, result, axes=None, facetted=True, **kwargs):
-        """Visualize the diagnostic.
+    def plot(self, result, axes=None, facetted=True, **kwargs):
+        """Plot the diagnostic.
 
         Parameters
         ----------
         data : xr.Dataset
-            The data to visualize.
+            The data to plot.
         ref : xr.Dataset
             The reference data to compare the data to.
 
@@ -168,7 +168,7 @@ class Ensemble2Ref(Diagnostic):
                 fig, axes = plt.subplots(1, len(result), figsize=(5 * len(result), 5))
             else:
                 ax = plt.gca()
-        return self.visualization_function(
+        return self.plotting_function(
             result, axes=axes, facetted=facetted, **kwargs
         )
 
@@ -201,23 +201,23 @@ class Ensemble2Ref(Diagnostic):
                     )
             return ensemble_results
 
-        def visualization_function(results, axes, facetted=facetted, **kwargs):
+        def plotting_function(results, axes, facetted=facetted, **kwargs):
             if facetted:
                 for path, result, ax in zip(
                     results.keys(), results.values(), axes.flatten()
                 ):
-                    model2ref.visualize(result, ax=ax, **kwargs)
+                    model2ref.plot(result, ax=ax, **kwargs)
                     ax.set_title(path.replace("/", " "))
             else:
                 for path, result in results.items():
-                    model2ref.visualize(
+                    model2ref.plot(
                         result, ax=axes, label=f'{path.replace("/", " ")}', **kwargs
                     )
             return axes
 
         return Ensemble2Ref(
             diagnostic_function,
-            visualization_function,
+            plotting_function,
             model2ref.name,
             model2ref.description,
         )
