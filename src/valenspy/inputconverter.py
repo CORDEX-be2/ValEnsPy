@@ -6,6 +6,7 @@ from valenspy.inputconverter_functions import (
     ERA5_to_CF,
     ERA5Land_to_CF,
     CLIMATE_GRID_to_CF,
+    CCLM_to_CF
 )
 
 
@@ -52,7 +53,8 @@ INPUT_CONVERTORS = {
     "ERA5-Land": InputConverter(ERA5Land_to_CF),
     "EOBS": InputConverter(EOBS_to_CF),
     "CLIMATE_GRID": InputConverter(CLIMATE_GRID_to_CF),
-}
+    "CCLM": InputConverter(CCLM_to_CF)
+    }
 
 # Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.
 
@@ -60,6 +62,3 @@ INPUT_CONVERTORS = {
 #  - Some helper functions to extend input to glob arguments, str arguments etc.
 #  - Extend input so that already loaded datasets can also be input
 #  - CF Checker functionality
-
-# To be discussed -> Do we expect inputconvertor function to work at the file level? Or should they be able to manage a collection of files?
-# If file level the InputConverter can seperately provide them to the function and handel concetanating/joining these.
