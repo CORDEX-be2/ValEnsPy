@@ -1,6 +1,11 @@
 name: Build and deploy documentation
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - documentation
 
 jobs:
 #---- Deploy documentation MAIN-----#
