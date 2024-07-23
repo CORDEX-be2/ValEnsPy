@@ -4,9 +4,6 @@ on:
    push:
    pull_request:
       types: [opened]
-   issue_comment:
-      types: ['created']
-
 
 jobs:
 #--- Build the package and save as artifacts----
