@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 # Model2Self diagnostic functions #
 ###################################
 
-def plot_daily_cycle(data: xr.DataArray, ax, **kwargs):
+def plot_diurnal_cycle(data: xr.DataArray, ax, **kwargs):
     """Plot the daily cycle of the data."""
     data.plot(ax=ax, **kwargs)
     ax.set_title("Daily Cycle")

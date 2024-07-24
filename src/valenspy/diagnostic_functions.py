@@ -4,18 +4,18 @@ import xarray as xr
 # Model2Self diagnostic functions #
 ###################################
 
-def daily_cycle(data: xr.Dataset):
-    """Calculate the daily cycle of the data. If lat and lon are present, the daily cycle is averaged over the spatial dimensions lat and lon.
+def diurnal_cycle(data: xr.Dataset):
+    """Calculate the diurnal cycle of the data. If lat and lon are present, the diurnal cycle is averaged over the spatial dimensions lat and lon.
 
     Parameters
     ----------
     data : DataTree
-        The data to calculate the daily cycle of.
+        The data to calculate the diurnal cycle of.
 
     Returns
     -------
     Dataset
-        The daily cycle of the data.
+        The diurnal cycle of the data.
     """
     data = _average_over_dims(data, ["lat", "lon"])
     
@@ -79,13 +79,13 @@ def temporal_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
     """
     return bias(_average_over_dims(data, ["lat", "lon"]), _average_over_dims(ref, ["lat", "lon"]), relative=relative)
 
-def daily_cycle_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
-    """Calculate the daily cycle bias of the data compared to the reference. If lat and lon are present, the daily cycle is averaged over the spatial dimensions lat and lon.
+def diurnal_cycle_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
+    """Calculate the diurnal cycle bias of the data compared to the reference. If lat and lon are present, the diurnal cycle is averaged over the spatial dimensions lat and lon.
 
     Parameters
     ----------
     data : DataTree
-        The data to calculate the daily cycle bias of.
+        The data to calculate the diurnal cycle bias of.
     ref : xr.Dataset
         The reference data to compare the data to.
     relative : bool, optional
@@ -94,7 +94,7 @@ def daily_cycle_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
     Returns
     -------
     Dataset
-        The daily cycle bias of the data compared to the reference.
+        The diurnal cycle bias of the data compared to the reference.
     """
     data = _average_over_dims(data, ["lat", "lon"])
     ref = _average_over_dims(ref, ["lat", "lon"])
