@@ -1,6 +1,4 @@
-from yaml import safe_load
 from pathlib import Path
-from itertools import permutations
 import xarray as xr
 from datatree import DataTree
 import re
@@ -183,10 +181,8 @@ class InputManager:
         else:
             dataset_name_lookup = dataset_name
 
-        with open(
-            src_path / "ancilliary_data" / f"{dataset_name_lookup}_lookup.yml"
-        ) as file:
-            obs_LOOKUP = safe_load(file)
+        obs_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
+
         dataset_path = Path(self.dataset_paths[dataset_name])
         file_paths = []
         variables = (

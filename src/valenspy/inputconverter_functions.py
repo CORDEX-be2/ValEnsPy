@@ -1,6 +1,5 @@
 from pathlib import Path
 import xarray as xr
-from yaml import safe_load
 from valenspy.cf_checks import is_cf_compliant, cf_status
 from valenspy._utilities import load_yml
 
@@ -239,7 +238,7 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
 
     obsdata_name = "ERA5-Land"
 
-    obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
+    obs_LOOKUP = load_yml(f"ERA5_lookup")
 
     # make observation CF compliant
     for var_obs in ds.data_vars:

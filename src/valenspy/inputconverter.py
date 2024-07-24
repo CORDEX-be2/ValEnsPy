@@ -37,7 +37,7 @@ class InputConverter:
         xarray.Dataset
             An xarray dataset in CF convention.
         """
-        ds = load_xarray_from_data_sources(inputs)
+        ds = load_xarray_from_data_sources(data_sources)
         return self.converter(ds, metadata_info)
 
 

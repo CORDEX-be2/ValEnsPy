@@ -1,6 +1,5 @@
 # Create functionality which checks if the an xarray dataset is a ValEnsPy CF compliant dataset
 import xarray as xr
-from yaml import safe_load
 from typing import Union, List
 from valenspy._utilities import load_yml, load_xarray_from_data_sources
 from pathlib import Path
