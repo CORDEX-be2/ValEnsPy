@@ -5,16 +5,19 @@ import matplotlib.pyplot as plt
 # Model2Self diagnostic functions #
 ###################################
 
+
 def plot_diurnal_cycle(data: xr.DataArray, ax, **kwargs):
     """Plot the daily cycle of the data."""
     data.plot(ax=ax, **kwargs)
     ax.set_title("Daily Cycle")
     return ax
 
+
 def plot_time_series(data: xr.DataArray, ax, **kwargs):
     data.plot(ax=ax, **kwargs)
     ax.set_title("Time Series")
     return ax
+
 
 ##################################
 # Model2Ref diagnostic visuals   #

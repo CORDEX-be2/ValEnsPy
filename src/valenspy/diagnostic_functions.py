@@ -4,6 +4,7 @@ import xarray as xr
 # Model2Self diagnostic functions #
 ###################################
 
+
 def diurnal_cycle(data: xr.Dataset):
     """Calculate the diurnal cycle of the data. If lat and lon are present, the diurnal cycle is averaged over the spatial dimensions lat and lon.
 
@@ -18,8 +19,9 @@ def diurnal_cycle(data: xr.Dataset):
         The diurnal cycle of the data.
     """
     data = _average_over_dims(data, ["lat", "lon"])
-    
+
     return data.groupby("time.hour").mean("time")
+
 
 def time_series_spatial_mean(data: xr.Dataset):
     """Calculate the time series of the spatial mean of the data.
@@ -35,6 +37,7 @@ def time_series_spatial_mean(data: xr.Dataset):
         The time series of the spatial mean of the data.
     """
     return _average_over_dims(data, ["lat", "lon"])
+
 
 ##################################
 # Model2Ref diagnostic functions #
@@ -58,7 +61,12 @@ def spatial_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
     Dataset
         The spatial bias of the data compared to the reference.
     """
-    return bias(_average_over_dims(data, "time"), _average_over_dims(ref, "time"), relative=relative)
+    return bias(
+        _average_over_dims(data, "time"),
+        _average_over_dims(ref, "time"),
+        relative=relative,
+    )
+
 
 def temporal_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
     """Calculate the temporal bias of the data compared to the reference. Spatial dimensions are averaged over.
@@ -77,7 +85,12 @@ def temporal_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
     Dataset
         The temporal bias of the data compared to the reference.
     """
-    return bias(_average_over_dims(data, ["lat", "lon"]), _average_over_dims(ref, ["lat", "lon"]), relative=relative)
+    return bias(
+        _average_over_dims(data, ["lat", "lon"]),
+        _average_over_dims(ref, ["lat", "lon"]),
+        relative=relative,
+    )
+
 
 def diurnal_cycle_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
     """Calculate the diurnal cycle bias of the data compared to the reference. If lat and lon are present, the diurnal cycle is averaged over the spatial dimensions lat and lon.
@@ -98,12 +111,16 @@ def diurnal_cycle_bias(data: xr.Dataset, ref: xr.Dataset, relative=False):
     """
     data = _average_over_dims(data, ["lat", "lon"])
     ref = _average_over_dims(ref, ["lat", "lon"])
-    
-    return data.groupby("time.hour").mean("time") - ref.groupby("time.hour").mean("time")
+
+    return data.groupby("time.hour").mean("time") - ref.groupby("time.hour").mean(
+        "time"
+    )
+
 
 ##################################
 ####### Helper functions #########
 ##################################
+
 
 def _average_over_dims(data: xr.Dataset, dims):
     """Calculate the average over the specified dimensions if they are present in the data. Otherwise, return the data as is.
@@ -125,6 +142,7 @@ def _average_over_dims(data: xr.Dataset, dims):
     if all(dim not in data.dims for dim in dims):
         return data
     return data.mean([dim for dim in dims if dim in data.dims], keep_attrs=True)
+
 
 ##################################
 ########### Metrics ##############

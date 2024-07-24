@@ -71,6 +71,7 @@ class Diagnostic:
         """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
         return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
 
+
 class Model2Self(Diagnostic):
     """A class representing a diagnostic that compares a model to itself."""
 
@@ -79,7 +80,7 @@ class Model2Self(Diagnostic):
     ):
         """Initialize the Model2Self diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
-    
+
     def apply(self, data: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data.
 
@@ -94,6 +95,7 @@ class Model2Self(Diagnostic):
             The data after applying the diagnostic.
         """
         return self.diagnostic_function(data, **kwargs)
+
 
 class Model2Ref(Diagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
@@ -168,9 +170,7 @@ class Ensemble2Ref(Diagnostic):
                 fig, axes = plt.subplots(1, len(result), figsize=(5 * len(result), 5))
             else:
                 ax = plt.gca()
-        return self.plotting_function(
-            result, axes=axes, facetted=facetted, **kwargs
-        )
+        return self.plotting_function(result, axes=axes, facetted=facetted, **kwargs)
 
     @classmethod
     def from_model2ref(cls, model2ref: Model2Ref, facetted=True):
@@ -222,17 +222,50 @@ class Ensemble2Ref(Diagnostic):
             model2ref.description,
         )
 
+
 # =============================================================================
 # Pre-made diagnostics
 # =============================================================================
 
-from valenspy.diagnostic_functions import diurnal_cycle, spatial_bias, time_series_spatial_mean, temporal_bias, diurnal_cycle_bias
-from valenspy.diagnostic_visualizations import plot_diurnal_cycle, plot_spatial_bias, plot_time_series
+from valenspy.diagnostic_functions import (
+    diurnal_cycle,
+    spatial_bias,
+    time_series_spatial_mean,
+    temporal_bias,
+    diurnal_cycle_bias,
+)
+from valenspy.diagnostic_visualizations import (
+    plot_diurnal_cycle,
+    plot_spatial_bias,
+    plot_time_series,
+)
 
-#Model2Self diagnostics
-DiurnalCycle = Model2Self(diurnal_cycle, plot_diurnal_cycle, "Daily Cycle", "The diurnal cycle of the data.")
-TimeSeriesSpatialMean = Model2Self(time_series_spatial_mean, plot_time_series, "Time Series Spatial Mean", "The time series of the spatial mean of the data.")
-#Model2Ref diagnostics
-SpatialBias = Model2Ref(spatial_bias, plot_spatial_bias, "Spatial Bias", "The spatial bias of the data compared to the reference.")
-TemporalBias = Model2Ref(temporal_bias, plot_time_series, "Temporal Bias", "The temporal bias of the data compared to the reference.")
-DiurnalCycleBias = Model2Ref(diurnal_cycle_bias, plot_diurnal_cycle, "Daily Cycle Bias", "The diurnal cycle bias of the data compared to the reference.")
+# Model2Self diagnostics
+DiurnalCycle = Model2Self(
+    diurnal_cycle, plot_diurnal_cycle, "Daily Cycle", "The diurnal cycle of the data."
+)
+TimeSeriesSpatialMean = Model2Self(
+    time_series_spatial_mean,
+    plot_time_series,
+    "Time Series Spatial Mean",
+    "The time series of the spatial mean of the data.",
+)
+# Model2Ref diagnostics
+SpatialBias = Model2Ref(
+    spatial_bias,
+    plot_spatial_bias,
+    "Spatial Bias",
+    "The spatial bias of the data compared to the reference.",
+)
+TemporalBias = Model2Ref(
+    temporal_bias,
+    plot_time_series,
+    "Temporal Bias",
+    "The temporal bias of the data compared to the reference.",
+)
+DiurnalCycleBias = Model2Ref(
+    diurnal_cycle_bias,
+    plot_diurnal_cycle,
+    "Daily Cycle Bias",
+    "The diurnal cycle bias of the data compared to the reference.",
+)
