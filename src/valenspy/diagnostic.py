@@ -227,18 +227,8 @@ class Ensemble2Ref(Diagnostic):
 # Pre-made diagnostics
 # =============================================================================
 
-from valenspy.diagnostic_functions import (
-    diurnal_cycle,
-    spatial_bias,
-    time_series_spatial_mean,
-    temporal_bias,
-    diurnal_cycle_bias,
-)
-from valenspy.diagnostic_visualizations import (
-    plot_diurnal_cycle,
-    plot_spatial_bias,
-    plot_time_series,
-)
+from valenspy.diagnostic_functions import *
+from valenspy.diagnostic_visualizations import *
 
 # Model2Self diagnostics
 DiurnalCycle = Model2Self(
