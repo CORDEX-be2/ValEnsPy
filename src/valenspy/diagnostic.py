@@ -36,7 +36,7 @@ class Diagnostic:
         Parameters
         ----------
         data
-            The data to apply the diagnostic to.
+            The data to apply the diagnostic to. Data can be an xarray DataTree, Dataset or DataArray.
 
         Returns
         -------
@@ -81,12 +81,12 @@ class Model2Self(Diagnostic):
         """Initialize the Model2Self diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
 
-    def apply(self, data: xr.Dataset, **kwargs):
+    def apply(self, ds: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
         ----------
-        data : xr.Dataset
+        ds : xr.Dataset
             The data to apply the diagnostic to.
 
         Returns
@@ -94,7 +94,7 @@ class Model2Self(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
-        return self.diagnostic_function(data, **kwargs)
+        return self.diagnostic_function(ds, **kwargs)
 
 
 class Model2Ref(Diagnostic):
@@ -106,12 +106,12 @@ class Model2Ref(Diagnostic):
         """Initialize the Model2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
 
-    def apply(self, data: xr.Dataset, ref: xr.Dataset, **kwargs):
+    def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
         ----------
-        data : xr.Dataset
+        ds : xr.Dataset
             The data to apply the diagnostic to.
         ref : xr.Dataset
             The reference data to compare the data to.
@@ -121,7 +121,7 @@ class Model2Ref(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
-        return self.diagnostic_function(data, ref, **kwargs)
+        return self.diagnostic_function(ds, ref, **kwargs)
 
 
 class Ensemble2Ref(Diagnostic):
@@ -133,22 +133,22 @@ class Ensemble2Ref(Diagnostic):
         """Initialize the Ensemble2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
 
-    def apply(self, data: xr.Dataset, ref: xr.Dataset, **kwargs):
+    def apply(self, dt: DataTree, ref, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
         ----------
-        data : xr.Dataset
+        dt : DataTree
             The data to apply the diagnostic to.
-        ref : xr.DataArray
+        ref : xr.DataSet or DataTree
             The reference data to compare the data to.
 
         Returns
         -------
-        xr.Dataset
-            The data after applying the diagnostic.
+        DataTree or dict
+            The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
-        return self.diagnostic_function(data, ref, **kwargs)
+        return self.diagnostic_function(dt, ref, **kwargs)
 
     def plot(self, result, axes=None, facetted=True, **kwargs):
         """Plot the diagnostic.
