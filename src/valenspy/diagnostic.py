@@ -36,7 +36,7 @@ class Diagnostic:
         Parameters
         ----------
         data
-            The data to apply the diagnostic to.
+            The data to apply the diagnostic to. Data can be an xarray DataTree, Dataset or DataArray.
 
         Returns
         -------
@@ -71,6 +71,7 @@ class Diagnostic:
         """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
         return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
 
+
 class Model2Self(Diagnostic):
     """A class representing a diagnostic that compares a model to itself."""
 
@@ -79,13 +80,13 @@ class Model2Self(Diagnostic):
     ):
         """Initialize the Model2Self diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
-    
-    def apply(self, data: xr.Dataset, **kwargs):
+
+    def apply(self, ds: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
         ----------
-        data : xr.Dataset
+        ds : xr.Dataset
             The data to apply the diagnostic to.
 
         Returns
@@ -93,7 +94,8 @@ class Model2Self(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
-        return self.diagnostic_function(data, **kwargs)
+        return self.diagnostic_function(ds, **kwargs)
+
 
 class Model2Ref(Diagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
@@ -104,12 +106,12 @@ class Model2Ref(Diagnostic):
         """Initialize the Model2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
 
-    def apply(self, data: xr.Dataset, ref: xr.Dataset, **kwargs):
+    def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
         ----------
-        data : xr.Dataset
+        ds : xr.Dataset
             The data to apply the diagnostic to.
         ref : xr.Dataset
             The reference data to compare the data to.
@@ -119,7 +121,7 @@ class Model2Ref(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
-        return self.diagnostic_function(data, ref, **kwargs)
+        return self.diagnostic_function(ds, ref, **kwargs)
 
 
 class Ensemble2Ref(Diagnostic):
@@ -131,22 +133,22 @@ class Ensemble2Ref(Diagnostic):
         """Initialize the Ensemble2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
 
-    def apply(self, data: xr.Dataset, ref: xr.Dataset, **kwargs):
+    def apply(self, dt: DataTree, ref, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
         ----------
-        data : xr.Dataset
+        dt : DataTree
             The data to apply the diagnostic to.
-        ref : xr.DataArray
+        ref : xr.DataSet or DataTree
             The reference data to compare the data to.
 
         Returns
         -------
-        xr.Dataset
-            The data after applying the diagnostic.
+        DataTree or dict
+            The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
-        return self.diagnostic_function(data, ref, **kwargs)
+        return self.diagnostic_function(dt, ref, **kwargs)
 
     def plot(self, result, axes=None, facetted=True, **kwargs):
         """Plot the diagnostic.
@@ -168,9 +170,7 @@ class Ensemble2Ref(Diagnostic):
                 fig, axes = plt.subplots(1, len(result), figsize=(5 * len(result), 5))
             else:
                 ax = plt.gca()
-        return self.plotting_function(
-            result, axes=axes, facetted=facetted, **kwargs
-        )
+        return self.plotting_function(result, axes=axes, facetted=facetted, **kwargs)
 
     @classmethod
     def from_model2ref(cls, model2ref: Model2Ref, facetted=True):
@@ -222,17 +222,40 @@ class Ensemble2Ref(Diagnostic):
             model2ref.description,
         )
 
+
 # =============================================================================
 # Pre-made diagnostics
 # =============================================================================
 
-from valenspy.diagnostic_functions import daily_cycle, spatial_bias, time_series_spatial_mean, temporal_bias, daily_cycle_bias
-from valenspy.diagnostic_visualizations import plot_daily_cycle, plot_spatial_bias, plot_time_series
+from valenspy.diagnostic_functions import *
+from valenspy.diagnostic_visualizations import *
 
-#Model2Self diagnostics
-vp_DailyCycle = Model2Self(daily_cycle, plot_daily_cycle, "Daily Cycle", "The daily cycle of the data.")
-vp_TimeSeriesSpatialMean = Model2Self(time_series_spatial_mean, plot_time_series, "Time Series Spatial Mean", "The time series of the spatial mean of the data.")
-#Model2Ref diagnostics
-vp_SpatialBias = Model2Ref(spatial_bias, plot_spatial_bias, "Spatial Bias", "The spatial bias of the data compared to the reference.")
-vp_TemporalBias = Model2Ref(temporal_bias, plot_time_series, "Temporal Bias", "The temporal bias of the data compared to the reference.")
-vp_DailyCycleBias = Model2Ref(daily_cycle_bias, plot_daily_cycle, "Daily Cycle Bias", "The daily cycle bias of the data compared to the reference.")
+# Model2Self diagnostics
+DiurnalCycle = Model2Self(
+    diurnal_cycle, plot_diurnal_cycle, "Daily Cycle", "The diurnal cycle of the data."
+)
+TimeSeriesSpatialMean = Model2Self(
+    time_series_spatial_mean,
+    plot_time_series,
+    "Time Series Spatial Mean",
+    "The time series of the spatial mean of the data.",
+)
+# Model2Ref diagnostics
+SpatialBias = Model2Ref(
+    spatial_bias,
+    plot_spatial_bias,
+    "Spatial Bias",
+    "The spatial bias of the data compared to the reference.",
+)
+TemporalBias = Model2Ref(
+    temporal_bias,
+    plot_time_series,
+    "Temporal Bias",
+    "The temporal bias of the data compared to the reference.",
+)
+DiurnalCycleBias = Model2Ref(
+    diurnal_cycle_bias,
+    plot_diurnal_cycle,
+    "Daily Cycle Bias",
+    "The diurnal cycle bias of the data compared to the reference.",
+)

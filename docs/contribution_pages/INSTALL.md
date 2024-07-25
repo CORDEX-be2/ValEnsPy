@@ -31,7 +31,7 @@ git clone git@github.com:CORDEX-be2/ValEnsPy.git
 
 2. Create a conda environment and install the required packages.
 
-You can specify the location that you want to install the conda environment. The default location is in the home directory, which is often limited in size. 
+You can specify the location that you want to install the conda environment. The default location is in the home directory, which is often limited in size.
 ```bash
 conda config --add envs_dirs /path/to/your/envs
 ```
