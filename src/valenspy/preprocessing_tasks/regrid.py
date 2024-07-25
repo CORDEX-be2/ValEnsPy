@@ -1,5 +1,6 @@
 import cdo
 import xarray as xr
+import cf_xarray
 
 def remap_cdo(target_grid, ds, remap_method="bil", output_path=None):
     """Remap the input dataset to the target grid using CDO.
@@ -25,6 +26,9 @@ def remap_cdo(target_grid, ds, remap_method="bil", output_path=None):
     if remap_method == "bil":
         remap = cdo.Cdo().remapbil(target_grid, input=ds, returnXDataset=True)
     elif remap_method == "con":
+        # for conservative remapping, lat_bounds and lon_bounds are required. Check whether these are present and if not add these. 
+        if not ("lat_bounds" in ds.variables and "lon_bounds" in ds.variables): 
+            ds = ds.cf.add_bounds(('lat','lon'))
         remap = cdo.Cdo().remapcon(target_grid, input=ds, returnXDataset=True)
     elif remap_method == "dis":
         remap = cdo.Cdo().remapdis(target_grid, input=ds, returnXDataset=True)
