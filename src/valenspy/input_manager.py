@@ -101,8 +101,8 @@ class InputManager:
             The name of the dataset to load. This should be in the dataset_PATHS.yml file for the specified machine.
         variables : list, optional
             The variables to load. The default is ["tas"]. These should be CORDEX variables defined in CORDEX_variables.yml.
-        period : list, optional
-            The period to load start and end dates. The default is None.
+        period : list or an int, optional
+            The period to load. If a list, the start and end years of the period. For a single year both an int and a list with one element are valid. The default is None.
         freq : str, optional
             The frequency of the data. The default is None.
         region : str, optional
@@ -133,6 +133,12 @@ class InputManager:
         >>> # Get all ERA5 tas (temperature at 2m) at a daily frequency for the years 2000 and 2001. The paths must include "max".
         >>> ds = manager.load_data("ERA5", variables=["tas"], period=[2000,2001], path_identifiers=["max"])
         """
+        if isinstance(period, list):
+            if len(period) > 2:
+                raise ValueError("Period must be a list at most 2 elements or an int.")
+            if len(period) == 1:
+                period = int(period[0])
+
         if self._is_valid_dataset_name(dataset_name):
             files = self._get_file_paths(
                 dataset_name,
@@ -194,7 +200,10 @@ class InputManager:
             var_regex = f"({obs_long_name}|{obs_name}_|{variable}_)"
             components = [var_regex] + path_identifiers
             if period:
-                year_regex = f"({'|'.join([str(year) for year in range(period[0], period[1]+1)])})"
+                if isinstance(period, int):
+                    year_regex = f"({period})"
+                else:
+                    year_regex = f"({'|'.join([str(year) for year in range(period[0], period[1]+1)])})"
                 components.append(year_regex)
             if freq:
                 components.append(freq)
