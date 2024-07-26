@@ -1,4 +1,5 @@
 import xarray as xr
+from functools import wraps
 
 ###################################
 # Model2Self diagnostic functions #
@@ -124,19 +125,19 @@ def diurnal_cycle_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
 ##################################
 
 
-def _average_over_dims(ds: xr.Dataset, dims):
+def _average_over_dims(da: xr.DataArray, dims):
     """Calculate the average over the specified dimensions if they are present in the data. Otherwise, return the data as is.
 
     Parameters
     ----------
-    ds : xr.Dataset
+    ds : xr.DataArray
         The data to calculate the spatial average of.
     dims : list or str
         The dimension(s) to average over.
 
     Returns
     -------
-    xr.Dataset
+    xr.DataArray
         The data with the specified dimensions averaged over.
     """
     if isinstance(dims, str):
@@ -172,3 +173,36 @@ def bias(da: xr.DataArray, ref: xr.DataArray, calc_relative=False):
         return (da - ref) / ref
     else:
         return da - ref
+
+######################################
+############## Wrappers ##############
+######################################
+
+def requires_variables(variables):
+    """
+    A decorator that checks if the required variables are present in the dataset before applying the diagnostic.
+    The required variables are specified as a list of strings. Only if all the required variables are present the diagnostic is applied.
+    Note that this is a minimum requirement, the ds may contain more variables than the required ones.
+    
+
+    Parameters
+    ----------
+    variables : str or list of str
+        The variable(s) required to apply the diagnostic.
+
+    Example
+    -----
+    @requires_variables(["tas", "pr"])
+    def my_diagnostic(ds: xr.Dataset):
+        return ds.tas + ds.pr
+    """
+    def decorator(diagnostic_function):
+        @wraps(diagnostic_function)
+        def wrapper(ds, *args, **kwargs):
+            if isinstance(variables, str):
+                variables = [variables]
+            if not all(var in ds for var in variables):
+                raise ValueError(f"Variables {variables} are required to apply the diagnostic.")
+            return diagnostic_function(ds, *args, **kwargs)
+        return wrapper
+    return decorator
