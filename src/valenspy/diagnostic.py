@@ -86,12 +86,12 @@ class Model2Self(Diagnostic):
 
         Parameters
         ----------
-        ds : xr.Dataset
+        ds : xr.Dataset or xr.DataArray
             The data to apply the diagnostic to.
 
         Returns
         -------
-        xr.Dataset
+        xr.Dataset or xr.DataArray
             The data after applying the diagnostic.
         """
         return self.diagnostic_function(ds, **kwargs)
@@ -111,14 +111,14 @@ class Model2Ref(Diagnostic):
 
         Parameters
         ----------
-        ds : xr.Dataset
+        ds : xr.Dataset or xr.DataArray
             The data to apply the diagnostic to.
-        ref : xr.Dataset
+        ref : xr.Dataset or xr.DataArray
             The reference data to compare the data to.
 
         Returns
         -------
-        xr.Dataset
+        xr.Dataset or xr.DataArray
             The data after applying the diagnostic.
         """
         ds, ref = _select_common_vars(ds, ref)
@@ -157,9 +157,9 @@ class Ensemble2Ref(Diagnostic):
 
         Parameters
         ----------
-        data : xr.Dataset
+        data : xr.Dataset or xr.DataArray
             The data to plot.
-        ref : xr.Dataset
+        ref : xr.Dataset or xr.DataArray
             The reference data to compare the data to.
 
         Returns

@@ -11,12 +11,12 @@ def diurnal_cycle(ds: xr.Dataset):
 
     Parameters
     ----------
-    ds : xr.Dataset
+    ds : xr.Dataset or xr.DataArray
         The data to calculate the diurnal cycle of.
 
     Returns
     -------
-    xr.Dataset
+    xr.Dataset or xr.DataArray
         The diurnal cycle of the data.
     """
     ds = _average_over_dims(ds, ["lat", "lon"])
@@ -29,12 +29,12 @@ def time_series_spatial_mean(ds: xr.Dataset):
 
     Parameters
     ----------
-    ds : xr.Dataset
+    ds : xr.Dataset or xr.DataArray
         The data to calculate the time series of the spatial mean of.
 
     Returns
     -------
-    xr.Dataset
+    xr.Dataset or xr.DataArray
         The time series of the spatial mean of the data.
     """
     return _average_over_dims(ds, ["lat", "lon"])
@@ -50,16 +50,16 @@ def spatial_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
 
     Parameters
     ----------
-    ds : xr.Dataset
+    ds : xr.Dataset or xr.DataArray
         The data to calculate the spatial bias of.
-    ref : xr.Dataset
+    ref : xr.Dataset or xr.DataArray
         The reference data to compare the data to.
     calc_relative : bool, optional
         If True, return the relative bias, if False return the absolute bias, by default False
 
     Returns
     -------
-    xr.Dataset
+    xr.Dataset or xr.DataArray
         The spatial bias of the data compared to the reference.
     """
     return bias(
@@ -74,16 +74,16 @@ def temporal_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
 
     Parameters
     ----------
-    ds : xr.Dataset
+    ds : xr.Dataset or xr.DataArray
         The data to calculate the temporal bias of.
-    ref : xr.Dataset
+    ref : xr.Dataset or xr.DataArray
         The reference data to compare the data to.
     calc_relative : bool, optional
         If True, return the relative bias, if False return the absolute bias, by default False
 
     Returns
     -------
-    xr.Dataset
+    xr.Dataset or xr.DataArrays
         The temporal bias of the data compared to the reference.
     """
     return bias(
@@ -98,16 +98,16 @@ def diurnal_cycle_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
 
     Parameters
     ----------
-    ds : xr.Dataset
+    ds : xr.Dataset or xr.DataArray
         The data to calculate the diurnal cycle bias of.
-    ref : xr.Dataset
+    ref : xr.Dataset or xr.DataArray
         The reference data to compare the data to.
     calc_relative : bool, optional
         If True, return the calc_relative bias, by default False
 
     Returns
     -------
-    xr.Dataset
+    xr.Dataset or xr.DataArray
         The diurnal cycle bias of the data compared to the reference.
     """
     ds = _average_over_dims(ds, ["lat", "lon"])
@@ -130,14 +130,14 @@ def _average_over_dims(da: xr.DataArray, dims):
 
     Parameters
     ----------
-    ds : xr.DataArray
+    ds : xr.DataArray or xr.Dataset
         The data to calculate the spatial average of.
     dims : list or str
         The dimension(s) to average over.
 
     Returns
     -------
-    xr.DataArray
+    xr.DataArray or xr.Dataset
         The data with the specified dimensions averaged over.
     """
     if isinstance(dims, str):
@@ -157,9 +157,9 @@ def bias(da: xr.DataArray, ref: xr.DataArray, calc_relative=False):
 
     Parameters
     ----------
-    da : xr.DataArray
+    da : xr.DataArray or xr.Dataset
         The data to calculate the bias of.
-    ref : xr.DataArray
+    ref : xr.DataArray or xr.Dataset
         The reference to compare the data to.
     calc_relative : bool, optional
         If True, calculate the relative bias, if False calculate the absolute bias, by default False
