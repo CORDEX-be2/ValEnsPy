@@ -180,29 +180,40 @@ def bias(da: xr.DataArray, ref: xr.DataArray, calc_relative=False):
 
 def requires_variables(variables):
     """
-    A decorator that checks if the required variables are present in the dataset before applying the diagnostic.
+    A decorator that checks if the required variables are present in the dataset (and reference dataset if applicable) before applying the diagnostic.
     The required variables are specified as a list of strings. Only if all the required variables are present the diagnostic is applied.
-    Note that this is a minimum requirement, the ds may contain more variables than the required ones.
-    
+    Note that this is a minimum requirement, the ds may contain other variables than the required ones.    
 
     Parameters
     ----------
     variables : str or list of str
         The variable(s) required to apply the diagnostic.
 
-    Example
+    Examples
     -----
+    #The diagnostic function requires the variables 'tas' and 'pr' to be present in the dataset.
     @requires_variables(["tas", "pr"])
     def my_diagnostic(ds: xr.Dataset):
         return ds.tas + ds.pr
+
+    #This also checks if the variables are present in both the data and the reference.
+    #An error is raised if the required variables are not present in the data or the reference.
+    @requires_variables(["tas", "pr"])
+    def my_diagnostic(ds: xr.Dataset, ref: xr.Dataset):
+        return ds.tas + ref.pr
     """
     def decorator(diagnostic_function):
         @wraps(diagnostic_function)
         def wrapper(ds, *args, **kwargs):
-            if isinstance(variables, str):
-                variables = [variables]
-            if not all(var in ds for var in variables):
-                raise ValueError(f"Variables {variables} are required to apply the diagnostic.")
-            return diagnostic_function(ds, *args, **kwargs)
+            required_vars = [variables] if isinstance(variables, str) else variables
+            #Do the check for the ds
+            if not all(var in ds.variables for var in required_vars):
+                raise ValueError(f"Variables {required_vars} are required to apply the diagnostic.")
+            #Do the check for the reference if it is present, the reference is the second argument after the ds argument and should be a xr.Dataset.
+            if len(args) > 0 and isinstance(args[0], xr.Dataset):
+                ref = args[0]
+                if not all(var in ref.variables for var in required_vars):
+                    raise ValueError(f"Variables {required_vars} are required to apply the diagnostic.")
+            return diagnostic_function(*args, **kwargs)
         return wrapper
     return decorator
