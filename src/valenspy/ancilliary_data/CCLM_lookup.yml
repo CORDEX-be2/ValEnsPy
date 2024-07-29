@@ -94,6 +94,25 @@ ts:
   mod_cell_methods: 'time: point'
 
 
+prw:
+  mod_name: TQV
+  mod_standard_name: atmosphere_mass_content_of_water_vapor
+  mod_long_name: precipitable water
+  mod_units: kg m-2
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
+clivi: 
+  mod_name: TQI
+  mod_standard_name: atmosphere_mass_content_of_cloud_ice
+  mod_long_name: vertical integrated cloud ice
+  mod_units: kg m-2
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
+
+
+  
 # to add cclm variable
 
 tasmax: 
@@ -149,12 +168,7 @@ tasmin:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
-  mod_name: TQV
-  mod_standard_name: atmosphere_mass_content_of_water_vapor
-  mod_long_name: precipitable water
-  mod_units: kg m-2
-  mod_grid_mapping: rotated_pole
-  mod_cell_methods: 'time: point'
+
 
   mod_name: TQC
   mod_standard_name: atmosphere_mass_content_of_cloud_liquid_water
@@ -163,12 +177,7 @@ tasmin:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
-  mod_name: TQI
-  mod_standard_name: atmosphere_mass_content_of_cloud_ice
-  mod_long_name: vertical integrated cloud ice
-  mod_units: kg m-2
-  mod_grid_mapping: rotated_pole
-  mod_cell_methods: 'time: point'
+
 
   mod_name: TQG
   mod_standard_name: atmosphere_mass_content_of_graupel
