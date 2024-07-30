@@ -319,6 +319,23 @@ files = [
 ]
 
 [[package]]
+name = "cf-xarray"
+version = "0.9.4"
+description = "A convenience wrapper for using CF attributes on xarray objects"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "cf_xarray-0.9.4-py3-none-any.whl", hash = "sha256:9f7acf73fe14bed66680bdb135682656ea8451e1f6c59221bc31a912b62ea46a"},
+    {file = "cf_xarray-0.9.4.tar.gz", hash = "sha256:23833bce5ddffc31ec95258c82a62c848c15332696d91abbf960a4325bc6accb"},
+]
+
+[package.dependencies]
+xarray = "*"
+
+[package.extras]
+all = ["matplotlib", "pint (>=0.18,!=0.24.0)", "pooch", "regex", "rich", "shapely"]
+
+[[package]]
 name = "cffi"
 version = "1.16.0"
 description = "Foreign Function Interface for Python calling C code."
@@ -4163,4 +4180,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "52f4dbf42292a2fe40e1c361240298d0083c84af6bb1fd0b9f78affb4b213a2b"
+content-hash = "736ebd565eb6a400294a38428ac68114ccbe73960a033a6e1b3beacbb34e1350"

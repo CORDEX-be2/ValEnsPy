@@ -28,6 +28,7 @@ xarray-datatree = "^0.0.14"
 cdo = "^1.6.1"
 
 # Development group
+cf-xarray = "^0.9.4"
 [tool.poetry.group.dev]
 optional = true
 
