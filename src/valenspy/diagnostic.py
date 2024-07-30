@@ -10,7 +10,6 @@ class Diagnostic:
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None
-        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Diagnostic.
 
