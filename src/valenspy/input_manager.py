@@ -146,7 +146,7 @@ class InputManager:
                 raise ValueError("Period must be a list at most 2 elements or an int.")
             if len(period) == 1:
                 period = int(period[0])
-        
+
         if self._is_valid_dataset_name(dataset_name):
             files = self._get_file_paths(
                 dataset_name,
