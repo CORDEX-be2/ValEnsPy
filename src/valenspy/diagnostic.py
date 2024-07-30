@@ -149,7 +149,7 @@ class Ensemble2Ref(Diagnostic):
         DataTree or dict
             The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
-        #TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.
+        # TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.
         return self.diagnostic_function(dt, ref, **kwargs)
 
     def plot(self, result, axes=None, facetted=True, **kwargs):
@@ -226,9 +226,11 @@ class Ensemble2Ref(Diagnostic):
             model2ref.description,
         )
 
+
 def _common_vars(ds1, ds2):
     """Return the common variables in two datasets."""
     return set(ds1.data_vars).intersection(set(ds2.data_vars))
+
 
 def _select_common_vars(ds1, ds2):
     """Select the common variables in two datasets."""
