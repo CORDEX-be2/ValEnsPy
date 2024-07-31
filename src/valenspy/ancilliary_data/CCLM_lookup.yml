@@ -58,6 +58,7 @@ clt:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
+
 huss:
   mod_name: QV
   mod_standard_name: specific_humidity
@@ -65,6 +66,31 @@ huss:
   mod_units: kg kg-1
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
+
+cll: 
+  mod_name: CLCL
+  mod_standard_name: low_type_cloud_area_fraction
+  mod_long_name: low cloud cover
+  mod_units: '1'
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
+clm: 
+  mod_name: CLCM
+  mod_standard_name: medium_type_cloud_area_fraction
+  mod_long_name: medium cloud cover
+  mod_units: '1'
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
+clh: 
+  mod_name: CLCH
+  mod_standard_name: high_type_cloud_area_fraction
+  mod_long_name: low cloud cover
+  mod_units: '1'
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
 
 
 # doublecheck
@@ -201,12 +227,7 @@ tasmin:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: mean'
 
-  mod_name: CLCL
-  mod_standard_name: low_type_cloud_area_fraction
-  mod_long_name: low cloud cover
-  mod_units: '1'
-  mod_grid_mapping: rotated_pole
-  mod_cell_methods: 'time: point'
+
 
   mod_name: FRESHSNW
   mod_long_name: freshness of snow
