@@ -460,12 +460,10 @@ def CCLM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator?
     model_name = "CCLM"
+    src_path = Path("../src/valenspy")
 
     # open observational specific lookup dictionary
-    with open(
-        src_path / "ancilliary_data" / Path(model_name + "_lookup.yml")
-    ) as lookup_file:
-        mod_LOOKUP = safe_load(lookup_file)
+    mod_LOOKUP = load_yml(model_name + "_lookup")
 
     # make model dataset CF compliant
     for var_mod in ds.data_vars:
