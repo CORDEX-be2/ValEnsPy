@@ -196,7 +196,10 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
             if "lat" not in ds[var].coords:
                 ds = ds.rename({"latitude": "lat"})
 
-            # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
+            # bugfix ERA5 (found in clh): replace valid_time by time
+            if "time" not in ds: 
+                ds = ds.rename({'valid_time':'time'})
+            # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?            
             ds[var]["time"] = pd.to_datetime(ds[var].time)
 
             # additional attributes at data array level.
