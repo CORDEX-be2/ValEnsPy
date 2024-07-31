@@ -1,15 +1,9 @@
 from pathlib import Path
 import xarray as xr
-from yaml import safe_load
 from valenspy.cf_checks import is_cf_compliant, cf_status
+from valenspy._utilities import load_yml
 
-# get path of source code (current path)
-src_path = Path(__file__).resolve().parent
-
-# open CORDEX variable lookup dictionary
-with open(src_path / "ancilliary_data" / "CORDEX_variables.yml") as file:
-    CORDEX_VARIABLES = safe_load(file)
-
+CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
 def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
@@ -31,10 +25,7 @@ def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator?
     obsdata_name = "EOBS"
 
-    with open(
-        src_path / "ancilliary_data" / Path(obsdata_name + "_lookup.yml")
-    ) as lookup_file:
-        obs_LOOKUP = safe_load(lookup_file)
+    obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
     # make EOBS CF compliant
 
@@ -135,9 +126,7 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
 
     obsdata_name = "ERA5"
 
-    # open observational specific lookup dictionary
-    with open(src_path / "ancilliary_data" / Path("ERA5_lookup.yml")) as lookup_file:
-        obs_LOOKUP = safe_load(lookup_file)
+    obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
     # make observation CF compliant
     for var_obs in ds.data_vars:
@@ -249,9 +238,7 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
 
     obsdata_name = "ERA5-Land"
 
-    # open observational specific lookup dictionary
-    with open(src_path / "ancilliary_data" / Path("ERA5_lookup.yml")) as lookup_file:
-        obs_LOOKUP = safe_load(lookup_file)
+    obs_LOOKUP = load_yml(f"ERA5_lookup")
 
     # make observation CF compliant
     for var_obs in ds.data_vars:
@@ -365,11 +352,7 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     obsdata_name = "CLIMATE_GRID"
 
-    # open observational specific lookup dictionary
-    with open(
-        src_path / "ancilliary_data" / Path(obsdata_name + "_lookup.yml")
-    ) as lookup_file:
-        obs_LOOKUP = safe_load(lookup_file)
+    obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
     # make observation CF compliant
     for var_obs in ds.data_vars:
