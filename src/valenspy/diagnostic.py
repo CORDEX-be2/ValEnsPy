@@ -86,12 +86,12 @@ class Model2Self(Diagnostic):
 
         Parameters
         ----------
-        ds : xr.Dataset
+        ds : xr.Dataset or xr.DataArray
             The data to apply the diagnostic to.
 
         Returns
         -------
-        xr.Dataset
+        xr.Dataset or xr.DataArray
             The data after applying the diagnostic.
         """
         return self.diagnostic_function(ds, **kwargs)
@@ -107,20 +107,21 @@ class Model2Ref(Diagnostic):
         super().__init__(diagnostic_function, plotting_function, name, description)
 
     def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):
-        """Apply the diagnostic to the data.
+        """Apply the diagnostic to the data. Only the common variables between the data and the reference are used.
 
         Parameters
         ----------
-        ds : xr.Dataset
+        ds : xr.Dataset or xr.DataArray
             The data to apply the diagnostic to.
-        ref : xr.Dataset
+        ref : xr.Dataset or xr.DataArray
             The reference data to compare the data to.
 
         Returns
         -------
-        xr.Dataset
+        xr.Dataset or xr.DataArray
             The data after applying the diagnostic.
         """
+        ds, ref = _select_common_vars(ds, ref)
         return self.diagnostic_function(ds, ref, **kwargs)
 
 
@@ -148,6 +149,7 @@ class Ensemble2Ref(Diagnostic):
         DataTree or dict
             The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
+        # TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.
         return self.diagnostic_function(dt, ref, **kwargs)
 
     def plot(self, result, axes=None, facetted=True, **kwargs):
@@ -155,9 +157,9 @@ class Ensemble2Ref(Diagnostic):
 
         Parameters
         ----------
-        data : xr.Dataset
+        data : xr.Dataset or xr.DataArray
             The data to plot.
-        ref : xr.Dataset
+        ref : xr.Dataset or xr.DataArray
             The reference data to compare the data to.
 
         Returns
@@ -191,13 +193,15 @@ class Ensemble2Ref(Diagnostic):
             ensemble_results = {}
             if isinstance(ref, DataTree):
                 for data_node, ref_node in zip(dt.leaves, ref.leaves):
+                    ds, ref = _select_common_vars(data_node.ds, ref_node.ds)
                     ensemble_results[data_node.path] = model2ref.diagnostic_function(
-                        data_node.ds, ref_node.ds, **kwargs
+                        ds, ref, **kwargs
                     )
             else:
                 for data_node in dt.leaves:
+                    ds, ref = _select_common_vars(data_node.ds, ref)
                     ensemble_results[data_node.path] = model2ref.diagnostic_function(
-                        data_node.ds, ref, **kwargs
+                        ds, ref, **kwargs
                     )
             return ensemble_results
 
@@ -223,6 +227,17 @@ class Ensemble2Ref(Diagnostic):
         )
 
 
+def _common_vars(ds1, ds2):
+    """Return the common variables in two datasets."""
+    return set(ds1.data_vars).intersection(set(ds2.data_vars))
+
+
+def _select_common_vars(ds1, ds2):
+    """Select the common variables in two datasets."""
+    common_vars = _common_vars(ds1, ds2)
+    return ds1[common_vars], ds2[common_vars]
+
+
 # =============================================================================
 # Pre-made diagnostics
 # =============================================================================
@@ -232,7 +247,7 @@ from valenspy.diagnostic_visualizations import *
 
 # Model2Self diagnostics
 DiurnalCycle = Model2Self(
-    diurnal_cycle, plot_diurnal_cycle, "Daily Cycle", "The diurnal cycle of the data."
+    diurnal_cycle, plot_diurnal_cycle, "Diurnal Cycle", "The diurnal cycle of the data."
 )
 TimeSeriesSpatialMean = Model2Self(
     time_series_spatial_mean,
@@ -256,6 +271,6 @@ TemporalBias = Model2Ref(
 DiurnalCycleBias = Model2Ref(
     diurnal_cycle_bias,
     plot_diurnal_cycle,
-    "Daily Cycle Bias",
+    "Diurnal Cycle Bias",
     "The diurnal cycle bias of the data compared to the reference.",
 )
