@@ -10,7 +10,6 @@ class Diagnostic:
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None
-        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Diagnostic.
 
@@ -192,13 +191,11 @@ class Ensemble2Ref(Diagnostic):
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None
-        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Ensemble2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
         super().__init__(diagnostic_function, plotting_function, name, description)
 
-    def apply(self, dt: DataTree, ref, **kwargs):
     def apply(self, dt: DataTree, ref, **kwargs):
         """Apply the diagnostic to the data.
 
@@ -222,8 +219,6 @@ class Ensemble2Ref(Diagnostic):
 
     def plot(self, result, axes=None, facetted=True, **kwargs):
         """Plot the diagnostic.
-    def plot(self, result, axes=None, facetted=True, **kwargs):
-        """Plot the diagnostic.
 
         Parameters
         ----------
@@ -242,7 +237,6 @@ class Ensemble2Ref(Diagnostic):
                 fig, axes = plt.subplots(1, len(result), figsize=(5 * len(result), 5))
             else:
                 ax = plt.gca()
-        return self.plotting_function(result, axes=axes, facetted=facetted, **kwargs)
         return self.plotting_function(result, axes=axes, facetted=facetted, **kwargs)
 
     @classmethod
@@ -277,17 +271,14 @@ class Ensemble2Ref(Diagnostic):
             return ensemble_results
 
         def plotting_function(results, axes, facetted=facetted, **kwargs):
-        def plotting_function(results, axes, facetted=facetted, **kwargs):
             if facetted:
                 for path, result, ax in zip(
                     results.keys(), results.values(), axes.flatten()
                 ):
                     model2ref.plot(result, ax=ax, **kwargs)
-                    model2ref.plot(result, ax=ax, **kwargs)
                     ax.set_title(path.replace("/", " "))
             else:
                 for path, result in results.items():
-                    model2ref.plot(
                     model2ref.plot(
                         result, ax=axes, label=f'{path.replace("/", " ")}', **kwargs
                     )
