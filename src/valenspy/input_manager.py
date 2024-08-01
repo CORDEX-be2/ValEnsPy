@@ -1,22 +1,14 @@
-# Load the dataset_PATHS.yml
-from yaml import safe_load
 from pathlib import Path
-from itertools import permutations
 import xarray as xr
 from datatree import DataTree
 import re
 import glob
 
 from valenspy.inputconverter import INPUT_CONVERTORS
+from valenspy._utilities import load_yml
 
-src_path = Path(__file__).resolve().parent
-
-with open(src_path / "ancilliary_data" / "dataset_PATHS.yml") as file:
-    DATASET_PATHS = safe_load(file)
-
-with open(src_path / "ancilliary_data" / "CORDEX_variables.yml") as file:
-    CORDEX_VARIABLES = safe_load(file)
-
+DATASET_PATHS = load_yml("dataset_PATHS")
+CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
 class InputManager:
     def __init__(self, machine):
@@ -195,10 +187,8 @@ class InputManager:
         else:
             dataset_name_lookup = dataset_name
 
-        with open(
-            src_path / "ancilliary_data" / f"{dataset_name_lookup}_lookup.yml"
-        ) as file:
-            raw_LOOKUP = safe_load(file)
+        raw_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
+
         dataset_path = Path(self.dataset_paths[dataset_name])
         file_paths = []
         variables = (
