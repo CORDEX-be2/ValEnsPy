@@ -184,10 +184,12 @@ def load_calc_plot_bias_map(variable: str, ref_dataset: str, experiments: list, 
     ds_obs = ds_obs.resample(time='1D').mean()    
 
     # quick and dirty fix to account for correct units for cumulative variables in ERA5 and ERA5 land - to be properly solved in the inputmanager
-    if unit_conversion: 
+    if unit_conversion == True: 
         print('did unit conversion')
         ds_obs[variable] = ds_obs[variable]/(86400)
-
+    elif unit_conversion=='pr': 
+        print('did pr unit conversion')
+        ds_obs[variable] = ds_obs[variable]/(86400)*1000
     # retrieve ERA5 gridfile - for regridding 
     gridfile = manager._get_file_paths(ref_dataset,variable, period=[1995,1995],freq="hourly",region=region)[0]
 
