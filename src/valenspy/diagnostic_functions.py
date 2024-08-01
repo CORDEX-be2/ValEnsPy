@@ -1,6 +1,9 @@
 import xarray as xr
 from functools import wraps
 
+# make ure attributes are passed through
+xr.set_options(keep_attrs=True)  
+
 ###################################
 # Model2Self diagnostic functions #
 ###################################
