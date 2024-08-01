@@ -10,6 +10,7 @@ class Diagnostic:
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None
+        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Diagnostic.
 
@@ -17,6 +18,7 @@ class Diagnostic:
         ----------
         diagnostic_function
             The function that applies a diagnostic to the data.
+        plotting_function
         plotting_function
             The function that visualizes the results of the diagnostic.
         name : str
@@ -26,7 +28,9 @@ class Diagnostic:
         """
         self.name = name
         self._description = description
+        self._description = description
         self.diagnostic_function = diagnostic_function
+        self.plotting_function = plotting_function
         self.plotting_function = plotting_function
 
     @abstractmethod
@@ -36,6 +40,7 @@ class Diagnostic:
         Parameters
         ----------
         data
+            The data to apply the diagnostic to. Data can be an xarray DataTree, Dataset or DataArray.
             The data to apply the diagnostic to. Data can be an xarray DataTree, Dataset or DataArray.
 
         Returns
@@ -123,23 +128,86 @@ class Model2Ref(Diagnostic):
         """
         return self.diagnostic_function(ds, ref, **kwargs)
 
+    @property
+    def description(self):
+        """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
+        return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
+
+
+class Model2Self(Diagnostic):
+    """A class representing a diagnostic that compares a model to itself."""
+
+    def __init__(
+        self, diagnostic_function, plotting_function, name=None, description=None
+    ):
+        """Initialize the Model2Self diagnostic."""
+        super().__init__(diagnostic_function, plotting_function, name, description)
+
+    def apply(self, ds: xr.Dataset, **kwargs):
+        """Apply the diagnostic to the data.
+
+        Parameters
+        ----------
+        ds : xr.Dataset or xr.DataArray
+            The data to apply the diagnostic to.
+
+        Returns
+        -------
+        xr.Dataset or xr.DataArray
+            The data after applying the diagnostic.
+        """
+        return self.diagnostic_function(ds, **kwargs)
+
+
+class Model2Ref(Diagnostic):
+    """A class representing a diagnostic that compares a model to a reference."""
+
+    def __init__(
+        self, diagnostic_function, plotting_function, name=None, description=None
+    ):
+        """Initialize the Model2Ref diagnostic."""
+        super().__init__(diagnostic_function, plotting_function, name, description)
+
+    def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):
+        """Apply the diagnostic to the data. Only the common variables between the data and the reference are used.
+
+        Parameters
+        ----------
+        ds : xr.Dataset or xr.DataArray
+            The data to apply the diagnostic to.
+        ref : xr.Dataset or xr.DataArray
+            The reference data to compare the data to.
+
+        Returns
+        -------
+        xr.Dataset or xr.DataArray
+            The data after applying the diagnostic.
+        """
+        ds, ref = _select_common_vars(ds, ref)
+        return self.diagnostic_function(ds, ref, **kwargs)
+
 
 class Ensemble2Ref(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None
+        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Ensemble2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
+        super().__init__(diagnostic_function, plotting_function, name, description)
 
+    def apply(self, dt: DataTree, ref, **kwargs):
     def apply(self, dt: DataTree, ref, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
         ----------
         dt : DataTree
+        dt : DataTree
             The data to apply the diagnostic to.
+        ref : xr.DataSet or DataTree
         ref : xr.DataSet or DataTree
             The reference data to compare the data to.
 
@@ -147,9 +215,13 @@ class Ensemble2Ref(Diagnostic):
         -------
         DataTree or dict
             The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
+        DataTree or dict
+            The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
         return self.diagnostic_function(dt, ref, **kwargs)
 
+    def plot(self, result, axes=None, facetted=True, **kwargs):
+        """Plot the diagnostic.
     def plot(self, result, axes=None, facetted=True, **kwargs):
         """Plot the diagnostic.
 
@@ -171,6 +243,7 @@ class Ensemble2Ref(Diagnostic):
             else:
                 ax = plt.gca()
         return self.plotting_function(result, axes=axes, facetted=facetted, **kwargs)
+        return self.plotting_function(result, axes=axes, facetted=facetted, **kwargs)
 
     @classmethod
     def from_model2ref(cls, model2ref: Model2Ref, facetted=True):
@@ -191,25 +264,30 @@ class Ensemble2Ref(Diagnostic):
             ensemble_results = {}
             if isinstance(ref, DataTree):
                 for data_node, ref_node in zip(dt.leaves, ref.leaves):
+                    ds, ref = _select_common_vars(data_node.ds, ref_node.ds)
                     ensemble_results[data_node.path] = model2ref.diagnostic_function(
-                        data_node.ds, ref_node.ds, **kwargs
+                        ds, ref, **kwargs
                     )
             else:
                 for data_node in dt.leaves:
+                    ds, ref = _select_common_vars(data_node.ds, ref)
                     ensemble_results[data_node.path] = model2ref.diagnostic_function(
-                        data_node.ds, ref, **kwargs
+                        ds, ref, **kwargs
                     )
             return ensemble_results
 
+        def plotting_function(results, axes, facetted=facetted, **kwargs):
         def plotting_function(results, axes, facetted=facetted, **kwargs):
             if facetted:
                 for path, result, ax in zip(
                     results.keys(), results.values(), axes.flatten()
                 ):
                     model2ref.plot(result, ax=ax, **kwargs)
+                    model2ref.plot(result, ax=ax, **kwargs)
                     ax.set_title(path.replace("/", " "))
             else:
                 for path, result in results.items():
+                    model2ref.plot(
                     model2ref.plot(
                         result, ax=axes, label=f'{path.replace("/", " ")}', **kwargs
                     )
@@ -217,6 +295,7 @@ class Ensemble2Ref(Diagnostic):
 
         return Ensemble2Ref(
             diagnostic_function,
+            plotting_function,
             plotting_function,
             model2ref.name,
             model2ref.description,

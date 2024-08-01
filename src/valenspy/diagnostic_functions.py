@@ -54,7 +54,7 @@ def spatial_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
     ----------
     ds : xr.Dataset
         The data to calculate the spatial bias of.
-    ref : xr.Dataset
+    ref : xr.Dataset or xr.DataArray
         The reference data to compare the data to.
     compute_relative_bias : bool, optional
         If True, return the relative bias, if False return the absolute bias, by default False
@@ -161,8 +161,10 @@ def bias(da: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
     ----------
     da : xr.Dataset
         The data to calculate the bias of.
-    ref : xr.Dataset
+    ref : xr.DataArray or xr.Dataset
         The reference to compare the data to.
+    calc_relative : bool, optional
+        If True, calculate the relative bias, if False calculate the absolute bias, by default False
 
     Returns
     -------
