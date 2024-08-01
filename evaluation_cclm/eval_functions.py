@@ -171,7 +171,7 @@ def geo_to_rot(coord, ds):
 
 
 
-def load_calc_plot_bias_map(variable: str, ref_dataset: str, experiments: list, months_to_analyse: list, region='europe'): 
+def load_calc_plot_bias_map(variable: str, ref_dataset: str, experiments: list, months_to_analyse: list, region='europe', unit_conversion = False): 
 
     # ------------------------------
     # 1. Load reference data
@@ -180,10 +180,16 @@ def load_calc_plot_bias_map(variable: str, ref_dataset: str, experiments: list, 
     manager = vp.InputManager(machine=machine)
 
     # use input manager to load data, defined on settings above
-    ds_obs = manager.load_data(ref_dataset,variable, period=[1995,1995],freq="daily",region=region, path_identifiers = ["-daily-"])
+    ds_obs = manager.load_data(ref_dataset,variable, period=[1995,1995],freq="hourly",region=region)
+    ds_obs = ds_obs.resample(time='1D').mean()    
+
+    # quick and dirty fix to account for correct units for cumulative variables in ERA5 and ERA5 land - to be properly solved in the inputmanager
+    if unit_conversion: 
+        print('did unit conversion')
+        ds_obs[variable] = ds_obs[variable]/(86400)
 
     # retrieve ERA5 gridfile - for regridding 
-    gridfile = manager._get_file_paths(ref_dataset, variable, period=[1995,1995], freq="daily", region=region, path_identifiers = ["-daily-"])[0]
+    gridfile = manager._get_file_paths(ref_dataset,variable, period=[1995,1995],freq="hourly",region=region)[0]
 
 
     # ------------------------------

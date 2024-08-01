@@ -152,22 +152,22 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
             elif obs_LOOKUP[var]["obs_units"] == "hPa":
                 ds[var] = _convert_hPa_to_Pa(ds[var])  # hPa to Pa
 
-            elif (obs_LOOKUP[var]["obs_units"] == "mm") or (
-                obs_LOOKUP[var]["obs_units"] == "mm/hr"
-            ):
-                ds[var] = _convert_mm_to_kg_m2s(
-                    ds[var]
-                )  # mm to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
+            #elif (obs_LOOKUP[var]["obs_units"] == "mm") or (
+            #    obs_LOOKUP[var]["obs_units"] == "mm/hr"
+            #):
+            #    ds[var] = _convert_mm_to_kg_m2s(
+            #        ds[var]
+            #    )  # mm to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
 
-            elif (obs_LOOKUP[var]["obs_units"] == "m") or (
-                obs_LOOKUP[var]["obs_units"] == "m/hr"
-            ):
-                ds[var] = _convert_m_to_kg_m2s(
-                    ds[var]
-                )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
+            #elif (obs_LOOKUP[var]["obs_units"] == "m") or (
+            #    obs_LOOKUP[var]["obs_units"] == "m/hr"
+            #):
+            #    ds[var] = _convert_m_to_kg_m2s(
+            #        ds[var]
+            #    )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
 
-            elif obs_LOOKUP[var]["obs_units"] == "J/m^2":
-                ds[var] = _convert_J_m2_to_W_m2(ds[var])  # J/m^2 to W m-2
+            #elif obs_LOOKUP[var]["obs_units"] == "J/m^2":
+            #    ds[var] = _convert_J_m2_to_W_m2(ds[var])  # J/m^2 to W m-2
 
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
@@ -281,10 +281,10 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
                     ds[var]
                 )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
 
-            elif obs_LOOKUP[var]["obs_units"] == "J/m^2":
-                ds[var] = _convert_J_m2_to_W_m2(
-                    ds[var]
-                )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
+            #elif obs_LOOKUP[var]["obs_units"] == "J/m^2":
+            #    ds[var] = _convert_J_m2_to_W_m2(
+            #        ds[var]
+            #    )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
 
             # add necessary metadata
             ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
