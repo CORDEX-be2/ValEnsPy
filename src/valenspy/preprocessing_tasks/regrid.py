@@ -2,7 +2,7 @@ import cdo
 import xarray as xr
 import cf_xarray
 
-def remap_cdo(target_grid, ds, remap_method="bil", output_path=None):
+def remap_cdo(target_grid, ds, remap_method="bil", tempdir=None, output_path=None):
     """Remap the input dataset to the target grid using CDO.
     
     Parameters
@@ -15,6 +15,8 @@ def remap_cdo(target_grid, ds, remap_method="bil", output_path=None):
         This can be memory intensive for large datasets.
     remap_method : str
         The remap method to use.
+    tempdir : str, optional
+        The temporary directory to save the temporary files, by default None (uses /tmp).
     output_file : bool, optional
         If True, the output file is saved to disk, by default False.
     
@@ -23,17 +25,22 @@ def remap_cdo(target_grid, ds, remap_method="bil", output_path=None):
     xarray.Dataset
         The remapped dataset in xarray format.
     """
+    if tempdir:
+        cdo_obj = cdo.Cdo(tempdir=tempdir)
+    else:
+        cdo_obj = cdo.Cdo()
+
     if remap_method == "bil":
-        remap = cdo.Cdo().remapbil(target_grid, input=ds, returnXDataset=True)
+        remap = cdo_obj.remapbil(target_grid, input=ds, returnXDataset=True)
     elif remap_method == "con":
         # for conservative remapping, lat_bounds and lon_bounds are required. Check whether these are present and if not add these. 
         if not ("lat_bounds" in ds.variables and "lon_bounds" in ds.variables): 
             ds = ds.cf.add_bounds(('lat','lon'))
-        remap = cdo.Cdo().remapcon(target_grid, input=ds, returnXDataset=True)
+        remap = cdo_obj.remapcon(target_grid, input=ds, returnXDataset=True)
     elif remap_method == "dis":
-        remap = cdo.Cdo().remapdis(target_grid, input=ds, returnXDataset=True)
+        remap = cdo_obj.remapdis(target_grid, input=ds, returnXDataset=True)
     elif remap_method == "nn":
-        remap = cdo.Cdo().remapnn(target_grid, input=ds, returnXDataset=True)
+        remap = cdo_obj.remapnn(target_grid, input=ds, returnXDataset=True)
     else:
         raise ValueError(f"Remap method {remap_method} not supported: choose from 'bil', 'con', 'dis' or 'nn'.")
     if output_path:
