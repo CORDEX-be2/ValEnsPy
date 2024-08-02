@@ -14,8 +14,8 @@
 
 
 tas:
-  raw_name: temperature_2m_sfx
-  raw_long_name: temperature_2m_sfx
+  raw_name: temperature_2m_atm
+  raw_long_name: temperature_2m_atm
   raw_units: K
   raw_grid_mapping: Lambert_Conformal
   raw_cell_methods: 'time: point'
