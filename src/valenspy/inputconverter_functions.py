@@ -1,9 +1,18 @@
 from pathlib import Path
-import xarray as xr
 from valenspy.cf_checks import is_cf_compliant, cf_status
 from valenspy._utilities import load_yml
+from valenspy._unit_conversions import convert_all_units_to_CF, _convert_Celcius_to_Kelvin, _convert_hPa_to_Pa, _convert_mm_to_kg_m2s, _convert_m_to_kg_m2s, _convert_J_m2_to_W_m2
+import xarray as xr
+import pandas as pd
+import numpy as np
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
+
+def _set_global_attributes(ds: xr.Dataset, metadata_info):
+    for key, value in metadata_info.items():
+        ds.attrs[key] = value
+    
+    return ds
 
 def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
@@ -21,85 +30,18 @@ def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     Dataset
         The CF compliant EOBS observations for the specified variable.
     """
-
-    # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator?
+    #Unique information regarding the EOBS dataset
     obsdata_name = "EOBS"
-
     raw_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
-    # make EOBS CF compliant
+    if metadata_info is None: #Set standard metadata if not provided
+        metadata_info = {"freq":"daily", "spatial_resolution":"0.1deg", "region":"europe"}
 
-    for var_obs in ds.data_vars:
+    #Convert all units to CF, add metadata and set global attributes
+    metadata_info["dataset"] = obsdata_name
 
-        # Get the CORDEX variable in the observational dataset using the observational lookup table
-        var = next(
-            (k for k, v in raw_LOOKUP.items() if v.get("raw_name") == var_obs), None
-        )
-
-        if var:  # Dont processes variables that are not in the lookup table.
-
-            # update variable name to CORDEX variable name
-            ds = ds.rename_vars({raw_LOOKUP[var]["raw_name"]: var})
-
-            # from here on, use CORDEX variable name to access data array and do rest of conversion
-
-            # Unit conversion - hard coded EOBS units for units different to CORDEX
-            if raw_LOOKUP[var]["raw_units"] == "Celcius":
-                ds[var] = _convert_Celcius_to_Kelvin(ds[var])
-            elif raw_LOOKUP[var]["raw_units"] == "hPa":
-                ds[var] = _convert_hPa_to_Pa(ds[var])  # hPa to Pa
-            elif (
-                raw_LOOKUP[var]["raw_units"] == "mm"
-            ):  # ! note observations remain daily time frequency
-                ds[var] = _convert_mm_to_kg_m2s(ds[var])  # mm to kg m^-2 s^-1
-
-            # add necessary metadata
-            ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
-                "standard_name"
-            ]  # from the CORDEX look-up table
-            ds[var].attrs["long_name"] = CORDEX_VARIABLES[var][
-                "long_name"
-            ]  # from the CORDEX look-up table
-
-            ds[var].attrs["original_name"] = raw_LOOKUP[var]["raw_name"]
-            ds[var].attrs["original_long_name"] = raw_LOOKUP[var]["raw_long_name"]
-
-            # rename dimensions if not yet renamed
-            if "lon" not in ds.coords:
-                ds = ds.rename({"longitude": "lon"})
-            if "lat" not in ds.coords:
-                ds = ds.rename({"latitude": "lat"})
-
-            # convert the time dimension to a pandas datetime index
-            ds[var]["time"] = pd.to_datetime(ds[var].time)
-
-            # additional attributes, on data-array level -- hard coded for EOBS
-            ds[var].attrs["dataset"] = obsdata_name
-
-            # if metadata_info is given, create global attributes
-            if metadata_info:
-                for key, value in metadata_info.items():
-                    ds[var].attrs[key] = value
-
-            # if not, include hard-coded attributes (dataset dependent!)
-            else:
-                ds[var].attrs["freq"] = "daily"
-                ds[var].attrs["spatial_resolution"] = "0.1deg"
-                ds[var].attrs["region"] = "europe"
-
-    # set global attributes for whole dataset
-    ds.attrs["dataset"] = obsdata_name
-
-    # if metadata_info is given, create global attributes
-    if metadata_info:
-        for key, value in metadata_info.items():
-            ds.attrs[key] = value
-
-    # if not, include hard-coded attributes (dataset dependent!)
-    else:
-        ds.attrs["freq"] = "daily"
-        ds.attrs["spatial_resolution"] = "0.1deg"
-        ds.attrs["region"] = "europe"
+    ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
+    ds = _set_global_attributes(ds, metadata_info)
 
     # Soft check for CF compliance
     cf_status(ds)
@@ -648,215 +590,7 @@ def ALARO_K_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     return ds
 
-
-# helper functions for unit conversion - can be moved to more appropriate place
-
-## imports for helpen functions
-import xarray as xr
-import pandas as pd
-import numpy as np
-
-
-# Do we want other possible inputs than data arrays?
-def _convert_Celcius_to_Kelvin(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from °C to K
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da + 273.15  # Celcius to Kelvin
-
-    # update units attribute --  naming of units defined in ./src/valenspy/ancilliary_data/CORDEX_variables.yml
-    da.attrs["units"] = "K"
-
-    return da
-
-
-def _convert_Kelvin_to_Celcius(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from K to °C
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da - 273.15  # Kelvin to Celcius
-
-    # update units attribute
-    da.attrs["units"] = "°C"
-
-    return da
-
-
-def _convert_hPa_to_Pa(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from hPa to Pa
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da * 100
-
-    # update units attribute
-    da.attrs["units"] = "Pa"
-
-    return da
-
-
-def _convert_Pa_to_hPa(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from Pa to hPa
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da / 100
-
-    # update units attribute
-    da.attrs["units"] = "hPa"
-
-    return da
-
-
-def _convert_mm_to_kg_m2s(da: xr.DataArray):
-    """
-    Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
-    timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
-
-    # do conversion
-    da = da / timestep_nseconds  # mm to kg m^-2 s^-1
-
-    # update units attribute
-    da.attrs["units"] = "kg m-2 s-1"
-
-    return da
-
-
-def _convert_m_to_kg_m2s(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from mm hr^-1 to kg m^-2 s^-1
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da * 1000 / 3600  # mm hr^-1 to kg m^-2 s^-1
-
-    # update units attribute
-    da.attrs["units"] = "kg m-2 s-1"
-
-    return da
-
-    # Convert J/m²/hr to W/m²
-    w_m2 = j_m2_hr / seconds_per_hour
-
-
-def _convert_J_m2_to_W_m2(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from J m^2 to W m^2
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-    # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
-    timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
-
-    # do conversion
-    da = da / timestep_nseconds  # J m^2 to W m^2
-
-    # update units attribute
-    da.attrs["units"] = "W m-2"
-
-    return da
-
-
-def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from kWh/m2/day to W m^2
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da * (1000) / 24
-
-    # update units attribute
-    da.attrs["units"] = "W m-2"
-
-    return da
-
+# helper functions - can be moved to more appropriate place
 
 def _determine_time_interval(da: xr.DataArray):
     """
