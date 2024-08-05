@@ -89,8 +89,6 @@ def time_series_spatial_mean(ds: xr.Dataset):
 
 def spatial_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
     """Calculate the spatial bias of the data compared to the reference. The time dimensions are averaged over if present.
-def spatial_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
-    """Calculate the spatial bias of the data compared to the reference. The time dimensions are averaged over if present.
 
     Parameters
     ----------
@@ -284,7 +282,6 @@ def _average_over_dims(ds: xr.Dataset, dims):
 
 
 def bias(da: xr.DataArray, ref: xr.DataArray, calc_relative=False):
-def bias(da: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
     """Calculate the bias of the data compared to a reference.
 
     Parameters
