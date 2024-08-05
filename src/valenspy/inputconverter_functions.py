@@ -1,15 +1,9 @@
 from pathlib import Path
 import xarray as xr
-from yaml import safe_load
 from valenspy.cf_checks import is_cf_compliant, cf_status
+from valenspy._utilities import load_yml
 
-# get path of source code (current path)
-src_path = Path(__file__).resolve().parent
-
-# open CORDEX variable lookup dictionary
-with open(src_path / "ancilliary_data" / "CORDEX_variables.yml") as file:
-    CORDEX_VARIABLES = safe_load(file)
-
+CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
 def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
@@ -31,10 +25,7 @@ def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator?
     obsdata_name = "EOBS"
 
-    with open(
-        src_path / "ancilliary_data" / Path(obsdata_name + "_lookup.yml")
-    ) as lookup_file:
-        obs_LOOKUP = safe_load(lookup_file)
+    obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
     # make EOBS CF compliant
 
@@ -135,9 +126,7 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
 
     obsdata_name = "ERA5"
 
-    # open observational specific lookup dictionary
-    with open(src_path / "ancilliary_data" / Path("ERA5_lookup.yml")) as lookup_file:
-        obs_LOOKUP = safe_load(lookup_file)
+    obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
     # make observation CF compliant
     for var_obs in ds.data_vars:
@@ -249,9 +238,7 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
 
     obsdata_name = "ERA5-Land"
 
-    # open observational specific lookup dictionary
-    with open(src_path / "ancilliary_data" / Path("ERA5_lookup.yml")) as lookup_file:
-        obs_LOOKUP = safe_load(lookup_file)
+    obs_LOOKUP = load_yml(f"ERA5_lookup")
 
     # make observation CF compliant
     for var_obs in ds.data_vars:
@@ -365,11 +352,7 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     obsdata_name = "CLIMATE_GRID"
 
-    # open observational specific lookup dictionary
-    with open(
-        src_path / "ancilliary_data" / Path(obsdata_name + "_lookup.yml")
-    ) as lookup_file:
-        obs_LOOKUP = safe_load(lookup_file)
+    obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
     # make observation CF compliant
     for var_obs in ds.data_vars:
@@ -451,6 +434,107 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
         ds.attrs["freq"] = "daily"
         ds.attrs["spatial_resolution"] = "0.07° x 0.045° (~5km)"
         ds.attrs["region"] = "belgium"  # leave empty per default.
+
+    # Soft check for CF compliance
+    cf_status(ds)
+
+    return ds
+
+
+def CCLM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
+    """
+    Convert the CCLM xarray netCDF to a CF compliant xarray Dataset
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The xarray Dataset of CCLM simulation to convert
+    metadata_info : dict, optional
+        A dictionary containing additional metadata information to add to the dataset
+
+    Returns
+    -------
+    Dataset
+        The CF compliant CCLM model data for the specified variable.
+    """
+
+    # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator?
+    model_name = "CCLM"
+    src_path = Path("../src/valenspy")
+
+    # open observational specific lookup dictionary
+    mod_LOOKUP = load_yml(model_name + "_lookup")
+
+    # make model dataset CF compliant
+    for var_mod in ds.data_vars:
+
+        # Get the CORDEX variable in the model dataset using the model-specific lookup table
+        var = next(
+            (k for k, v in mod_LOOKUP.items() if v is not None and v.get("mod_name") == var_mod),
+            None
+        )
+        if var:  # Dont processes variables that are not in the lookup table.
+
+            # update variable name to CORDEX variable name
+            ds = ds.rename_vars({mod_LOOKUP[var]["mod_name"]: var})
+
+            # from here on, use CORDEX variable name to access data array and do rest of conversion
+
+            # Unit conversion - hard coded ERA5 units for CORDEX CORE, double check beyond.
+            if (mod_LOOKUP[var]["mod_units"] == "Celcius") or (
+                mod_LOOKUP[var]["mod_units"] == "degC"
+            ):
+                ds[var] = _convert_Celcius_to_Kelvin(ds[var])
+
+            elif mod_LOOKUP[var]["mod_units"] == "hPa":
+                ds[var] = _convert_hPa_to_Pa(ds[var])  # hPa to Pa
+
+            elif (mod_LOOKUP[var]["mod_units"] == "mm") or (
+                mod_LOOKUP[var]["mod_units"] == "mm/hr"
+            ):
+                ds[var] = _convert_mm_to_kg_m2s(
+                    ds[var]
+                )  # mm to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
+
+            elif mod_LOOKUP[var]["mod_units"] == "kWh/m2/day":
+                ds[var] = _convert_kWh_m2_day_to_W_m2(
+                    ds[var]
+                )  # kWh/m2/day to W m^-2 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2
+
+            elif mod_LOOKUP[var]["mod_units"] == "m/s":
+                ds[var].attrs["units"] = CORDEX_VARIABLES[var][
+                    "units"
+                ]  # put units as m s-1
+
+            # add necessary metadata
+            ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
+                "standard_name"
+            ]  # from the CORDEX look-up table
+            ds[var].attrs["long_name"] = CORDEX_VARIABLES[var][
+                "long_name"
+            ]  # from the CORDEX look-up table
+            ds[var].attrs["original_name"] = mod_LOOKUP[var]["mod_name"]
+            ds[var].attrs["original_long_name"] = mod_LOOKUP[var]["mod_long_name"]
+
+            # convert the time dimension to a pandas datetime index
+            ds[var]["time"] = pd.to_datetime(ds[var].time)
+
+            # additional attributes -- set both globally at dataset level as at data array level
+            ds[var].attrs["dataset"] = model_name
+
+            if metadata_info:
+                for key, value in metadata_info.items():
+                    ds[var].attrs[key] = value
+
+ 
+
+    # set attributes in whole dataset
+    ds.attrs["dataset"] = model_name
+
+    # if metadata_info is given, create global attributes
+    if metadata_info:
+        for key, value in metadata_info.items():
+            ds[var].attrs[key] = value
 
     # Soft check for CF compliance
     cf_status(ds)

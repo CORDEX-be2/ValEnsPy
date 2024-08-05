@@ -157,9 +157,9 @@ class Ensemble2Ref(Diagnostic):
 
         Parameters
         ----------
-        data : xr.Dataset or xr.DataArray
-            The data to plot.
-        ref : xr.Dataset or xr.DataArray
+        data : xr.Dataset
+            The data to visualize.
+        ref : xr.Dataset
             The reference data to compare the data to.
 
         Returns
