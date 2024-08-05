@@ -167,71 +167,8 @@ def geo_to_rot(coord, ds):
     p_rlat = np.rad2deg(p_rlat); p_rlon = np.rad2deg(p_rlon)
     # Return rlon-rlat couple
     return [p_rlon,p_rlat]
-    
 
 
-
-def load_calc_plot_bias_map(variable: str, ref_dataset: str, experiments: list, months_to_analyse: list, region='europe', unit_conversion = False): 
-
-    # ------------------------------
-    # 1. Load reference data
-
-    # start up input manager
-    manager = vp.InputManager(machine=machine)
-
-    # use input manager to load data, defined on settings above
-    ds_obs = manager.load_data(ref_dataset,variable, period=[1995,1995],freq="hourly",region=region)
-    ds_obs = ds_obs.resample(time='1D').mean()    
-
-    # quick and dirty fix to account for correct units for cumulative variables in ERA5 and ERA5 land - to be properly solved in the inputmanager
-    if unit_conversion == True: 
-        print('did unit conversion')
-        ds_obs[variable] = ds_obs[variable]/(86400)
-    elif unit_conversion=='pr': 
-        print('did pr unit conversion')
-        ds_obs[variable] = ds_obs[variable]/(86400)*1000
-    # retrieve ERA5 gridfile - for regridding 
-    gridfile = manager._get_file_paths(ref_dataset,variable, period=[1995,1995],freq="hourly",region=region)[0]
-
-
-    # ------------------------------
-    # 2. Load and regrid model data
-
-    for experiment in experiments: 
-
-        print(experiment)
-
-        mod_LOOKUP = load_yml(model+"_lookup")
-        # get CCLM variable corresponding to the requested variable using its look-up table
-        mod_var = mod_LOOKUP[variable]['mod_name']
-
-        # define the path
-        directory = Path(postproc_base_dir + experiment +'/'+mod_var + '/')
-
-        # define the CCLM files for the corresponding variable
-        mod_files = list(directory.glob(mod_var+"_daymean.nc")) # Select all the netCDF files in the directory
-
-        if not mod_files:  # empty list
-                print(f"{variable} not available for {experiment}")
-        else: 
-            
-            ds_mod = xr.open_mfdataset(mod_files, combine="by_coords", chunks="auto")
-
-            # regrid
-            ds_mod = remap_cdo_intermediatefiles(gridfile, ref_dataset,  mod_files, remap_method = "remapbil")
-            # ds_mod = remap_cdo(gridfile, ds_mod, remap_method = "con")
-            # ------------------------------
-            # 3. Calculate diagnostic and do plotting
-            
-            # select variable and corresponding period
-            da_mod = ds_mod[mod_var].sel(time=ds_mod['time'].dt.month.isin(months_to_analyse))
-            da_obs = ds_obs[variable].sel(time=ds_obs['time'].dt.month.isin(months_to_analyse))
-
-            calc_and_plot_timmean_bias(region, bounds, da_mod, da_obs, experiment, ref_dataset)
-
-
-# ------------------------------
-# 1. Load reference data
 
 
 def plot_point_timeseries(variable: str, ref_dataset: str, experiments: list, point_coord: tuple, point_id:str,  months_to_analyse: list): 
