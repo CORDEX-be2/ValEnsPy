@@ -137,6 +137,14 @@ clivi:
   mod_cell_methods: 'time: point'
 
 
+tsl: 
+  mod_name: T_SO
+  mod_standard_name: soil_temperature
+  mod_long_name: soil temperature
+  mod_units: K
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
 
   
 # to add cclm variable
