@@ -48,8 +48,7 @@ def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     return ds
 
-
-def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
+def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
     Convert the ERA5 xarray dataset to a xarray Dataset in CF convention
 
@@ -65,101 +64,21 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
     Dataset
         The CF compliant ERA5 observations for the specified variable.
     """
-
+    #Unique information regarding the ERA5 dataset
     obsdata_name = "ERA5"
-
     raw_LOOKUP = load_yml(f"{obsdata_name}_lookup")
+    if metadata_info is None: #Set standard metadata if not provided
+        metadata_info = {"freq": _determine_time_interval(ds)}
 
-    # make observation CF compliant
-    for var_obs in ds.data_vars:
+    #Convert all units to CF, add metadata and set global attributes
+    metadata_info["dataset"] = obsdata_name
 
-        # Get the CORDEX variable in the observational dataset using the observational lookup table
-        var = next(
-            (k for k, v in raw_LOOKUP.items() if v.get("raw_name") == var_obs), None
-        )
-
-        if var:  # Dont processes variables that are not in the lookup table.
-
-            # update variable name to CORDEX variable name
-            ds = ds.rename_vars({raw_LOOKUP[var]["raw_name"]: var})
-
-            # from here on, use CORDEX variable name to access data array and do rest of conversion
-
-            # Unit conversion - hard coded ERA5 units for CORDEX CORE, double check beyond.
-            if (raw_LOOKUP[var]["raw_units"] == "Celcius") or (
-                raw_LOOKUP[var]["raw_units"] == "degC"
-            ):
-                ds[var] = _convert_Celcius_to_Kelvin(ds[var])
-
-            elif raw_LOOKUP[var]["raw_units"] == "hPa":
-                ds[var] = _convert_hPa_to_Pa(ds[var])  # hPa to Pa
-
-            elif (raw_LOOKUP[var]["raw_units"] == "mm") or (
-                raw_LOOKUP[var]["raw_units"] == "mm/hr"
-            ):
-                ds[var] = _convert_mm_to_kg_m2s(
-                    ds[var]
-                )  # mm to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
-
-            elif (raw_LOOKUP[var]["raw_units"] == "m") or (
-                raw_LOOKUP[var]["raw_units"] == "m/hr"
-            ):
-                ds[var] = _convert_m_to_kg_m2s(
-                    ds[var]
-                )  # m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion
-
-            elif raw_LOOKUP[var]["raw_units"] == "J/m^2":
-                ds[var] = _convert_J_m2_to_W_m2(ds[var])  # J/m^2 to W m-2
-
-            # add necessary metadata
-            ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var][
-                "standard_name"
-            ]  # from the CORDEX look-up table
-            ds[var].attrs["long_name"] = CORDEX_VARIABLES[var][
-                "long_name"
-            ]  # from the CORDEX look-up table
-            ds[var].attrs["original_name"] = raw_LOOKUP[var]["raw_name"]
-            ds[var].attrs["original_long_name"] = raw_LOOKUP[var]["raw_long_name"]
-
-            # rename dimensions if not yet renamed
-            if "lon" not in ds[var].coords:
-                ds = ds.rename({"longitude": "lon"})
-            if "lat" not in ds[var].coords:
-                ds = ds.rename({"latitude": "lat"})
-
-            # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
-            ds[var]["time"] = pd.to_datetime(ds[var].time)
-
-            # additional attributes at data array level.
-            ds[var].attrs["dataset"] = obsdata_name
-
-            if metadata_info:
-                for key, value in metadata_info.items():
-                    ds[var].attrs[key] = value
-
-            # if not, include hard-coded attributes (dataset dependent!)
-            else:
-                ds[var].attrs["freq"] = _determine_time_interval(ds[var])
-
-    # set attributes in whole dataset
-    ds.attrs["dataset"] = obsdata_name
-
-    # if metadata_info is given, create global attributes
-    if metadata_info:
-        for key, value in metadata_info.items():
-            ds.attrs[key] = value
-
-    # if not, include hard-coded attributes (dataset dependent!)
-    else:
-        ds.attrs["freq"] = _determine_time_interval(
-            ds
-        )  # automatically check on time interval based on time axis.
-
-    # Soft check for CF compliance
+    ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
+    ds = _set_global_attributes(ds, metadata_info)
+    
     cf_status(ds)
 
     return ds
-
 
 def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
     """

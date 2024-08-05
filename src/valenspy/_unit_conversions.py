@@ -4,6 +4,7 @@
 import xarray as xr
 import pandas as pd
 import numpy as np
+import warnings 
 from valenspy._utilities import load_yml
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
@@ -34,8 +35,13 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     """
     unit_conversion_functions = {
         "Celcius": _convert_Celcius_to_Kelvin,
+        "degC": _convert_Celcius_to_Kelvin,
         "hPa": _convert_hPa_to_Pa,
         "mm": _convert_mm_to_kg_m2s,
+        "mm/hr": _convert_m_to_kg_m2s,
+        "m": _convert_m_to_kg_m2s,
+        "m/hr": _convert_m_to_kg_m2s,
+        "J/m^2": _convert_J_m2_to_W_m2,
     }
 
     for raw_var in ds.data_vars:
@@ -49,10 +55,18 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
             raw_units = raw_LOOKUP[var]["raw_units"]
             if raw_units in unit_conversion_functions:
                 ds = ds.rename_vars({raw_var: var}) # rename variable to CORDEX variable name
+                ds[var] = unit_conversion_functions[raw_units](ds[var]) #Do the conversion
 
-                #Do the conversion
-                ds[var] = unit_conversion_functions[raw_units](ds[var])
+            elif raw_units == CORDEX_VARIABLES[var]["units"]:
+                #If the raw_units are the same as the target units, just rename the variable
+                ds = ds.rename_vars({raw_var: var})
+            
+            else:
+                #Throw a warning that the raw_unit in the lookup table is not implemented
+                cordex_var_units = CORDEX_VARIABLES[var]["units"]
+                warnings.warn(f"Unit conversion for {raw_units} to {cordex_var_units} is not implemented for variable {var}.")                
 
+            if var in ds: #If the renaming occured add the metadata attributes
                 #Metadata attributes
                 ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var]["standard_name"]
                 ds[var].attrs["long_name"] = CORDEX_VARIABLES[var]["long_name"]
@@ -60,16 +74,15 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
                 ds[var].attrs["original_long_name"] = raw_LOOKUP[var]["raw_long_name"]
                 ds[var].attrs["original_units"] = raw_units
             
-            ds[var]["time"] = pd.to_datetime(ds[var].time)
+                ds[var]["time"] = pd.to_datetime(ds[var].time)
 
-            if metadata_info:
-                for key, value in metadata_info.items():
-                    ds[var].attrs[key] = value
+                if metadata_info:
+                    for key, value in metadata_info.items():
+                        ds[var].attrs[key] = value
             
-            #Be carefull here because there should be some type of warning that the units are not converted
-            #This could be because they are in the the correct unit or because the unit conversion function is not implemented
-            #In the latter case an incorrect renaming of the variable could have happened
-                
+                #If freq is not in the metadata_info, we can try to infer it from the time dimension
+                if "freq" not in ds[var].attrs:
+                    ds[var].attrs["freq"] = _determine_time_interval(ds[var])
 
     return ds
 
@@ -272,3 +285,38 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
     da.attrs["units"] = "W m-2"
 
     return da
+
+# helper functions - can be moved to more appropriate place
+
+def _determine_time_interval(da: xr.DataArray):
+    """
+    Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances.
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The xarray DataArray with time axis to check the time interval
+
+    Returns
+    -------
+    freq : string
+        The frequency string containing "hourly, daily, monthly or yearly"
+    """
+
+    diff = da.time.diff(dim="time").values[0]
+
+    # Check for exact differences
+    if diff == np.timedelta64(1, "h"):
+        freq = "hourly"
+    elif diff == np.timedelta64(1, "D"):
+        freq = "daily"
+    elif diff == np.timedelta64(1, "M"):
+        freq = "monthly"
+    elif diff == np.timedelta64(1, "Y"):
+        freq = "yearly"
+    else:
+        return (
+            "Difference does not match exact hourly, daily, monthly, or yearly units."
+        )
+
+    return freq
