@@ -173,7 +173,7 @@ def diurnal_cycle_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
 ##################################
 
 
-def _average_over_dims(da: xr.DataArray, dims):
+def _average_over_dims(ds: xr.Dataset, dims):
     """Calculate the average over the specified dimensions if they are present in the data. Otherwise, return the data as is.
 
     Parameters
