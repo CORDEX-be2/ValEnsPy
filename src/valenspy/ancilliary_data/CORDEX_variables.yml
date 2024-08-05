@@ -12,7 +12,7 @@
 #List based on CORDEX-CMIP6 Request "https://cordex.org/wp-content/uploads/2022/09/CORDEX_CMIP6_Atmosphere_Variable_List.xlsx"
 
 # variables are automatically retrieved from CORDEX table using this script in Valenspy: ancilliary_scripts/convert_CORDEX_excel_to_yaml/convert_CORDEX_excel_to_yaml.py
-# and then manually copied in this file. 
+# and then manually copied in this file.
 
 ###############################
 ## Atmosphere CORE Variables ##
