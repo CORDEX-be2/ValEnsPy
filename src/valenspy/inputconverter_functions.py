@@ -184,6 +184,9 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
                 ds = ds.rename({"longitude": "lon"})
             if "lat" not in ds[var].coords:
                 ds = ds.rename({"latitude": "lat"})
+            
+            # make sure lat and lon are sorted ascending
+            ds = ds.sortby('lat').sortby('lon')
 
             # bugfix ERA5 (found in clh): replace valid_time by time
             if "time" not in ds: 
