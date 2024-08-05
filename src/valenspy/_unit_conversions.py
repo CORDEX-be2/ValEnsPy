@@ -9,6 +9,12 @@ from valenspy._utilities import load_yml
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
+#Key: The unit of the raw data
+#Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
+EQUIVALENT_UNITS = {"degC": "Celcius",
+                    "m/s": "m s-1"}
+
+
 def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     """Convert all units for all variables in the dataset to the correct units by applying the correct conversion function.
     
@@ -35,13 +41,13 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     """
     unit_conversion_functions = {
         "Celcius": _convert_Celcius_to_Kelvin,
-        "degC": _convert_Celcius_to_Kelvin,
         "hPa": _convert_hPa_to_Pa,
         "mm": _convert_mm_to_kg_m2s,
         "mm/hr": _convert_m_to_kg_m2s,
         "m": _convert_m_to_kg_m2s,
         "m/hr": _convert_m_to_kg_m2s,
         "J/m^2": _convert_J_m2_to_W_m2,
+        "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
     }
 
     for raw_var in ds.data_vars:
@@ -53,6 +59,11 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
             
             # convert units - based on the raw units
             raw_units = raw_LOOKUP[var]["raw_units"]
+
+            # If the raw_units are in the equivalent_units, use the replacement unit
+            if raw_units in EQUIVALENT_UNITS:
+                raw_units = EQUIVALENT_UNITS[raw_units]
+
             if raw_units in unit_conversion_functions:
                 ds = ds.rename_vars({raw_var: var}) # rename variable to CORDEX variable name
                 ds[var] = unit_conversion_functions[raw_units](ds[var]) #Do the conversion
@@ -68,11 +79,12 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 
             if var in ds: #If the renaming occured add the metadata attributes
                 #Metadata attributes
-                ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var]["standard_name"]
-                ds[var].attrs["long_name"] = CORDEX_VARIABLES[var]["long_name"]
-                ds[var].attrs["original_name"] = raw_LOOKUP[var]["raw_name"]
+                ds[var].attrs["standard_name"]      = CORDEX_VARIABLES[var]["standard_name"]
+                ds[var].attrs["long_name"]          = CORDEX_VARIABLES[var]["long_name"]
+                ds[var].attrs["units"]              = CORDEX_VARIABLES[var]["units"]
+                ds[var].attrs["original_name"]      = raw_LOOKUP[var]["raw_name"]
                 ds[var].attrs["original_long_name"] = raw_LOOKUP[var]["raw_long_name"]
-                ds[var].attrs["original_units"] = raw_units
+                ds[var].attrs["original_units"]     = raw_LOOKUP[var]["raw_units"]
             
                 ds[var]["time"] = pd.to_datetime(ds[var].time)
 
