@@ -23,7 +23,7 @@ ds_era5 = manager.load_data(
 
 # CCLM data to be put into a input converter and manager
 ## CCLM input manager will produce the paths
-ds_eobs = manager.load_data("EOBS",["tas", "pr"], path_identifiers = ["0.1deg",  "mean"])
+ds_eobs = manager.load_data("EOBS", ["tas", "pr"], path_identifiers=["0.1deg", "mean"])
 
 # select 1995
 ds_eobs = ds_eobs.sel(time=ds_eobs.time.dt.year.isin(1995))
@@ -55,5 +55,5 @@ import matplotlib.pyplot as plt
 fig, ax = plt.subplots(1, 3, figsize=(15, 5))
 ds_era5["tas"].mean("time").plot(ax=ax[0])
 ds_eobs_regrid["tas"].mean("time").plot(ax=ax[1])
-(ds_era5["tas"].mean("time")-ds_eobs_regrid["tas"].mean("time")).plot(ax=ax[2])
+(ds_era5["tas"].mean("time") - ds_eobs_regrid["tas"].mean("time")).plot(ax=ax[2])
 fig.tight_layout()
