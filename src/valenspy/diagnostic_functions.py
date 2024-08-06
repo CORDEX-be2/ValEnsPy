@@ -1,6 +1,10 @@
 import xarray as xr
 from functools import wraps
 
+# make sure xarray passes the attributes when doing operations - change default for this
+xr.set_options(keep_attrs=True)
+
+
 ###################################
 # Model2Self diagnostic functions #
 ###################################
@@ -46,7 +50,7 @@ def time_series_spatial_mean(ds: xr.Dataset):
 
 
 def spatial_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
-    """Calculate the spatial bias of the data compared to the reference. The time dimensions are averaged over if present.
+    """Calculate the mean spatial bias of the data compared to the reference. The time dimensions are averaged over if present.
 
     Parameters
     ----------

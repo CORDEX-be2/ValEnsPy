@@ -4,24 +4,8 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
 
-
-###################################
-# Model2Self diagnostic functions #
-###################################
-
-
-def plot_diurnal_cycle(data: xr.DataArray, ax, **kwargs):
-    """Plot the daily cycle of the data."""
-    data.plot(ax=ax, **kwargs)
-    ax.set_title("Daily Cycle")
-    return ax
-
-
-def plot_time_series(data: xr.DataArray, ax, **kwargs):
-    data.plot(ax=ax, **kwargs)
-    ax.set_title("Time Series")
-    return ax
-
+# make sure xarray passes the attributes when doing operations - change default for this
+xr.set_options(keep_attrs=True)
 
 ###################################
 # Model2Self diagnostic functions #
@@ -46,17 +30,21 @@ def plot_time_series(data: xr.DataArray, ax, **kwargs):
 ##################################
 
 
-def plot_spatial_bias(data: xr.DataArray, ax, **kwargs):
+def plot_spatial_bias(da: xr.DataArray, ax=False, **kwargs):
     """Plot the spatial bias of the data compared to the reference."""
-    data.plot(
-        ax=ax, cmap="coolwarm", cbar_kwargs={"label": "Temperature bias (K)"}, **kwargs
+
+    # if no ax element is passed, create one
+    if not ax: 
+        fig,ax= plt.subplots()
+    da.plot(
+        ax=ax, cmap="coolwarm", cbar_kwargs={"label": f"{da.standard_name} bias ({da.units})"}, **kwargs
     )
-    ax.set_title("Spatial Bias")
+    ax.set_title(f"Mean bias of {da.long_name}")
 
     return ax
 
 
-def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff: xr.DataArray): 
+def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff: xr.DataArray, return_fig=False): 
 
   """
   Plots comparison maps for model data, reference data, and their difference.
@@ -65,8 +53,9 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   da_mod (xarray.DataArray): The model data to be plotted: 2D lat
   da_ref (xarray.DataArray): The reference data to be plotted.
   da_diff (xarray.DataArray): The difference (model - reference) to be plotted.
+  return_fig (boolean)      : determines whether the figure object is returned, default False
 
-  Returns:
+  Returns (optionally):
   matplotlib.figure.Figure: The figure object containing the three subplots.
 
   Notes:
@@ -98,9 +87,16 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   vmax = float(max(da_mod.max().values, da_ref.max().values))
 
 
-  # titles
-  mod_title = da_mod.attrs['dataset']
-  ref_title = da_ref.attrs['dataset']
+  # titles - use the dataset attribute if available
+  if 'dataset' in da_mod.attrs: 
+      mod_title = da_mod.attrs['dataset']
+  else: 
+      mod_title = 'Model'
+
+  if 'dataset' in da_ref.attrs: 
+      ref_title = da_ref.attrs['dataset']
+  else: 
+      ref_title = 'Reference'
 
   # mod
   ax = axes[0]
@@ -126,10 +122,9 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
 
   fig.suptitle(f"{da_ref.attrs['long_name']} ({da_ref.name})", y=1);
   fig.tight_layout()
-  plt.show()
 
-  #fig.savefig(f"./plots/{region}_{experiment}_{ref_dataset}_timmean_bias.png")
-  return fig
+  if return_fig: 
+    return fig
 
 
 ##################################
