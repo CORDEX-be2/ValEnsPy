@@ -17,7 +17,7 @@ def remap_cdo(target_grid, ds, remap_method="bil", tempdir=None, output_path=Non
         The remap method to use.
     tempdir : str, optional
         The temporary directory to save the temporary files, by default None (uses /tmp).
-    output_file : bool, optional
+    output_path : bool, optional
         If True, the output file is saved to disk, by default False.
     
     Returns
@@ -53,4 +53,8 @@ def remap_cdo(target_grid, ds, remap_method="bil", tempdir=None, output_path=Non
         remap = remap.rename({"longitude": "lon"})
     if "latitude" in remap:
         remap = remap.rename({"latitude": "lat"})
+
+    # make sure lat and lon are sorted ascending
+    ds = ds.sortby('lat').sortby('lon')
+
     return remap
