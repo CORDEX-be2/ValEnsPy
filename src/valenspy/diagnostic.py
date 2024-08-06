@@ -18,7 +18,6 @@ class Diagnostic:
         diagnostic_function
             The function that applies a diagnostic to the data.
         plotting_function
-        plotting_function
             The function that visualizes the results of the diagnostic.
         name : str
             The name of the diagnostic.
@@ -27,9 +26,7 @@ class Diagnostic:
         """
         self.name = name
         self._description = description
-        self._description = description
         self.diagnostic_function = diagnostic_function
-        self.plotting_function = plotting_function
         self.plotting_function = plotting_function
 
     @abstractmethod
@@ -39,7 +36,6 @@ class Diagnostic:
         Parameters
         ----------
         data
-            The data to apply the diagnostic to. Data can be an xarray DataTree, Dataset or DataArray.
             The data to apply the diagnostic to. Data can be an xarray DataTree, Dataset or DataArray.
 
         Returns
@@ -194,7 +190,6 @@ class Ensemble2Ref(Diagnostic):
     ):
         """Initialize the Ensemble2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
-        super().__init__(diagnostic_function, plotting_function, name, description)
 
     def apply(self, dt: DataTree, ref, **kwargs):
         """Apply the diagnostic to the data.
@@ -202,9 +197,7 @@ class Ensemble2Ref(Diagnostic):
         Parameters
         ----------
         dt : DataTree
-        dt : DataTree
             The data to apply the diagnostic to.
-        ref : xr.DataSet or DataTree
         ref : xr.DataSet or DataTree
             The reference data to compare the data to.
 
@@ -212,8 +205,7 @@ class Ensemble2Ref(Diagnostic):
         -------
         DataTree or dict
             The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
-        DataTree or dict
-            The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
+        
         """
         # TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.
         return self.diagnostic_function(dt, ref, **kwargs)
@@ -223,9 +215,9 @@ class Ensemble2Ref(Diagnostic):
 
         Parameters
         ----------
-        data : xr.Dataset
+        data : xr.Dataset or xr.DataArray
             The data to plot.
-        ref : xr.Dataset
+        ref : xr.Dataset or xr.DataArray
             The reference data to compare the data to.
 
         Returns
@@ -294,6 +286,17 @@ class Ensemble2Ref(Diagnostic):
         )
 
 
+def _common_vars(ds1, ds2):
+    """Return the common variables in two datasets."""
+    return set(ds1.data_vars).intersection(set(ds2.data_vars))
+
+
+def _select_common_vars(ds1, ds2):
+    """Select the common variables in two datasets."""
+    common_vars = _common_vars(ds1, ds2)
+    return ds1[common_vars], ds2[common_vars]
+
+
 # =============================================================================
 # Pre-made diagnostics
 # =============================================================================
@@ -303,7 +306,7 @@ from valenspy.diagnostic_visualizations import *
 
 # Model2Self diagnostics
 DiurnalCycle = Model2Self(
-    diurnal_cycle, plot_diurnal_cycle, "Daily Cycle", "The diurnal cycle of the data."
+    diurnal_cycle, plot_diurnal_cycle, "Diurnal Cycle", "The diurnal cycle of the data."
 )
 TimeSeriesSpatialMean = Model2Self(
     time_series_spatial_mean,
@@ -327,6 +330,6 @@ TemporalBias = Model2Ref(
 DiurnalCycleBias = Model2Ref(
     diurnal_cycle_bias,
     plot_diurnal_cycle,
-    "Daily Cycle Bias",
+    "Diurnal Cycle Bias",
     "The diurnal cycle bias of the data compared to the reference.",
 )
