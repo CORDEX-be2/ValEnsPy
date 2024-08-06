@@ -58,6 +58,6 @@ def remap_cdo(target_grid, ds, remap_method="bil", tempdir=None, output_path=Non
         remap = remap.rename({"latitude": "lat"})
 
     # make sure lat and lon are sorted ascending
-    ds = ds.sortby("lat").sortby("lon")
+    remap = remap.sortby("lat").sortby("lon")
 
     return remap
