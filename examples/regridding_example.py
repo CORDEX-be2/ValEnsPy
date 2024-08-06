@@ -12,9 +12,9 @@ import cdo
 
 # ERA5 data
 manager = vp.InputManager(machine="hortense")
-ds_ref = manager.load_data(
+ds_era5 = manager.load_data(
     "ERA5",
-    "tas",
+    "tas, pr",
     period=[1995, 1995],
     freq="daily",
     region="europe",
@@ -23,19 +23,8 @@ ds_ref = manager.load_data(
 
 # CCLM data to be put into a input converter and manager
 ## CCLM input manager will produce the paths
-dataset_PATHS = load_yml("dataset_PATHS")
-model_directory = dataset_PATHS["hortense"]["CCLM"]
-mod_LOOKUP = load_yml(f"CCLM_lookup")
-
-# get CCLM variable corresponding to the requested variable using its look-up table
-mod_var = mod_LOOKUP["tas"]["mod_name"]
-
-# define the path
-directory = Path(model_directory + "EUR11_CO_TA_GC_TSO" + "/" + mod_var + "/")
-
-# define the CCLM files for the corresponding variable
-mod_files = list(directory.glob(mod_var + "_daymean.nc"))  # Se
-ds_mod = xr.open_mfdataset(mod_files, combine="by_coords", chunks="auto")
+manager = vp.InputManager(machine="hortense")
+ds_eobs = manager.load_data("EOBS",["tas", "pr"], path_identifiers = ["0.1deg",  "mean"])
 
 
 #################
@@ -53,9 +42,9 @@ gridfile = manager._get_file_paths(
 
 from valenspy.preprocessing_tasks.regrid import remap_cdo
 
-ds_mod_regrid = remap_cdo(gridfile, ds_mod, remap_method="bil")
+ds_eobs_regrid = remap_cdo(gridfile, ds_eobs, remap_method="con")
 
-ds_mod_regrid = ds_mod_regrid.rename({"T_2M": "tas"})
+
 #################
 # Plotting
 #################
