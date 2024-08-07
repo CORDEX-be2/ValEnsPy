@@ -1,7 +1,7 @@
 from pathlib import Path
 from valenspy.cf_checks import is_cf_compliant, cf_status
 from valenspy._utilities import load_yml
-from valenspy._unit_conversions import _determine_time_interval
+from valenspy._unit_conversions import convert_all_units_to_CF, _determine_time_interval
 import xarray as xr
 import pandas as pd
 import numpy as np
