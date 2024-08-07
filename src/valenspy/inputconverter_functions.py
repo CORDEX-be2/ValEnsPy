@@ -5,6 +5,7 @@ from valenspy._utilities import load_yml
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
+
 def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
     Convert the EOBS xarray netCDF to a CF compliant xarray Dataset
