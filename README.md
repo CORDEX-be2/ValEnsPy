@@ -22,4 +22,4 @@ and open the [ValEnsPy/docs/_build/index.html](docs/_build/index.html) file in y
 
 The package is structured as follows:
 
-![Package structure](docs/package_structure.png)
+![Package structure](docs/package_structure.png) 
