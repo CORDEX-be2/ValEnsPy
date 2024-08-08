@@ -14,6 +14,12 @@ def _set_global_attributes(ds: xr.Dataset, metadata_info):
     
     return ds
 
+def _rename_to_lon(ds: xr.Dataset, lon_name):
+    return ds.rename_vars({ds.lon.name: lon_name})
+
+def _rename_to_lat(ds: xr.Dataset, lat_name):
+    return ds.rename_vars({ds.lat.name: lat_name})
+
 def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
     Convert the EOBS xarray netCDF to a CF compliant xarray Dataset
@@ -42,6 +48,13 @@ def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
     ds = _set_global_attributes(ds, metadata_info)
+    
+    # rename dimensions if not yet renamed
+    if "lon" not in ds.coords:
+        ds = ds.rename({"longitude": "lon"})
+    if "lat" not in ds.coords:
+        ds = ds.rename({"latitude": "lat"})
+
 
     # Soft check for CF compliance
     cf_status(ds)
@@ -76,6 +89,12 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
     ds = _set_global_attributes(ds, metadata_info)
+
+    # rename dimensions if not yet renamed
+    if "lon" not in ds.coords:
+        ds = ds.rename({"longitude": "lon"})
+    if "lat" not in ds.coords:
+        ds = ds.rename({"latitude": "lat"})
     
     cf_status(ds)
 
@@ -110,6 +129,12 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
     ds = _set_global_attributes(ds, metadata_info)
+
+    # rename dimensions if not yet renamed
+    if "lon" not in ds.coords:
+        ds = ds.rename({"longitude": "lon"})
+    if "lat" not in ds.coords:
+        ds = ds.rename({"latitude": "lat"})
     
     cf_status(ds)
 
