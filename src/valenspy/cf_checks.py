@@ -2,8 +2,10 @@
 import xarray as xr
 from typing import Union, List
 from valenspy._utilities import load_yml, load_xarray_from_data_sources
+from valenspy._utilities import load_yml, load_xarray_from_data_sources
 from pathlib import Path
 
+CORDEX_VARIABLES = load_yml("CORDEX_variables")
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
 # Expected metadata attributes
@@ -21,6 +23,7 @@ def cf_status(netCDF: Union[str, Path, xr.Dataset]) -> None:
         The netCDF file to check or the xarray dataset to check
     """
 
+    ds = load_xarray_from_data_sources(netCDF)
     ds = load_xarray_from_data_sources(netCDF)
 
     print(
@@ -94,6 +97,7 @@ def is_cf_compliant(netCDF: Union[str, Path, xr.Dataset], verbose=False) -> bool
         True
 
     """
+    ds = load_xarray_from_data_sources(netCDF)
     ds = load_xarray_from_data_sources(netCDF)
 
     var_meta_data_ok = all(

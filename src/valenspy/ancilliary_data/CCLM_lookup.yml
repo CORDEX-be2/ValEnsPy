@@ -26,7 +26,7 @@ ps:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
-psl:
+psl: 
   mod_name: PMSL
   mod_standard_name: air_pressure_at_mean_sea_level
   mod_long_name: mean sea level pressure
@@ -34,7 +34,7 @@ psl:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
-zmla:
+zmla: 
   mod_name: HPBL
   mod_standard_name: atmosphere_boundary_layer_thickness
   mod_long_name: Height of boundary layer
@@ -58,6 +58,7 @@ clt:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
+
 huss:
   mod_name: QV
   mod_standard_name: specific_humidity
@@ -66,10 +67,35 @@ huss:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
+cll: 
+  mod_name: CLCL
+  mod_standard_name: low_type_cloud_area_fraction
+  mod_long_name: low cloud cover
+  mod_units: '1'
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
+clm: 
+  mod_name: CLCM
+  mod_standard_name: medium_type_cloud_area_fraction
+  mod_long_name: medium cloud cover
+  mod_units: '1'
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
+clh: 
+  mod_name: CLCH
+  mod_standard_name: high_type_cloud_area_fraction
+  mod_long_name: low cloud cover
+  mod_units: '1'
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
+
 
 # doublecheck
 
-hfss:
+hfss: 
   mod_name: SHFL_S
   mod_standard_name: surface_downward_sensible_heat_flux
   mod_long_name: surface sensible heat flux
@@ -77,7 +103,7 @@ hfss:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
-hfls:
+hfls: 
   mod_name: LHFL_S
   mod_standard_name: surface_downward_latent_heat_flux
   mod_long_name: surface latent heat flux
@@ -85,7 +111,7 @@ hfls:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
-ts:
+ts: 
   mod_name: T_S
   mod_standard_name: soil surface temperature
   mod_long_name: soil surface temperature
@@ -94,17 +120,36 @@ ts:
   mod_cell_methods: 'time: point'
 
 
+prw:
+  mod_name: TQV
+  mod_standard_name: atmosphere_mass_content_of_water_vapor
+  mod_long_name: precipitable water
+  mod_units: kg m-2
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
+clivi: 
+  mod_name: TQI
+  mod_standard_name: atmosphere_mass_content_of_cloud_ice
+  mod_long_name: vertical integrated cloud ice
+  mod_units: kg m-2
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
+
+
+
+  
 # to add cclm variable
 
-tasmax:
+tasmax: 
 
 
-tasmin:
+tasmin: 
 
 
 # to add cordex variable
-
-
+ 
+ 
   mod_name: Z0
   mod_standard_name: surface_roughness_length
   mod_long_name: surface roughness length
@@ -149,12 +194,7 @@ tasmin:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
-  mod_name: TQV
-  mod_standard_name: atmosphere_mass_content_of_water_vapor
-  mod_long_name: precipitable water
-  mod_units: kg m-2
-  mod_grid_mapping: rotated_pole
-  mod_cell_methods: 'time: point'
+
 
   mod_name: TQC
   mod_standard_name: atmosphere_mass_content_of_cloud_liquid_water
@@ -163,12 +203,7 @@ tasmin:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
 
-  mod_name: TQI
-  mod_standard_name: atmosphere_mass_content_of_cloud_ice
-  mod_long_name: vertical integrated cloud ice
-  mod_units: kg m-2
-  mod_grid_mapping: rotated_pole
-  mod_cell_methods: 'time: point'
+
 
   mod_name: TQG
   mod_standard_name: atmosphere_mass_content_of_graupel
@@ -192,12 +227,7 @@ tasmin:
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: mean'
 
-  mod_name: CLCL
-  mod_standard_name: low_type_cloud_area_fraction
-  mod_long_name: low cloud cover
-  mod_units: '1'
-  mod_grid_mapping: rotated_pole
-  mod_cell_methods: 'time: point'
+
 
   mod_name: FRESHSNW
   mod_long_name: freshness of snow
@@ -225,3 +255,4 @@ tasmin:
   mod_units: kg kg-1
   mod_grid_mapping: rotated_pole
   mod_cell_methods: 'time: point'
+
