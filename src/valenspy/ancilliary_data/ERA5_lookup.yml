@@ -108,9 +108,9 @@ ps:
     raw_units: Pa
 
 psl:
-    raw_name: mslp
-    raw_long_name: mean_sea_level_pressure
-    raw_units: Pa
+    obs_name: msl
+    obs_long_name: mean_sea_level_pressure
+    obs_units: Pa
 
 zmla:
     raw_name: blh

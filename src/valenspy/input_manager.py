@@ -10,6 +10,7 @@ from valenspy._utilities import load_yml
 DATASET_PATHS = load_yml("dataset_PATHS")
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
+
 class InputManager:
     def __init__(self, machine):
         self.machine = machine
@@ -187,7 +188,7 @@ class InputManager:
         else:
             dataset_name_lookup = dataset_name
 
-        raw_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
+        obs_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
 
         dataset_path = Path(self.dataset_paths[dataset_name])
         file_paths = []
