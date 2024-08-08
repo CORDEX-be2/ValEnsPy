@@ -27,7 +27,6 @@ class InputConverter:
         self.converter = converter
 
     def convert_input(self, data_sources, metadata_info=None):
-    def convert_input(self, data_sources, metadata_info=None):
         """Convert the input file(s)/xarray dataset to CF convention.
 
         Parameters
@@ -42,7 +41,6 @@ class InputConverter:
         xarray.Dataset
             An xarray dataset in CF convention.
         """
-        ds = load_xarray_from_data_sources(data_sources)
         ds = load_xarray_from_data_sources(data_sources)
         return self.converter(ds, metadata_info)
 
