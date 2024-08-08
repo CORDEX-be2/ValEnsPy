@@ -1,15 +1,10 @@
 # Create functionality which checks if the an xarray dataset is a ValEnsPy CF compliant dataset
 import xarray as xr
-from yaml import safe_load
 from typing import Union, List
-
-# Get the current file directory and load the variables.yml file
+from valenspy._utilities import load_yml, load_xarray_from_data_sources
 from pathlib import Path
 
-files = Path(__file__).resolve().parent
-
-with open(files / "ancilliary_data" / "CORDEX_variables.yml") as file:
-    CORDEX_VARIABLES = safe_load(file)
+CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
 # Expected metadata attributes
 MAIN_METADATA = ["Conventions", "history"]
@@ -26,7 +21,7 @@ def cf_status(netCDF: Union[str, Path, xr.Dataset]) -> None:
         The netCDF file to check or the xarray dataset to check
     """
 
-    ds = _load_xarray(netCDF)
+    ds = load_xarray_from_data_sources(netCDF)
 
     print(
         "The file is {status}ValEnsPy CF compliant.".format(
@@ -99,7 +94,7 @@ def is_cf_compliant(netCDF: Union[str, Path, xr.Dataset], verbose=False) -> bool
         True
 
     """
-    ds = _load_xarray(netCDF)
+    ds = load_xarray_from_data_sources(netCDF)
 
     var_meta_data_ok = all(
         [
@@ -134,40 +129,6 @@ def is_cf_compliant(netCDF: Union[str, Path, xr.Dataset], verbose=False) -> bool
         and cordex_vars_data_ok
         and time_dimension_ok
     )
-
-
-def _load_xarray(netCDF: Union[str, Path, xr.Dataset]):
-    """
-    Load an xarray dataset from a file or return the dataset if it is already an xarray dataset.
-
-    Parameters
-    ----------
-    netCDF : Union[str, Path, xr.Dataset]
-        The netCDF file to load or the xarray dataset
-
-    Returns
-    -------
-    xr.Dataset
-        The xarray dataset
-
-    Errors
-    ------
-    IOError
-        If the file does not have the correct extension
-    TypeError
-        If the input is not a valid type - str, Path or xr.Dataset
-    """
-
-    if isinstance(netCDF, str) or isinstance(netCDF, Path):
-        if _check_file_extension(netCDF):
-            ds = xr.open_dataset(netCDF)
-        else:
-            raise IOError("The file does not have the correct extension")
-    elif isinstance(netCDF, xr.Dataset):
-        ds = netCDF
-    else:
-        raise TypeError("The input is not a valid type")
-    return ds
 
 
 def _check_time_dimension(ds: xr.Dataset):
@@ -248,11 +209,3 @@ def _check_variable_metadata(da: xr.DataArray):
     """
 
     return all([attr in da.attrs for attr in VARIABLE_METADATA])
-
-
-def _check_file_extension(file: Union[str, Path]) -> bool:
-    """Check if the file extension is netcdf (.nc)"""
-    if isinstance(file, str):
-        return file.endswith(".nc")
-    else:
-        return file.suffix == ".nc"
