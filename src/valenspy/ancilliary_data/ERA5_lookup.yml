@@ -108,9 +108,9 @@ ps:
     raw_units: Pa
 
 psl:
-    obs_name: msl
-    obs_long_name: mean_sea_level_pressure
-    obs_units: Pa
+    raw_name: msl
+    raw_long_name: mean_sea_level_pressure
+    raw_units: Pa
 
 zmla:
     raw_name: blh
@@ -123,32 +123,18 @@ clt:
     raw_units: 1
 
 cll:
-    obs_name: lcc
-    obs_long_name: low_cloud_cover
-    obs_units: 1
+    raw_name: lcc
+    raw_long_name: low_cloud_cover
+    raw_units: 1
 clm:
-    obs_name: mcc
-    obs_long_name: medium_cloud_cover
-    obs_units: 1
+    raw_name: mcc
+    raw_long_name: medium_cloud_cover
+    raw_units: 1
 
 clh:
-    obs_name: hcc
-    obs_long_name: high_cloud_cover
-    obs_units: 1
-
-cll:
-    obs_name: lcc
-    obs_long_name: low_cloud_cover
-    obs_units: 1
-clm:
-    obs_name: mcc
-    obs_long_name: medium_cloud_cover
-    obs_units: 1
-
-clh:
-    obs_name: hcc
-    obs_long_name: high_cloud_cover
-    obs_units: 1
+    raw_name: hcc
+    raw_long_name: high_cloud_cover
+    raw_units: 1
 
 rsdt:
     raw_name: tisr
