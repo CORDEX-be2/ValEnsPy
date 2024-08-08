@@ -58,8 +58,6 @@ class Diagnostic:
         Figure :
             The figure representing the diagnostic.
         """
-        if ax is None:
-            ax = plt.gca()
         if isinstance(result, tuple):
             ax = self.plotting_function(*result, ax=ax, **kwargs)
         else:
