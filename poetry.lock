@@ -308,15 +308,30 @@ numpy-output = ["netCDF4"]
 xarray-output = ["xarray"]
 
 [[package]]
+name = "cdo"
+version = "1.6.1"
+description = "python bindings to CDO"
+optional = false
+python-versions = ">=2.7.0"
+files = [
+    {file = "cdo-1.6.1-py3-none-any.whl", hash = "sha256:772abda398b6a102ff55be19fa7154c65af0bf2132d133bdea651e57a5ba895f"},
+]
+
+[package.dependencies]
+packaging = "*"
+six = "*"
+
+[package.extras]
+numpy-output = ["netCDF4"]
+xarray-output = ["xarray"]
+
+[[package]]
 name = "certifi"
 version = "2024.6.2"
 description = "Python package for providing Mozilla's CA Bundle."
 optional = false
 python-versions = ">=3.6"
-files = [
-    {file = "certifi-2024.6.2-py3-none-any.whl", hash = "sha256:ddc6c8ce995e6987e7faf5e3f1b02b302836a0e5d98ece18392cb1a36c72ad56"},
-    {file = "certifi-2024.6.2.tar.gz", hash = "sha256:3cd43f1c6fa7dedc5899d69d3ad0398fd018ad1a17fba83ddaf78aa46c747516"},
-]
+version = "2024.6.2"
 
 [[package]]
 name = "cf-xarray"
@@ -4180,4 +4195,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "736ebd565eb6a400294a38428ac68114ccbe73960a033a6e1b3beacbb34e1350"
+content-hash = "52f4dbf42292a2fe40e1c361240298d0083c84af6bb1fd0b9f78affb4b213a2b"

@@ -136,6 +136,20 @@ clh:
     obs_long_name: high_cloud_cover
     obs_units: 1
 
+cll:
+    obs_name: lcc
+    obs_long_name: low_cloud_cover
+    obs_units: 1
+clm:
+    obs_name: mcc
+    obs_long_name: medium_cloud_cover
+    obs_units: 1
+
+clh:
+    obs_name: hcc
+    obs_long_name: high_cloud_cover
+    obs_units: 1
+
 rsdt:
     raw_name: tisr
     raw_long_name: toa_incident_solar_radiation

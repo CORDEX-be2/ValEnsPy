@@ -10,7 +10,6 @@ from valenspy._utilities import load_yml
 DATASET_PATHS = load_yml("dataset_PATHS")
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
-
 class InputManager:
     def __init__(self, machine):
         self.machine = machine
@@ -140,6 +139,7 @@ class InputManager:
             if len(period) == 1:
                 period = int(period[0])
 
+
         if self._is_valid_dataset_name(dataset_name):
             files = self._get_file_paths(
                 dataset_name,
@@ -187,6 +187,8 @@ class InputManager:
             dataset_name_lookup = "ERA5"
         else:
             dataset_name_lookup = dataset_name
+
+        obs_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
 
         obs_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
 
