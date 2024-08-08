@@ -245,6 +245,29 @@ def _convert_m_to_kg_m2s(da: xr.DataArray):
 
     return da
 
+def _convert_kg_m2s_to_mh(da: xr.DataArray):
+    """
+    Convert values in xarray DataArray from kg m^-2 s^-1 to mm hr^-1
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The xarray DataArray to convert
+
+    Returns
+    -------
+    xr.DataArray
+        The  converted xarray DataArray
+    """
+
+    # do conversion
+    da = da * 3600 / 1000  # kg m^-2 s^-1 to mm hr^-1
+
+    # update units attribute
+    da.attrs["units"] = "mm hr-1"
+
+    return da
+
     # Convert J/m²/hr to W/m²
     w_m2 = j_m2_hr / seconds_per_hour
 
