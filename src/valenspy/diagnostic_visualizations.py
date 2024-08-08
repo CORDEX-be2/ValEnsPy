@@ -4,6 +4,10 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
 
+import cartopy.crs as ccrs
+import cartopy.feature as cfeature
+import warnings
+
 
 ###################################
 # Model2Self diagnostic functions #

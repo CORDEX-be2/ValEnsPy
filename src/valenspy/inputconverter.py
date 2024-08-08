@@ -2,7 +2,6 @@ from pathlib import Path
 from typing import Callable, Union
 import xarray as xr
 from valenspy._utilities import load_xarray_from_data_sources
-from valenspy._utilities import load_xarray_from_data_sources
 from valenspy.inputconverter_functions import (
     EOBS_to_CF,
     ERA5_to_CF,
@@ -28,13 +27,10 @@ class InputConverter:
         self.converter = converter
 
     def convert_input(self, data_sources, metadata_info=None):
-    def convert_input(self, data_sources, metadata_info=None):
         """Convert the input file(s)/xarray dataset to CF convention.
 
         Parameters
         ----------
-        data_sources : Path or list(Path) or xarray.Dataset
-            The input file or list of input files or an xarray dataset to convert.
         data_sources : Path or list(Path) or xarray.Dataset
             The input file or list of input files or an xarray dataset to convert.
 
