@@ -10,7 +10,6 @@ class Diagnostic:
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None
-        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Diagnostic.
 
@@ -45,9 +44,6 @@ class Diagnostic:
             The data after applying the diagnostic either as a DataTree, Dataset, DataArray, Scalar, or a pandas DataFrame.
         """
         pass
-
-    def plot(self, result, ax=None, **kwargs):
-        """Plot the diagnostic.
 
     def plot(self, result, ax=None, **kwargs):
         """Plot the diagnostic.
@@ -144,7 +140,6 @@ class Model2Ref(Diagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None
         self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Model2Ref diagnostic."""
