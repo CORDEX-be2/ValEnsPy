@@ -26,6 +26,7 @@ def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     obsdata_name = "EOBS"
 
     obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
+    obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
     # make EOBS CF compliant
 
@@ -127,6 +128,7 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
     obsdata_name = "ERA5"
 
     obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
+    obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
     # make observation CF compliant
     for var_obs in ds.data_vars:
@@ -185,7 +187,13 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
             if "lat" not in ds[var].coords:
                 ds = ds.rename({"latitude": "lat"})
 
-            # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?
+            # make sure lat and lon are sorted ascending
+            ds = ds.sortby('lat').sortby('lon')
+            
+            # bugfix ERA5 (found in clh): replace valid_time by time
+            if "time" not in ds: 
+                ds = ds.rename({'valid_time':'time'})
+            # convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?            
             ds[var]["time"] = pd.to_datetime(ds[var].time)
 
             # additional attributes at data array level.
@@ -238,6 +246,7 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> Path:
 
     obsdata_name = "ERA5-Land"
 
+    obs_LOOKUP = load_yml(f"ERA5_lookup")
     obs_LOOKUP = load_yml(f"ERA5_lookup")
 
     # make observation CF compliant
@@ -352,6 +361,7 @@ def CLIMATE_GRID_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     obsdata_name = "CLIMATE_GRID"
 
+    obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
     obs_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
     # make observation CF compliant
