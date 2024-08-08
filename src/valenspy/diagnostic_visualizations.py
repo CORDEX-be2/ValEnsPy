@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
+from valenspy._regions import region_bounds
 
 # make sure xarray passes the attributes when doing operations - change default for this
 xr.set_options(keep_attrs=True)
@@ -24,7 +25,7 @@ def plot_time_series(data: xr.DataArray, ax, **kwargs):
     ax.set_title("Time Series")
     return ax
 
-def plot_map(da: xr.DataArray, ax=None, title=None, **kwargs):
+def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
     
     """
     Plots a simple map of a 2D xarray DataArray.
@@ -74,8 +75,8 @@ def plot_map(da: xr.DataArray, ax=None, title=None, **kwargs):
         # Set the title
         ax.set_title(f"{da.attrs.get('long_name', 'Data')} ({da.name})")
 
-    # Add coastline and country borders
-    _add_features(ax)
+    # Add coastline and country borders and region selection if region is provided
+    _add_features(ax, region=region)
 
     return ax
 
@@ -85,22 +86,25 @@ def plot_map(da: xr.DataArray, ax=None, title=None, **kwargs):
 
 
 
-def plot_spatial_bias(da: xr.DataArray, ax=False, **kwargs):
+def plot_spatial_bias(da: xr.DataArray, ax=None, region = None, **kwargs):
     """Plot the spatial bias of the data compared to the reference."""
 
     # if no ax element is passed, create one
-    if not ax: 
-        fig , ax= plt.subplots(subplot_kw={'projection': ccrs.PlateCarree()})
+    if ax is None: 
+        fig , ax = plt.subplots(subplot_kw={'projection': ccrs.PlateCarree()})
     
 
     title = f"Mean bias of {da.long_name}"
     cmap = "coolwarm"
     plot_map(da, ax=ax, title=title, cmap = cmap)
+    ax.set_title(title)
+    # Add coastline and country borders and region selection if region is provided
+    _add_features(ax, region=region)
 
     return ax
 
 
-def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff: xr.DataArray, return_fig=False): 
+def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff: xr.DataArray, region=None, return_fig=False): 
 
   """
   Plots comparison maps for model data, reference data, and their difference.
@@ -109,6 +113,7 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   da_mod (xarray.DataArray): The model data to be plotted: 2D lat
   da_ref (xarray.DataArray): The reference data to be plotted.
   da_diff (xarray.DataArray): The difference (model - reference) to be plotted.
+  region (str)              : string of the region to determine the plotting extend.
   return_fig (boolean)      : determines whether the figure object is returned, default False
 
   Returns (optionally):
@@ -159,14 +164,14 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   da_mod.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs)
   ax.set_title('')
   ax.set_title(mod_title, loc='right')
-  _add_features(ax)
+  _add_features(ax, region=region)
 
   # ref
   ax = axes[1]
   da_ref.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs)
   ax.set_title('')
   ax.set_title(ref_title, loc='right')
-  _add_features(ax)
+  _add_features(ax, region=region)
 
   # bias
   ax = axes[2]
@@ -174,7 +179,7 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   da_diff.plot(ax=ax, cmap = 'coolwarm', vmax = diff_bound, vmin = - diff_bound, cbar_kwargs=cbar_kwargs)
   ax.set_title('')
   ax.set_title(f"{mod_title} - {ref_title}", loc='right')
-  _add_features(ax)
+  _add_features(ax, region=region)
 
   fig.suptitle(f"{da_ref.attrs['long_name']} ({da_ref.name})", y=1);
   fig.tight_layout()
@@ -190,7 +195,7 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
 
 
 # Define a function to add borders, coastlines to the axes
-def _add_features(ax):
+def _add_features(ax, region=None):
 
     """
     Adds geographical features to a given cartopy GeoAxes.
@@ -201,6 +206,7 @@ def _add_features(ax):
     Features Added:
     - Borders: Adds country borders with a dotted linestyle.
     - Coastlines: Adds coastlines with a specified linewidth and color.
+    - extent: if region is given, cut out the plotting extent based on the lat and lon bounds given. 
 
     Notes:
     - The function can be extended to set the extent of the plot by uncommenting and modifying the 
@@ -215,5 +221,9 @@ def _add_features(ax):
 
     ax.add_feature(cfeature.BORDERS, linestyle=':')
     ax.add_feature(cfeature.COASTLINE, linewidth = 0.5, color = 'k')
-    #ax.set_extent([lon_bounds[0], lon_bounds[1], lat_bounds[0], lat_bounds[1]], crs=ccrs.PlateCarree())
+
+    if not region is None: 
+        lon_bounds = region_bounds[region]['lon_bounds']
+        lat_bounds = region_bounds[region]['lat_bounds']
+        ax.set_extent([lon_bounds[0], lon_bounds[1], lat_bounds[0], lat_bounds[1]], crs=ccrs.PlateCarree())
 
