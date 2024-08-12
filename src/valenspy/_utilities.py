@@ -2,16 +2,15 @@ from pathlib import Path
 import xarray as xr
 from yaml import safe_load
 
-
 def load_xarray_from_data_sources(data_sources):
     """Return a xarray dataset from an list of input files (Path objects), a single input file (Path object) or a xarray dataset.
-    This utility function enables the user to input different types of inputs which are then converted to a xarray dataset.
-
+    This utility function enables the user to input different types of inputs which are then converted to a xarray dataset. 
+    
     Parameters
     ----------
     inputs : Path or list(Path) or xarray.Dataset
         The input file or list of input files to convert.
-
+    
     Returns
     -------
     xarray.Dataset
@@ -28,15 +27,14 @@ def load_xarray_from_data_sources(data_sources):
         )
     return ds
 
-
 def load_yml(yml_name):
     """Load a yaml file into a dictionary from the ancilliary_data folder. The yaml file should be in the ancilliary_data folder.
-
+    
     Parameters
     ----------
     yml_name : str
         The name of the yaml file to load.
-
+    
     Returns
     -------
     dict
