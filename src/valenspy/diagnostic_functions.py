@@ -1,6 +1,6 @@
 import xarray as xr
 
-# make ure attributes are passed through
+# make sure attributes are passed through
 xr.set_options(keep_attrs=True)
 
 ###################################

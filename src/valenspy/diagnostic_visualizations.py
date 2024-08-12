@@ -20,10 +20,36 @@ def plot_diurnal_cycle(data: xr.DataArray, ax, **kwargs):
     return ax
 
 
-def plot_time_series(data: xr.DataArray, ax, **kwargs):
-    data.plot(ax=ax, **kwargs)
-    ax.set_title("Time Series")
+def plot_time_series(da: xr.DataArray, ax=None, **kwargs):
+    """
+    Plot a time series from an xarray DataArray.
+
+    Parameters
+    ----------
+    da : xarray.DataArray
+        The DataArray containing the time series data to plot.
+    ax : matplotlib.axes.Axes, optional
+        The axes on which to plot the time series. If None, a new figure and axes are created.
+    **kwargs : dict
+        Additional keyword arguments passed to `xarray.DataArray.plot`.
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        The axes with the plotted time series.
+    """
+    if ax is None:
+        fig, ax = plt.subplots()
+    
+    # Plot the data array on the provided or newly created axes
+    da.plot(ax=ax, **kwargs)
+    
+    # Set the title based on the 'long_name' attribute
+    ax.set_title(da.attrs.get('long_name', ''), loc='left')
+    ax.set_title(' ', loc='center')
+
     return ax
+
 
 def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
     
@@ -186,6 +212,49 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
 
   if return_fig: 
     return fig
+
+
+def plot_time_series_mod_ref(da_mod: xr.DataArray, da_ref: xr.DataArray, ax=None, title: str = None, **kwargs):
+    """
+    Plot time series for both model and reference datasets on the same axes.
+
+    Parameters
+    ----------
+    da_mod : xarray.DataArray
+        The DataArray containing the model time series data.
+    da_ref : xarray.DataArray
+        The DataArray containing the reference time series data.
+    ax : matplotlib.axes.Axes, optional
+        The axes on which to plot the time series. If None, a new figure and axes are created.
+    title : str, optional
+        The title for the plot. If None, a default title based on `da_mod` attributes is used.
+    **kwargs : dict
+        Additional keyword arguments passed to `xarray.DataArray.plot`.
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        The axes with the plotted time series.
+    """
+    if ax is None:
+        fig, ax = plt.subplots()
+    
+    # Plot the reference data array on the axes
+    da_ref.plot(ax=ax, label=da_ref.attrs.get("dataset", "Reference"), color='k')
+    
+    # Plot the model data array on the same axes with some transparency
+    da_mod.plot(ax=ax, label=da_mod.attrs.get("dataset", "Model"), alpha=0.5, **kwargs)
+    
+    # Add a legend without a frame
+    ax.legend(frameon=False)
+    
+    # Set the title, either the provided one or based on the model data attributes
+    if title is None:
+        ax.set_title(f"{da_mod.attrs.get('long_name', 'Data')} ({da_mod.name})")
+    else:
+        ax.set_title(title)
+
+    return ax
 
 
 ##################################
