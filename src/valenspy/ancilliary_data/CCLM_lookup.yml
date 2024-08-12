@@ -150,10 +150,20 @@ tsl:
 # to add cclm variable
 
 tasmax:
-
+  mod_name: T_2M
+  mod_standard_name: air_temperature
+  mod_long_name: 2m temperature max
+  mod_units: K
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
 
 tasmin:
-
+  mod_name: T_2M
+  mod_standard_name: air_temperature
+  mod_long_name: 2m temperature min
+  mod_units: K
+  mod_grid_mapping: rotated_pole
+  mod_cell_methods: 'time: point'
 
 # to add cordex variable
 

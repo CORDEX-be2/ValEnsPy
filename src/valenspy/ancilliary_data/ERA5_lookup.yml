@@ -156,13 +156,13 @@ prhmax:
     obs_units: m/hr
 
 tasmax:
-    obs_name:
-    obs_long_name: 2m_temperature_max
+    obs_name: t2m
+    obs_long_name: 2m_temperature
     obs_units: K
 
 tasmin:
-    obs_name:
-    obs_long_name: 2m_temperature_min
+    obs_name: t2m
+    obs_long_name: 2m_temperature
     obs_units: K
 
 sfcWindmax:
