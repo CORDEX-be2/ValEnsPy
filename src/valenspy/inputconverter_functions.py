@@ -55,6 +55,8 @@ def EOBS_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     if "lat" not in ds.coords:
         ds = ds.rename({"latitude": "lat"})
 
+    # make sure lat and lon are sorted ascending
+    ds = ds.sortby('lat').sortby('lon')
 
     # Soft check for CF compliance
     cf_status(ds)
@@ -95,7 +97,10 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
         ds = ds.rename({"longitude": "lon"})
     if "lat" not in ds.coords:
         ds = ds.rename({"latitude": "lat"})
-    
+
+    # make sure lat and lon are sorted ascending
+    ds = ds.sortby('lat').sortby('lon')
+
     cf_status(ds)
 
     return ds
@@ -135,6 +140,9 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
         ds = ds.rename({"longitude": "lon"})
     if "lat" not in ds.coords:
         ds = ds.rename({"latitude": "lat"})
+    
+    # make sure lat and lon are sorted ascending
+    ds = ds.sortby('lat').sortby('lon')    
     
     cf_status(ds)
 
