@@ -18,7 +18,6 @@ class Diagnostic:
         diagnostic_function
             The function that applies a diagnostic to the data.
         plotting_function
-        plotting_function
             The function that visualizes the results of the diagnostic.
         name : str
             The name of the diagnostic.
@@ -27,9 +26,7 @@ class Diagnostic:
         """
         self.name = name
         self._description = description
-        self._description = description
         self.diagnostic_function = diagnostic_function
-        self.plotting_function = plotting_function
         self.plotting_function = plotting_function
 
     @abstractmethod
@@ -39,7 +36,6 @@ class Diagnostic:
         Parameters
         ----------
         data
-            The data to apply the diagnostic to. Data can be an xarray DataTree, Dataset or DataArray.
             The data to apply the diagnostic to. Data can be an xarray DataTree, Dataset or DataArray.
 
         Returns
@@ -55,10 +51,12 @@ class Diagnostic:
         Parameters
         ----------
         result :
+        result :
             The output of the diagnostic function.
 
         Returns
         -------
+        Figure :
         Figure :
             The figure representing the diagnostic.
         """
@@ -73,7 +71,6 @@ class Diagnostic:
         """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
         return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
 
-
 class Model2Self(Diagnostic):
     """A class representing a diagnostic that compares a model to itself."""
 
@@ -97,64 +94,18 @@ class Model2Self(Diagnostic):
             The data after applying the diagnostic.
         """
         return self.diagnostic_function(ds, **kwargs)
-
-
-class Model2Ref(Diagnostic):
-    """A class representing a diagnostic that compares a model to a reference."""
-
-    def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None
-    ):
-        """Initialize the Model2Ref diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description)
-
-    def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):
-        """Apply the diagnostic to the data.
-
-        Parameters
-        ----------
-        ds : xr.Dataset
-            The data to apply the diagnostic to.
-        ref : xr.Dataset
-            The reference data to compare the data to.
-
-        Returns
-        -------
-        xr.Dataset
-            The data after applying the diagnostic.
-        """
-        return self.diagnostic_function(ds, ref, **kwargs)
+        if ax is None:
+            ax = plt.gca()
+        if isinstance(result, tuple):
+            ax = self.plotting_function(*result, ax=ax, **kwargs)
+        else:
+            ax = self.plotting_function(result, ax=ax, **kwargs)
+        return ax
 
     @property
     def description(self):
         """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
         return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
-
-
-class Model2Self(Diagnostic):
-    """A class representing a diagnostic that compares a model to itself."""
-
-    def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None
-    ):
-        """Initialize the Model2Self diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description)
-
-    def apply(self, ds: xr.Dataset, **kwargs):
-        """Apply the diagnostic to the data.
-
-        Parameters
-        ----------
-        ds : xr.Dataset or xr.DataArray
-            The data to apply the diagnostic to.
-
-        Returns
-        -------
-        xr.Dataset or xr.DataArray
-            The data after applying the diagnostic.
-        """
-        return self.diagnostic_function(ds, **kwargs)
-
 
 class Model2Ref(Diagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
@@ -170,19 +121,23 @@ class Model2Ref(Diagnostic):
 
         Parameters
         ----------
-        ds : xr.Dataset or xr.DataArray
+        ds : xr.Dataset
             The data to apply the diagnostic to.
-        ref : xr.Dataset or xr.DataArray
+        ref : xr.Dataset
             The reference data to compare the data to.
 
         Returns
         -------
-        xr.Dataset or xr.DataArray
+        xr.Dataset
             The data after applying the diagnostic.
         """
         ds, ref = _select_common_vars(ds, ref)
         return self.diagnostic_function(ds, ref, **kwargs)
 
+    @property
+    def description(self):
+        """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
+        return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
 
 class Ensemble2Ref(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
