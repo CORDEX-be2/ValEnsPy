@@ -156,13 +156,13 @@ prhmax:
     raw_units: m/hr
 
 tasmax:
-    raw_name: t2m
-    raw_long_name: 2m_temperature
+    raw_name:
+    raw_long_name: 2m_temperature_max
     raw_units: K
 
 tasmin:
-    obs_name: t2m
-    raw_long_name: 2m_temperature
+    raw_name:
+    raw_long_name: 2m_temperature_min
     raw_units: K
 
 sfcWindmax:
@@ -170,24 +170,14 @@ sfcWindmax:
     raw_long_name: 10m_w_component_of_wind_max
     raw_units: m/s
 
-
-
 # is cordex unit correct?
 wsgsmax:
     raw_name: 10fg
     raw_long_name: 10m_wind_gust_since_previous_post_processing_max
     raw_units: m/s
 
-
 # mrso is total soil moisture content in CORDEX, not corresponding to volumetric_soil_water of first layer + check units!
 mrso:
-    raw_name: swvl1
+    raw_name:
     raw_long_name: volumetric_soil_water_layer_1
-    raw_units: m**3 m**-3
-
-
-# soil temperature # as tsl includes the soil temperature in 3D, of all soil layers
-tsl: 
-    raw_name: stl1, stl2, stl3, stl4
-    raw_long_name: soil_temperature_level_1, soil_temperature_level_2, soil_temperature_level_3, soil_temperature_level_4
-    raw_units: K
+    raw_units: m
