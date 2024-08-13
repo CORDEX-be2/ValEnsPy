@@ -258,38 +258,3 @@ def ALARO_K_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     cf_status(ds)
 
     return ds
-
-# helper functions - can be moved to more appropriate place
-
-def _determine_time_interval(da: xr.DataArray):
-    """
-    Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances.
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray with time axis to check the time interval
-
-    Returns
-    -------
-    freq : string
-        The frequency string containing "hourly, daily, monthly or yearly"
-    """
-
-    diff = da.time.diff(dim="time").values[0]
-
-    # Check for exact differences
-    if diff == np.timedelta64(1, "h"):
-        freq = "hourly"
-    elif diff == np.timedelta64(1, "D"):
-        freq = "daily"
-    elif diff == np.timedelta64(1, "M"):
-        freq = "monthly"
-    elif diff == np.timedelta64(1, "Y"):
-        freq = "yearly"
-    else:
-        return (
-            "Difference does not match exact hourly, daily, monthly, or yearly units."
-        )
-
-    return freq
