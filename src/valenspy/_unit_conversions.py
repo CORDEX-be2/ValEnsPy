@@ -43,8 +43,7 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
         "m/hr": _convert_m_to_kg_m2s,
         "J/m^2": _convert_J_m2_to_W_m2,
         "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
-        "1": _convert_fraction_to_percent,
-
+        "1": _convert_fraction_to_percent
     }
 
     # Key: The unit of the raw data
@@ -59,7 +58,7 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 
         if var:  # Dont processes variables that are not in the lookup table.
 
-            # rename the variable anyway
+            # rename variable to CORDEX variable name
             ds = ds.rename_vars({raw_var: var})
             
             # convert units - based on the raw units
@@ -70,8 +69,7 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
                 raw_units = EQUIVALENT_UNITS[raw_units]
 
             if raw_units in unit_conversion_functions:
-
-                )  # rename variable to CORDEX variable name
+  
                 ds[var] = unit_conversion_functions[raw_units](
                     ds[var]
                 )  # Do the conversion
@@ -325,8 +323,7 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
 
     return da
 
-
-def _convert_fraction_to_percent(da: xr.DataArray):
+ def _convert_fraction_to_percent(da: xr.DataArray):
     """
     Convert values in xarray DataArray from unitless to %
 
@@ -348,8 +345,6 @@ def _convert_fraction_to_percent(da: xr.DataArray):
     da.attrs["units"] = "%"
 
     return da
-
-
 # helper functions - can be moved to more appropriate place
 
 
