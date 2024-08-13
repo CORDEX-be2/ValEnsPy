@@ -9,12 +9,6 @@ from valenspy._utilities import load_yml
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
-#Key: The unit of the raw data
-#Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
-EQUIVALENT_UNITS = {"degC": "Celcius",
-                    "m/s": "m s-1"}
-
-
 def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     """Convert all units for all variables in the dataset to the correct units by applying the correct conversion function.
     
@@ -49,6 +43,12 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
         "J/m^2": _convert_J_m2_to_W_m2,
         "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
     }
+    
+    #Key: The unit of the raw data
+    #Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
+    EQUIVALENT_UNITS = {"degC": "Celcius",
+                        "m/s": "m s-1"}
+
 
     for raw_var in ds.data_vars:
         var = next(
