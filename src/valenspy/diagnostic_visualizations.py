@@ -44,6 +44,8 @@ def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
     title : str, optional
         The title for the plot. If not provided, a default title based on the DataArray's 
         long_name attribute will be set.
+    region : str, optional
+      string of the region to determine the plotting extent, as defined in the regions.py file. 
     **kwargs : 
         Additional keyword arguments to pass to the xarray DataArray plot method.
 
@@ -87,8 +89,29 @@ def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
 
 
 def plot_spatial_bias(da: xr.DataArray, ax=None, region = None, **kwargs):
-    """Plot the spatial bias of the data compared to the reference."""
+    """
+    Plot the spatial bias of a given data array on a map.
 
+    Parameters
+    ----------
+    da : xarray.DataArray
+        The DataArray containing the bias data to be plotted. It is assumed that the data represents some 
+        form of spatial bias, and the plot will visualize this bias on a map.
+    ax : matplotlib.axes.Axes, optional
+        The axes on which to plot the spatial bias. If None, a new figure and axes with a PlateCarree 
+        projection are created.
+    region : str or None, optional
+        The region to highlight on the map. This could be a predefined region name (e.g., 'belgium') 
+        or None if no specific region is needed.
+    **kwargs : dict
+        Additional keyword arguments passed to the underlying plotting function `plot_map`.
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        The axes with the plotted spatial bias and map features.
+
+    """
     # if no ax element is passed, create one
     if ax is None: 
         fig , ax = plt.subplots(subplot_kw={'projection': ccrs.PlateCarree()})
@@ -104,7 +127,7 @@ def plot_spatial_bias(da: xr.DataArray, ax=None, region = None, **kwargs):
     return ax
 
 
-def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff: xr.DataArray, region=None, return_fig=False): 
+def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff: xr.DataArray, region=None): 
 
   """
   Plots comparison maps for model data, reference data, and their difference.
@@ -114,11 +137,9 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   da_ref (xarray.DataArray): The reference data to be plotted.
   da_diff (xarray.DataArray): The difference (model - reference) to be plotted.
   region (str)              : string of the region to determine the plotting extend.
-  return_fig (boolean)      : determines whether the figure object is returned, default False
 
   Returns (optionally):
-  matplotlib.figure.Figure: The figure object containing the three subplots.
-
+    list of axis of the three plots
   Notes:
   - This function suppresses all warnings.
   - Each subplot is created with the PlateCarree projection and includes borders and coastlines.
@@ -183,9 +204,8 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
 
   fig.suptitle(f"{da_ref.attrs['long_name']} ({da_ref.name})", y=1);
   fig.tight_layout()
-
-  if return_fig: 
-    return fig
+  
+  return axes
 
 
 ##################################
