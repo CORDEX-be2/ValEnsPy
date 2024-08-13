@@ -191,7 +191,7 @@ def plot_point_timeseries(variable: str, ref_dataset: str, experiments: list, po
 
     for experiment in experiments: 
         # get CCLM variable corresponding to the requested variable using its look-up table
-        mod_var = mod_LOOKUP[variable]['mod_name']
+        mod_var = mod_LOOKUP[variable]['raw_name']
 
         # define the path
         directory = Path(postproc_base_dir + experiment +'/'+mod_var + '/')

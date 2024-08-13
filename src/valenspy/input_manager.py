@@ -10,7 +10,6 @@ from valenspy._utilities import load_yml
 DATASET_PATHS = load_yml("dataset_PATHS")
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
-
 class InputManager:
     def __init__(self, machine):
         self.machine = machine
@@ -85,10 +84,10 @@ class InputManager:
         Load the data for the specified dataset, variables, period and frequency and transform it into ValEnsPy CF-Compliant format.
 
         For files to be found and loaded they should be in a subdirectory of the dataset path and contain
-        the obs_long_name, year (optional), frequency and path_identifiers (optional) in the file name.
+        the raw_long_name or raw_name or CORDEX variable name, the year (optional), frequency and path_identifiers (optional) in the file name.
 
         A regex search is used to match any netcdf (.nc) file paths that start with the dataset_path from the dataset_PATHS.yml and contains:
-        1) The obs_long_name of the CORDEX variables given the dataset_name_lookup.yml
+        1) The raw_long_name of the CORDEX variables given the dataset_name_lookup.yml
         2) Any YYYY string within the period
         3) The frequency of the data (daily, monthly, yearly)
         4) Any additional path_identifiers
@@ -140,6 +139,7 @@ class InputManager:
             if len(period) == 1:
                 period = int(period[0])
 
+
         if self._is_valid_dataset_name(dataset_name):
             files = self._get_file_paths(
                 dataset_name,
@@ -188,7 +188,7 @@ class InputManager:
         else:
             dataset_name_lookup = dataset_name
 
-        obs_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
+        raw_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
 
         dataset_path = Path(self.dataset_paths[dataset_name])
         file_paths = []
@@ -196,9 +196,12 @@ class InputManager:
             [variables] if isinstance(variables, str) else variables
         )  # if single variable inputted as string, convert to list
         for variable in variables:
-            obs_long_name = obs_LOOKUP[variable]["obs_long_name"]
-            obs_name = obs_LOOKUP[variable]["obs_name"]
-            var_regex = f"({obs_long_name}|{obs_name}_|{variable}_)"
+            if variable not in raw_LOOKUP:
+                var_regex = f"{variable}"
+            else:
+                raw_long_name = raw_LOOKUP[variable]["raw_long_name"]
+                raw_name = raw_LOOKUP[variable]["raw_name"]
+                var_regex = f"({raw_long_name}|{raw_name}_|{variable}_)"
             components = [var_regex] + path_identifiers
             if period:
                 if isinstance(period, int):
