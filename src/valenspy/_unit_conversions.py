@@ -43,6 +43,8 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
         "m/hr": _convert_m_to_kg_m2s,
         "J/m^2": _convert_J_m2_to_W_m2,
         "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
+        "1": _convert_fraction_to_percent,
+
     }
 
     # Key: The unit of the raw data
@@ -56,6 +58,8 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 
         if var:  # Dont processes variables that are not in the lookup table.
 
+            ds = ds.rename_vars({raw_var: var}
+
             # convert units - based on the raw units
             raw_units = raw_LOOKUP[var]["raw_units"]
 
@@ -64,16 +68,11 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
                 raw_units = EQUIVALENT_UNITS[raw_units]
 
             if raw_units in unit_conversion_functions:
-                ds = ds.rename_vars(
-                    {raw_var: var}
+
                 )  # rename variable to CORDEX variable name
                 ds[var] = unit_conversion_functions[raw_units](
                     ds[var]
                 )  # Do the conversion
-
-            elif raw_units == CORDEX_VARIABLES[var]["units"]:
-                # If the raw_units are the same as the target units, just rename the variable
-                ds = ds.rename_vars({raw_var: var})
 
             else:
                 # Throw a warning that the raw_unit in the lookup table is not implemented
@@ -326,6 +325,30 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
     return da
 
 
+def _convert_fraction_to_percent(da: xr.DataArray):
+    """
+    Convert values in xarray DataArray from unitless to %
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The xarray DataArray to convert
+
+    Returns
+    -------
+    xr.DataArray
+        The  converted xarray DataArray
+    """
+
+    # do conversion
+    da = da * 100
+
+    # update units attribute
+    da.attrs["units"] = "%"
+
+    return da
+
+
 # helper functions - can be moved to more appropriate place
 
 
@@ -361,3 +384,5 @@ def _determine_time_interval(da: xr.DataArray):
         )
 
     return freq
+
+
