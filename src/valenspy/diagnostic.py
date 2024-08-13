@@ -10,7 +10,6 @@ class Diagnostic:
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None
-        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Diagnostic.
 
@@ -46,8 +45,6 @@ class Diagnostic:
         """
         pass
 
-    def plot(self, result, ax=None, **kwargs):
-        """Plot the diagnostic.
 
     def plot(self, result, ax=None, **kwargs):
         """Plot the diagnostic.
@@ -145,10 +142,8 @@ class Model2Ref(Diagnostic):
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None
-        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Model2Ref diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description)
         super().__init__(diagnostic_function, plotting_function, name, description)
 
     def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):

@@ -188,9 +188,7 @@ class InputManager:
         else:
             dataset_name_lookup = dataset_name
 
-        obs_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
-
-        obs_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
+        raw_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
 
         dataset_path = Path(self.dataset_paths[dataset_name])
         file_paths = []
