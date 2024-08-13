@@ -56,10 +56,12 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
             (k for k, v in raw_LOOKUP.items() if v.get("raw_name") == raw_var), None
         )
 
+
         if var:  # Dont processes variables that are not in the lookup table.
 
-            ds = ds.rename_vars({raw_var: var}
-
+            # rename the variable anyway
+            ds = ds.rename_vars({raw_var: var})
+            
             # convert units - based on the raw units
             raw_units = raw_LOOKUP[var]["raw_units"]
 
@@ -73,7 +75,6 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
                 ds[var] = unit_conversion_functions[raw_units](
                     ds[var]
                 )  # Do the conversion
-
             else:
                 # Throw a warning that the raw_unit in the lookup table is not implemented
                 cordex_var_units = CORDEX_VARIABLES[var]["units"]
