@@ -48,7 +48,7 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 
     # Key: The unit of the raw data
     # Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
-    EQUIVALENT_UNITS = {"degC": "Celcius", "m/s": "m s-1"}
+    EQUIVALENT_UNITS = {"degC": "Celcius", "m/s": "m s-1", "(0 - 1)":"1"}
 
     for raw_var in ds.data_vars:
         var = next(
@@ -323,7 +323,7 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
 
     return da
 
- def _convert_fraction_to_percent(da: xr.DataArray):
+def _convert_fraction_to_percent(da: xr.DataArray):
     """
     Convert values in xarray DataArray from unitless to %
 
