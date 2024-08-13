@@ -323,7 +323,8 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
 
     return da
 
- def _convert_fraction_to_percent(da: xr.DataArray):
+def _convert_fraction_to_percent(da: xr.DataArray):
+    
     """
     Convert values in xarray DataArray from unitless to %
 
@@ -345,6 +346,8 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
     da.attrs["units"] = "%"
 
     return da
+
+
 # helper functions - can be moved to more appropriate place
 
 
