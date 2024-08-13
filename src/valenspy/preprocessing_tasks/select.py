@@ -2,7 +2,8 @@
 
 import xarray as xr
 import numpy as np
-
+import regionmask 
+import geopandas as gpd
 
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
@@ -78,3 +79,48 @@ def select_point(ds: xr.Dataset, lon_lat_point: tuple, rotated_pole: bool = Fals
         ds_point = ds.sel(lon=lon_lat_point[0], lat=lon_lat_point[1], method='nearest')
 
     return ds_point
+
+def get_shapefile_mask(ds: xr.Dataset, shapefile_path: Path):
+    """
+    Generates a mask from a shapefile to apply to an xarray Dataset.
+
+    This function reads a shapefile using Geopandas, converts it to the WGS84 coordinate reference system (CRS), 
+    and creates a mask that can be applied to the input xarray Dataset. The mask identifies the grid cells that 
+    fall within the shapefile's region.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        Input xarray Dataset containing longitude and latitude coordinates.
+    shapefile_path : Path
+        Path to the shapefile to be used for masking.
+
+    Returns
+    -------
+    mask_shp : xr.Dataset
+        A boolean mask array where grid cells within the shapefile region are marked as True, 
+        and those outside are marked as False.
+
+    Notes
+    -----
+    - The shapefile is converted to the WGS84 CRS (EPSG:4326) before creating the mask.
+    - The function uses the regionmask library to generate the mask.
+
+    Examples
+    --------
+    >>> import xarray as xr
+    >>> from pathlib import Path
+    >>> ds = xr.open_dataset('path_to_your_dataset.nc')
+    >>> shapefile = Path('path_to_your_shapefile.shp')
+    >>> mask = get_shapefile_mask(ds, shapefile)
+    """
+    # read shape file into geopandas geodataframe
+    gdf_shp = gpd.read_file(shapefile_path)
+
+    # convert geodataframe to WGS84 and mask - only needed to do once
+    gdf_shp = gdf_shp.to_crs(epsg=4326)
+
+    # do masking
+    mask_shp = (regionmask.mask_geopandas(gdf_shp, ds.lon.values, ds.lat.values) + 1) > 0
+
+    return mask_shp
