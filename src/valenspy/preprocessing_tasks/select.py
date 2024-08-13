@@ -2,7 +2,7 @@
 
 import xarray as xr
 import numpy as np
-
+from valenspy._regions import region_bounds
 
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
