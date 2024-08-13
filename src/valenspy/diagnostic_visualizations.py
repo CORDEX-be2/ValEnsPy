@@ -93,10 +93,17 @@ def plot_spatial_bias(da: xr.DataArray, ax=None, region = None, **kwargs):
     if ax is None: 
         fig , ax = plt.subplots(subplot_kw={'projection': ccrs.PlateCarree()})
     
+    if 'title' not in kwargs:
+        title = f"Mean bias of {da.long_name}"
+    else:
+        title = kwargs.pop('title')
+    
+    if 'cmap' not in kwargs:
+        cmap = 'coolwarm'
+    else:
+        cmap = kwargs.pop('cmap')
 
-    title = f"Mean bias of {da.long_name}"
-    cmap = "coolwarm"
-    plot_map(da, ax=ax, title=title, cmap = cmap)
+    plot_map(da, ax=ax, title=title, cmap = cmap, **kwargs)
     ax.set_title(title)
     # Add coastline and country borders and region selection if region is provided
     _add_features(ax, region=region)
