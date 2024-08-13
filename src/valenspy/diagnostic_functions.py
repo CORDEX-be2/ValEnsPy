@@ -1,6 +1,6 @@
 import xarray as xr
 
-# make ure attributes are passed through
+# make sure attributes are passed through
 xr.set_options(keep_attrs=True)
 
 ###################################
@@ -47,7 +47,7 @@ def time_series_spatial_mean(ds: xr.Dataset):
 ##################################
 
 
-def spatial_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
+def spatial_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
     """Calculate the spatial bias of the data compared to the reference. The time dimensions are averaged over if present.
 
     Parameters
@@ -56,7 +56,7 @@ def spatial_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
         The data to calculate the spatial bias of.
     ref : xr.Dataset or xr.DataArray
         The reference data to compare the data to.
-    compute_relative_bias : bool, optional
+    calc_relative : bool, optional
         If True, return the relative bias, if False return the absolute bias, by default False
 
     Returns
@@ -67,11 +67,11 @@ def spatial_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
     return bias(
         _average_over_dims(ds, "time"),
         _average_over_dims(ref, "time"),
-        compute_relative_bias=compute_relative_bias,
+        calc_relative=calc_relative,
     )
 
 
-def temporal_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
+def temporal_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
     """Calculate the temporal bias of the data compared to the reference. If lat and lon are present, ds and ref is averaged over the spatial dimensions lat and lon.
 
     Parameters
@@ -80,7 +80,7 @@ def temporal_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
         The data to calculate the temporal bias of.
     ref : xr.Dataset
         The reference data to compare the data to.
-    compute_relative_bias : bool, optional
+    calc_relative : bool, optional
         If True, return the relative bias, if False return the absolute bias, by default False
 
     Returns
@@ -91,11 +91,11 @@ def temporal_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
     return bias(
         _average_over_dims(ds, ["lat", "lon"]),
         _average_over_dims(ref, ["lat", "lon"]),
-        compute_relative_bias=compute_relative_bias,
+        calc_relative=calc_relative,
     )
 
 
-def diurnal_cycle_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
+def diurnal_cycle_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
     """Calculate the diurnal cycle bias of the data compared to the reference. If lat and lon are present,  ds and ref is averaged over the spatial dimensions lat and lon.
 
     Parameters
@@ -104,8 +104,8 @@ def diurnal_cycle_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=Fa
         The data to calculate the diurnal cycle bias of.
     ref : xr.Dataset
         The reference data to compare the data to.
-    compute_relative_bias : bool, optional
-        If True, return the compute_relative_bias bias, by default False
+    calc_relative : bool, optional
+        If True, return the calc_relative bias, by default False
 
     Returns
     -------
@@ -118,7 +118,7 @@ def diurnal_cycle_bias(ds: xr.Dataset, ref: xr.Dataset, compute_relative_bias=Fa
     return bias(
         ds.groupby("time.hour").mean("time"),
         ref.groupby("time.hour").mean("time"),
-        compute_relative_bias=compute_relative_bias,
+        calc_relative=calc_relative,
     )
 
 
@@ -154,7 +154,7 @@ def _average_over_dims(ds: xr.Dataset, dims):
 ##################################
 
 
-def bias(da: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
+def bias(da: xr.Dataset, ref: xr.Dataset, calc_relative=False):
     """Calculate the bias of the data compared to a reference.
 
     Parameters
@@ -171,7 +171,7 @@ def bias(da: xr.Dataset, ref: xr.Dataset, compute_relative_bias=False):
     xr.Datasets
         The bias of the data compared to there reference.
     """
-    if compute_relative_bias:
+    if calc_relative:
         return (da - ref) / ref
     else:
         return da - ref
