@@ -8,7 +8,7 @@ from valenspy.inputconverter_functions import (
     ERA5Land_to_CF,
     CLIMATE_GRID_to_CF,
     CCLM_to_CF,
-    ALARO_K_to_CF
+    ALARO_K_to_CF,
 )
 
 
@@ -50,8 +50,8 @@ INPUT_CONVERTORS = {
     "EOBS": InputConverter(EOBS_to_CF),
     "CLIMATE_GRID": InputConverter(CLIMATE_GRID_to_CF),
     "CCLM": InputConverter(CCLM_to_CF),
-    "ALARO_K": InputConverter(ALARO_K_to_CF)
-    }
+    "ALARO_K": InputConverter(ALARO_K_to_CF),
+}
 
 # Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.
 
