@@ -43,7 +43,7 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
         "J/m^2": _convert_J_m2_to_W_m2,
         "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
     }
-    
+
     #Key: The unit of the raw data
     #Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
     EQUIVALENT_UNITS = {"degC": "Celcius",
@@ -267,10 +267,6 @@ def _convert_kg_m2s_to_mh(da: xr.DataArray):
     da.attrs["units"] = "mm hr-1"
 
     return da
-
-    # Convert J/m²/hr to W/m²
-    w_m2 = j_m2_hr / seconds_per_hour
-
 
 def _convert_J_m2_to_W_m2(da: xr.DataArray):
     """
