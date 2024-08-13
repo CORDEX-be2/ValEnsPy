@@ -7,9 +7,9 @@
 # Format
 
 # CORDEX VariableName:
-#    obs_name:
-#    obs_long_name:
-#    obs_units:
+#    raw_name:
+#    raw_long_name:
+#    raw_units:
 
 # More info on ERA5: https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview
 # Overview of ERA5 parameter listings: https://confluence.ecmwf.int/display/CKB/ERA5%3A+data+documentation#ERA5:datadocumentation-Parameterlistings
@@ -18,152 +18,166 @@
 
 
 pr:
-    obs_name: tp
-    obs_long_name: total_precipitation
-    obs_units: m/hr
+    raw_name: tp
+    raw_long_name: total_precipitation
+    raw_units: m/hr
 
 prsn:
-    obs_name: sf
-    obs_long_name: snowfall
-    obs_units: m/hr
+    raw_name: sf
+    raw_long_name: snowfall
+    raw_units: m/hr
 
 prw:
-    obs_name: tcwv
-    obs_long_name: total_column_water_vapour
-    obs_units: mm
+    raw_name: tcwv
+    raw_long_name: total_column_water_vapour
+    raw_units: mm
 
 snw:
-    obs_name: sd
-    obs_long_name: snow_depth
-    obs_units: cm
+    raw_name: sd
+    raw_long_name: snow_depth
+    raw_units: cm
 
 snd:
-    obs_name: sd
-    obs_long_name: snow_depth_water_equivalent
-    obs_units: m
+    raw_name: sd
+    raw_long_name: snow_depth_water_equivalent
+    raw_units: m
 
 mrros:
-    obs_name: sro
-    obs_long_name: surface_runoff
-    obs_units: m/hr
+    raw_name: sro
+    raw_long_name: surface_runoff
+    raw_units: m/hr
 
 mrro:
-    obs_name: ro
-    obs_long_name: runoff
-    obs_units: m/hr
+    raw_name: ro
+    raw_long_name: runoff
+    raw_units: m/hr
 
 tas:
-    obs_name: t2m
-    obs_long_name: 2m_temperature
-    obs_units: K
+    raw_name: t2m
+    raw_long_name: 2m_temperature
+    raw_units: K
 
 ts:
-    obs_name: skt
-    obs_long_name: skin_temperature
-    obs_units: K
+    raw_name: skt
+    raw_long_name: skin_temperature
+    raw_units: K
 
 evspsbl:
-    obs_name: e
-    obs_long_name: evaporation
-    obs_units: m/hr
+    raw_name: e
+    raw_long_name: evaporation
+    raw_units: m/hr
 
 evspsblpot:
-    obs_name: pev
-    obs_long_name: potential_evaporation
-    obs_units: m/hr
+    raw_name: pev
+    raw_long_name: potential_evaporation
+    raw_units: m/hr
 
 uas:
-    obs_name: 10u
-    obs_long_name: 10m_u_component_of_wind
-    obs_units: m/s
+    raw_name: 10u
+    raw_long_name: 10m_u_component_of_wind
+    raw_units: m/s
 
 sfcWind:
-    obs_name: 10v
-    obs_long_name: 10m_v_component_of_wind
-    obs_units: m/s
+    raw_name: 10v
+    raw_long_name: 10m_v_component_of_wind
+    raw_units: m/s
 
 hfls:
-    obs_name: slhf
-    obs_long_name: surface_latent_heat_flux
-    obs_units: J/m^2
+    raw_name: slhf
+    raw_long_name: surface_latent_heat_flux
+    raw_units: J/m^2
 
 hfss:
-    obs_name: sshf
-    obs_long_name: surface_sensible_heat_flux
-    obs_units: J/m^2
+    raw_name: sshf
+    raw_long_name: surface_sensible_heat_flux
+    raw_units: J/m^2
 
 rsds:
-    obs_name: ssrd
-    obs_long_name: surface_solar_radiation_downwards
-    obs_units: J/m^2
+    raw_name: ssrd
+    raw_long_name: surface_solar_radiation_downwards
+    raw_units: J/m^2
 
 rlds:
-    obs_name: strd
-    obs_long_name: surface_thermal_radiation_downwards
-    obs_units: J/m^2
+    raw_name: strd
+    raw_long_name: surface_thermal_radiation_downwards
+    raw_units: J/m^2
 
 ps:
-    obs_name: sp
-    obs_long_name: surface_pressure
-    obs_units: Pa
+    raw_name: sp
+    raw_long_name: surface_pressure
+    raw_units: Pa
 
 psl:
-    obs_name: mslp
-    obs_long_name: mean_sea_level_pressure
-    obs_units: Pa
+    raw_name: msl
+    raw_long_name: mean_sea_level_pressure
+    raw_units: Pa
 
 zmla:
-    obs_name: blh
-    obs_long_name: boundary_layer_height
-    obs_units: m
+    raw_name: blh
+    raw_long_name: boundary_layer_height
+    raw_units: m
 
 clt:
-    obs_name: tcc
-    obs_long_name: total_cloud_cover
-    obs_units: 1
+    raw_name: tcc
+    raw_long_name: total_cloud_cover
+    raw_units: 1
+
+cll:
+    raw_name: lcc
+    raw_long_name: low_cloud_cover
+    raw_units: 1
+clm:
+    raw_name: mcc
+    raw_long_name: medium_cloud_cover
+    raw_units: 1
+
+clh:
+    raw_name: hcc
+    raw_long_name: high_cloud_cover
+    raw_units: 1
 
 rsdt:
-    obs_name: tisr
-    obs_long_name: toa_incident_solar_radiation
-    obs_units: J/m^2
+    raw_name: tisr
+    raw_long_name: toa_incident_solar_radiation
+    raw_units: J/m^2
 
 hurs:
-    obs_name: r
-    obs_long_name: relative_humidity
-    obs_units: '%'
+    raw_name: r
+    raw_long_name: relative_humidity
+    raw_units: '%'
 
 
 # Variables to double check when needed by user.
 
 # aggregation
 prhmax:
-    obs_name:
-    obs_long_name: total_precipitation_max
-    obs_units: m/hr
+    raw_name:
+    raw_long_name: total_precipitation_max
+    raw_units: m/hr
 
 tasmax:
-    obs_name:
-    obs_long_name: 2m_temperature_max
-    obs_units: K
+    raw_name:
+    raw_long_name: 2m_temperature_max
+    raw_units: K
 
 tasmin:
-    obs_name:
-    obs_long_name: 2m_temperature_min
-    obs_units: K
+    raw_name:
+    raw_long_name: 2m_temperature_min
+    raw_units: K
 
 sfcWindmax:
-    obs_name:
-    obs_long_name: 10m_w_component_of_wind_max
-    obs_units: m/s
+    raw_name:
+    raw_long_name: 10m_w_component_of_wind_max
+    raw_units: m/s
 
 # is cordex unit correct?
 wsgsmax:
-    obs_name: 10fg
-    obs_long_name: 10m_wind_gust_since_previous_post_processing_max
-    obs_units: m/s
+    raw_name: 10fg
+    raw_long_name: 10m_wind_gust_since_previous_post_processing_max
+    raw_units: m/s
 
 # mrso is total soil moisture content in CORDEX, not corresponding to volumetric_soil_water of first layer + check units!
 mrso:
-    obs_name:
-    obs_long_name: volumetric_soil_water_layer_1
-    obs_units: m
+    raw_name:
+    raw_long_name: volumetric_soil_water_layer_1
+    raw_units: m

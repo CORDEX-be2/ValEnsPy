@@ -1,0 +1,105 @@
+tas:
+  aggregation: i
+  long_name: Near-Surface Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+tasmax:
+  comments: maximum from all integrated time steps per day
+  long_name: Daily Maximum Near-Surface Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+tasmin:
+  comments: minimum from all integrated time steps per day
+  long_name: Daily Minimum Near-Surface Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+pr:
+  aggregation: a
+  long_name: Precipitation
+  realm: atmos
+  standard_name: precipitation_flux
+  units: kg m-2 s-1
+evspsbl:
+  aggregation: a
+  long_name: Evaporation Including Sublimation and Transpiration
+  realm: atmos
+  standard_name: water_evapotranspiration_flux
+  units: kg m-2 s-1
+huss:
+  aggregation: i
+  long_name: Near-Surface Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+hurs:
+  aggregation: i
+  long_name: Near-Surface Relative Humidity
+  realm: atmos
+  standard_name: relative_humidity
+  units: '%'
+ps:
+  aggregation: i
+  long_name: Surface Air Pressure
+  realm: atmos
+  standard_name: surface_air_pressure
+  units: Pa
+psl:
+  aggregation: i
+  long_name: Sea Level Pressure
+  realm: atmos
+  standard_name: air_pressure_at_mean_sea_level
+  units: Pa
+sfcWind:
+  aggregation: i
+  long_name: Near-Surface Wind Speed
+  realm: atmos
+  standard_name: wind_speed
+  units: m s-1
+uas:
+  aggregation: i
+  long_name: Eastward Near-Surface Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+vas:
+  aggregation: i
+  long_name: Northward Near-Surface Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+clt:
+  aggregation: a
+  long_name: Total Cloud Cover Percentage
+  realm: atmos
+  standard_name: cloud_area_fraction
+  units: '%'
+rsds:
+  aggregation: a
+  long_name: Surface Downwelling Shortwave Radiation
+  realm: atmos
+  standard_name: surface_downwelling_shortwave_flux_in_air
+  units: W m-2
+rlds:
+  aggregation: a
+  long_name: Surface Downwelling Longwave Radiation
+  realm: atmos
+  standard_name: surface_downwelling_longwave_flux_in_air
+  units: W m-2
+.nan:
+  long_name: .nan
+  realm: atmos
+  standard_name: .nan
+  units: .nan
+orog:
+  long_name: Surface Altitude
+  realm: atmos
+  standard_name: surface_altitude
+  units: m
+sftlf:
+  long_name: Percentage of the Grid Cell Occupied by Land
+  realm: atmos
+  standard_name: land_area_fraction
+  units: '%'
