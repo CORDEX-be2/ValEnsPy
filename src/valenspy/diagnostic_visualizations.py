@@ -66,7 +66,12 @@ def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
         fig, ax = plt.subplots(subplot_kw={'projection': ccrs.PlateCarree()})
     
     # Set colorbar label
-    cbar_kwargs = {'label': f"{da.attrs.get('long_name', 'Data')} ({da.attrs.get('units', '')})"}
+    if 'cbar_kwargs' in kwargs:
+        cbar_kwargs = kwargs.pop('cbar_kwargs')
+        if 'label' not in cbar_kwargs:
+            cbar_kwargs['label'] = f"{da.attrs.get('long_name', 'Data')} ({da.attrs.get('units', '')})"
+    else:
+        cbar_kwargs = {'label': f"{da.attrs.get('long_name', 'Data')} ({da.attrs.get('units', '')})"}
 
     # Plot the data array with the specified colorbar axis
     da.plot(ax=ax, cbar_kwargs=cbar_kwargs, **kwargs)
