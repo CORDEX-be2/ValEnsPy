@@ -256,6 +256,46 @@ def plot_time_series_mod_ref(da_mod: xr.DataArray, da_ref: xr.DataArray, ax=None
 
     return ax
 
+def plot_points_on_map(d_point_coords: dict, ax=None, region=None):
+    """
+    Plot geographic points on a map using Cartopy, with optional region highlighting.
+
+    Parameters
+    ----------
+    d_point_coords : dict
+        A dictionary where keys are point identifiers (e.g., station names or IDs) and values are tuples of 
+        longitude and latitude coordinates (e.g., {'Point1': (lon1, lat1), 'Point2': (lon2, lat2)}).
+    ax : matplotlib.axes.Axes, optional
+        The axes on which to plot the points. If None, a new figure and axes with a PlateCarree projection are created.
+    region : str or None, optional
+        The region to highlight on the map. This could be a predefined region name (e.g., 'belgium') 
+        or None if no specific region is needed.
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        The axes with the plotted points and the map features.
+    
+    Example
+    -------
+    >>> d_point_coords = {'Point1': (4.3517, 50.8503), 'Point2': (5.5413, 50.6326)}
+    >>> plot_points_on_map(d_point_coords, region="belgium")
+    """
+    # Create a figure and set the projection to PlateCarree
+    if ax is None:
+        fig, ax = plt.subplots(subplot_kw={'projection': ccrs.PlateCarree()})
+    
+    # Plot each point and add a label
+    for point_id, (lon, lat) in d_point_coords.items():
+        ax.plot(lon, lat, marker='o', color='red', markersize=5, transform=ccrs.PlateCarree())
+        ax.text(lon + 0.1, lat - 0.1, point_id, transform=ccrs.PlateCarree())
+
+    # Add coastline and country borders and region selection if region is provided
+    _add_features(ax, region=region)
+    
+    ax.set_title('Location of points', loc='right')
+
+    return ax
 
 ##################################
 # Helper functions               #
