@@ -2,13 +2,13 @@ from pathlib import Path
 from typing import Callable, Union
 import xarray as xr
 from valenspy._utilities import load_xarray_from_data_sources
-from valenspy._utilities import load_xarray_from_data_sources
 from valenspy.inputconverter_functions import (
     EOBS_to_CF,
     ERA5_to_CF,
     ERA5Land_to_CF,
     CLIMATE_GRID_to_CF,
-    CCLM_to_CF
+    CCLM_to_CF,
+    ALARO_K_to_CF,
 )
 
 
@@ -33,8 +33,6 @@ class InputConverter:
         ----------
         data_sources : Path or list(Path) or xarray.Dataset
             The input file or list of input files or an xarray dataset to convert.
-        data_sources : Path or list(Path) or xarray.Dataset
-            The input file or list of input files or an xarray dataset to convert.
 
         Returns
         -------
@@ -50,8 +48,9 @@ INPUT_CONVERTORS = {
     "ERA5-Land": InputConverter(ERA5Land_to_CF),
     "EOBS": InputConverter(EOBS_to_CF),
     "CLIMATE_GRID": InputConverter(CLIMATE_GRID_to_CF),
-    "CCLM": InputConverter(CCLM_to_CF)
-    }
+    "CCLM": InputConverter(CCLM_to_CF),
+    "ALARO_K": InputConverter(ALARO_K_to_CF),
+}
 
 # Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.
 

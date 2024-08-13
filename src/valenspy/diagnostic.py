@@ -10,7 +10,6 @@ class Diagnostic:
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None
-        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Diagnostic.
 
@@ -45,9 +44,6 @@ class Diagnostic:
             The data after applying the diagnostic either as a DataTree, Dataset, DataArray, Scalar, or a pandas DataFrame.
         """
         pass
-
-    def plot(self, result, ax=None, **kwargs):
-        """Plot the diagnostic.
 
     def plot(self, result, ax=None, **kwargs):
         """Plot the diagnostic.
@@ -145,7 +141,6 @@ class Model2Ref(Diagnostic):
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None
-        self, diagnostic_function, plotting_function, name=None, description=None
     ):
         """Initialize the Model2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
@@ -173,6 +168,7 @@ class Model2Ref(Diagnostic):
     def description(self):
         """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
         return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
+
 
 class Ensemble2Ref(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
