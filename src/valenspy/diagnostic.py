@@ -45,19 +45,6 @@ class Diagnostic:
         """
         pass
 
-
-        Parameters
-        ----------
-        result :
-        result :
-            The output of the diagnostic function.
-
-        Returns
-        -------
-        Figure :
-        Figure :
-            The figure representing the diagnostic.
-        """
         if ax is None:
             ax = plt.gca()
         if isinstance(result, tuple):

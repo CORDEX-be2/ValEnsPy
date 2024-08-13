@@ -224,9 +224,6 @@ def CCLM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     # open observational specific lookup dictionary
     raw_LOOKUP = load_yml(f"{model_name}_lookup")
 
-    if metadata_info is None:  # Set standard metadata if not provided
-        metadata_info = {"experiment": ""}
-
     metadata_info["dataset"] = model_name
 
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
