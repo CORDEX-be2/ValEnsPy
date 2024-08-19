@@ -37,9 +37,8 @@ def convert_geo_to_rot(coord : tuple, ds: xr.Dataset):
                        np.cos(co[1]) * np.cos(rp_lat) * np.cos(co[0] - rp_lon))
     
     # Calculate the rotated pole longitude (rlon) using spherical trigonometry
-    p_rlon = np.arctan2(np.cos(co[1]) * np.sin(co[0] - rp_lon), 
-                        np.cos(co[1]) * np.sin(rp_lat) * np.cos(co[0] - rp_lon) - 
-                        np.sin(co[1]) * np.cos(rp_lat))
+    p_rlon = np.arctan((np.cos(co[1])*np.sin(co[0]-rp_lon)) / (np.cos(co[1])*np.sin(rp_lat)*np.cos(co[0]-rp_lon) - np.sin(co[1])*np.cos(rp_lat))) 
+
     
     # Convert the rotated pole coordinates from radians back to degrees
     p_rlat = np.rad2deg(p_rlat)
@@ -80,7 +79,7 @@ def select_point(ds: xr.Dataset, lon_lat_point: tuple, rotated_pole: bool = Fals
     return ds_point
 
 
-def sel_region(ds: xr.Dataset, region: str):
+def select_region(ds: xr.Dataset, region: str):
     """
     Selects a specific geographical region from an xarray Dataset based on given region bounds.
 
