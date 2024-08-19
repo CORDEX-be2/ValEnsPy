@@ -15,7 +15,6 @@ version = "0.1.0"
 
 [tool.poetry.dependencies]
 cdo = "^1.6.1"
-# Development group
 cf-xarray = "^0.9.4"
 dask = "^2024.3.1"
 matplotlib = "^3.8.3"
@@ -28,10 +27,8 @@ scipy = "^1.13.0"
 shapely = "^2.0.3"
 xarray = "^2024.2.0"
 xarray-datatree = "^0.0.14"
-cdo = "^1.6.1"
 
 # Development group
-cf-xarray = "^0.9.4"
 [tool.poetry.group.dev]
 optional = true
 

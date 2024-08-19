@@ -26,7 +26,7 @@ ps:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-psl: 
+psl:
   raw_name: PMSL
   raw_standard_name: air_pressure_at_mean_sea_level
   raw_long_name: mean sea level pressure
@@ -34,7 +34,7 @@ psl:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-zmla: 
+zmla:
   raw_name: HPBL
   raw_standard_name: atmosphere_boundary_layer_thickness
   raw_long_name: Height of boundary layer
@@ -67,7 +67,7 @@ huss:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-cll: 
+cll:
   raw_name: CLCL
   raw_standard_name: low_type_cloud_area_fraction
   raw_long_name: low cloud cover
@@ -75,7 +75,7 @@ cll:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-clm: 
+clm:
   raw_name: CLCM
   raw_standard_name: medium_type_cloud_area_fraction
   raw_long_name: medium cloud cover
@@ -83,7 +83,7 @@ clm:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-clh: 
+clh:
   raw_name: CLCH
   raw_standard_name: high_type_cloud_area_fraction
   raw_long_name: low cloud cover
@@ -95,7 +95,7 @@ clh:
 
 # doublecheck
 
-hfss: 
+hfss:
   raw_name: SHFL_S
   raw_standard_name: surface_downward_sensible_heat_flux
   raw_long_name: surface sensible heat flux
@@ -103,7 +103,7 @@ hfss:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-hfls: 
+hfls:
   raw_name: LHFL_S
   raw_standard_name: surface_downward_latent_heat_flux
   raw_long_name: surface latent heat flux
@@ -111,7 +111,7 @@ hfls:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-ts: 
+ts:
   raw_name: T_S
   raw_standard_name: soil surface temperature
   raw_long_name: soil surface temperature
@@ -128,7 +128,7 @@ prw:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-clivi: 
+clivi:
   raw_name: TQI
   raw_standard_name: atmosphere_mass_content_of_cloud_ice
   raw_long_name: vertical integrated cloud ice
@@ -154,7 +154,7 @@ tsl:
   raw_cell_methods: 'time: point'
 
 
-  
+
 # to add cclm variable
 
 tasmax:
@@ -174,8 +174,8 @@ tasmin:
   raw_cell_methods: 'time: point'
 
 # to add cordex variable
- 
- 
+
+
   raw_name: Z0
   raw_standard_name: surface_roughness_length
   raw_long_name: surface roughness length
@@ -281,4 +281,3 @@ tasmin:
   raw_units: kg kg-1
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
-
