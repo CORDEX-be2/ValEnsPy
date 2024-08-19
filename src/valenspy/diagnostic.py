@@ -50,21 +50,15 @@ class Diagnostic:
 
         Parameters
         ----------
-        result :
-        result :
+        result : xr.Dataset or xr.DataArray or DataTree
             The output of the diagnostic function.
 
         Returns
         -------
-        Figure :
-        Figure :
-            The figure representing the diagnostic.
+        ax : matplotlib.axis.Axis
+            The axis (singular) of the plot.
         """
-        if isinstance(result, tuple):
-            ax = self.plotting_function(*result, ax=ax, **kwargs)
-        else:
-            ax = self.plotting_function(result, ax=ax, **kwargs)
-        return ax
+        return self.plotting_function(result, ax=ax, **kwargs)
 
     @property
     def description(self):
@@ -151,8 +145,10 @@ class Ensemble2Self(Diagnostic):
 
         Parameters
         ----------
-        data : xr.Dataset or xr.DataArray
-            The data to plot.
+        result : DataTree
+            The result of applying the ensemble diagnostic to a DataTree.
+        axes : matplotlib.axes.Axes or list of matplotlib.axes.Axes, optional
+            The axes (possibly plural) to plot the diagnostic on. If None, a new figure and axes are created.
 
         Returns
         -------
@@ -163,7 +159,7 @@ class Ensemble2Self(Diagnostic):
             if facetted:
                 fig, axes = plt.subplots(1, len(result), figsize=(5 * len(result), 5))
             else:
-                ax = plt.gca()
+                axes = plt.gca()
         return self.plotting_function(result, axes=axes, facetted=facetted, **kwargs)
     
     @classmethod
@@ -182,25 +178,26 @@ class Ensemble2Self(Diagnostic):
         """
 
         def diagnostic_function(dt: DataTree, **kwargs):
-            ensemble_results = {}
-            for data_node in dt.leaves:
-                ensemble_results[data_node.path] = model2self.diagnostic_function(
-                    data_node.ds, **kwargs
-                )
-            return ensemble_results
+            return dt.map_over_subtree(model2self.diagnostic_function, **kwargs)
 
-        def plotting_function(results, axes, facetted=facetted, **kwargs):
+        def plotting_function(dt: DataTree, axes, variable=None, facetted=facetted, **kwargs):
             if facetted:
-                for path, result, ax in zip(
-                    results.keys(), results.values(), axes.flatten()
+                for ds, ax in zip(
+                    dt.leaves, axes.flatten()
                 ):
-                    model2self.plot(result, ax=ax, **kwargs)
-                    ax.set_title(path.replace("/", " "))
+                    if variable:
+                        model2self.plot(ds[variable], ax=ax, **kwargs)
+                    else:
+                        model2self.plot(ds, ax=ax, **kwargs)
+                    ax.set_title(ds.path.replace("/", " "))
             else:
-                for path, result in results.items():
-                    model2self.plot(
-                        result, ax=axes, label=f'{path.replace("/", " ")}', **kwargs
-                    )
+                for ds in dt.leaves:
+                    if variable:
+                        model2self.plot(ds[variable], axes=axes, label=f'{ds.path.replace("/", " ")}', **kwargs)
+                    else:
+                        model2self.plot(
+                            ds, ax=axes, label=f'{ds.path.replace("/", " ")}', **kwargs
+                        )
             return axes
 
         return Ensemble2Self(
@@ -274,34 +271,37 @@ class Ensemble2Ref(Diagnostic):
             The Ensemble2Ref diagnostic.
         """
 
-        def diagnostic_function(dt: DataTree, ref, **kwargs):
-            ensemble_results = {}
+        def diagnostic_function(dt: DataTree, ref, **kwargs): 
             if isinstance(ref, DataTree):
+                ensemble_results = {}
                 for data_node, ref_node in zip(dt.leaves, ref.leaves):
                     ds, ref = _select_common_vars(data_node.ds, ref_node.ds)
                     ensemble_results[data_node.path] = model2ref.diagnostic_function(
                         ds, ref, **kwargs
                     )
+                return DataTree.from_dict(ensemble_results)
             else:
-                for data_node in dt.leaves:
-                    ds, ref = _select_common_vars(data_node.ds, ref)
-                    ensemble_results[data_node.path] = model2ref.diagnostic_function(
-                        ds, ref, **kwargs
-                    )
-            return ensemble_results
+                return dt.map_over_subtree(model2ref.diagnostic_function, ref=ref, **kwargs)
+            
 
-        def plotting_function(results, axes, facetted=facetted, **kwargs):
+        def plotting_function(dt: DataTree, axes, variable=None, facetted=facetted, **kwargs):
             if facetted:
-                for path, result, ax in zip(
-                    results.keys(), results.values(), axes.flatten()
+                for ds, ax in zip(
+                    dt.leaves, axes.flatten()
                 ):
-                    model2ref.plot(result, ax=ax, **kwargs)
-                    ax.set_title(path.replace("/", " "))
+                    if variable:
+                        model2ref.plot(ds[variable], ax=ax, **kwargs)
+                    else:
+                        model2ref.plot(ds, ax=ax, **kwargs)
+                    ax.set_title(ds.path.replace("/", " "))
             else:
-                for path, result in results.items():
-                    model2ref.plot(
-                        result, ax=axes, label=f'{path.replace("/", " ")}', **kwargs
-                    )
+                for ds in dt.leaves:
+                    if variable:
+                        model2ref.plot(ds[variable], axes=axes, label=f'{ds.path.replace("/", " ")}', **kwargs)
+                    else:
+                        model2ref.plot(
+                            ds, ax=axes, label=f'{ds.path.replace("/", " ")}', **kwargs
+                        )
             return axes
 
         return Ensemble2Ref(
