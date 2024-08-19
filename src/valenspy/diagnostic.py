@@ -193,7 +193,7 @@ class Ensemble2Self(Diagnostic):
             else:
                 for ds in dt.leaves:
                     if variable:
-                        model2self.plot(ds[variable], axes=axes, label=f'{ds.path.replace("/", " ")}', **kwargs)
+                        model2self.plot(ds[variable], ax=axes, label=f'{ds.path.replace("/", " ")}', **kwargs)
                     else:
                         model2self.plot(
                             ds, ax=axes, label=f'{ds.path.replace("/", " ")}', **kwargs
