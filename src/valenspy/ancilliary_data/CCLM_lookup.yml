@@ -137,6 +137,13 @@ clivi:
   raw_cell_methods: 'time: point'
 
 
+mrsol: 
+  raw_name: W_SO
+  raw_standard_name: lwe_thickness_of_moisture_content_of_soil_layer
+  raw_long_name: soil water content
+  raw_units: m
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point soil1: sum'
 
 
 # to add cclm variable
