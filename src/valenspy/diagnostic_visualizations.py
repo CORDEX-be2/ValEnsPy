@@ -20,10 +20,36 @@ def plot_diurnal_cycle(data: xr.DataArray, ax, **kwargs):
     return ax
 
 
-def plot_time_series(data: xr.DataArray, ax, **kwargs):
-    data.plot(ax=ax, **kwargs)
-    ax.set_title("Time Series")
+def plot_time_series(da: xr.DataArray, ax=None, **kwargs):
+    """
+    Plot a time series from an xarray DataArray.
+
+    Parameters
+    ----------
+    da : xarray.DataArray
+        The DataArray containing the time series data to plot.
+    ax : matplotlib.axes.Axes, optional
+        The axes on which to plot the time series. If None, a new figure and axes are created.
+    **kwargs : dict
+        Additional keyword arguments passed to `xarray.DataArray.plot`.
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        The axes with the plotted time series.
+    """
+    if ax is None:
+        fig, ax = plt.subplots()
+    
+    # Plot the data array on the provided or newly created axes
+    da.plot(ax=ax, **kwargs)
+    
+    # Set the title based on the 'long_name' attribute
+    ax.set_title(da.attrs.get('long_name', ''), loc='left')
+    ax.set_title(' ', loc='center')
+
     return ax
+
 
 def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
     
@@ -139,7 +165,7 @@ def plot_spatial_bias(da: xr.DataArray, ax=None, region = None, **kwargs):
     return ax
 
 
-def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff: xr.DataArray, region=None): 
+def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff: xr.DataArray, region=None, **kwargs): 
 
   """
   Plots comparison maps for model data, reference data, and their difference.
@@ -172,8 +198,13 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   axes = axes.flatten()
 
   # find plotting min and max
-  cbar_label = f"{da_ref.attrs['long_name']} ({da_ref.attrs['units']})"
-  cbar_kwargs = {'label': cbar_label}
+  #  Set colorbar label
+  if 'cbar_kwargs' in kwargs:
+    cbar_kwargs = kwargs.pop('cbar_kwargs')
+    if 'label' not in cbar_kwargs:
+        cbar_kwargs['label'] = f"{da_ref.attrs.get('long_name', 'Data')} ({da_ref.attrs.get('units', '')})"
+  else:
+    cbar_kwargs = {'label': f"{da_ref.attrs.get('long_name', 'Data')} ({da_ref.attrs.get('units', '')})"}
 
 
   # plotting bounds
@@ -194,14 +225,14 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
 
   # mod
   ax = axes[0]
-  da_mod.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs)
+  da_mod.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs, **kwargs)
   ax.set_title('')
   ax.set_title(mod_title, loc='right')
   _add_features(ax, region=region)
 
   # ref
   ax = axes[1]
-  da_ref.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs)
+  da_ref.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs, **kwargs)
   ax.set_title('')
   ax.set_title(ref_title, loc='right')
   _add_features(ax, region=region)
@@ -209,7 +240,7 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   # bias
   ax = axes[2]
   diff_bound = float(max(abs(da_diff.min().values), abs(da_diff.max().values)))
-  da_diff.plot(ax=ax, cmap = 'coolwarm', vmax = diff_bound, vmin = - diff_bound, cbar_kwargs=cbar_kwargs)
+  da_diff.plot(ax=ax, cmap = 'coolwarm', vmax = diff_bound, vmin = - diff_bound, cbar_kwargs=cbar_kwargs, **kwargs)
   ax.set_title('')
   ax.set_title(f"{mod_title} - {ref_title}", loc='right')
   _add_features(ax, region=region)
@@ -219,6 +250,89 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   
   return axes
 
+
+def plot_time_series_mod_ref(da_mod: xr.DataArray, da_ref: xr.DataArray, ax=None, title: str = None, **kwargs):
+    """
+    Plot time series for both model and reference datasets on the same axes.
+
+    Parameters
+    ----------
+    da_mod : xarray.DataArray
+        The DataArray containing the model time series data.
+    da_ref : xarray.DataArray
+        The DataArray containing the reference time series data.
+    ax : matplotlib.axes.Axes, optional
+        The axes on which to plot the time series. If None, a new figure and axes are created.
+    title : str, optional
+        The title for the plot. If None, a default title based on `da_mod` attributes is used.
+    **kwargs : dict
+        Additional keyword arguments passed to `xarray.DataArray.plot`.
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        The axes with the plotted time series.
+    """
+    if ax is None:
+        fig, ax = plt.subplots()
+    
+    # Plot the reference data array on the axes
+    da_ref.plot(ax=ax, label=da_ref.attrs.get("dataset", "Reference"), color='k')
+    
+    # Plot the model data array on the same axes with some transparency
+    da_mod.plot(ax=ax, label=da_mod.attrs.get("dataset", "Model"), alpha=0.5, **kwargs)
+    
+    # Add a legend without a frame
+    ax.legend(frameon=False)
+    
+    # Set the title, either the provided one or based on the model data attributes
+    if title is None:
+        ax.set_title(f"{da_mod.attrs.get('long_name', 'Data')} ({da_mod.name})")
+    else:
+        ax.set_title(title)
+
+    return ax
+
+def plot_points_on_map(d_point_coords: dict, ax=None, region=None):
+    """
+    Plot geographic points on a map using Cartopy, with optional region highlighting.
+
+    Parameters
+    ----------
+    d_point_coords : dict
+        A dictionary where keys are point identifiers (e.g., station names or IDs) and values are tuples of 
+        longitude and latitude coordinates (e.g., {'Point1': (lon1, lat1), 'Point2': (lon2, lat2)}).
+    ax : matplotlib.axes.Axes, optional
+        The axes on which to plot the points. If None, a new figure and axes with a PlateCarree projection are created.
+    region : str or None, optional
+        The region to highlight on the map. This could be a predefined region name (e.g., 'belgium') 
+        or None if no specific region is needed.
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        The axes with the plotted points and the map features.
+    
+    Example
+    -------
+    >>> d_point_coords = {'Point1': (4.3517, 50.8503), 'Point2': (5.5413, 50.6326)}
+    >>> plot_points_on_map(d_point_coords, region="belgium")
+    """
+    # Create a figure and set the projection to PlateCarree
+    if ax is None:
+        fig, ax = plt.subplots(subplot_kw={'projection': ccrs.PlateCarree()})
+    
+    # Plot each point and add a label
+    for point_id, (lon, lat) in d_point_coords.items():
+        ax.plot(lon, lat, marker='o', color='red', markersize=5, transform=ccrs.PlateCarree())
+        ax.text(lon + 0.1, lat - 0.1, point_id, transform=ccrs.PlateCarree())
+
+    # Add coastline and country borders and region selection if region is provided
+    _add_features(ax, region=region)
+    
+    ax.set_title('Location of points', loc='right')
+
+    return ax
 
 ##################################
 # Helper functions               #
