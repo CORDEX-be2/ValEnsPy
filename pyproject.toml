@@ -27,6 +27,9 @@ scipy = "^1.13.0"
 shapely = "^2.0.3"
 xarray = "^2024.2.0"
 xarray-datatree = "^0.0.14"
+regionmask = "^0.12.1"
+geopandas = "^1.0.1"
+
 
 # Development group
 [tool.poetry.group.dev]
