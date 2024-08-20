@@ -165,7 +165,7 @@ def plot_spatial_bias(da: xr.DataArray, ax=None, region = None, **kwargs):
     return ax
 
 
-def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff: xr.DataArray, region=None): 
+def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff: xr.DataArray, region=None, **kwargs): 
 
   """
   Plots comparison maps for model data, reference data, and their difference.
@@ -198,8 +198,13 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   axes = axes.flatten()
 
   # find plotting min and max
-  cbar_label = f"{da_ref.attrs['long_name']} ({da_ref.attrs['units']})"
-  cbar_kwargs = {'label': cbar_label}
+  #  Set colorbar label
+  if 'cbar_kwargs' in kwargs:
+    cbar_kwargs = kwargs.pop('cbar_kwargs')
+    if 'label' not in cbar_kwargs:
+        cbar_kwargs['label'] = f"{da_ref.attrs.get('long_name', 'Data')} ({da_ref.attrs.get('units', '')})"
+  else:
+    cbar_kwargs = {'label': f"{da_ref.attrs.get('long_name', 'Data')} ({da_ref.attrs.get('units', '')})"}
 
 
   # plotting bounds
@@ -220,14 +225,14 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
 
   # mod
   ax = axes[0]
-  da_mod.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs)
+  da_mod.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs, **kwargs)
   ax.set_title('')
   ax.set_title(mod_title, loc='right')
   _add_features(ax, region=region)
 
   # ref
   ax = axes[1]
-  da_ref.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs)
+  da_ref.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs, **kwargs)
   ax.set_title('')
   ax.set_title(ref_title, loc='right')
   _add_features(ax, region=region)
@@ -235,7 +240,7 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
   # bias
   ax = axes[2]
   diff_bound = float(max(abs(da_diff.min().values), abs(da_diff.max().values)))
-  da_diff.plot(ax=ax, cmap = 'coolwarm', vmax = diff_bound, vmin = - diff_bound, cbar_kwargs=cbar_kwargs)
+  da_diff.plot(ax=ax, cmap = 'coolwarm', vmax = diff_bound, vmin = - diff_bound, cbar_kwargs=cbar_kwargs, **kwargs)
   ax.set_title('')
   ax.set_title(f"{mod_title} - {ref_title}", loc='right')
   _add_features(ax, region=region)

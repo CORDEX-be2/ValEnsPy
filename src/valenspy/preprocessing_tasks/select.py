@@ -93,7 +93,7 @@ def select_region(ds: xr.Dataset, region: str):
     xr.Dataset: A new xarray Dataset containing only the data within the specified region.
 
     Example: 
-    ds_region = sel_region(ds, 'europe')
+    ds_region = select_region(ds, 'europe')
     """
     
     # get region bounds
