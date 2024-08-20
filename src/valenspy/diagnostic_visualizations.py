@@ -41,14 +41,10 @@ def plot_time_series(da: xr.DataArray, ax=None, **kwargs):
     if ax is None:
         fig, ax = plt.subplots()
 
-
     # Plot the data array on the provided or newly created axes
     da.plot(ax=ax, **kwargs)
 
-
     # Set the title based on the 'long_name' attribute
-    ax.set_title(da.attrs.get("long_name", ""), loc="left")
-    ax.set_title(" ", loc="center")
     ax.set_title(da.attrs.get("long_name", ""), loc="left")
     ax.set_title(" ", loc="center")
 
@@ -74,8 +70,6 @@ def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
         The title for the plot. If not provided, a default title based on the DataArray's
         long_name attribute will be set.
     region : str, optional
-      string of the region to determine the plotting extent, as defined in the regions.py file.
-    **kwargs :
       string of the region to determine the plotting extent, as defined in the regions.py file.
     **kwargs :
         Additional keyword arguments to pass to the xarray DataArray plot method.
