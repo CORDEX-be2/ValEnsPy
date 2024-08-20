@@ -43,12 +43,13 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
         "m/hr": _convert_m_to_kg_m2s,
         "J/m^2": _convert_J_m2_to_W_m2,
         "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
-        "1": _convert_fraction_to_percent
+        "1": _convert_fraction_to_percent,
+        "kg m-2": _convert_kg_m2_to_kg_m2s,
     }
 
     # Key: The unit of the raw data
     # Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
-    EQUIVALENT_UNITS = {"degC": "Celcius", "m/s": "m s-1", "(0 - 1)":"1"}
+    EQUIVALENT_UNITS = {"degC": "Celcius", "m/s": "m s-1", "(0 - 1)":"1", "mm" : "kg m-2"}
 
     for raw_var in ds.data_vars:
         var = next(
@@ -63,6 +64,7 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
             
             # convert units - based on the raw units
             raw_units = raw_LOOKUP[var]["raw_units"]
+            print(raw_units)                                #testing
 
             # If the raw_units are in the equivalent_units, use the replacement unit
             if raw_units in EQUIVALENT_UNITS:
@@ -228,7 +230,7 @@ def _convert_mm_to_kg_m2s(da: xr.DataArray):
 
 def _convert_m_to_kg_m2s(da: xr.DataArray):
     """
-    Convert values in xarray DataArray from mm hr^-1 to kg m^-2 s^-1
+    Convert values in xarray DataArray from m hr^-1 to kg m^-2 s^-1
 
     Parameters
     ----------
@@ -242,7 +244,34 @@ def _convert_m_to_kg_m2s(da: xr.DataArray):
     """
 
     # do conversion
-    da = da * 1000 / 3600  # mm hr^-1 to kg m^-2 s^-1
+    da = da * 1000 / 3600  # m hr^-1 to kg m^-2 s^-1
+
+    # update units attribute
+    da.attrs["units"] = "kg m-2 s-1"
+
+    return da
+
+def _convert_kg_m2_to_kg_m2s(da: xr.DataArray):
+    """
+    Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The xarray DataArray to convert
+
+    Returns
+    -------
+    xr.DataArray
+        The  converted xarray DataArray
+    """
+
+    # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
+    timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
+    print(timestep_nseconds)
+
+    # do conversion
+    da = da / timestep_nseconds  # kg m^-2 to kg m^-2 s^-1
 
     # update units attribute
     da.attrs["units"] = "kg m-2 s-1"
