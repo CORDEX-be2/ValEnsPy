@@ -205,12 +205,17 @@ def plot_maps_mod_ref_diff(da_mod: xr.DataArray,  da_ref: xr.DataArray,  da_diff
         cbar_kwargs['label'] = f"{da_ref.attrs.get('long_name', 'Data')} ({da_ref.attrs.get('units', '')})"
   else:
     cbar_kwargs = {'label': f"{da_ref.attrs.get('long_name', 'Data')} ({da_ref.attrs.get('units', '')})"}
+  
+# plotting bounds
+  if not 'vmin' in kwargs: 
+    vmin = float(min(da_mod.min().values, da_ref.min().values))
+  else: 
+    vmin = kwargs.pop('vmin')
 
-
-  # plotting bounds
-  vmin = float(min(da_mod.min().values, da_ref.min().values))
-  vmax = float(max(da_mod.max().values, da_ref.max().values))
-
+  if not 'vmax' in kwargs: 
+    vmax = float(max(da_mod.max().values, da_ref.max().values))
+  else: 
+    vmax = kwargs.pop('vmax')
 
   # titles - use the dataset attribute if available
   if 'dataset' in da_mod.attrs: 
