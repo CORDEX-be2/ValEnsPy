@@ -45,8 +45,21 @@ class Diagnostic:
         """
         pass
 
-        if ax is None:
-            ax = plt.gca()
+    def plot(self, result, ax=None, **kwargs):
+        """Plot the diagnostic.
+
+        Parameters
+        ----------
+        result :
+        result :
+            The output of the diagnostic function.
+
+        Returns
+        -------
+        Figure :
+        Figure :
+            The figure representing the diagnostic.
+        """
         if isinstance(result, tuple):
             ax = self.plotting_function(*result, ax=ax, **kwargs)
         else:
@@ -57,7 +70,6 @@ class Diagnostic:
     def description(self):
         """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
         return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
-
 
 class Model2Self(Diagnostic):
     """A class representing a diagnostic that compares a model to itself."""
@@ -94,32 +106,6 @@ class Model2Self(Diagnostic):
     def description(self):
         """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
         return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
-
-
-class Model2Self(Diagnostic):
-    """A class representing a diagnostic that compares a model to itself."""
-
-    def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None
-    ):
-        """Initialize the Model2Self diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description)
-
-    def apply(self, ds: xr.Dataset, **kwargs):
-        """Apply the diagnostic to the data.
-
-        Parameters
-        ----------
-        ds : xr.Dataset
-            The data to apply the diagnostic to.
-
-        Returns
-        -------
-        xr.Dataset
-            The data after applying the diagnostic.
-        """
-        return self.diagnostic_function(ds, **kwargs)
-
 
 class Model2Ref(Diagnostic):
     """A class representing a diagnostic that compares a model to a reference."""

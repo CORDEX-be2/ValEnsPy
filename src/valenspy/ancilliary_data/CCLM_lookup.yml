@@ -247,9 +247,9 @@ clivi:
 #   raw_grid_mapping: rotated_pole
 #   raw_cell_methods: 'time: point'
 
-#   raw_name: QV_S
-#   raw_standard_name: surface_specific_humidity
-#   raw_long_name: surface specific humidity
-#   raw_units: kg kg-1
-#   raw_grid_mapping: rotated_pole
-#   raw_cell_methods: 'time: point'
+  raw_name: QV_S
+  raw_standard_name: surface_specific_humidity
+  raw_long_name: surface specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
