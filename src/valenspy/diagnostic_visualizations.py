@@ -41,10 +41,14 @@ def plot_time_series(da: xr.DataArray, ax=None, **kwargs):
     if ax is None:
         fig, ax = plt.subplots()
 
+
     # Plot the data array on the provided or newly created axes
     da.plot(ax=ax, **kwargs)
 
+
     # Set the title based on the 'long_name' attribute
+    ax.set_title(da.attrs.get("long_name", ""), loc="left")
+    ax.set_title(" ", loc="center")
     ax.set_title(da.attrs.get("long_name", ""), loc="left")
     ax.set_title(" ", loc="center")
 
@@ -70,6 +74,8 @@ def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
         The title for the plot. If not provided, a default title based on the DataArray's
         long_name attribute will be set.
     region : str, optional
+      string of the region to determine the plotting extent, as defined in the regions.py file.
+    **kwargs :
       string of the region to determine the plotting extent, as defined in the regions.py file.
     **kwargs :
         Additional keyword arguments to pass to the xarray DataArray plot method.
@@ -169,11 +175,7 @@ def plot_spatial_bias(da: xr.DataArray, ax=None, region=None, **kwargs):
 
 
 def plot_maps_mod_ref_diff(
-    da_mod: xr.DataArray,
-    da_ref: xr.DataArray,
-    da_diff: xr.DataArray,
-    region=None,
-    **kwargs,
+    da_mod: xr.DataArray, da_ref: xr.DataArray, da_diff: xr.DataArray, region=None
 ):
     """
     Plots comparison maps for model data, reference data, and their difference.
@@ -207,28 +209,12 @@ def plot_maps_mod_ref_diff(
     axes = axes.flatten()
 
     # find plotting min and max
-    #  Set colorbar label
-    if "cbar_kwargs" in kwargs:
-        cbar_kwargs = kwargs.pop("cbar_kwargs")
-        if "label" not in cbar_kwargs:
-            cbar_kwargs["label"] = (
-                f"{da_ref.attrs.get('long_name', 'Data')} ({da_ref.attrs.get('units', '')})"
-            )
-    else:
-        cbar_kwargs = {
-            "label": f"{da_ref.attrs.get('long_name', 'Data')} ({da_ref.attrs.get('units', '')})"
-        }
+    cbar_label = f"{da_ref.attrs['long_name']} ({da_ref.attrs['units']})"
+    cbar_kwargs = {"label": cbar_label}
 
     # plotting bounds
-    if not "vmin" in kwargs:
-        vmin = float(min(da_mod.min().values, da_ref.min().values))
-    else:
-        vmin = kwargs.pop("vmin")
-
-    if not "vmax" in kwargs:
-        vmax = float(max(da_mod.max().values, da_ref.max().values))
-    else:
-        vmax = kwargs.pop("vmax")
+    vmin = float(min(da_mod.min().values, da_ref.min().values))
+    vmax = float(max(da_mod.max().values, da_ref.max().values))
 
     # titles - use the dataset attribute if available
     if "dataset" in da_mod.attrs:
@@ -243,14 +229,14 @@ def plot_maps_mod_ref_diff(
 
     # mod
     ax = axes[0]
-    da_mod.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs, **kwargs)
+    da_mod.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs)
     ax.set_title("")
     ax.set_title(mod_title, loc="right")
     _add_features(ax, region=region)
 
     # ref
     ax = axes[1]
-    da_ref.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs, **kwargs)
+    da_ref.plot(ax=ax, vmin=vmin, vmax=vmax, cbar_kwargs=cbar_kwargs)
     ax.set_title("")
     ax.set_title(ref_title, loc="right")
     _add_features(ax, region=region)
@@ -264,7 +250,6 @@ def plot_maps_mod_ref_diff(
         vmax=diff_bound,
         vmin=-diff_bound,
         cbar_kwargs=cbar_kwargs,
-        **kwargs,
     )
     ax.set_title("")
     ax.set_title(f"{mod_title} - {ref_title}", loc="right")
