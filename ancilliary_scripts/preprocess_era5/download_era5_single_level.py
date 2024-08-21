@@ -161,7 +161,7 @@ else:
 # download ERA5 data
 for var_to_use in var_lst:
     dir_out = (
-        base_dir + dataset + "/" + region + "/" + time_freq + "/" + var_to_use + "/"
+        base_dir + dataset + "/" + region + "/" + var_to_use + "/"+ time_freq + "/" 
     )
     print(dir_out)
     os.makedirs(dir_out, exist_ok=True)
