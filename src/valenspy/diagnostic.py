@@ -65,6 +65,7 @@ class Diagnostic:
         """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
         return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
 
+
 class Model2Self(Diagnostic):
     """A class representing a diagnostic that compares a model to itself."""
 
@@ -88,6 +89,7 @@ class Model2Self(Diagnostic):
             The data after applying the diagnostic.
         """
         return self.diagnostic_function(ds, **kwargs)
+
 
 class Model2Ref(Diagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
