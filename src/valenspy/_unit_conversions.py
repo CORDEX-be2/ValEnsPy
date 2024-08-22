@@ -99,23 +99,9 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 def _convert_Celcius_to_Kelvin(da: xr.DataArray):
     """
     Convert values in xarray DataArray from °C to K
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
     """
-
-    # do conversion
     da = da + 273.15  # Celcius to Kelvin
-
-    # update units attribute --  naming of units defined in ./src/valenspy/ancilliary_data/CORDEX_variables.yml
-    da.attrs["units"] = "K"
+    da.attrs["units"] = "K" #Naming as in CORDEX_variables.yml
 
     return da
 
@@ -123,22 +109,8 @@ def _convert_Celcius_to_Kelvin(da: xr.DataArray):
 def _convert_Kelvin_to_Celcius(da: xr.DataArray):
     """
     Convert values in xarray DataArray from K to °C
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
     """
-
-    # do conversion
     da = da - 273.15  # Kelvin to Celcius
-
-    # update units attribute
     da.attrs["units"] = "°C"
 
     return da
@@ -147,22 +119,8 @@ def _convert_Kelvin_to_Celcius(da: xr.DataArray):
 def _convert_hPa_to_Pa(da: xr.DataArray):
     """
     Convert values in xarray DataArray from hPa to Pa
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
     """
-
-    # do conversion
     da = da * 100
-
-    # update units attribute
     da.attrs["units"] = "Pa"
 
     return da
@@ -171,22 +129,8 @@ def _convert_hPa_to_Pa(da: xr.DataArray):
 def _convert_Pa_to_hPa(da: xr.DataArray):
     """
     Convert values in xarray DataArray from Pa to hPa
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
     """
-
-    # do conversion
     da = da / 100
-
-    # update units attribute
     da.attrs["units"] = "hPa"
 
     return da
@@ -194,25 +138,11 @@ def _convert_Pa_to_hPa(da: xr.DataArray):
 def _convert_mm_to_kg_m2s(da: xr.DataArray):
     """
     Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
     """
-
     # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
     timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
 
-    # do conversion
     da = da / timestep_nseconds  # mm to kg m^-2 s^-1
-
-    # update units attribute
     da.attrs["units"] = "kg m-2 s-1"
 
     return da
@@ -221,22 +151,8 @@ def _convert_mm_to_kg_m2s(da: xr.DataArray):
 def _convert_m_to_kg_m2s(da: xr.DataArray):
     """
     Convert values in xarray DataArray from mm hr^-1 to kg m^-2 s^-1
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
     """
-
-    # do conversion
     da = da * 1000 / 3600  # mm hr^-1 to kg m^-2 s^-1
-
-    # update units attribute
     da.attrs["units"] = "kg m-2 s-1"
 
     return da
@@ -245,22 +161,8 @@ def _convert_m_to_kg_m2s(da: xr.DataArray):
 def _convert_kg_m2s_to_mh(da: xr.DataArray):
     """
     Convert values in xarray DataArray from kg m^-2 s^-1 to mm hr^-1
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
     """
-
-    # do conversion
     da = da * 3600 / 1000  # kg m^-2 s^-1 to mm hr^-1
-
-    # update units attribute
     da.attrs["units"] = "mm hr-1"
 
     return da
@@ -269,24 +171,11 @@ def _convert_kg_m2s_to_mh(da: xr.DataArray):
 def _convert_J_m2_to_W_m2(da: xr.DataArray):
     """
     Convert values in xarray DataArray from J m^2 to W m^2
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
     """
     # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
     timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
 
-    # do conversion
     da = da / timestep_nseconds  # J m^2 to W m^2
-
-    # update units attribute
     da.attrs["units"] = "W m-2"
 
     return da
@@ -295,22 +184,8 @@ def _convert_J_m2_to_W_m2(da: xr.DataArray):
 def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
     """
     Convert values in xarray DataArray from kWh/m2/day to W m^2
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
     """
-
-    # do conversion
     da = da * (1000) / 24
-
-    # update units attribute
     da.attrs["units"] = "W m-2"
 
     return da
@@ -319,43 +194,17 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
 def _convert_fraction_to_percent(da: xr.DataArray):
     """
     Convert values in xarray DataArray from unitless to %
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
     """
-
-    # do conversion
     da = da * 100
-
-    # update units attribute
     da.attrs["units"] = "%"
 
     return da
 
 
 # helper functions - can be moved to more appropriate place
-
-
 def _determine_time_interval(da: xr.DataArray):
     """
     Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances.
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray with time axis to check the time interval
-
-    Returns
-    -------
-    freq : string
-        The frequency string containing "hourly, daily, monthly or yearly"
     """
 
     diff = da.time.diff(dim="time").values[0]
