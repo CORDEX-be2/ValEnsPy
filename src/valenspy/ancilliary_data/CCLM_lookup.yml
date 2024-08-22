@@ -136,120 +136,117 @@ clivi:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
+# # to add cclm variable
+
+# tasmax:
+
+# tasmin:
+
+# # to add cordex variable
+
+
+#   raw_name: Z0
+#   raw_standard_name: surface_roughness_length
+#   raw_long_name: surface roughness length
+#   raw_units: m
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+
+#   raw_name: FIS
+#   raw_standard_name: surface_geopotential
+#   raw_long_name: surface geopotential
+#   raw_units: m2 s-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: TD_2M
+#   raw_standard_name: dew_point_temperature
+#   raw_long_name: 2m dew point temperature
+#   raw_units: K
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: VMFL_S
+#   raw_standard_name: surface_downward_northward_stress
+#   raw_long_name: northward stress
+#   raw_units: Pa
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: UMFL_S
+#   raw_standard_name: surface_downward_eastward_stress
+#   raw_long_name: eastward stress
+#   raw_units: Pa
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+
+#   raw_name: TQR
+#   raw_standard_name: atmosphere_mass_content_of_liquid_precipitation
+#   raw_long_name: total rain water content vertically integrated
+#   raw_units: kg m-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
 
 
 
-# to add cclm variable
-
-tasmax:
-
-tasmin:
-
-# to add cordex variable
-
-
-  raw_name: Z0
-  raw_standard_name: surface_roughness_length
-  raw_long_name: surface roughness length
-  raw_units: m
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
-
-
-  raw_name: FIS
-  raw_standard_name: surface_geopotential
-  raw_long_name: surface geopotential
-  raw_units: m2 s-2
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
-
-  raw_name: TD_2M
-  raw_standard_name: dew_point_temperature
-  raw_long_name: 2m dew point temperature
-  raw_units: K
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
-
-  raw_name: VMFL_S
-  raw_standard_name: surface_downward_northward_stress
-  raw_long_name: northward stress
-  raw_units: Pa
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
-
-  raw_name: UMFL_S
-  raw_standard_name: surface_downward_eastward_stress
-  raw_long_name: eastward stress
-  raw_units: Pa
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
-
-
-  raw_name: TQR
-  raw_standard_name: atmosphere_mass_content_of_liquid_precipitation
-  raw_long_name: total rain water content vertically integrated
-  raw_units: kg m-2
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
+#   raw_name: TQC
+#   raw_standard_name: atmosphere_mass_content_of_cloud_liquid_water
+#   raw_long_name: vertical integrated cloud water
+#   raw_units: kg m-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
 
 
 
-  raw_name: TQC
-  raw_standard_name: atmosphere_mass_content_of_cloud_liquid_water
-  raw_long_name: vertical integrated cloud water
-  raw_units: kg m-2
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
+#   raw_name: TQG
+#   raw_standard_name: atmosphere_mass_content_of_graupel
+#   raw_long_name: total graupel content vertically integrated
+#   raw_units: kg m-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: TQS
+#   raw_standard_name: atmosphere_mass_content_of_snow
+#   raw_long_name: total snow content vertically integrated
+#   raw_units: kg m-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+
+#   raw_name: CLCT_AV
+#   raw_standard_name: cloud_area_fraction
+#   raw_long_name: averaged total cloud cover
+#   raw_units: '1'
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: mean'
 
 
 
-  raw_name: TQG
-  raw_standard_name: atmosphere_mass_content_of_graupel
-  raw_long_name: total graupel content vertically integrated
-  raw_units: kg m-2
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
+#   raw_name: FRESHSNW
+#   raw_long_name: freshness of snow
+#   raw_units: '1'
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
 
-  raw_name: TQS
-  raw_standard_name: atmosphere_mass_content_of_snow
-  raw_long_name: total snow content vertically integrated
-  raw_units: kg m-2
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
+#   raw_name: QC
+#   raw_standard_name: mass_fraction_of_cloud_liquid_water_in_air
+#   raw_long_name: specific cloud liquid water content
+#   raw_units: kg kg-1
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
 
+#   raw_name: QI
+#   raw_standard_name: mass_fraction_of_cloud_ice_in_air
+#   raw_long_name: specific cloud ice content
+#   raw_units: kg kg-1
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
 
-  raw_name: CLCT_AV
-  raw_standard_name: cloud_area_fraction
-  raw_long_name: averaged total cloud cover
-  raw_units: '1'
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: mean'
-
-
-
-  raw_name: FRESHSNW
-  raw_long_name: freshness of snow
-  raw_units: '1'
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
-
-  raw_name: QC
-  raw_standard_name: mass_fraction_of_cloud_liquid_water_in_air
-  raw_long_name: specific cloud liquid water content
-  raw_units: kg kg-1
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
-
-  raw_name: QI
-  raw_standard_name: mass_fraction_of_cloud_ice_in_air
-  raw_long_name: specific cloud ice content
-  raw_units: kg kg-1
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
-
-  raw_name: QV_S
-  raw_standard_name: surface_specific_humidity
-  raw_long_name: surface specific humidity
-  raw_units: kg kg-1
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
+#   raw_name: QV_S
+#   raw_standard_name: surface_specific_humidity
+#   raw_long_name: surface specific humidity
+#   raw_units: kg kg-1
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
