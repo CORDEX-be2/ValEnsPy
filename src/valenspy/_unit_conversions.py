@@ -9,6 +9,11 @@ from valenspy._utilities import load_yml
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
+EQUIVALENT_UNITS = {
+    "degC": "Celcius", 
+    "m/s": "m s-1", 
+    "(0 - 1)": "1"
+    }
 
 def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     """Convert all units for all variables in the dataset to the correct units by applying the correct conversion function.
@@ -34,25 +39,10 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     xr.Dataset
         The converted xarray dataset
     """
-    unit_conversion_functions = {
-        "Celcius": _convert_Celcius_to_Kelvin,
-        "hPa": _convert_hPa_to_Pa,
-        "mm": _convert_mm_to_kg_m2s,
-        "mm/hr": _convert_m_to_kg_m2s,
-        "m": _convert_m_to_kg_m2s,
-        "m/hr": _convert_m_to_kg_m2s,
-        "J/m^2": _convert_J_m2_to_W_m2,
-        "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
-        "1": _convert_fraction_to_percent,
-    }
 
     # Key: The unit of the raw data
     # Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
-    EQUIVALENT_UNITS = {
-        "degC": "Celcius", 
-        "m/s": "m s-1", 
-        "(0 - 1)": "1"
-        }
+
 
     for raw_var in ds.data_vars:
         var = next(
@@ -200,7 +190,6 @@ def _convert_Pa_to_hPa(da: xr.DataArray):
     da.attrs["units"] = "hPa"
 
     return da
-
 
 def _convert_mm_to_kg_m2s(da: xr.DataArray):
     """
@@ -386,3 +375,15 @@ def _determine_time_interval(da: xr.DataArray):
         )
 
     return freq
+
+unit_conversion_functions = {
+    "Celcius": _convert_Celcius_to_Kelvin,
+    "hPa": _convert_hPa_to_Pa,
+    "mm": _convert_mm_to_kg_m2s,
+    "mm/hr": _convert_m_to_kg_m2s,
+    "m": _convert_m_to_kg_m2s,
+    "m/hr": _convert_m_to_kg_m2s,
+    "J/m^2": _convert_J_m2_to_W_m2,
+    "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
+    "1": _convert_fraction_to_percent,
+}
