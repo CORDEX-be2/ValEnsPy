@@ -18,7 +18,7 @@ def test_lookup_unit_conversion_coverage(lookup_name):
     lookup_table = load_yml(lookup_name)
     to_convert_raw_units = set([var_attr["raw_units"] for  var, var_attr in lookup_table.items() if var_attr["raw_units"] != CORDEX_VARIABLES[var]["units"]])
     
-    assert to_convert_raw_units.issubset(all_convertable_units), f"The following units in {lookup_name}.yml should be converted for some variable but are not: {to_convert_raw_units - all_convertable_units}"
+    assert to_convert_raw_units.issubset(all_convertable_units), f"{to_convert_raw_units - all_convertable_units} in {lookup_name}.yml should be converted for some variable but are not."
 
 def test_overlap_between_CORDEX_units_and_convertable_units():
     """
@@ -32,5 +32,5 @@ def test_overlap_between_CORDEX_units_and_convertable_units():
     CORDEX_VARIABLES = load_yml("CORDEX_variables")
     cf_units = set([var_attr["units"] for _, var_attr in CORDEX_VARIABLES.items()])
     
-    assert cf_units.isdisjoint(all_convertable_units), f"The following units are both in the CORDEX variables and the equivalent_units or unit_conversion_functions: {cf_units.intersection(all_convertable_units)}"
+    assert cf_units.isdisjoint(all_convertable_units), f"{cf_units.intersection(all_convertable_units)} are in the CORDEX_VARIABLE units and the equivalent_units or unit_conversion_functions. This will lead to incorrect unit conversion."
 
