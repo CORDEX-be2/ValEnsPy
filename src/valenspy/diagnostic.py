@@ -118,6 +118,7 @@ class Model2Ref(Diagnostic):
         ds, ref = _select_common_vars(ds, ref)
         return self.diagnostic_function(ds, ref, **kwargs)
 
+
 class Ensemble2Self(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to itself."""
 
@@ -163,7 +164,7 @@ class Ensemble2Self(Diagnostic):
             else:
                 axes = plt.gca()
         return self.plotting_function(result, axes=axes, facetted=facetted, **kwargs)
-    
+
     @classmethod
     def from_model2self(cls, model2self: Model2Self, facetted=True):
         """Create an Ensemble2Self diagnostic from a Model2Self diagnostic.
@@ -182,11 +183,11 @@ class Ensemble2Self(Diagnostic):
         def diagnostic_function(dt: DataTree, **kwargs):
             return dt.map_over_subtree(model2self.diagnostic_function, **kwargs)
 
-        def plotting_function(dt: DataTree, axes, variable=None, facetted=facetted, **kwargs):
+        def plotting_function(
+            dt: DataTree, axes, variable=None, facetted=facetted, **kwargs
+        ):
             if facetted:
-                for ds, ax in zip(
-                    dt.leaves, axes.flatten()
-                ):
+                for ds, ax in zip(dt.leaves, axes.flatten()):
                     if variable:
                         model2self.plot(ds[variable], ax=ax, **kwargs)
                     else:
@@ -195,7 +196,12 @@ class Ensemble2Self(Diagnostic):
             else:
                 for ds in dt.leaves:
                     if variable:
-                        model2self.plot(ds[variable], ax=axes, label=f'{ds.path.replace("/", " ")}', **kwargs)
+                        model2self.plot(
+                            ds[variable],
+                            ax=axes,
+                            label=f'{ds.path.replace("/", " ")}',
+                            **kwargs,
+                        )
                     else:
                         model2self.plot(
                             ds, ax=axes, label=f'{ds.path.replace("/", " ")}', **kwargs
@@ -208,6 +214,7 @@ class Ensemble2Self(Diagnostic):
             model2self.name,
             model2self.description,
         )
+
 
 class Ensemble2Ref(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
@@ -273,7 +280,7 @@ class Ensemble2Ref(Diagnostic):
             The Ensemble2Ref diagnostic.
         """
 
-        def diagnostic_function(dt: DataTree, ref, **kwargs): 
+        def diagnostic_function(dt: DataTree, ref, **kwargs):
             if isinstance(ref, DataTree):
                 ensemble_results = {}
                 for data_node, ref_node in zip(dt.leaves, ref.leaves):
@@ -283,14 +290,15 @@ class Ensemble2Ref(Diagnostic):
                     )
                 return DataTree.from_dict(ensemble_results)
             else:
-                return dt.map_over_subtree(model2ref.diagnostic_function, ref=ref, **kwargs)
-            
+                return dt.map_over_subtree(
+                    model2ref.diagnostic_function, ref=ref, **kwargs
+                )
 
-        def plotting_function(dt: DataTree, axes, variable=None, facetted=facetted, **kwargs):
+        def plotting_function(
+            dt: DataTree, axes, variable=None, facetted=facetted, **kwargs
+        ):
             if facetted:
-                for ds, ax in zip(
-                    dt.leaves, axes.flatten()
-                ):
+                for ds, ax in zip(dt.leaves, axes.flatten()):
                     if variable:
                         model2ref.plot(ds[variable], ax=ax, **kwargs)
                     else:
@@ -299,7 +307,12 @@ class Ensemble2Ref(Diagnostic):
             else:
                 for ds in dt.leaves:
                     if variable:
-                        model2ref.plot(ds[variable], axes=axes, label=f'{ds.path.replace("/", " ")}', **kwargs)
+                        model2ref.plot(
+                            ds[variable],
+                            axes=axes,
+                            label=f'{ds.path.replace("/", " ")}',
+                            **kwargs,
+                        )
                     else:
                         model2ref.plot(
                             ds, ax=axes, label=f'{ds.path.replace("/", " ")}', **kwargs
