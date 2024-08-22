@@ -34,7 +34,7 @@ psl:
   raw_long_name: daily averaged sea level pressure
   raw_units: hPa
 
-huss:
+hurs:
   raw_name: hu
   raw_long_name: daily averaged relative humidity
   raw_units: "%"
