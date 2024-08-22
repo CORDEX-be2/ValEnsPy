@@ -38,9 +38,9 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
         "Celcius": _convert_Celcius_to_Kelvin,
         "hPa": _convert_hPa_to_Pa,
         "mm": _convert_mm_to_kg_m2s,
-        "mm/hr": _convert_m_to_kg_m2s,
+        "mm/hr": _convert_mm_hr_to_kg_m2s,
         "m": _convert_m_to_kg_m2s,
-        "m/hr": _convert_m_to_kg_m2s,
+        "m/hr": _convert_m_hr_to_kg_m2s,
         "J/m^2": _convert_J_m2_to_W_m2,
         "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
         "1": _convert_fraction_to_percent,
@@ -215,7 +215,6 @@ def _convert_mm_to_kg_m2s(da: xr.DataArray):
     xr.DataArray
         The  converted xarray DataArray
     """
-
     # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
     timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
 
@@ -226,6 +225,29 @@ def _convert_mm_to_kg_m2s(da: xr.DataArray):
     da.attrs["units"] = "kg m-2 s-1"
 
     return da
+
+def _convert_mm_hr_to_kg_m2s(da: xr.DataArray):
+    """
+    Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The xarray DataArray to convert
+
+    Returns
+    -------
+    xr.DataArray
+        The  converted xarray DataArray
+    """
+    # do conversion
+    da = da / 3600 # mm to kg m^-2 s^-1
+
+    # update units attribute
+    da.attrs["units"] = "kg m-2 s-1"
+
+    return da
+
 
 
 def _convert_m_to_kg_m2s(da: xr.DataArray):
@@ -242,7 +264,31 @@ def _convert_m_to_kg_m2s(da: xr.DataArray):
     xr.DataArray
         The  converted xarray DataArray
     """
+    # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
+    timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
 
+    # do conversion
+    da = da * 1000 / timestep_nseconds  # mm to kg m^-2 s^-1
+
+    # update units attribute
+    da.attrs["units"] = "kg m-2 s-1"
+
+    return da
+
+def _convert_m_hr_to_kg_m2s(da: xr.DataArray):
+    """
+    Convert values in xarray DataArray from m hr^-1 to kg m^-2 s^-1
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The xarray DataArray to convert
+
+    Returns
+    -------
+    xr.DataArray
+        The  converted xarray DataArray
+    """
     # do conversion
     da = da * 1000 / 3600  # m hr^-1 to kg m^-2 s^-1
 
@@ -253,7 +299,7 @@ def _convert_m_to_kg_m2s(da: xr.DataArray):
 
 def _convert_kg_m2_to_kg_m2s(da: xr.DataArray):
     """
-    Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
+    Convert daily (!) values in xarray DataArray from kg m^-2 to kg m^-2 s^-1
 
     Parameters
     ----------
@@ -268,7 +314,6 @@ def _convert_kg_m2_to_kg_m2s(da: xr.DataArray):
 
     # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
     timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
-    print(timestep_nseconds)
 
     # do conversion
     da = da / timestep_nseconds  # kg m^-2 to kg m^-2 s^-1
