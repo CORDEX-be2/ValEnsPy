@@ -13,10 +13,10 @@ xr.set_options(keep_attrs=True)
 ###################################
 
 
-def plot_diurnal_cycle(data: xr.DataArray, ax, **kwargs):
+def plot_diurnal_cycle(data: xr.DataArray, ax=None, **kwargs):
     """Plot the daily cycle of the data."""
     data.plot(ax=ax, **kwargs)
-    ax.set_title("Daily Cycle")
+    ax.set_title("Diurnal Cycle")
     return ax
 
 

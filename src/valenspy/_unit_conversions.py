@@ -62,6 +62,7 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 
             # convert units - based on the raw units
             raw_units = raw_LOOKUP[var]["raw_units"]
+            cordex_var_units = CORDEX_VARIABLES[var]["units"]
 
             # If the raw_units are in the equivalent_units, use the replacement unit
             if raw_units in EQUIVALENT_UNITS:
@@ -72,9 +73,8 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
                 ds[var] = unit_conversion_functions[raw_units](
                     ds[var]
                 )  # Do the conversion
-            else:
+            elif not raw_units == cordex_var_units:
                 # Throw a warning that the raw_unit in the lookup table is not implemented
-                cordex_var_units = CORDEX_VARIABLES[var]["units"]
                 warnings.warn(
                     f"Unit conversion for {raw_units} to {cordex_var_units} is not implemented for variable {var}."
                 )
