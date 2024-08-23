@@ -3,7 +3,7 @@ from valenspy._unit_conversions import UNIT_CONVERSION_FUNCTIONS, EQUIVALENT_UNI
 
 import pytest
 
-@pytest.mark.parametrize("lookup_name", ["EOBS_lookup", "CCLM_lookup", "ALARO-SFX_K_lookup","ERA5_lookup"])
+@pytest.mark.parametrize("lookup_name", ["EOBS_lookup", "CCLM_lookup", "ALARO-SFX_K_lookup","ERA5_lookup","CLIMATE_GRID_lookup"])
 def test_lookup_unit_conversion_coverage(lookup_name):
     """
     Test to see if there are any units in the lookup table which should be converted but are not defined in the UNIT_CONVERSION_FUNCTIONS or EQUIVALENT_UNITS.
