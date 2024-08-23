@@ -74,33 +74,38 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 
         if var:  # Dont processes variables that are not in the lookup table.
 
-            # rename variable to CORDEX variable name
+            # Rename variable to CORDEX variable name
             ds = ds.rename_vars({raw_var: var})
 
-            # convert units - based on the raw units
+            # Convert units - based on the raw units if needed!
             raw_units = raw_LOOKUP[var]["raw_units"]
             cordex_var_units = CORDEX_VARIABLES[var]["units"]
 
-            # If the raw_units are in the equivalent_units, use the replacement unit
-            if raw_units in EQUIVALENT_UNITS:
-                raw_units = EQUIVALENT_UNITS[raw_units]
+            # If the raw units are the same as the CORDEX units, no conversion is needed
+            if raw_units != cordex_var_units:
 
-            if raw_units in UNIT_CONVERSION_FUNCTIONS:
+                # If the raw units are in the equivalent units, convert them to the equivalent unit to use the correct conversion function
+                if raw_units in EQUIVALENT_UNITS:
+                    raw_units = EQUIVALENT_UNITS[raw_units]
 
-                ds[var] = UNIT_CONVERSION_FUNCTIONS[raw_units](
-                    ds[var]
-                )  # Do the conversion
-            elif not raw_units == cordex_var_units:
-                # Throw a warning that the raw_unit in the lookup table is not implemented
-                warnings.warn(
-                    f"Unit conversion for {raw_units} to {cordex_var_units} is not implemented for variable {var}."
-                )
+                # Convert the raw units if possible
+                if raw_units in UNIT_CONVERSION_FUNCTIONS:
+                    ds[var] = UNIT_CONVERSION_FUNCTIONS[raw_units](
+                        ds[var]
+                    )  # Do the conversion
+                else:
+                    # Throw a warning that the raw_unit in the lookup table is not implemented
+                    warnings.warn(
+                        f"Unit conversion for {raw_units} to {cordex_var_units} is not implemented for variable {var}."
+                    )
 
-            if var in ds:  # If the renaming occured add the metadata attributes
-                # Metadata attributes
+            #If the conversion was successful, add metadata attributes
+            if var in ds:
                 ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var]["standard_name"]
                 ds[var].attrs["long_name"] = CORDEX_VARIABLES[var]["long_name"]
-                ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"]
+                if "units" not in ds[var].attrs: #If the units are already set by the conversion function, do not overwrite them
+                    ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"]
+
                 ds[var].attrs["original_name"] = raw_LOOKUP[var]["raw_name"]
                 ds[var].attrs["original_long_name"] = raw_LOOKUP[var]["raw_long_name"]
                 ds[var].attrs["original_units"] = raw_LOOKUP[var]["raw_units"]
