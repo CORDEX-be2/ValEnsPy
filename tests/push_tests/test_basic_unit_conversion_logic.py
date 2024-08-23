@@ -20,17 +20,18 @@ def test_lookup_unit_conversion_coverage(lookup_name):
     
     assert to_convert_raw_units.issubset(all_convertable_units), f"{to_convert_raw_units - all_convertable_units} in {lookup_name}.yml should be converted for some variable but are not."
 
-def test_overlap_between_CORDEX_units_and_convertable_units():
+def test_equivalent_units_definition():
     """
-    Test whether the units defined to be converted using the UNIT_CONVERSION_FUNCTIONS (or the EQUIVALENT_UNITS) have no overlap with the units defined in the CORDEX variables.
-    This avoids incorectly converting units which are already in the CORDEX variables.
+    Test whether the equivalent units are defined correctly in the EQUIVALENT_UNITS dictionary.
+    The keys should be units that are not defined in the UNIT_CONVERSION_FUNCTIONS or the CORDEX_VARIABLES_units.
+    The values should be the units that are defined in the CORDEX_VARIABLES or the UNIT_CONVERSION_FUNCTIONS.
     """
     equivalent_units = set([unit for unit in EQUIVALENT_UNITS])
     convertable_units = set([unit for unit in UNIT_CONVERSION_FUNCTIONS])
-    all_convertable_units = equivalent_units.union(convertable_units)
+    CORDEX_VARIABLES_units = set([var_attr["units"] for _, var_attr in load_yml("CORDEX_variables").items()])
 
-    CORDEX_VARIABLES = load_yml("CORDEX_variables")
-    cf_units = set([var_attr["units"] for _, var_attr in CORDEX_VARIABLES.items()])
-    
-    assert cf_units.isdisjoint(all_convertable_units), f"{cf_units.intersection(all_convertable_units)} are in the CORDEX_VARIABLE units and the equivalent_units or UNIT_CONVERSION_FUNCTIONS. This will lead to incorrect unit conversion."
+    convertable_or_CORDEX_units = convertable_units.union(CORDEX_VARIABLES_units)
 
+    for key, value in EQUIVALENT_UNITS.items():
+        assert key not in convertable_or_CORDEX_units, f"Key: {key} in EQUIVALENT_UNITS should not be defined in UNIT_CONVERSION_FUNCTIONS or CORDEX_VARIABLES_units."
+        assert value in convertable_or_CORDEX_units, f"Value: {value} in EQUIVALENT_UNITS should be defined in UNIT_CONVERSION_FUNCTIONS or CORDEX_VARIABLES_units."
