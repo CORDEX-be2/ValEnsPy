@@ -279,11 +279,11 @@ def ALARO_K_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
         #Assuming monthly decumilation! This is not always the case!
         def decumilate(ds):
             ds_decum = ds.diff("time")
-            #Add the first value of the original dataset to the decumilated dataset
+            #Add the first value of the month of original dataset to the decumilated dataset
             ds_decum = xr.concat([ds.isel(time=0), ds_decum], dim="time")
             return ds_decum
-
-        ds["pr"] = ds["pr"].groupby("time.month").map(decumilate).isel(time=slice(1,None))   
+        ds.coords['year_month'] = ds['time.year']*100 + ds['time.month']
+        ds["pr"] = ds["pr"].groupby('year_month').apply(decumilate)
 
     ds = _set_global_attributes(ds, metadata_info)
 
