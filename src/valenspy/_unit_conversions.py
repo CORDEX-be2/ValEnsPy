@@ -37,7 +37,8 @@ UNIT_CONVERSION_FUNCTIONS = {
 EQUIVALENT_UNITS = {
     "degC": "Celcius", 
     "m/s": "m s-1", 
-    "(0 - 1)": "1"
+    "(0 - 1)": "1",
+    "kg kg-1": 1
     }
 
 def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
