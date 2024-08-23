@@ -8,6 +8,8 @@ from valenspy._utilities import load_yml
 from valenspy.unit_conversion_functions import (
     _convert_Celcius_to_Kelvin,
     _convert_hPa_to_Pa,
+    _convert_mm_hr_to_kg_m2s,
+    _convert_m_hr_to_kg_m2s,
     _convert_mm_to_kg_m2s,
     _convert_m_to_kg_m2s,
     _convert_J_m2_to_W_m2,
@@ -19,15 +21,15 @@ from valenspy.unit_conversion_functions import (
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
 UNIT_CONVERSION_FUNCTIONS = {
-    "Celcius": _convert_Celcius_to_Kelvin,
-    "hPa": _convert_hPa_to_Pa,
-    "mm": _convert_mm_to_kg_m2s,
-    "mm/hr": _convert_m_to_kg_m2s,
-    "m": _convert_m_to_kg_m2s,
-    "m/hr": _convert_m_to_kg_m2s,
-    "J/m^2": _convert_J_m2_to_W_m2,
-    "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
-    "1": _convert_fraction_to_percent
+    "Celcius":      _convert_Celcius_to_Kelvin,
+    "hPa":          _convert_hPa_to_Pa,
+    "mm":           _convert_mm_to_kg_m2s,
+    "mm/hr":        _convert_mm_hr_to_kg_m2s,
+    "m":            _convert_m_to_kg_m2s,
+    "m/hr":         _convert_m_hr_to_kg_m2s,
+    "J/m^2":        _convert_J_m2_to_W_m2,
+    "kWh/m2/day":   _convert_kWh_m2_day_to_W_m2,
+    "1":            _convert_fraction_to_percent
 }
 
 EQUIVALENT_UNITS = {

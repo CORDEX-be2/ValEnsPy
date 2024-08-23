@@ -53,16 +53,35 @@ def _convert_mm_to_kg_m2s(da: xr.DataArray):
 
     return da
 
+def _convert_mm_hr_to_kg_m2s(da: xr.DataArray):
+    """
+    Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
+    """
+    da = da / 3600 # mm to kg m^-2 s^-1
+    da.attrs["units"] = "kg m-2 s-1"
+
+    return da
+
 
 def _convert_m_to_kg_m2s(da: xr.DataArray):
     """
     Convert values in xarray DataArray from mm hr^-1 to kg m^-2 s^-1
     """
-    da = da * 1000 / 3600  # mm hr^-1 to kg m^-2 s^-1
+    timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
+    da = da * 1000 / timestep_nseconds  # mm to kg m^-2 s^-1
     da.attrs["units"] = "kg m-2 s-1"
 
     return da
 
+def _convert_m_hr_to_kg_m2s(da: xr.DataArray):
+    """
+    Convert values in xarray DataArray from m hr^-1 to kg m^-2 s^-1s
+    """
+    # do conversion
+    da = da * 1000 / 3600  # m hr^-1 to kg m^-2 s^-1
+    da.attrs["units"] = "kg m-2 s-1"
+    
+    return da
 
 def _convert_kg_m2s_to_mh(da: xr.DataArray):
     """
