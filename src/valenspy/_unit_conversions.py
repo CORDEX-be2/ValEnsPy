@@ -12,6 +12,7 @@ from valenspy.unit_conversion_functions import (
     _convert_m_hr_to_kg_m2s,
     _convert_mm_to_kg_m2s,
     _convert_m_to_kg_m2s,
+    _convert_kg_m2_to_kg_m2s,
     _convert_J_m2_to_W_m2,
     _convert_kWh_m2_day_to_W_m2,
     _convert_fraction_to_percent,
@@ -27,9 +28,10 @@ UNIT_CONVERSION_FUNCTIONS = {
     "mm/hr":        _convert_mm_hr_to_kg_m2s,
     "m":            _convert_m_to_kg_m2s,
     "m/hr":         _convert_m_hr_to_kg_m2s,
+    "kg m-2":       _convert_kg_m2_to_kg_m2s,
     "J/m^2":        _convert_J_m2_to_W_m2,
     "kWh/m2/day":   _convert_kWh_m2_day_to_W_m2,
-    "1":            _convert_fraction_to_percent
+    "1":            _convert_fraction_to_percent,
 }
 
 # Units that are equivalent. Note that the key is the raw unit (and should never be a CORDEX unit!) 

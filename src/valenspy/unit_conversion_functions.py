@@ -1,7 +1,7 @@
 import xarray as xr
 import numpy as np
 
-# Do we want other possible inputs than data arrays?
+########### To Kelvin ############
 def _convert_Celcius_to_Kelvin(da: xr.DataArray):
     """
     Convert values in xarray DataArray from °C to K
@@ -11,7 +11,7 @@ def _convert_Celcius_to_Kelvin(da: xr.DataArray):
 
     return da
 
-
+########### To Celsius ############
 def _convert_Kelvin_to_Celcius(da: xr.DataArray):
     """
     Convert values in xarray DataArray from K to °C
@@ -21,7 +21,7 @@ def _convert_Kelvin_to_Celcius(da: xr.DataArray):
 
     return da
 
-
+########### To Pa ############
 def _convert_hPa_to_Pa(da: xr.DataArray):
     """
     Convert values in xarray DataArray from hPa to Pa
@@ -31,7 +31,7 @@ def _convert_hPa_to_Pa(da: xr.DataArray):
 
     return da
 
-
+########### To hPa ############
 def _convert_Pa_to_hPa(da: xr.DataArray):
     """
     Convert values in xarray DataArray from Pa to hPa
@@ -41,6 +41,7 @@ def _convert_Pa_to_hPa(da: xr.DataArray):
 
     return da
 
+########### To kg m-2 s-1 ############
 def _convert_mm_to_kg_m2s(da: xr.DataArray):
     """
     Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
@@ -58,6 +59,17 @@ def _convert_mm_hr_to_kg_m2s(da: xr.DataArray):
     Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
     """
     da = da / 3600 # mm to kg m^-2 s^-1
+    da.attrs["units"] = "kg m-2 s-1"
+
+    return da
+
+def _convert_kg_m2_to_kg_m2s(da: xr.DataArray):
+    """
+    Convert daily (!) values in xarray DataArray from kg m^-2 to kg m^-2 s^-1
+    """
+    timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
+
+    da = da / timestep_nseconds  # kg m^-2 to kg m^-2 s^-1
     da.attrs["units"] = "kg m-2 s-1"
 
     return da
@@ -80,9 +92,10 @@ def _convert_m_hr_to_kg_m2s(da: xr.DataArray):
     # do conversion
     da = da * 1000 / 3600  # m hr^-1 to kg m^-2 s^-1
     da.attrs["units"] = "kg m-2 s-1"
-    
+
     return da
 
+########### To m h-1 ############
 def _convert_kg_m2s_to_mh(da: xr.DataArray):
     """
     Convert values in xarray DataArray from kg m^-2 s^-1 to mm hr^-1
@@ -92,7 +105,7 @@ def _convert_kg_m2s_to_mh(da: xr.DataArray):
 
     return da
 
-
+########### To W m-2 ############
 def _convert_J_m2_to_W_m2(da: xr.DataArray):
     """
     Convert values in xarray DataArray from J m^2 to W m^2
@@ -115,7 +128,7 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
 
     return da
 
-
+########### To % ############
 def _convert_fraction_to_percent(da: xr.DataArray):
     """
     Convert values in xarray DataArray from unitless to %
@@ -126,7 +139,7 @@ def _convert_fraction_to_percent(da: xr.DataArray):
     return da
 
 
-# helper functions - can be moved to more appropriate place
+########### Helper functions ############
 def _determine_time_interval(da: xr.DataArray):
     """
     Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances.
