@@ -32,6 +32,8 @@ UNIT_CONVERSION_FUNCTIONS = {
     "1":            _convert_fraction_to_percent
 }
 
+# Units that are equivalent. Note that the key is the raw unit (and should never be a CORDEX unit!) 
+# and the value should either be a CORDEX unit or a unit that is used to identify the conversion function
 EQUIVALENT_UNITS = {
     "degC": "Celcius", 
     "m/s": "m s-1", 
@@ -81,12 +83,11 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
             raw_units = raw_LOOKUP[var]["raw_units"]
             cordex_var_units = CORDEX_VARIABLES[var]["units"]
 
+            if raw_units in EQUIVALENT_UNITS:
+                raw_units = EQUIVALENT_UNITS[raw_units]
+
             # If the raw units are the same as the CORDEX units, no conversion is needed
             if raw_units != cordex_var_units:
-
-                # If the raw units are in the equivalent units, convert them to the equivalent unit to use the correct conversion function
-                if raw_units in EQUIVALENT_UNITS:
-                    raw_units = EQUIVALENT_UNITS[raw_units]
 
                 # Convert the raw units if possible
                 if raw_units in UNIT_CONVERSION_FUNCTIONS:
