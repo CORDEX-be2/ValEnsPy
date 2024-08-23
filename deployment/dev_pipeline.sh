@@ -27,6 +27,10 @@ poetry add pandas
 poetry add shapely
 poetry add xarray-datatree
 poetry add matplotlib
+poetry add cdo
+poetry add cf-xarray
+poetry add regionmask
+poetry add geopandas
 
 #add to dev (= development) group
 poetry add --group dev 'pre-commit'

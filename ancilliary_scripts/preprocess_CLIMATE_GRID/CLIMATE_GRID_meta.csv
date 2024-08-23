@@ -1,0 +1,51 @@
+variable;unit;long_name;description
+CODE_PIXEL_ID_CODE_INS;;;if ≤ 1360 then PIXEL_ID (5-km grid, see table CLIMATE_GRID_PIXEL) else CODE_INS (municipality value, see table MUNICIPALITY
+DATE_BEGIN;;;date of the first day in the period e.g., to_date('20180101','yyyymmdd')
+DATE_END;;;"date of the last day in the period e.g., to_date('20180131','yyyymmdd') for January 2018; for daily data: DATE_END=DATE_BEGIN)"
+PRECIP_QUANTITY;mm;precipitation quantity;, from 08:00LT on DATE_BEGIN to 08:00LT on DATE_END+1
+TEMP_MAX;degC;daily maximum temperature;" from 08:00LT on DATE_BEGIN to 08:00LT on DATE_END+1"
+TEMP_MIN;degC;daily minimum temperature;from 08:00LT on DATE_BEGIN-1 to 08:00LT on DATE_END  (average of TEMP_MAX and TEMP_MIN)
+TEMP_AVG;degC;average temperature;
+SHORT_WAVE_FROM_SKY;kWh/m2/day;"average daily global solar radiation ";
+SUN_DURATION;hours/day;average daily sunshine duration;
+SUN_INT;kWh/m2/day;average daily direct normal solar radiation;
+SUN_INT_HORIZ;kWh/m2/day;"average daily direct horizontal solar radiation ";
+SPRING_DAYS;;number of days with TX≥20°C;
+SUMMER_DAYS;;number of days with TX≥25°C;
+TROPICAL_DAYS;;number of days with TX≥30°C;
+WINTER_DAYS;;number of days with TX<0°C;
+FROST_DAYS;;number of days with TN<0°C;
+HEAVY_FROST_DAYS;;number of days with TN<-10°C;
+RAIN1_DAYS;;number of days with at least 1mm of precipitation;
+RAIN10_DAYS;;number of days with at least 10mm of precipitation;
+RAIN20_DAYS;;number of days with at least 20mm of precipitation;
+LAST_MODIFICATION;;timestamp of last update;
+DEGREE_DAY_15;;"degree days in basis 15°C ";(derived from TEMP_AVG)
+WIND_SPEED;m/s;average wind speed;
+HUMIDITY_RELATIVE;%;average relative humidity;
+PRESSURE;hPa;sea level pressure;
+EVAPOTRANS_REF;mm;reference evapotranspiration ET0;
+PRECIP_DURATION;hours;precipitation duration estimated from 5-min rain gauges data;
+PRECIP_DURATION_0717LT;hours;precipitation duration between 07:00 and 17:00 LT on DATE_BEGIN estimated from 5-min rain gauges data;
+WIND_PEAK_SPEED;m/s;maximum gusts speed from the closest station;
+WIND_PEAK_SPEED_0717LT;m/s;maximum gusts speed between 07:00 and 17:00 LT on DATE_BEGIN from the closest station;
+TEMP_07LT;degC;air temperature at 07:00 LT on DATE_BEGIN;
+LIGHTNING_CG;;number of cloud-ground (CG) lightnings per 5km pixel (or per 25km2for municipality polygons);
+LIGHTNING_CG_0717LT;;numberofcloud-ground(CG)lightningsbetween07:00and17:00LTon DATE_BEGIN per 5km pixel (or per 25km2for municipality polygons);
+LIGHTNING;;number of cloud-ground (CG) and intra-cloud (IC) lightnings per 5km pixel (or per 25km2for municipality polygons);
+LIGHTNING_0717LT;;number of cloud-ground (CG) and intra-cloud (IC) lightnings between 07:00 and 17:00 LT on DATE_BEGIN per 5km pixel (or per 25km2for municipality polygons);
+DRYNESS_SPI3;;standard precipitation index (SPI) for a 90 days period ending on DATE_BEGIN (=DATE_END) included;
+DRYNESS_SPEI3;;standard precipitation-evapotranspiration index (SPEI) for a 90 days period ending on DATE_BEGIN (=DATE_END) included;
+DRYNESS_SPI1;;standard precipitation index (SPI) for a 30 days period ending on DATE_BEGIN (=DATE_END) included;
+DRYNESS_SPEI1;;standard precipitation-evapotranspiration index (SPEI) for a 30 days period ending on DATE_BEGIN (=DATE_END) included;
+PRECIP_1H_MAX;mm;maximum precipitation quantity in one hour;
+DRYNESS_SPI2;;;
+DRYNESS_SPEI2;;;
+DRYNESS_SPI6;;;
+DRYNESS_SPEI6;;;
+DRYNESS_SPI12;;;
+DRYNESS_SPEI12;;;
+DRYNESS_SPI24;;;
+DRYNESS_SPEI24;;;
+FIRE_WEATHER_INDEX;;The Fire Weather Index (FWI) is a meteorologically based index used worldwide to estimate fire danger.;
+Source:  https://intrarmi.oma.be/oracle/oda/columns/column/CLIMAT/CLIMATE_GRID/2;;;
