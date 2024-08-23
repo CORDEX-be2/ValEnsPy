@@ -11,11 +11,7 @@ and open the [index.html](docs/_build/index.html) file in your browser to explor
 
 ## Installation
 
-Currently, the package is in development and not yet available on PyPI.
-
-To contribute to the development of the package, follow the instructions in the [CONTRIBUTING_VSC.md](docs/contribution_pages/CONTRIBUTING_VSC.md) file (if developing on the VSC) or the [CONTRIBUTING.md](docs/contribution_pages/CONTRIBUTING.md) file to set up the development environment.
-
-For additional developer guidelines see the Notes for developers page in the Contributing section of the documentation.
+Go to the dev branch and follow the installation guide there. 
 
 ## Package structure
 
