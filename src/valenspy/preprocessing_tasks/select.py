@@ -4,6 +4,7 @@ import xarray as xr
 import numpy as np
 import regionmask
 import geopandas as gpd
+from pathlib import Path
 
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
