@@ -33,9 +33,9 @@ prw:
     raw_units: mm
 
 snw:
-    raw_name: sd
+    raw_name: sde
     raw_long_name: snow_depth
-    raw_units: cm
+    raw_units: m
 
 snd:
     raw_name: sd
