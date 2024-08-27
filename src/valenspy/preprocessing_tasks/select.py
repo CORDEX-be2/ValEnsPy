@@ -42,11 +42,7 @@ def convert_geo_to_rot(coord: tuple, ds: xr.Dataset):
     )
 
     # Calculate the rotated pole longitude (rlon) using spherical trigonometry
-    p_rlon = np.arctan2(
-        np.cos(co[1]) * np.sin(co[0] - rp_lon),
-        np.cos(co[1]) * np.sin(rp_lat) * np.cos(co[0] - rp_lon)
-        - np.sin(co[1]) * np.cos(rp_lat),
-    )
+    p_rlon = np.arctan((np.cos(co[1])*np.sin(co[0]-rp_lon)) / (np.cos(co[1])*np.sin(rp_lat)*np.cos(co[0]-rp_lon) - np.sin(co[1])*np.cos(rp_lat))) 
 
     # Convert the rotated pole coordinates from radians back to degrees
     p_rlat = np.rad2deg(p_rlat)
