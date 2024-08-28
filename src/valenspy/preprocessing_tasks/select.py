@@ -4,6 +4,7 @@ import xarray as xr
 import numpy as np
 import regionmask
 import geopandas as gpd
+from pathlib import Path
 from valenspy._regions import region_bounds
 
 
