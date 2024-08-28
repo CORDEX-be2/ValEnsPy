@@ -31,15 +31,14 @@ UNIT_CONVERSION_FUNCTIONS = {
     "kg m-2":       _convert_kg_m2_to_kg_m2s,
     "J/m^2":        _convert_J_m2_to_W_m2,
     "kWh/m2/day":   _convert_kWh_m2_day_to_W_m2,
-    "1":            _convert_fraction_to_percent,
+    "(0 - 1)":      _convert_fraction_to_percent,
 }
 
 # Units that are equivalent. Note that the key is the raw unit (and should never be a CORDEX unit!) 
 # and the value should either be a CORDEX unit or a unit that is used to identify the conversion function
 EQUIVALENT_UNITS = {
     "degC": "Celcius", 
-    "m/s": "m s-1", 
-    "(0 - 1)": "1",
+    "m/s": "m s-1",
     "kg kg-1": 1
     }
 
