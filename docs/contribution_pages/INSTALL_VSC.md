@@ -82,7 +82,7 @@ Now install the required packages using poetry: All required packages are listed
 ```bash
 cd ValEnsPy
 git checkout dev
-poetry install --all-extras
+poetry install
 ```
 
 To test if the installation was successful, run the tests:
