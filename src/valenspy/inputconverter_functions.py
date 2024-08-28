@@ -114,7 +114,7 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
         ds = ds.rename({"longitude": "lon"})
     if "lat" not in ds.coords:
         ds = ds.rename({"latitude": "lat"})
-        
+
     # make sure lat and lon are sorted ascending
     ds = ds.sortby("lat").sortby("lon")
 
@@ -152,6 +152,10 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     # Convert all units to CF, add metadata and set global attributes
     metadata_info["dataset"] = obsdata_name
 
+    # bugfix ERA5 (found in clh): replace valid_time by time
+    if "time" not in ds: 
+        ds = ds.rename({'valid_time':'time'})
+        
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
     ds = _set_global_attributes(ds, metadata_info)
 
