@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Callable, Union
 import xarray as xr
 from valenspy._utilities import load_xarray_from_data_sources
-from valenspy.inputconverter_functions import (
+from valenspy.input.converter_functions import (
     EOBS_to_CF,
     ERA5_to_CF,
     ERA5Land_to_CF,

@@ -4,7 +4,7 @@ from datatree import DataTree
 import re
 import glob
 
-from valenspy.inputconverter import INPUT_CONVERTORS
+from valenspy.input.converter import INPUT_CONVERTORS
 from valenspy._utilities import load_yml
 
 DATASET_PATHS = load_yml("dataset_PATHS")

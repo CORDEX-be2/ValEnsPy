@@ -342,8 +342,8 @@ def _select_common_vars(ds1, ds2):
 # Pre-made diagnostics
 # =============================================================================
 
-from valenspy.diagnostic_functions import *
-from valenspy.diagnostic_visualizations import *
+from valenspy.diagnostic.functions import *
+from valenspy.diagnostic.visualizations import *
 
 # Model2Self diagnostics
 DiurnalCycle = Model2Self(

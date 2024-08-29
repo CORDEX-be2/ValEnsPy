@@ -90,7 +90,7 @@ def is_cf_compliant(netCDF: Union[str, Path, xr.Dataset], verbose=False) -> bool
 
         >>> import valenspy as vp
         >>>
-        >>> vp.cf_checks.is_cf_compliant(vp.demo_data_CF)
+        >>> vp.is_cf_compliant(vp.demo_data_CF)
         True
 
     """

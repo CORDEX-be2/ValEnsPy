@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
-from valenspy._regions import region_bounds
+from valenspy._utilities._regions import region_bounds
 
 # make sure xarray passes the attributes when doing operations - change default for this
 xr.set_options(keep_attrs=True)

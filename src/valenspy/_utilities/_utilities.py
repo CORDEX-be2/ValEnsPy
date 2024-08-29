@@ -42,7 +42,7 @@ def load_yml(yml_name):
     dict
         The yaml file loaded into a dictionary.
     """
-    src_path = Path(__file__).resolve().parent
+    src_path = Path(__file__).resolve().parent.parent
     with open(src_path / "ancilliary_data" / f"{yml_name}.yml") as file:
         yml = safe_load(file)
     return yml

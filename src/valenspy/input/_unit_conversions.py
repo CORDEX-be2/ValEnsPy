@@ -5,7 +5,7 @@ import xarray as xr
 import pandas as pd
 import warnings
 from valenspy._utilities import load_yml
-from valenspy.unit_conversion_functions import (
+from valenspy._utilities.unit_conversion_functions import (
     _convert_Celcius_to_Kelvin,
     _convert_hPa_to_Pa,
     _convert_mm_hr_to_kg_m2s,

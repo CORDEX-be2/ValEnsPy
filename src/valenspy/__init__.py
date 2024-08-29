@@ -5,12 +5,13 @@ from pathlib import Path
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_PATH)
 
-import valenspy.inputconverter_functions
-from valenspy.inputconverter import InputConverter
+import valenspy.input.converter_functions
+from valenspy.input import InputConverter, INPUT_CONVERTORS
+import valenspy.processing
 from valenspy.diagnostic import Diagnostic, Model2Ref, Ensemble2Ref, Ensemble2Self
-from valenspy.input_manager import InputManager
-import valenspy.preprocessing_tasks
-import valenspy.cf_checks
+from valenspy.input import InputManager
+
+from valenspy._utilities import is_cf_compliant, cf_status
 
 # =============================================================================
 # Demo-datafile
