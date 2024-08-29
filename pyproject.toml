@@ -29,6 +29,7 @@ scipy = "^1.13.0"
 shapely = "^2.0.3"
 xarray = "^2024.2.0"
 xarray-datatree = "^0.0.14"
+pytest = "^8.3.2" #Poissble moved to dev group
 
 # Development group
 [tool.poetry.group.dev]
@@ -62,3 +63,6 @@ zarr = "^2.18.0"
 
 [tool.poetry.group.packaging.dependencies]
 poetry = "^1.8.2"
+
+[tool.pytest.ini_options]
+testpaths = [ "tests"]
