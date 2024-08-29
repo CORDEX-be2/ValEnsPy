@@ -69,7 +69,7 @@ rm *.tar.gz
 
 cd ${WORKDIR} #(maybe this is not needed)
 poetry update #to update the poetry.lock file (aka use the latest, valid, dependencies)
-poetry install --with dev --with docs
+poetry install --with dev --with docs --with examples
 poetry show #print out some dep. information
 
 cd ${DISTDIR}
@@ -91,4 +91,6 @@ cd ${WORKDIR}
 
 cd ${TESTDIR}
 poetry run python push_tests/import_test.py
+#Use the build to run the testscripts using pytest
+poetry run pytest push_tests/test_basic_unit_conversion_logic.py
 cd ${WORKDIR}
