@@ -7,7 +7,6 @@ sys.path.append(BASE_PATH)
 
 import valenspy.inputconverter_functions
 from valenspy.inputconverter import InputConverter
-from valenspy.preprocessor import Preprocessor
 from valenspy.diagnostic import Diagnostic, Model2Ref, Ensemble2Ref, Ensemble2Self
 from valenspy.input_manager import InputManager
 import valenspy.preprocessing_tasks

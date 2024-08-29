@@ -51,10 +51,3 @@ INPUT_CONVERTORS = {
     "CCLM": InputConverter(CCLM_to_CF),
     "ALARO_K": InputConverter(ALARO_K_to_CF),
 }
-
-# Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.
-
-# Needed:
-#  - Some helper functions to extend input to glob arguments, str arguments etc.
-#  - Extend input so that already loaded datasets can also be input
-#  - CF Checker functionality
