@@ -19,4 +19,16 @@ diagnostic.Ensemble2Ref
       ~Ensemble2Ref.__init__
       ~Ensemble2Ref.apply
       ~Ensemble2Ref.from_model2ref
-      ~Ensemble2Ref.visualize
+      ~Ensemble2Ref.plot
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Ensemble2Ref.description
+
+

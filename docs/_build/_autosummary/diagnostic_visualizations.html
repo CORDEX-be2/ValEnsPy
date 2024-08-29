@@ -48,8 +48,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/diagnostic_visualizations';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="diagnostic_visualizations.plot_spatial_bias" href="diagnostic_visualizations.plot_spatial_bias.html" />
-    <link rel="prev" title="diagnostic.Model2Ref" href="diagnostic.Model2Ref.html" />
+    <link rel="next" title="diagnostic_visualizations.plot_diurnal_cycle" href="diagnostic_visualizations.plot_diurnal_cycle.html" />
+    <link rel="prev" title="diagnostic.Model2Self" href="diagnostic.Model2Self.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -361,16 +361,29 @@ document.write(`
 <li class="toctree-l1 has-children"><a class="reference internal" href="diagnostic.html">diagnostic</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="diagnostic.Diagnostic.html">diagnostic.Diagnostic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diagnostic.Ensemble2Ref.html">diagnostic.Ensemble2Ref</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic.Ensemble2Self.html">diagnostic.Ensemble2Self</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diagnostic.Model2Ref.html">diagnostic.Model2Ref</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic.Model2Self.html">diagnostic.Model2Self</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">diagnostic_visualizations</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_visualizations.plot_diurnal_cycle.html">diagnostic_visualizations.plot_diurnal_cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_visualizations.plot_map.html">diagnostic_visualizations.plot_map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_visualizations.plot_maps_mod_ref_diff.html">diagnostic_visualizations.plot_maps_mod_ref_diff</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_visualizations.plot_points_on_map.html">diagnostic_visualizations.plot_points_on_map</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diagnostic_visualizations.plot_spatial_bias.html">diagnostic_visualizations.plot_spatial_bias</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_visualizations.plot_time_series.html">diagnostic_visualizations.plot_time_series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_visualizations.plot_time_series_mod_ref.html">diagnostic_visualizations.plot_time_series_mod_ref</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="diagnostic_functions.html">diagnostic_functions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="diagnostic_functions.bias.html">diagnostic_functions.bias</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_functions.diurnal_cycle.html">diagnostic_functions.diurnal_cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_functions.diurnal_cycle_bias.html">diagnostic_functions.diurnal_cycle_bias</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_functions.requires_variables.html">diagnostic_functions.requires_variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="diagnostic_functions.spatial_bias.html">diagnostic_functions.spatial_bias</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_functions.temporal_bias.html">diagnostic_functions.temporal_bias</a></li>
+<li class="toctree-l2"><a class="reference internal" href="diagnostic_functions.time_series_spatial_mean.html">diagnostic_functions.time_series_spatial_mean</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="inputconverter.html">inputconverter</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -378,6 +391,8 @@ document.write(`
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="inputconverter_functions.html">inputconverter_functions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="inputconverter_functions.ALARO_K_to_CF.html">inputconverter_functions.ALARO_K_to_CF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputconverter_functions.CCLM_to_CF.html">inputconverter_functions.CCLM_to_CF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inputconverter_functions.CLIMATE_GRID_to_CF.html">inputconverter_functions.CLIMATE_GRID_to_CF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inputconverter_functions.EOBS_to_CF.html">inputconverter_functions.EOBS_to_CF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inputconverter_functions.ERA5Land_to_CF.html">inputconverter_functions.ERA5Land_to_CF</a></li>
@@ -454,8 +469,26 @@ document.write(`
 <p class="rubric">Functions</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="diagnostic_visualizations.plot_spatial_bias.html#diagnostic_visualizations.plot_spatial_bias" title="diagnostic_visualizations.plot_spatial_bias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_spatial_bias</span></code></a>(data, ax, **kwargs)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="diagnostic_visualizations.plot_diurnal_cycle.html#diagnostic_visualizations.plot_diurnal_cycle" title="diagnostic_visualizations.plot_diurnal_cycle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_diurnal_cycle</span></code></a>(data[, ax])</p></td>
+<td><p>Plot the daily cycle of the data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="diagnostic_visualizations.plot_map.html#diagnostic_visualizations.plot_map" title="diagnostic_visualizations.plot_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_map</span></code></a>(da[, ax, title, region])</p></td>
+<td><p>Plots a simple map of a 2D xarray DataArray.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="diagnostic_visualizations.plot_maps_mod_ref_diff.html#diagnostic_visualizations.plot_maps_mod_ref_diff" title="diagnostic_visualizations.plot_maps_mod_ref_diff"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_maps_mod_ref_diff</span></code></a>(da_mod, da_ref, da_diff)</p></td>
+<td><p>Plots comparison maps for model data, reference data, and their difference.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="diagnostic_visualizations.plot_points_on_map.html#diagnostic_visualizations.plot_points_on_map" title="diagnostic_visualizations.plot_points_on_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_points_on_map</span></code></a>(d_point_coords[, ax, region])</p></td>
+<td><p>Plot geographic points on a map using Cartopy, with optional region highlighting.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="diagnostic_visualizations.plot_spatial_bias.html#diagnostic_visualizations.plot_spatial_bias" title="diagnostic_visualizations.plot_spatial_bias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_spatial_bias</span></code></a>(da[, ax, region])</p></td>
+<td><p>Plot the spatial bias of a given data array on a map.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="diagnostic_visualizations.plot_time_series.html#diagnostic_visualizations.plot_time_series" title="diagnostic_visualizations.plot_time_series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_time_series</span></code></a>(da[, ax])</p></td>
+<td><p>Plot a time series from an xarray DataArray.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="diagnostic_visualizations.plot_time_series_mod_ref.html#diagnostic_visualizations.plot_time_series_mod_ref" title="diagnostic_visualizations.plot_time_series_mod_ref"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_time_series_mod_ref</span></code></a>(da_mod, da_ref[, ...])</p></td>
+<td><p>Plot time series for both model and reference datasets on the same axes.</p></td>
 </tr>
 </tbody>
 </table>
@@ -473,20 +506,20 @@ document.write(`
 
 <div class="prev-next-area">
     <a class="left-prev"
-       href="diagnostic.Model2Ref.html"
+       href="diagnostic.Model2Self.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">diagnostic.Model2Ref</p>
+        <p class="prev-next-title">diagnostic.Model2Self</p>
       </div>
     </a>
     <a class="right-next"
-       href="diagnostic_visualizations.plot_spatial_bias.html"
+       href="diagnostic_visualizations.plot_diurnal_cycle.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">diagnostic_visualizations.plot_spatial_bias</p>
+        <p class="prev-next-title">diagnostic_visualizations.plot_diurnal_cycle</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

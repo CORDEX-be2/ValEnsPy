@@ -1,0 +1,6 @@
+diagnostic\_functions.requires\_variables
+=========================================
+
+.. currentmodule:: diagnostic_functions
+
+.. autofunction:: requires_variables

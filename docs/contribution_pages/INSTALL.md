@@ -51,7 +51,7 @@ cd ValEnsPy
 git checkout dev
 ```
 
-Finally install all required packages. 
+Finally install all required packages.
 
 > [!NOTE]
 > Optionally useful packages can be installed by installing specific groups of packages by adding the `--with` flag followed by the group name.

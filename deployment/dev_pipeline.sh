@@ -34,7 +34,6 @@ poetry add pooch
 poetry add regionmask
 poetry add scipy
 poetry add shapely
-poetry add shapely
 poetry add xarray
 poetry add xarray-datatree
 poetry add cartopy

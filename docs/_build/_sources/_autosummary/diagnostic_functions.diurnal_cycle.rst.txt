@@ -1,0 +1,6 @@
+diagnostic\_functions.diurnal\_cycle
+====================================
+
+.. currentmodule:: diagnostic_functions
+
+.. autofunction:: diurnal_cycle

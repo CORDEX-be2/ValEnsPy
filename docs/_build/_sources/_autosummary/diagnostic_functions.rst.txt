@@ -15,4 +15,19 @@ diagnostic\_functions
       :toctree:
 
       bias
+      diurnal_cycle
+      diurnal_cycle_bias
+      requires_variables
       spatial_bias
+      temporal_bias
+      time_series_spatial_mean
+
+
+
+
+
+
+
+
+
+

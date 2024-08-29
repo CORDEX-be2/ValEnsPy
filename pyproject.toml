@@ -14,8 +14,7 @@ readme = "README.md"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
-#Core dependencies
-
+cartopy = "^0.23.0"
 cdo = "^1.6.1"
 cf-xarray = "^0.9.4"
 dask = "^2024.3.1"
@@ -31,9 +30,6 @@ scipy = "^1.13.0"
 shapely = "^2.0.3"
 xarray = "^2024.2.0"
 xarray-datatree = "^0.0.14"
-cartopy = "^0.23.0"
-
-
 
 [tool.poetry.group.dev]
 # Development group
@@ -41,8 +37,7 @@ optional = true
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.6.2"  # To ensure clean-coding standards
-pytest = "^8.3.2" #Poissble moved to dev group
-
+pytest = "^8.3.2"  # Poissble moved to dev group
 
 [tool.poetry.group.docs]
 # Documentation group
@@ -56,7 +51,6 @@ pydata-sphinx-theme = "^0.15.2"
 sphinx-copybutton = "^0.5.2"
 sphinx-rtd-theme = "^2.0.0"
 
-
 [tool.poetry.group.examples]
 # Examples group
 optional = true
@@ -65,8 +59,6 @@ optional = true
 ipykernel = "^6.29.5"
 
 [tool.poetry.group.packaging]
-# Packaging group
 
 [tool.poetry.group.packaging.dependencies]
 poetry = "^1.8.2"
-

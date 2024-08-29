@@ -19,3 +19,9 @@ input\_manager.InputManager
       ~InputManager.__init__
       ~InputManager.load_data
       ~InputManager.load_m_data
+
+
+
+
+
+
