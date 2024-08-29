@@ -8,6 +8,7 @@ Currently, the package is in development and not yet available on [PyPI](https:/
 To install the package locally, follow the instructions in
 - [General install guide](docs/contribution_pages/INSTALL.md) or
 - [VSC specific install guide](docs/contribution_pages/INSTALL_VSC.md)
+
 Interested in contributing? Take a look at [CONTRIBUTING.md](docs/contribution_pages/CONTRIBUTING.md) file to see how you can help.
 
 For additional developer guidelines see the Notes for developers page in the Contributing section of the documentation.
