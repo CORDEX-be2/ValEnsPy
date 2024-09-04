@@ -13,7 +13,7 @@ hortense:
   CLIMATE_GRID: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/CLIMATE_GRID/
   shapefiles:   /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/shapefiles/
   CCLM:         /dodrio/scratch/projects/2022_200/RCS/CORDEXBE2/postprocessing/
-  radclim:      /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/data/radclim
+  RADCLIM:      /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/data/RADCLIM
 
 
 kili:

@@ -300,7 +300,7 @@ def ALARO_K_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     return ds
 
 
-def radclim_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
+def RADCLIM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
     Convert the RADCLIM xarray netCDF to a CF compliant xarray Dataset
 
@@ -318,7 +318,7 @@ def radclim_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     """
 
     # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator?
-    obsdata_name = "radclim"
+    obsdata_name = "RADCLIM"
     raw_LOOKUP = load_yml(f"{obsdata_name}_lookup")
 
     if metadata_info is None:  # Set standard metadata if not provided
