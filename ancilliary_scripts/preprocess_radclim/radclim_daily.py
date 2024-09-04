@@ -1,3 +1,7 @@
+"""
+Author: K. Van Weverberg, August 2024
+"""
+
 import h5py
 import netCDF4 as nc
 import numpy as np
