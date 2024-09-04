@@ -167,10 +167,11 @@ tasmax:
 tasmin:
   raw_name: T_2M
   raw_standard_name: air_temperature
-  raw_long_name: 2m temperature min
+  raw_long_name: 2m temperature max
   raw_units: K
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
+
 
 # # to add cordex variable
 

@@ -83,14 +83,14 @@ sfcWind:
     raw_units: m/s
 
 hfls:
-    raw_name: slhf
-    raw_long_name: surface_latent_heat_flux
-    raw_units: J/m^2
+    raw_name: mslhf
+    raw_long_name: mean_surface_latent_heat_flux
+    raw_units: W/m^2
 
 hfss:
-    raw_name: sshf
-    raw_long_name: surface_sensible_heat_flux
-    raw_units: J/m^2
+    raw_name: msshf
+    raw_long_name: mean_surface_sensible_heat_flux
+    raw_units: W/m^2
 
 rsds:
     raw_name: ssrd
