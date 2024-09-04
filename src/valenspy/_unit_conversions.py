@@ -39,7 +39,8 @@ UNIT_CONVERSION_FUNCTIONS = {
 EQUIVALENT_UNITS = {
     "degC": "Celcius", 
     "m/s": "m s-1",
-    "kg kg-1": 1
+    "kg kg-1": 1,
+     "(0 - 1)":"1"
     }
 
 def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
@@ -69,8 +70,6 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 
     # Key: The unit of the raw data
     # Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
-
-
     for raw_var in ds.data_vars:
         var = next(
             (k for k, v in raw_LOOKUP.items() if v.get("raw_name") == raw_var), None
