@@ -3,12 +3,44 @@
 ## imports for helpen functions
 import xarray as xr
 import pandas as pd
-import numpy as np
 import warnings
 from valenspy._utilities import load_yml
+from valenspy.unit_conversion_functions import (
+    _convert_Celcius_to_Kelvin,
+    _convert_hPa_to_Pa,
+    _convert_mm_hr_to_kg_m2s,
+    _convert_m_hr_to_kg_m2s,
+    _convert_mm_to_kg_m2s,
+    _convert_m_to_kg_m2s,
+    _convert_kg_m2_to_kg_m2s,
+    _convert_J_m2_to_W_m2,
+    _convert_kWh_m2_day_to_W_m2,
+    _convert_fraction_to_percent,
+    _determine_time_interval,
+)
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
+UNIT_CONVERSION_FUNCTIONS = {
+    "Celcius":      _convert_Celcius_to_Kelvin,
+    "hPa":          _convert_hPa_to_Pa,
+    "mm":           _convert_mm_to_kg_m2s,
+    "mm/hr":        _convert_mm_hr_to_kg_m2s,
+    "m":            _convert_m_to_kg_m2s,
+    "m/hr":         _convert_m_hr_to_kg_m2s,
+    "kg m-2":       _convert_kg_m2_to_kg_m2s,
+    "J/m^2":        _convert_J_m2_to_W_m2,
+    "kWh/m2/day":   _convert_kWh_m2_day_to_W_m2,
+    "(0 - 1)":      _convert_fraction_to_percent,
+}
+
+# Units that are equivalent. Note that the key is the raw unit (and should never be a CORDEX unit!) 
+# and the value should either be a CORDEX unit or a unit that is used to identify the conversion function
+EQUIVALENT_UNITS = {
+    "degC": "Celcius", 
+    "m/s": "m s-1",
+    "kg kg-1": 1
+    }
 
 def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     """Convert all units for all variables in the dataset to the correct units by applying the correct conversion function.
@@ -34,21 +66,10 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     xr.Dataset
         The converted xarray dataset
     """
-    unit_conversion_functions = {
-        "Celcius": _convert_Celcius_to_Kelvin,
-        "hPa": _convert_hPa_to_Pa,
-        "mm": _convert_mm_to_kg_m2s,
-        "mm/hr": _convert_m_to_kg_m2s,
-        "m": _convert_m_to_kg_m2s,
-        "m/hr": _convert_m_to_kg_m2s,
-        "J/m^2": _convert_J_m2_to_W_m2,
-        "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
-        "1": _convert_fraction_to_percent,
-    }
 
     # Key: The unit of the raw data
     # Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
-    EQUIVALENT_UNITS = {"degC": "Celcius", "m/s": "m s-1", "(0 - 1)": "1"}
+
 
     for raw_var in ds.data_vars:
         var = next(
@@ -57,33 +78,37 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 
         if var:  # Dont processes variables that are not in the lookup table.
 
-            # rename variable to CORDEX variable name
+            # Rename variable to CORDEX variable name
             ds = ds.rename_vars({raw_var: var})
 
-            # convert units - based on the raw units
+            # Convert units - based on the raw units if needed!
             raw_units = raw_LOOKUP[var]["raw_units"]
             cordex_var_units = CORDEX_VARIABLES[var]["units"]
 
-            # If the raw_units are in the equivalent_units, use the replacement unit
             if raw_units in EQUIVALENT_UNITS:
                 raw_units = EQUIVALENT_UNITS[raw_units]
 
-            if raw_units in unit_conversion_functions:
+            # If the raw units are the same as the CORDEX units, no conversion is needed
+            if raw_units != cordex_var_units:
 
-                ds[var] = unit_conversion_functions[raw_units](
-                    ds[var]
-                )  # Do the conversion
-            elif not raw_units == cordex_var_units:
-                # Throw a warning that the raw_unit in the lookup table is not implemented
-                warnings.warn(
-                    f"Unit conversion for {raw_units} to {cordex_var_units} is not implemented for variable {var}."
-                )
+                # Convert the raw units if possible
+                if raw_units in UNIT_CONVERSION_FUNCTIONS:
+                    ds[var] = UNIT_CONVERSION_FUNCTIONS[raw_units](
+                        ds[var]
+                    )  # Do the conversion
+                else:
+                    # Throw a warning that the raw_unit in the lookup table is not implemented
+                    warnings.warn(
+                        f"Unit conversion for {raw_units} to {cordex_var_units} is not implemented for variable {var}."
+                    )
 
-            if var in ds:  # If the renaming occured add the metadata attributes
-                # Metadata attributes
+            #If the conversion was successful, add metadata attributes
+            if var in ds:
                 ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var]["standard_name"]
                 ds[var].attrs["long_name"] = CORDEX_VARIABLES[var]["long_name"]
-                ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"]
+                if "units" not in ds[var].attrs: #If the units are already set by the conversion function, do not overwrite them
+                    ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"]
+
                 ds[var].attrs["original_name"] = raw_LOOKUP[var]["raw_name"]
                 ds[var].attrs["original_long_name"] = raw_LOOKUP[var]["raw_long_name"]
                 ds[var].attrs["original_units"] = raw_LOOKUP[var]["raw_units"]
@@ -99,288 +124,3 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
                     ds[var].attrs["freq"] = _determine_time_interval(ds[var])
 
     return ds
-
-
-# Do we want other possible inputs than data arrays?
-def _convert_Celcius_to_Kelvin(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from °C to K
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da + 273.15  # Celcius to Kelvin
-
-    # update units attribute --  naming of units defined in ./src/valenspy/ancilliary_data/CORDEX_variables.yml
-    da.attrs["units"] = "K"
-
-    return da
-
-
-def _convert_Kelvin_to_Celcius(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from K to °C
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da - 273.15  # Kelvin to Celcius
-
-    # update units attribute
-    da.attrs["units"] = "°C"
-
-    return da
-
-
-def _convert_hPa_to_Pa(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from hPa to Pa
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da * 100
-
-    # update units attribute
-    da.attrs["units"] = "Pa"
-
-    return da
-
-
-def _convert_Pa_to_hPa(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from Pa to hPa
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da / 100
-
-    # update units attribute
-    da.attrs["units"] = "hPa"
-
-    return da
-
-
-def _convert_mm_to_kg_m2s(da: xr.DataArray):
-    """
-    Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
-    timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
-
-    # do conversion
-    da = da / timestep_nseconds  # mm to kg m^-2 s^-1
-
-    # update units attribute
-    da.attrs["units"] = "kg m-2 s-1"
-
-    return da
-
-
-def _convert_m_to_kg_m2s(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from mm hr^-1 to kg m^-2 s^-1
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da * 1000 / 3600  # mm hr^-1 to kg m^-2 s^-1
-
-    # update units attribute
-    da.attrs["units"] = "kg m-2 s-1"
-
-    return da
-
-
-def _convert_kg_m2s_to_mh(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from kg m^-2 s^-1 to mm hr^-1
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da * 3600 / 1000  # kg m^-2 s^-1 to mm hr^-1
-
-    # update units attribute
-    da.attrs["units"] = "mm hr-1"
-
-    return da
-
-
-def _convert_J_m2_to_W_m2(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from J m^2 to W m^2
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-    # first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds
-    timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
-
-    # do conversion
-    da = da / timestep_nseconds  # J m^2 to W m^2
-
-    # update units attribute
-    da.attrs["units"] = "W m-2"
-
-    return da
-
-
-def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from kWh/m2/day to W m^2
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da * (1000) / 24
-
-    # update units attribute
-    da.attrs["units"] = "W m-2"
-
-    return da
-
-
-def _convert_fraction_to_percent(da: xr.DataArray):
-    """
-    Convert values in xarray DataArray from unitless to %
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray to convert
-
-    Returns
-    -------
-    xr.DataArray
-        The  converted xarray DataArray
-    """
-
-    # do conversion
-    da = da * 100
-
-    # update units attribute
-    da.attrs["units"] = "%"
-
-    return da
-
-
-# helper functions - can be moved to more appropriate place
-
-
-def _determine_time_interval(da: xr.DataArray):
-    """
-    Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances.
-
-    Parameters
-    ----------
-    da : xr.DataArray
-        The xarray DataArray with time axis to check the time interval
-
-    Returns
-    -------
-    freq : string
-        The frequency string containing "hourly, daily, monthly or yearly"
-    """
-
-    diff = da.time.diff(dim="time").values[0]
-
-    # Check for exact differences
-    if diff == np.timedelta64(1, "h"):
-        freq = "hourly"
-    elif diff == np.timedelta64(1, "D"):
-        freq = "daily"
-    elif diff == np.timedelta64(1, "M"):
-        freq = "monthly"
-    elif diff == np.timedelta64(1, "Y"):
-        freq = "yearly"
-    else:
-        return (
-            "Difference does not match exact hourly, daily, monthly, or yearly units."
-        )
-
-    return freq
-
-

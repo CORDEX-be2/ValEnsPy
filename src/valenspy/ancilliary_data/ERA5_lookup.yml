@@ -20,12 +20,12 @@
 pr:
     raw_name: tp
     raw_long_name: total_precipitation
-    raw_units: m/hr
+    raw_units: m
 
 prsn:
     raw_name: sf
     raw_long_name: snowfall
-    raw_units: m/hr
+    raw_units: m
 
 prw:
     raw_name: tcwv
@@ -33,9 +33,9 @@ prw:
     raw_units: mm
 
 snw:
-    raw_name: sd
+    raw_name: sde
     raw_long_name: snow_depth
-    raw_units: cm
+    raw_units: m
 
 snd:
     raw_name: sd
@@ -45,12 +45,12 @@ snd:
 mrros:
     raw_name: sro
     raw_long_name: surface_runoff
-    raw_units: m/hr
+    raw_units: m
 
 mrro:
     raw_name: ro
     raw_long_name: runoff
-    raw_units: m/hr
+    raw_units: m
 
 tas:
     raw_name: t2m
@@ -65,12 +65,12 @@ ts:
 evspsbl:
     raw_name: e
     raw_long_name: evaporation
-    raw_units: m/hr
+    raw_units: m
 
 evspsblpot:
     raw_name: pev
     raw_long_name: potential_evaporation
-    raw_units: m/hr
+    raw_units: m
 
 uas:
     raw_name: 10u
@@ -153,7 +153,7 @@ hurs:
 prhmax:
     raw_name:
     raw_long_name: total_precipitation_max
-    raw_units: m/hr
+    raw_units: m
 
 tasmax:
     raw_name:

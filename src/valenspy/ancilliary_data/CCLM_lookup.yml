@@ -54,7 +54,7 @@ clt:
   raw_name: CLCT
   raw_standard_name: cloud_area_fraction
   raw_long_name: total cloud cover
-  raw_units: '1'
+  raw_units: '(0 - 1)'
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
@@ -71,7 +71,7 @@ cll:
   raw_name: CLCL
   raw_standard_name: low_type_cloud_area_fraction
   raw_long_name: low cloud cover
-  raw_units: '1'
+  raw_units: '(0 - 1)'
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
@@ -79,7 +79,7 @@ clm:
   raw_name: CLCM
   raw_standard_name: medium_type_cloud_area_fraction
   raw_long_name: medium cloud cover
-  raw_units: '1'
+  raw_units: '(0 - 1)'
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
@@ -87,7 +87,7 @@ clh:
   raw_name: CLCH
   raw_standard_name: high_type_cloud_area_fraction
   raw_long_name: low cloud cover
-  raw_units: '1'
+  raw_units: '(0 - 1)'
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
@@ -136,25 +136,7 @@ clivi:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-
-tsl: 
-  raw_name: T_SO
-  raw_standard_name: soil_temperature
-  raw_long_name: soil temperature
-  raw_units: K
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
-
-mrsol: 
-  raw_name: W_SO
-  raw_standard_name: lwe_thickness_of_moisture_content_of_soil_layer
-  raw_long_name: soil water content
-  raw_units: m
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point soil1: sum'
-
-
-# to add cclm variable
+# # to add cclm variable
 
 tasmax:
   raw_name: T_2M
@@ -163,6 +145,34 @@ tasmax:
   raw_units: K
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
+# tasmax:
+
+# tasmin:
+
+# # to add cordex variable
+
+
+#   raw_name: Z0
+#   raw_standard_name: surface_roughness_length
+#   raw_long_name: surface roughness length
+#   raw_units: m
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+
+#   raw_name: FIS
+#   raw_standard_name: surface_geopotential
+#   raw_long_name: surface geopotential
+#   raw_units: m2 s-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: TD_2M
+#   raw_standard_name: dew_point_temperature
+#   raw_long_name: 2m dew point temperature
+#   raw_units: K
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
 
 tasmin:
   raw_name: T_2M
@@ -171,6 +181,19 @@ tasmin:
   raw_units: K
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
+#   raw_name: VMFL_S
+#   raw_standard_name: surface_downward_northward_stress
+#   raw_long_name: northward stress
+#   raw_units: Pa
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: UMFL_S
+#   raw_standard_name: surface_downward_eastward_stress
+#   raw_long_name: eastward stress
+#   raw_units: Pa
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
 
 
 # # to add cordex variable
@@ -219,6 +242,12 @@ tasmin:
 #   raw_units: kg m-2
 #   raw_grid_mapping: rotated_pole
 #   raw_cell_methods: 'time: point'
+#   raw_name: TQR
+#   raw_standard_name: atmosphere_mass_content_of_liquid_precipitation
+#   raw_long_name: total rain water content vertically integrated
+#   raw_units: kg m-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
 
 
 
@@ -249,7 +278,7 @@ tasmin:
 #   raw_name: CLCT_AV
 #   raw_standard_name: cloud_area_fraction
 #   raw_long_name: averaged total cloud cover
-#   raw_units: '1'
+#   raw_units: '(0 - 1)'
 #   raw_grid_mapping: rotated_pole
 #   raw_cell_methods: 'time: mean'
 
@@ -257,7 +286,7 @@ tasmin:
 
 #   raw_name: FRESHSNW
 #   raw_long_name: freshness of snow
-#   raw_units: '1'
+#   raw_units: '(0 - 1)'
 #   raw_grid_mapping: rotated_pole
 #   raw_cell_methods: 'time: point'
 
@@ -275,9 +304,9 @@ tasmin:
 #   raw_grid_mapping: rotated_pole
 #   raw_cell_methods: 'time: point'
 
-  raw_name: QV_S
-  raw_standard_name: surface_specific_humidity
-  raw_long_name: surface specific humidity
-  raw_units: kg kg-1
-  raw_grid_mapping: rotated_pole
-  raw_cell_methods: 'time: point'
+#   raw_name: QV_S
+#   raw_standard_name: surface_specific_humidity
+#   raw_long_name: surface specific humidity
+#   raw_units: kg kg-1
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'

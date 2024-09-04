@@ -1,8 +1,8 @@
 from pathlib import Path
 from valenspy.cf_checks import is_cf_compliant, cf_status
 from valenspy._utilities import load_yml
-from valenspy._unit_conversions import (
-    convert_all_units_to_CF,
+from valenspy._unit_conversions import convert_all_units_to_CF
+from valenspy.unit_conversion_functions import (
     _determine_time_interval,
     _convert_mm_to_kg_m2s,
 )
@@ -284,6 +284,15 @@ def ALARO_K_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
         ds["pr"].attrs["original_name"] = "rain_convective + rain_stratiform"
         for key, value in metadata_info.items():
             ds["pr"].attrs[key] = value
+
+        #Assuming monthly decumilation! This is not always the case!
+        def decumilate(ds):
+            ds_decum = ds.diff("time")
+            #Add the first value of the month of original dataset to the decumilated dataset
+            ds_decum = xr.concat([ds.isel(time=0), ds_decum], dim="time")
+            return ds_decum
+        ds.coords['year_month'] = ds['time.year']*100 + ds['time.month']
+        ds["pr"] = ds["pr"].groupby('year_month').apply(decumilate)
 
     ds = _set_global_attributes(ds, metadata_info)
 
