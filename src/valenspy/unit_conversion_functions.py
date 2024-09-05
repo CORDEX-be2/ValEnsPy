@@ -77,10 +77,10 @@ def _convert_kg_m2_to_kg_m2s(da: xr.DataArray):
 
 def _convert_m_to_kg_m2s(da: xr.DataArray):
     """
-    Convert values in xarray DataArray from mm hr^-1 to kg m^-2 s^-1
+    Convert values in xarray DataArray from m hr^-1 to kg m^-2 s^-1
     """
     timestep_nseconds = da.time.diff(dim="time").values[0] / np.timedelta64(1, "s")
-    da = da * 1000 / timestep_nseconds  # mm to kg m^-2 s^-1
+    da = da * 1000 / timestep_nseconds  # m to kg m^-2 s^-1
     da.attrs["units"] = "kg m-2 s-1"
 
     return da
