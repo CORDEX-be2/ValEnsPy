@@ -4,6 +4,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
 from valenspy._regions import region_bounds
+from valenspy.diagnostic_functions import perkins_skill_score
 
 # make sure xarray passes the attributes when doing operations - change default for this
 xr.set_options(keep_attrs=True)
@@ -349,6 +350,55 @@ def plot_points_on_map(d_point_coords: dict, ax=None, region=None):
     return ax
 
 
+def visualize_perkins_skill_score(da_mod: xr.DataArray, da_obs: xr.DataArray, binwidth: float = None):
+    """
+    Visualize the Perkins Skill Score (PSS) by plotting the normalized histograms 
+    of the model and reference data, and display the PSS score and bin width used.
+    For testing bin_widths
+    
+    Parameters
+    ----------
+    da_mod : xr.DataArray
+        The model data to compare.
+    da_obs : xr.DataArray
+        The reference data to compare against.
+    binwidth : float, optional
+        The width of each bin for the histogram. If None, an optimal bin width 
+        should be calculated within the function (default is None).
+    
+    Returns
+    -------
+    None
+        This function does not return any value. It displays a plot with the 
+        normalized histograms and Perkins Skill Score.
+    
+    Notes
+    -----
+    The function calculates the Perkins Skill Score using the provided or default
+    bin width, and plots the normalized histograms of the model and reference data.
+    The plot also includes annotations for the Perkins Skill Score and bin width used.
+    """
+    # Calculate Perkins Skill Score and histograms
+    pss_score, freq_m, freq_r, binwidth = perkins_skill_score(da_mod, da_obs, binwidth=binwidth)
+
+    # Create the plot
+    fig, ax = plt.subplots()
+
+    # Plot the histograms
+    ax.plot(freq_m, label="model")
+    ax.plot(freq_r, label="ref", color="k")
+    ax.set_title('Normalized histograms for calculating Perkins Skill Score', loc='right')
+    ax.set_xlabel('bins')
+    ax.set_ylabel('frequency')
+    ax.legend(frameon=False, loc='upper right')
+
+    # Annotate the plot with PSS score and bin width
+    ax.text(0.05, 0.9, f"Perkins skill score: {pss_score:.3f}", transform=ax.transAxes)
+    ax.text(0.05, 0.85, f"Used binwidth: {binwidth:.2f}", transform=ax.transAxes)
+
+    # Adjust layout
+    fig.tight_layout()
+    plt.show()
 ##################################
 # Helper functions               #
 ##################################
