@@ -1,4 +1,7 @@
 import xarray as xr
+import numpy as np
+from scipy.stats import spearmanr
+
 
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
@@ -149,9 +152,9 @@ def _average_over_dims(ds: xr.Dataset, dims):
     return ds.mean([dim for dim in dims if dim in ds.dims], keep_attrs=True)
 
 
-##################################
-########### Metrics ##############
-##################################
+################################################
+########### Metrics & skill scores #############
+################################################
 
 
 def bias(da: xr.Dataset, ref: xr.Dataset, calc_relative=False):
@@ -175,7 +178,191 @@ def bias(da: xr.Dataset, ref: xr.Dataset, calc_relative=False):
         return (da - ref) / ref
     else:
         return da - ref
-        return da - ref
+
+def mean_bias(da_mod: xr.Dataset, da_ref: xr.Dataset):
+    """Calculate the bias of the means of modeled and reference data.
+
+    Parameters
+    ----------
+    da : xr.DataArray or xr.Dataset
+        The data to calculate the bias of.
+    ref : xr.DataArray or xr.Dataset
+        The reference to compare the data to.
+    calc_relative : bool, optional
+        If True, calculate the relative bias, if False calculate the absolute bias, by default False
+
+    Returns
+    -------
+    xr.Datasets
+        The bias of the data compared to there reference.
+    """
+    return (da_mod - da_ref).mean().values
+
+def mean_absolute_error(da_mod: xr.DataArray, da_ref: xr.DataArray, percentile: float = None) -> float:
+    """
+    Calculate the Mean Absolute Error (MAE) between model forecasts and reference data.
+    Optionally, calculate the MAE based on a specified percentile.
+
+    Parameters
+    ----------
+    da_mod : xr.DataArray
+        The model forecast data to compare.
+    da_ref : xr.DataArray
+        The reference data to compare against.
+    percentile : float, optional
+        The percentile (0 to 1) to calculate the MAE for, using the quantile values of the data arrays.
+        If None, calculates the MAE for the entire data without considering percentiles.
+
+    Returns
+    -------
+    float
+        The Mean Absolute Error (MAE) between the model and reference data, or at the specified percentile.
+    """
+    # Ensure the DataArrays have the same shape
+    if da_mod.shape != da_ref.shape:
+        raise ValueError("Model and reference data must have the same shape.")
+
+    if percentile is None:
+        # Calculate the MAE for the entire data
+        mae = np.mean(np.abs(da_mod.values - da_ref.values))
+    else:
+        # Calculate the MAE for the specified percentile
+        mod_percentile = da_mod.quantile(percentile)
+        ref_percentile = da_ref.quantile(percentile)
+        mae = np.mean(np.abs(mod_percentile.values - ref_percentile.values))
+    
+    return mae
+
+def root_mean_square_error(da_mod: xr.DataArray, da_ref: xr.DataArray) -> float:
+    """
+    Calculate the Root Mean Square Error (RMSE) between model data and reference data.
+
+    Parameters
+    ----------
+    da_mod : xr.DataArray
+        The model data to compare (should match the shape of da_ref).
+    da_ref : xr.DataArray
+        The reference data to compare against (should match the shape of da_mod).
+
+    Returns
+    -------
+    float
+        The Root Mean Square Error (RMSE) between the model and reference data.
+    """
+    # Ensure the DataArrays have the same shape
+    if da_mod.shape != da_ref.shape:
+        raise ValueError("Model and reference data must have the same shape.")
+
+    # Calculate the squared differences
+    squared_diff = (da_mod - da_ref) ** 2
+    
+    # Calculate the mean of squared differences
+    mean_squared_diff = squared_diff.mean().values
+    
+    # Calculate and return the RMSE
+    rmse = np.sqrt(mean_squared_diff)
+    
+    return rmse
+
+
+def spearman_correlation(da_mod: xr.DataArray, da_ref: xr.DataArray) -> float:
+    """
+    Calculate Spearman's rank correlation coefficient between model data and reference data.
+
+    Parameters
+    ----------
+    da_mod : xr.DataArray
+        The model data to compare (2D array where rows are observations and columns are variables).
+    da_ref : xr.DataArray
+        The reference data to compare (2D array where rows are observations and columns are variables).
+
+    Returns
+    -------
+    float
+        Spearman's rank correlation coefficient between the flattened model and reference data.
+    """
+    # Flatten the DataArrays to 1D arrays for correlation calculation
+    mod_data = da_mod.values.flatten()
+    ref_data = da_ref.values.flatten()
+    
+    # Ensure that the flattened arrays have the same length
+    if len(mod_data) != len(ref_data):
+        raise ValueError("Model and reference data must have the same length after flattening.")
+
+    # Calculate Spearman's rank correlation
+    correlation, _ = spearmanr(mod_data, ref_data)
+    
+    return correlation
+
+
+def optimal_bin_width(da_mod: xr.DataArray, da_ref: xr.DataArray) -> float:
+    """
+    Calculate the optimal bin width for both forecast (da_mod) and observed (da_ref) data.
+    
+    Parameters:
+    da_mod (xr.DataArray): Forecasted temperatures (continuous).
+    da_ref (xr.DataArray): Observed temperatures (continuous).
+    
+    Returns:
+    float: Optimal bin width for both datasets.
+    """
+    
+    # Combine both datasets
+    combined_data = xr.concat([da_mod, da_ref], dim="time")
+
+    # Freedman-Diaconis rule: Bin width = 2 * (IQR / n^(1/3))
+    q25 = combined_data.quantile(0.25).item()
+    q75 = combined_data.quantile(0.75).item()
+    iqr = q75 - q25
+    n = combined_data.size
+    bin_width = 2 * (iqr / np.cbrt(n))
+
+    std_dev = np.std(combined_data)
+    n = len(combined_data)
+    binwdth = 3.5 * (std_dev / np.cbrt(n))
+    return bin_width
+    
+   # return bin_width
+
+
+def perkins_skill_score(da: xr.DataArray, ref: xr.DataArray, binwidth: float = None):
+    """
+    Calculate the Perkins Skill Score (PSS).
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The model data to compare.
+    ref : xr.DataArray
+        The reference data to compare against.
+    binwidth : float
+     The width of each bin for the histogram. If not provided, it is calculated.
+
+    Returns
+    -------
+    float
+        The Perkins Skill Score (PSS).
+    """
+    if binwidth is None: 
+       binwidth  = optimal_bin_width(da_mod, da_ref)
+
+    # Flatten the DataArrays to 1D for comparison
+    mod_data = da.values.flatten()
+    ref_data = ref.values.flatten()
+
+    # Define the edges of the bins based on the data range
+    lower_edge = min(np.min(mod_data), np.min(ref_data))
+    upper_edge = max(np.max(mod_data), np.max(ref_data))
+
+    # Calculate the histograms
+    freq_m, _ = np.histogram(mod_data, bins=np.arange(lower_edge, upper_edge + binwidth, binwidth))
+    freq_r, _ = np.histogram(ref_data, bins=np.arange(lower_edge, upper_edge + binwidth, binwidth))
+
+    # Normalize the histograms by the total number of data points to compare probabilities
+    freq_m = freq_m / np.sum(freq_m)
+    freq_r = freq_r / np.sum(freq_r)
+    # Calculate and return the PSS
+    return np.sum(np.minimum(freq_m, freq_r)), freq_m, freq_r, binwidth
 
 
 ######################################
