@@ -2,8 +2,6 @@ name: Automatic tests pipeline
 
 on:
    push:
-   pull_request:
-      types: [opened]
 
 jobs:
 #--- Build the package and save as artifacts----
@@ -29,8 +27,6 @@ jobs:
       - name: Install dependencies and build
         run: |
               pip install poetry
-              #poetry update --without titan,documentation
-              #poetry install --without titan,documentation
               poetry update
               poetry install
               poetry build
@@ -69,7 +65,7 @@ jobs:
              python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
        - name: Run tests
          run: |
-             python tests/push_tests/import_test.py
+             python tests\push_tests\test_import.py
 
    windows_install_testing:
      name: Installation on Windows latest
@@ -91,7 +87,7 @@ jobs:
              python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
        - name: Run tests
          run: |
-             python tests\push_tests\import_test.py
+             python tests\push_tests\test_import.py
 
 
 #---- Version Control -----#
