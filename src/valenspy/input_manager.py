@@ -1,5 +1,6 @@
 from pathlib import Path
 import xarray as xr
+import pandas as pd
 from datatree import DataTree
 import re
 import glob
@@ -15,6 +16,38 @@ class InputManager:
     def __init__(self, machine):
         self.machine = machine
         self.dataset_paths = DATASET_PATHS[machine]
+
+    @property
+    def available_data(self):
+        """
+        Return the available data in a pandas DataFrame.
+        The index is the dataset name and the columns are the variable, period, frequency, region and path_identifiers.
+        """
+        data_paths = DATASET_PATHS[self.machine]
+
+        data_dict = []
+        for dataset_name, dataset_path in data_paths.items():
+            if dataset_name == "shapefiles":
+                continue
+            if dataset_name == "ERA5-Land":
+                dataset_name_lookup = "ERA5"
+            else:
+                dataset_name_lookup = dataset_name
+            dataset_path = Path(dataset_path)
+            implemented_variables = [var for var in load_yml(f"{dataset_name_lookup}_lookup")]
+            for variable in implemented_variables:
+                files = self._get_file_paths(dataset_name, variable)
+                data_dict.append(
+                {
+                    "dataset": dataset_name,
+                    "variable": variable,
+                    "base_path": dataset_path,
+                    "files": [str(f.relative_to(dataset_path)) for f in files],
+                }
+                )
+        #Make a pandas DataFrame
+        return pd.DataFrame(data_dict).set_index("dataset")
+        
 
     def load_m_data(
         self, datasets_dict, variables=["tas"], cf_convert=True, metadata_info={}
