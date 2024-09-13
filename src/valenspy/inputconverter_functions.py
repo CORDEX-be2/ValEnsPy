@@ -1,8 +1,8 @@
 from pathlib import Path
 from valenspy.cf_checks import is_cf_compliant, cf_status
 from valenspy._utilities import load_yml
-from valenspy._unit_conversions import (
-    convert_all_units_to_CF,
+from valenspy._unit_conversions import convert_all_units_to_CF
+from valenspy.unit_conversion_functions import (
     _determine_time_interval,
     _convert_mm_to_kg_m2s,
 )
@@ -103,6 +103,10 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     # Convert all units to CF, add metadata and set global attributes
     metadata_info["dataset"] = obsdata_name
 
+    # bugfix ERA5 (found in clh): replace valid_time by time
+    if "time" not in ds: 
+        ds = ds.rename({'valid_time':'time'})
+
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
     ds = _set_global_attributes(ds, metadata_info)
 
@@ -149,6 +153,10 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     # Convert all units to CF, add metadata and set global attributes
     metadata_info["dataset"] = obsdata_name
 
+    # bugfix ERA5 (found in clh): replace valid_time by time
+    if "time" not in ds: 
+        ds = ds.rename({'valid_time':'time'})
+        
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
     ds = _set_global_attributes(ds, metadata_info)
 
@@ -277,7 +285,63 @@ def ALARO_K_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
         for key, value in metadata_info.items():
             ds["pr"].attrs[key] = value
 
+        #Assuming monthly decumilation! This is not always the case!
+        def decumilate(ds):
+            ds_decum = ds.diff("time")
+            #Add the first value of the month of original dataset to the decumilated dataset
+            ds_decum = xr.concat([ds.isel(time=0), ds_decum], dim="time")
+            return ds_decum
+        ds.coords['year_month'] = ds['time.year']*100 + ds['time.month']
+        ds["pr"] = ds["pr"].groupby('year_month').apply(decumilate)
+
     ds = _set_global_attributes(ds, metadata_info)
+
+    cf_status(ds)
+
+    return ds
+
+
+def RADCLIM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
+    """
+    Convert the RADCLIM xarray netCDF to a CF compliant xarray Dataset
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The xarray Dataset of CCLM simulation to convert
+    metadata_info : dict, optional
+        A dictionary containing additional metadata information to add to the dataset
+
+    Returns
+    -------
+    Dataset
+        The CF compliant CCLM model data for the specified variable.
+    """
+
+    # open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator?
+    obsdata_name = "RADCLIM"
+    raw_LOOKUP = load_yml(f"{obsdata_name}_lookup")
+
+    if metadata_info is None:  # Set standard metadata if not provided
+        metadata_info = {
+            "freq": "hourly",
+            "region": "belgium",
+        }
+
+    if "history" not in metadata_info.keys():
+        metadata_info["history"] = ""
+
+    metadata_info["dataset"] = obsdata_name
+
+    ds = ds.set_coords(("lat_bounds", "lon_bounds"))
+
+    ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
+    ds = _set_global_attributes(ds, metadata_info)
+
+    if "nlon" in ds.dims:
+        ds = ds.rename({"nlon" : "lon"})
+    if "nlat" in ds.dims:
+        ds = ds.rename({"nlat" : "lat"})
 
     cf_status(ds)
 
