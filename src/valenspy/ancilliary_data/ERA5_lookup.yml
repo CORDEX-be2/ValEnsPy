@@ -93,14 +93,14 @@ hfss:
     raw_units: W/m^2
 
 rsds:
-    raw_name: ssrd
-    raw_long_name: surface_solar_radiation_downwards
-    raw_units: J/m^2
+    raw_name: msdwswrf
+    raw_long_name: mean_surface_downward_short_wave_radiation_flux
+    raw_units: W/m^2
 
 rlds:
-    raw_name: strd
-    raw_long_name: surface_thermal_radiation_downwards
-    raw_units: J/m^2
+    raw_name: msdwlwrf
+    raw_long_name: mean_surface_downward_long_wave_radiation_flux
+    raw_units: W/m^2
 
 ps:
     raw_name: sp
