@@ -224,12 +224,12 @@ def mean_absolute_error(da_mod: xr.DataArray, da_ref: xr.DataArray, percentile: 
 
     if percentile is None:
         # Calculate the MAE for the entire data
-        mae = np.mean(np.abs(da_mod.values - da_ref.values))
+        mae = np.nanmean(np.abs(da_mod.values - da_ref.values))
     else:
         # Calculate the MAE for the specified percentile
-        mod_percentile = da_mod.quantile(percentile)
-        ref_percentile = da_ref.quantile(percentile)
-        mae = np.mean(np.abs(mod_percentile.values - ref_percentile.values))
+        mod_percentile = da_mod.compute().quantile(percentile)
+        ref_percentile = da_ref.compute().quantile(percentile)
+        mae = np.nanmean(np.abs(mod_percentile.values - ref_percentile.values))
     
     return mae
 
@@ -290,7 +290,7 @@ def spearman_correlation(da_mod: xr.DataArray, da_ref: xr.DataArray) -> float:
         raise ValueError("Model and reference data must have the same length after flattening.")
 
     # Calculate Spearman's rank correlation
-    correlation, _ = spearmanr(mod_data, ref_data)
+    correlation, _ = spearmanr(mod_data, ref_data, nan_policy='omit')
     
     return correlation
 
@@ -308,7 +308,7 @@ def optimal_bin_width(da_mod: xr.DataArray, da_ref: xr.DataArray) -> float:
     """
     
     # Combine both datasets
-    combined_data = xr.concat([da_mod, da_ref], dim="time")
+    combined_data = xr.concat([da_mod, da_ref], dim="time").compute()
 
     # Freedman-Diaconis rule: Bin width = 2 * (IQR / n^(1/3))
     q25 = combined_data.quantile(0.25).item()
@@ -373,8 +373,8 @@ def perkins_skill_score(da: xr.DataArray, ref: xr.DataArray, binwidth: float = N
     ref_data = ref.values.flatten()
 
     # Define the edges of the bins based on the data range
-    lower_edge = min(np.min(mod_data), np.min(ref_data))
-    upper_edge = max(np.max(mod_data), np.max(ref_data))
+    lower_edge = min(np.nanmin(mod_data), np.nanmin(ref_data))
+    upper_edge = max(np.nanmin(mod_data), np.nanmin(ref_data))
 
     # Calculate the histograms
     freq_m, _ = np.histogram(mod_data, bins=np.arange(lower_edge, upper_edge + binwidth, binwidth))
