@@ -344,7 +344,7 @@ def perkins_skill_score(da: xr.DataArray, ref: xr.DataArray, binwidth: float = N
         The Perkins Skill Score (PSS).
     """
     if binwidth is None: 
-       binwidth  = optimal_bin_width(da_mod, da_ref)
+       binwidth  = optimal_bin_width(da, ref)
 
     # Flatten the DataArrays to 1D for comparison
     mod_data = da.values.flatten()
