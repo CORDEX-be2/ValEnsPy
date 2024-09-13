@@ -156,12 +156,12 @@ prhmax:
     raw_units: m
 
 tasmax:
-    raw_name:
+    raw_name: t2m
     raw_long_name: 2m_temperature_max
     raw_units: K
 
 tasmin:
-    raw_name:
+    raw_name: t2m
     raw_long_name: 2m_temperature_min
     raw_units: K
 
