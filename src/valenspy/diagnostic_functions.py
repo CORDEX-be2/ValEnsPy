@@ -1,8 +1,8 @@
 import xarray as xr
 import numpy as np
 from scipy.stats import spearmanr
-
-
+from datatree import DataTree
+import pandas as pd
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
 
@@ -320,9 +320,31 @@ def optimal_bin_width(da_mod: xr.DataArray, da_ref: xr.DataArray) -> float:
     std_dev = np.std(combined_data)
     n = len(combined_data)
     binwdth = 3.5 * (std_dev / np.cbrt(n))
+    
     return bin_width
     
-   # return bin_width
+def get_userdefined_binwidth(variable):
+    """
+    Get user defined, hard coded binwidths for Perkins Skill score calculation
+    """
+    # define bin width lookup table
+    d_binwidth = { 
+    'tas'    : 2,
+    'tasmax' : 2,
+    'tasmin' : 2,
+    'ps'     : 500,
+    'psl'    : 500,
+    'clt'    : 10,
+    'clh'    : 10,
+    'clm'    : 10,
+    'cll'    : 10 }
+
+    if variable in d_binwidth: 
+        return d_binwidth[variable]
+    else:
+
+        print(f"{variable} has no defined binwidths")
+
 
 
 def perkins_skill_score(da: xr.DataArray, ref: xr.DataArray, binwidth: float = None):
@@ -364,6 +386,151 @@ def perkins_skill_score(da: xr.DataArray, ref: xr.DataArray, binwidth: float = N
     # Calculate and return the PSS
     return np.sum(np.minimum(freq_m, freq_r)), freq_m, freq_r, binwidth
 
+def calc_metrics(dt_mod: DataTree, da_obs: xr.DataArray, save_csv=False, csv_path=None):
+    """
+    Calculate statistical performance metrics for model data against observed data.
+
+    This function computes various metrics between the model data stored in the DataTree 
+    object `dt_mod` and the observed data `da_obs`. Metrics include Mean Bias, Mean Absolute 
+    Error (MAE) at different percentiles, Root Mean Square Error (RMSE), Spearman Correlation, 
+    and Perkins Skill Score (PSS). The metrics are collected for each member of the `dt_mod` 
+    tree, and a merged pandas DataFrame containing these metrics is returned. Optionally, the 
+    resulting DataFrame can be saved as a CSV file.
+
+    Parameters:
+    -----------
+    dt_mod : DataTree
+        A DataTree containing the model data for different members. The function loops 
+        through each member to calculate the metrics.
+    da_obs : xr.DataArray
+        The observed data to compare against the model data.
+    save_csv : bool, optional
+        If True, saves the resulting DataFrame as a CSV file. Default is False.
+    csv_path : str, optional
+        The path where the CSV file will be saved. If None, a default path is generated 
+        using the variable names.
+
+    Returns:
+    --------
+    df_metric : pd.DataFrame
+        A DataFrame containing the calculated metrics for each member in the `dt_mod`.
+
+    Metrics:
+    --------
+    - Mean Bias
+    - Mean Absolute Error
+    - MAE at 90th Percentile
+    - MAE at 99th Percentile
+    - MAE at 10th Percentile
+    - MAE at 1st Percentile
+    - Root Mean Square Error
+    - Spearman Correlation
+    - Perkins Skill Score
+    """
+    
+    for i, member in enumerate(dt_mod):
+        ds_mod = dt_mod[member].ds
+        variable = list(ds_mod.keys())[0]
+        da_mod = ds_mod[variable]
+        
+        # Calculate metrics
+        bias = mean_bias(da_mod, da_obs)
+        mae = mean_absolute_error(da_mod, da_obs)
+        mae_90pctl = mean_absolute_error(da_mod, da_obs, percentile=0.9)
+        mae_99pctl = mean_absolute_error(da_mod, da_obs, percentile=0.99)
+        mae_10pctl = mean_absolute_error(da_mod, da_obs, percentile=0.1)
+        mae_1pctl = mean_absolute_error(da_mod, da_obs, percentile=0.01)
+        rmse = root_mean_square_error(da_mod, da_obs)
+        corr = spearman_correlation(da_mod, da_obs)
+        binwidth = get_userdefined_binwidth(variable)  # Replace `None` with actual variable if needed
+        pss, _, _, _ = perkins_skill_score(da_mod, da_obs, binwidth=binwidth)
+
+        # Create a dictionary with the metrics and their values
+        metrics_data = {
+            "metric": [
+                "Mean Bias",
+                "Mean Absolute Error",
+                "MAE at 90th Percentile",
+                "MAE at 99th Percentile",
+                "MAE at 10th Percentile",
+                "MAE at 1st Percentile",
+                "Root Mean Square Error",
+                "Spearman Correlation",
+                "Perkins Skill Score"
+            ],
+            member: [
+                bias,
+                mae,
+                mae_90pctl,
+                mae_99pctl,
+                mae_10pctl,
+                mae_1pctl,
+                rmse,
+                corr,
+                pss
+            ]
+        }
+
+        # Create a DataFrame
+        if i == 0:
+            df_metric = pd.DataFrame(metrics_data)
+        else: 
+            df_metric = pd.merge(df_metric, pd.DataFrame(metrics_data))
+
+    # Save as CSV file
+    if save_csv:
+        # No user-specified path, use default
+        if csv_path is None:
+            csv_path = f"../output/metrics_{variable}_{da_obs.dataset}_{da_mod.dataset}.csv"
+
+        df_metric.set_index('metric').to_csv(csv_path)
+
+    return df_metric
+
+def get_ranks_metrics(df: pd.DataFrame): 
+    """
+    Ranks the performance of different models across various metrics based on predefined ranking criteria.
+
+    This function applies custom ranking rules to evaluate the performance of models across different metrics.
+    The ranking is based on the following criteria:
+    
+    - 'Mean Bias' is ranked by its absolute value, with smaller values (closer to zero) ranked higher.
+    - 'Spearman Correlation' and 'Perkins Skill Score' are ranked in descending order, meaning higher values (closer to 1) are better.
+    - All other metrics are ranked in ascending order, where lower values are better.
+    
+    The input DataFrame `df` is expected to have the following structure:
+    - The first column contains the metric names.
+    - Each subsequent column contains the performance values of different models for each metric.
+    
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        A DataFrame where each row corresponds to a metric, the first column is the metric name, 
+        and the subsequent columns contain performance values for different models.
+    
+    Returns
+    -------
+    pandas.DataFrame
+        A DataFrame where each value is replaced by its rank based on the ranking criteria for the corresponding metric.
+        The rows are indexed by the metric names.
+    
+    """
+
+    # Function to rank values
+    def rank_values(row):
+
+        if row['metric'] == 'Mean Bias':
+            return row[1:].abs().rank(ascending=True)
+
+        if row['metric'] in ['Spearman Correlation', 'Perkins Skill Score']:
+            return row[1:].rank(ascending=False, method='min')
+        else:
+            return row[1:].rank(ascending=True, method='min')
+
+    # Apply ranking
+    df_ranked = df.apply(rank_values, axis=1).set_index(df['metric'])
+
+    return df_ranked
 
 ######################################
 ############## Wrappers ##############

@@ -4,7 +4,12 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
 from valenspy._regions import region_bounds
-from valenspy.diagnostic_functions import perkins_skill_score
+from valenspy.diagnostic_functions import perkins_skill_score, get_ranks_metrics
+
+import seaborn as sns
+import matplotlib.colors as mcolors
+import matplotlib.cm as cm
+import numpy as np
 
 # make sure xarray passes the attributes when doing operations - change default for this
 xr.set_options(keep_attrs=True)
@@ -399,6 +404,75 @@ def visualize_perkins_skill_score(da_mod: xr.DataArray, da_obs: xr.DataArray, bi
     # Adjust layout
     fig.tight_layout()
     plt.show()
+
+def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True):
+    """
+    Plots a heatmap of the ranking of metrics for different model members.
+
+    This function takes a DataFrame of metrics, calculates the rankings of these metrics 
+    for each model member, and creates a heatmap representing the ranks. The plot can 
+    optionally include a colorbar to represent the ranking levels. If no axis is provided, 
+    a new figure and axis are created for the plot.
+
+    Parameters:
+    -----------
+    df_metric : pd.DataFrame
+        A DataFrame containing the calculated metrics for different model members. Each column 
+        represents a model member, and each row represents a metric.
+    ax : matplotlib.axes.Axes, optional
+        A pre-existing axis to plot the heatmap. If None (default), a new figure and axis 
+        are created.
+    plot_colorbar : bool, optional
+        If True (default), a colorbar is added to the plot to represent the rank levels. 
+        If False, the heatmap is plotted without a colorbar.
+
+    Returns:
+    --------
+    ax : matplotlib.axes.Axes
+        The axis object containing the heatmap plot.
+
+    Notes:
+    ------
+    - The color map uses the 'summer' palette and is resampled to the number of model members.
+    - Rankings are normalized based on the number of model members.
+    - The function supports colorbar ticks to represent custom rank labels, which are added 
+      only if `plot_colorbar=True`.
+    
+    Example:
+    --------
+    plot_metric_ranking(df_metric, ax=None, plot_colorbar=True)
+    -> Generates a heatmap of metric rankings for each model member, with an optional colorbar.
+    """
+    
+    df_metric_rank = get_ranks_metrics(df_metric)
+
+    members = df_metric_rank.columns.tolist()
+
+    # Define the number of levels based on the length of experiments
+    num_levels = len(members)
+
+    # Get the 'summer' colormap with the required number of discrete levels
+    cmap = plt.colormaps['summer'].resampled(num_levels)
+
+    # Define boundaries and normalization for the number of levels
+    boundaries = np.arange(1, num_levels + 2, 1)  # Create boundaries based on the number of levels
+    norm = mcolors.BoundaryNorm(boundaries, cmap.N, clip=True)
+
+    if ax is None: 
+        fig, ax = plt.subplots()
+
+    heatmap = sns.heatmap(df_metric_rank, ax=ax, cbar=plot_colorbar, cmap=cmap, norm=norm)
+    ax.set_ylabel(' ')
+    if not title == None:  
+        ax.set_title(title, loc='right')
+
+    if plot_colorbar: 
+        colorbar = heatmap.collections[0].colorbar
+        colorbar.set_ticks(np.arange(1, len(members) + 1) + .5)  # Set the ticks you want
+        colorbar.set_ticklabels(range(1, len(members) + 1))  # Set the custom labels for the ticks
+
+    return ax
+
 ##################################
 # Helper functions               #
 ##################################
