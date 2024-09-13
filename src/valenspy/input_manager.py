@@ -79,21 +79,20 @@ class InputManager:
             #Iterate over all sub-directories starting at the dataset path
             for root, dirs, files in os.walk(dataset_path):
                 nc_files = [f for f in files if f.endswith(".nc")]
-                if nc_files:
-                    relative_path = Path(root).relative_to(dataset_path)
-                    sub_dirs = relative_path.parts
+                for var in implemented_variables:
+                    nc_var_files = self._get_file_paths(dataset_name, var, base_path=root)
+                    if nc_var_files:
+                        relative_path = Path(root).relative_to(dataset_path)
+                        sub_dirs = relative_path.parts
 
-                    period = [p for p in PERIODS if any(p in sub_dir_name for sub_dir_name in sub_dirs)]
-                    period.append([p for p in PERIODS if any(p in file_name for file_name in nc_files)])
-                    if len(period) > 1:
-                        period = sorted(period)
-                        period = [period[0], period[-1]]
+                        period = [p for p in PERIODS if any(p in sub_dir_name for sub_dir_name in sub_dirs)]
+                        period.append([p for p in PERIODS if any(p in file_name for file_name in nc_files)])
+                        if len(period) > 1:
+                            period = sorted(period)
+                            period = [period[0], period[-1]]
 
-                    region = [r for r in sub_dirs if r in REGIONS]
-                    freq = [f for f in sub_dirs if f in FREQUENCIES]
-
-                    for var in implemented_variables:
-                        nc_var_files = self._get_file_paths(dataset_name, var, base_path=root)
+                        region = [r for r in sub_dirs if r in REGIONS]
+                        freq = [f for f in sub_dirs if f in FREQUENCIES]
                         data_dict.append(
                         {   
                             "dataset": dataset_name,
