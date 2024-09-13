@@ -86,7 +86,7 @@ class InputManager:
                         sub_dirs = relative_path.parts
 
                         period = [p for p in PERIODS if any(p in sub_dir_name for sub_dir_name in sub_dirs)]
-                        period.append([p for p in PERIODS if any(p in file_name for file_name in nc_files)])
+                        period += [p for p in PERIODS if any(p in file_name for file_name in nc_files)]
                         if len(period) > 1:
                             period = sorted(period)
                             period = [period[0], period[-1]]
@@ -292,7 +292,7 @@ class InputManager:
         file_paths = []
         variables = (
             [variables] if isinstance(variables, str) else variables
-        )  # if single variable inputted as string, convert to list
+        )
         for variable in variables:
             if variable not in raw_LOOKUP:
                 var_regex = f"{variable}"
