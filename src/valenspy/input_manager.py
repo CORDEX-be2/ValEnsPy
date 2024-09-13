@@ -4,6 +4,7 @@ import pandas as pd
 from datatree import DataTree
 import re
 import glob
+import os
 
 from valenspy.inputconverter import INPUT_CONVERTORS
 from valenspy._utilities import load_yml
@@ -46,7 +47,69 @@ class InputManager:
                 }
                 )
         #Make a pandas DataFrame
-        return pd.DataFrame(data_dict).set_index("dataset")
+        return pd.DataFrame(data_dict)
+
+    @property
+    def available_data2(self):
+        """
+        Return the available data in a pandas DataFrame.
+        The index is the dataset name and the columns are the variable, period, frequency, region and path_identifiers.
+
+        In iterative search is performed starting at the dataset path and adding all sub-directories upto a folder containing .nc files.
+        Each sub-directory name is added as a path_identifier, region, frequency or period depending on the name.
+        """
+
+        data_paths = DATASET_PATHS[self.machine]
+        PERIODS = [str(year) for year in range(1900, 2100)]
+        REGIONS = ["europe", "belgium"]
+        FREQUENCIES = ["hourly", "daily", "monthly", "yearly"]
+
+
+        data_dict = []
+        #For each available dataset
+        for dataset_name, dataset_path in data_paths.items():
+            if dataset_name == "shapefiles":
+                continue
+            if dataset_name == "ERA5-Land":
+                dataset_name_lookup = "ERA5"
+            else:
+                dataset_name_lookup = dataset_name
+            dataset_path = Path(dataset_path)
+            implemented_variables = [var for var in load_yml(f"{dataset_name_lookup}_lookup")]
+            #Iterate over all sub-directories starting at the dataset path
+            for root, dirs, files in os.walk(dataset_path):
+                nc_files = [f for f in files if f.endswith(".nc")]
+                if nc_files:
+                    relative_path = Path(root).relative_to(dataset_path)
+                    sub_dirs = relative_path.parts
+
+                    period = [p for p in PERIODS if any(p in sub_dir_name for sub_dir_name in sub_dirs)]
+                    period.append([p for p in PERIODS if any(p in file_name for file_name in nc_files)])
+                    if len(period) > 1:
+                        period = sorted(period)
+                        period = [period[0], period[-1]]
+
+                    region = [r for r in sub_dirs if r in REGIONS]
+                    freq = [f for f in sub_dirs if f in FREQUENCIES]
+
+                    for var in implemented_variables:
+                        nc_var_files = self._get_file_paths(dataset_name, var, base_path=root)
+                        data_dict.append(
+                        {   
+                            "dataset": dataset_name,
+                            "variable": var,
+                            "base_path": dataset_path,
+                            "relative_path": relative_path,
+                            "files": nc_var_files,
+                            "period": period,
+                            "region": region,
+                            "freq": freq,
+                            "path_identifiers": sub_dirs
+                        }
+                        )
+                    
+        return pd.DataFrame(data_dict)
+                
         
 
     def load_m_data(
@@ -212,6 +275,7 @@ class InputManager:
         freq=None,
         region=None,
         path_identifiers=[],
+        base_path=None,
     ):
         """Get the file paths for the specified dataset, variables, period and frequency."""
 
@@ -222,8 +286,10 @@ class InputManager:
             dataset_name_lookup = dataset_name
 
         raw_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
-
-        dataset_path = Path(self.dataset_paths[dataset_name])
+        if not base_path:
+            dataset_path = Path(self.dataset_paths[dataset_name])
+        else:
+            dataset_path = Path(base_path)
         file_paths = []
         variables = (
             [variables] if isinstance(variables, str) else variables
