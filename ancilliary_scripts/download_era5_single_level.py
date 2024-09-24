@@ -20,8 +20,8 @@ c = cdsapi.Client()
 import os
 
 ## USER SETTINGS
-dataset = "era5-land"  #'era5' #era5-land' #'cams'
-region = "belgium"  # 'europe', 'globe', 'world'; coordinates predefined below.
+dataset = "era5"  #'era5' #era5-land' #'cams'
+region = "europe"  # 'europe', 'globe', 'world'; coordinates predefined below.
 init_yr = 1940
 end_yr = 2024
 time_freq = "hourly"  # hourly is base resolution
@@ -30,7 +30,7 @@ time_freq = "hourly"  # hourly is base resolution
 # set directory
 base_dir = "/dodrio/scratch/projects/2022_200/project_input/External/observations/"
 
-var_lst = ["2m_temperature"]
+var_lst = ["mean_sea_level_pressure"]
 
 
 """
