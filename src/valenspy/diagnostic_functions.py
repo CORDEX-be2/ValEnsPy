@@ -430,7 +430,7 @@ def calc_metrics(dt_mod: DataTree, da_obs: xr.DataArray, save_csv=False, csv_pat
     
     for i, member in enumerate(dt_mod):
         ds_mod = dt_mod[member].ds
-        variable = list(ds_mod.keys())[0]
+        variable = list(ds_mod.keys())[1]
         da_mod = ds_mod[variable]
         
         # Calculate metrics
