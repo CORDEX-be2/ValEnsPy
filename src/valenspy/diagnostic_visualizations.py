@@ -7,6 +7,7 @@ from valenspy._regions import region_bounds
 from valenspy.diagnostic_functions import perkins_skill_score, get_ranks_metrics
 
 import seaborn as sns
+from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.colors as mcolors
 import matplotlib.cm as cm
 import numpy as np
@@ -126,6 +127,44 @@ def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
 ##################################
 # Model2Ref diagnostic visuals   #
 ##################################
+
+def create_custom_cmap(hex_color1: str, hex_color2: str, num_colors: int):
+    """
+    Create a custom colormap that transitions between two given hex colors and generates a specified number of colors.
+
+    Parameters
+    ----------
+    hex_color1 : str
+        The starting color of the colormap in hex format (e.g., '#FF0000' for red).
+    hex_color2 : str
+        The ending color of the colormap in hex format (e.g., '#0000FF' for blue).
+    num_colors : int
+        The number of colors to generate in the colormap, including both the start and end colors.
+
+    Returns
+    -------
+    cmap : matplotlib.colors.LinearSegmentedColormap
+        A colormap that can be used in plotting functions to visualize data with a color gradient from hex_color1 to hex_color2.
+    colors : numpy.ndarray
+        An array of the RGB values for each of the colors in the generated colormap.
+    
+    Example
+    -------
+    >>> cmap, colors = create_custom_cmap("#FF0000", "#0000FF", 10)
+    >>> plt.imshow([colors], aspect='auto')
+    >>> plt.show()
+
+    """
+    # Convert hex colors to RGB
+    rgb_color1 = mcolors.hex2color(hex_color1)
+    rgb_color2 = mcolors.hex2color(hex_color2)
+
+    # Create colormap
+    cmap = LinearSegmentedColormap.from_list("custom_cmap", [rgb_color1, rgb_color2], N=num_colors)
+
+
+    return cmap
+
 
 
 def plot_spatial_bias(da: xr.DataArray, ax=None, region=None, **kwargs):
@@ -405,7 +444,7 @@ def visualize_perkins_skill_score(da_mod: xr.DataArray, da_obs: xr.DataArray, bi
     fig.tight_layout()
     plt.show()
 
-def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True):
+def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True, hex_color1 = None, hex_color2=None, cmap=None):
     """
     Plots a heatmap of the ranking of metrics for different model members.
 
@@ -451,8 +490,14 @@ def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True):
     # Define the number of levels based on the length of experiments
     num_levels = len(members)
 
-    # Get the 'summer' colormap with the required number of discrete levels
-    cmap = plt.colormaps['summer'].resampled(num_levels)
+    # Create a custom colormap if hex colors are provided, otherwise use the default cmap
+    if cmap is None:
+        if hex_color1 and hex_color2:
+            cmap = create_custom_cmap(hex_color1=hex_color1, hex_color2=hex_color2, num_colors=num_levels)
+        else:
+            cmap = plt.get_cmap('summer', num_levels)  # Get the 'summer' colormap with num_levels
+    
+
 
     # Define boundaries and normalization for the number of levels
     boundaries = np.arange(1, num_levels + 2, 1)  # Create boundaries based on the number of levels
