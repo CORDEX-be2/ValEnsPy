@@ -261,7 +261,7 @@ def plot_maps_mod_ref_diff(
         ax=ax,
         cmap="coolwarm",
         vmax=vmax,
-        vmin=-diff_bound,
+        vmin=vmin,
         cbar_kwargs=cbar_kwargs,
     )
     
