@@ -138,6 +138,151 @@ clivi:
 
 # # to add cclm variable
 
+
+# pressure levels
+ta1000:
+  raw_name: T1000
+  raw_standard_name: atmosphere_mass_content_of_cloud_ice
+  raw_long_name: vertical integrated cloud ice
+  raw_units: kg m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ta925:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta850:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta700:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta600:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta500:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta400:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta300:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta250:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta200:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+hus1000:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus925:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus850:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus700:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus600:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus500:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus400:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus300:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus250:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus200:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+
+
 # tasmax:
 
 # tasmin:
