@@ -464,6 +464,12 @@ def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True, hex_
     plot_colorbar : bool, optional
         If True (default), a colorbar is added to the plot to represent the rank levels. 
         If False, the heatmap is plotted without a colorbar.
+    hex_color1 : str
+        The starting color of the colormap in hex format (e.g., '#FF0000' for red).
+    hex_color2 : str
+        The ending color of the colormap in hex format (e.g., '#0000FF' for blue).
+    num_colors : int
+        The number of colors to generate in the colormap, including both the start and end colors.
 
     Returns:
     --------
@@ -472,7 +478,8 @@ def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True, hex_
 
     Notes:
     ------
-    - The color map uses the 'summer' palette and is resampled to the number of model members.
+    - The color map has the 'summer' palette as default and is resampled to the number of model members.
+    - A customized color map can be included or determined as an interpolation between two colorcodes (hex codes)
     - Rankings are normalized based on the number of model members.
     - The function supports colorbar ticks to represent custom rank labels, which are added 
       only if `plot_colorbar=True`.
