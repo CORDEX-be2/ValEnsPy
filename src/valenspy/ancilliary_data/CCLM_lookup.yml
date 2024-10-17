@@ -349,7 +349,6 @@ mrsol:
   raw_cell_methods: 'time: point soil1: sum'
 
 
-<<<<<<<<< Temporary merge branch 1
 # to add cclm variable
 
 # tasmax:
@@ -449,7 +448,7 @@ mrsol:
   raw_units: kg m-2
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
-=========
+
 #   raw_name: TQC
 #   raw_standard_name: atmosphere_mass_content_of_cloud_liquid_water
 #   raw_long_name: vertical integrated cloud water
