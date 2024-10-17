@@ -241,14 +241,14 @@ def CCLM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     # if working with pressure levels, the variable in the dataset is still the original name, and there is a pressure level coordinate
     # e.g. ta500 is T500p in the file name (raw_var), but still T in the dataset. 
     # therefore, if the pressure coordinate is available, rename the variable to the pressure level, matching the file name. 
-
-    for raw_var in ds.data_vars:
-        raw_var_pressure = raw_var+str(int(ds.pressure.values[0]/100))+'p'
-        var = next(
-            (k for k, v in raw_LOOKUP.items() if v.get("raw_name") == raw_var_pressure), None
-        )
-        if var: 
-            ds = ds.rename_vars({raw_var: raw_var_pressure})
+    if 'pressure' in ds.coords:
+        for raw_var in ds.data_vars:
+            raw_var_pressure = raw_var+str(int(ds.pressure.values[0]/100))+'p'
+            var = next(
+                (k for k, v in raw_LOOKUP.items() if v.get("raw_name") == raw_var_pressure), None
+            )
+            if var: 
+                ds = ds.rename_vars({raw_var: raw_var_pressure})
 
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
 
