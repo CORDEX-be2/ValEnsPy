@@ -466,7 +466,7 @@ def visualize_perkins_skill_score(da_mod: xr.DataArray, da_obs: xr.DataArray, bi
     fig.tight_layout()
     plt.show()
 
-def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True, hex_color1 = None, hex_color2=None, cmap=None):
+def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = None, hex_color2=None, **kwargs):
     """
     Plots a heatmap of the ranking of metrics for different model members.
 
@@ -474,7 +474,6 @@ def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True, hex_
     for each model member, and creates a heatmap representing the ranks. The plot can 
     optionally include a colorbar to represent the ranking levels. If no axis is provided, 
     a new figure and axis are created for the plot.
-
     Parameters:
     -----------
     df_metric : pd.DataFrame
@@ -490,8 +489,6 @@ def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True, hex_
         The starting color of the colormap in hex format (e.g., '#FF0000' for red).
     hex_color2 : str
         The ending color of the colormap in hex format (e.g., '#0000FF' for blue).
-    num_colors : int
-        The number of colors to generate in the colormap, including both the start and end colors.
 
     Returns:
     --------
@@ -511,25 +508,18 @@ def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True, hex_
     plot_metric_ranking(df_metric, ax=None, plot_colorbar=True)
     -> Generates a heatmap of metric rankings for each model member, with an optional colorbar.
     """
-    
-    df_metric_rank = get_ranks_metrics(df_metric)
 
-    members = df_metric_rank.columns.tolist()
+    df_p = df_metric.pivot(index=["metric"], columns="member", values="rank")
+    df_p = df_p[df_p.sum().sort_values().index]
 
-    # Define the number of levels based on the length of experiments
-    num_levels = len(members)
-
-    # Create a custom colormap if hex colors are provided, otherwise use the default cmap
-    if cmap is None:
+    num_levels = df_metric["member"].nunique()
+    if "cmap" not in kwargs:
         if hex_color1 and hex_color2:
             cmap = create_custom_cmap(hex_color1=hex_color1, hex_color2=hex_color2, num_colors=num_levels)
         else:
-            cmap = plt.get_cmap('summer', num_levels)  # Get the 'summer' colormap with num_levels
+            cmap = plt.get_cmap('summer', num_levels)
     
-
-
-    # Define boundaries and normalization for the number of levels
-    boundaries = np.arange(1, num_levels + 2, 1)  # Create boundaries based on the number of levels
+    boundaries = np.arange(1, num_levels + 2, 1)
     norm = mcolors.BoundaryNorm(boundaries, cmap.N, clip=True)
 
     if ax is None: 
@@ -537,14 +527,15 @@ def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True, hex_
 
     heatmap = sns.heatmap(df_metric_rank, ax=ax, cbar=plot_colorbar, cmap=cmap, norm=norm)
     ax.set_ylabel(' ')
-    if not title == None:  
+    ax.set_xlabel('Members')
+    if "title" in kwargs:
         ax.set_title(title, loc='right')
-
-    if plot_colorbar: 
+    
+    if plot_colorbar:
         colorbar = heatmap.collections[0].colorbar
-        colorbar.set_ticks(np.arange(1, len(members) + 1) + .5)  # Set the ticks you want
-        colorbar.set_ticklabels(range(1, len(members) + 1))  # Set the custom labels for the ticks
-
+        colorbar.set_ticks(np.arange(1, num_levels + 1) + .5)  # Set the ticks you want
+        colorbar.set_ticklabels(range(1, num_levels + 1))  # Set the custom labels for the ticks
+    
     return ax
 
 ##################################
