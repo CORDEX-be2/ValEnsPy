@@ -18,4 +18,14 @@ diagnostic.Diagnostic
 
       ~Diagnostic.__init__
       ~Diagnostic.apply
-      ~Diagnostic.visualize
+      ~Diagnostic.plot
+
+
+
+
+
+   .. rubric:: Attributes
+
+   .. autosummary::
+
+      ~Diagnostic.description

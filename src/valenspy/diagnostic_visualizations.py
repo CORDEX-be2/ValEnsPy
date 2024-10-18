@@ -170,7 +170,12 @@ def plot_spatial_bias(da: xr.DataArray, ax=None, region=None, **kwargs):
 
 
 def plot_maps_mod_ref_diff(
-    da_mod: xr.DataArray, da_ref: xr.DataArray, da_diff: xr.DataArray, region=None, **kwargs):
+    da_mod: xr.DataArray,
+    da_ref: xr.DataArray,
+    da_diff: xr.DataArray,
+    region=None,
+    **kwargs,
+):
     """
     Plots comparison maps for model data, reference data, and their difference.
 
@@ -208,12 +213,12 @@ def plot_maps_mod_ref_diff(
 
     if "vmin" in kwargs:
         vmin = kwargs.pop("vmin")
-    else: # plotting boundaries
+    else:  # plotting boundaries
         vmin = float(min(da_mod.min().values, da_ref.min().values))
 
     if "vmax" in kwargs:
         vmax = kwargs.pop("vmax")
-    else: # plotting boundaries
+    else:  # plotting boundaries
         vmax = float(max(da_mod.max().values, da_ref.max().values))
 
     # titles - use the dataset attribute if available
@@ -247,14 +252,13 @@ def plot_maps_mod_ref_diff(
 
     if "vmin_bias" in kwargs:
         vmin = kwargs.pop("vmin_bias")
-    else: # plotting boundaries
-        vmin = -diff_bound 
-
+    else:  # plotting boundaries
+        vmin = -diff_bound
 
     if "vmax_bias" in kwargs:
         vmax = kwargs.pop("vmax_bias")
-    else: # plotting boundaries
-        vmax = diff_bound 
+    else:  # plotting boundaries
+        vmax = diff_bound
 
     ax = axes[2]
     da_diff.plot(
@@ -264,7 +268,7 @@ def plot_maps_mod_ref_diff(
         vmin=vmin,
         cbar_kwargs=cbar_kwargs,
     )
-    
+
     ax.set_title("")
     ax.set_title(f"{mod_title} - {ref_title}", loc="right")
     _add_features(ax, region=region)
