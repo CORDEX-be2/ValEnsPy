@@ -21,13 +21,3 @@ diagnostic\_visualizations
       plot_spatial_bias
       plot_time_series
       plot_time_series_mod_ref
-
-
-
-
-
-
-
-
-
-

@@ -21,13 +21,3 @@ diagnostic\_functions
       spatial_bias
       temporal_bias
       time_series_spatial_mean
-
-
-
-
-
-
-
-
-
-

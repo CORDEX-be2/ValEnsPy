@@ -24,9 +24,3 @@ diagnostic
       Ensemble2Self
       Model2Ref
       Model2Self
-
-
-
-
-
-

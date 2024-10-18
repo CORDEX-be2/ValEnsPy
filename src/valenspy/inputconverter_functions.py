@@ -339,9 +339,9 @@ def RADCLIM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     ds = _set_global_attributes(ds, metadata_info)
 
     if "nlon" in ds.dims:
-        ds = ds.rename({"nlon" : "lon"})
+        ds = ds.rename({"nlon": "lon"})
     if "nlat" in ds.dims:
-        ds = ds.rename({"nlat" : "lat"})
+        ds = ds.rename({"nlat": "lat"})
 
     cf_status(ds)
 

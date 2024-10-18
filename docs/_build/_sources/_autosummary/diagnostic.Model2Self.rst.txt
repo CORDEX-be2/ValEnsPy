@@ -8,26 +8,26 @@ diagnostic.Model2Self
    :show-inheritance:
    :inherited-members:
 
-   
+
    .. automethod:: __init__
 
-   
+
    .. rubric:: Methods
 
    .. autosummary::
-   
+
       ~Model2Self.__init__
       ~Model2Self.apply
       ~Model2Self.plot
-   
-   
 
-   
-   
+
+
+
+
    .. rubric:: Attributes
 
    .. autosummary::
-   
+
       ~Model2Self.description
-   
-   
+
+

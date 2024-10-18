@@ -29,5 +29,3 @@ diagnostic.Model2Ref
    .. autosummary::
 
       ~Model2Ref.description
-
-

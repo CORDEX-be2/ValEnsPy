@@ -29,5 +29,3 @@ diagnostic.Diagnostic
    .. autosummary::
 
       ~Diagnostic.description
-
-
