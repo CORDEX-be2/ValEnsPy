@@ -4,7 +4,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
 from valenspy._regions import region_bounds
-from valenspy.diagnostic_functions import perkins_skill_score, get_ranks_metrics
+from valenspy.diagnostic_functions import perkins_skill_score
 
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
@@ -518,6 +518,8 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
             cmap = create_custom_cmap(hex_color1=hex_color1, hex_color2=hex_color2, num_colors=num_levels)
         else:
             cmap = plt.get_cmap('summer', num_levels)
+    else:
+        cmap = plt.get_cmap(kwargs.pop("cmap"), num_levels)
     
     boundaries = np.arange(1, num_levels + 2, 1)
     norm = mcolors.BoundaryNorm(boundaries, cmap.N, clip=True)
@@ -525,11 +527,12 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
     if ax is None: 
         fig, ax = plt.subplots()
 
-    heatmap = sns.heatmap(df_metric_rank, ax=ax, cbar=plot_colorbar, cmap=cmap, norm=norm)
+    if "title" in kwargs:
+        ax.set_title(kwargs.pop("title"), loc="right")
+
+    heatmap = sns.heatmap(df_p, ax=ax, cbar=plot_colorbar, cmap=cmap, norm=norm, **kwargs)
     ax.set_ylabel(' ')
     ax.set_xlabel('Members')
-    if "title" in kwargs:
-        ax.set_title(title, loc='right')
     
     if plot_colorbar:
         colorbar = heatmap.collections[0].colorbar
