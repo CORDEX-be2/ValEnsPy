@@ -14,6 +14,8 @@ inputconverter\_functions
    .. autosummary::
       :toctree:
 
+      ALARO_K_to_CF
+      CCLM_to_CF
       CLIMATE_GRID_to_CF
       EOBS_to_CF
       ERA5Land_to_CF
