@@ -22,25 +22,22 @@ from valenspy._utilities.unit_conversion_functions import (
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
 UNIT_CONVERSION_FUNCTIONS = {
-    "Celcius":      _convert_Celcius_to_Kelvin,
-    "hPa":          _convert_hPa_to_Pa,
-    "mm":           _convert_mm_to_kg_m2s,
-    "mm/hr":        _convert_mm_hr_to_kg_m2s,
-    "m":            _convert_m_to_kg_m2s,
-    "m/hr":         _convert_m_hr_to_kg_m2s,
-    "kg m-2":       _convert_kg_m2_to_kg_m2s,
-    "J/m^2":        _convert_J_m2_to_W_m2,
-    "kWh/m2/day":   _convert_kWh_m2_day_to_W_m2,
-    "(0 - 1)":      _convert_fraction_to_percent,
+    "Celcius": _convert_Celcius_to_Kelvin,
+    "hPa": _convert_hPa_to_Pa,
+    "mm": _convert_mm_to_kg_m2s,
+    "mm/hr": _convert_mm_hr_to_kg_m2s,
+    "m": _convert_m_to_kg_m2s,
+    "m/hr": _convert_m_hr_to_kg_m2s,
+    "kg m-2": _convert_kg_m2_to_kg_m2s,
+    "J/m^2": _convert_J_m2_to_W_m2,
+    "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
+    "(0 - 1)": _convert_fraction_to_percent,
 }
 
-# Units that are equivalent. Note that the key is the raw unit (and should never be a CORDEX unit!) 
+# Units that are equivalent. Note that the key is the raw unit (and should never be a CORDEX unit!)
 # and the value should either be a CORDEX unit or a unit that is used to identify the conversion function
-EQUIVALENT_UNITS = {
-    "degC": "Celcius", 
-    "m/s": "m s-1",
-    "kg kg-1": 1
-    }
+EQUIVALENT_UNITS = {"degC": "Celcius", "m/s": "m s-1", "kg kg-1": 1}
+
 
 def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     """Convert all units for all variables in the dataset to the correct units by applying the correct conversion function.
@@ -69,7 +66,6 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 
     # Key: The unit of the raw data
     # Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
-
 
     for raw_var in ds.data_vars:
         var = next(
@@ -102,11 +98,13 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
                         f"Unit conversion for {raw_units} to {cordex_var_units} is not implemented for variable {var}."
                     )
 
-            #If the conversion was successful, add metadata attributes
+            # If the conversion was successful, add metadata attributes
             if var in ds:
                 ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var]["standard_name"]
                 ds[var].attrs["long_name"] = CORDEX_VARIABLES[var]["long_name"]
-                if "units" not in ds[var].attrs: #If the units are already set by the conversion function, do not overwrite them
+                if (
+                    "units" not in ds[var].attrs
+                ):  # If the units are already set by the conversion function, do not overwrite them
                     ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"]
 
                 ds[var].attrs["original_name"] = raw_LOOKUP[var]["raw_name"]

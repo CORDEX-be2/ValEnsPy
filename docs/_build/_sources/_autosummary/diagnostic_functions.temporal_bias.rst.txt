@@ -1,0 +1,6 @@
+diagnostic\_functions.temporal\_bias
+====================================
+
+.. currentmodule:: diagnostic_functions
+
+.. autofunction:: temporal_bias

@@ -102,8 +102,8 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     metadata_info["dataset"] = obsdata_name
 
     # bugfix ERA5 (found in clh): replace valid_time by time
-    if "time" not in ds: 
-        ds = ds.rename({'valid_time':'time'})
+    if "time" not in ds:
+        ds = ds.rename({"valid_time": "time"})
 
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
     ds = _set_global_attributes(ds, metadata_info)
@@ -152,9 +152,9 @@ def ERA5Land_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     metadata_info["dataset"] = obsdata_name
 
     # bugfix ERA5 (found in clh): replace valid_time by time
-    if "time" not in ds: 
-        ds = ds.rename({'valid_time':'time'})
-        
+    if "time" not in ds:
+        ds = ds.rename({"valid_time": "time"})
+
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
     ds = _set_global_attributes(ds, metadata_info)
 
@@ -283,14 +283,15 @@ def ALARO_K_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
         for key, value in metadata_info.items():
             ds["pr"].attrs[key] = value
 
-        #Assuming monthly decumilation! This is not always the case!
+        # Assuming monthly decumilation! This is not always the case!
         def decumilate(ds):
             ds_decum = ds.diff("time")
-            #Add the first value of the month of original dataset to the decumilated dataset
+            # Add the first value of the month of original dataset to the decumilated dataset
             ds_decum = xr.concat([ds.isel(time=0), ds_decum], dim="time")
             return ds_decum
-        ds.coords['year_month'] = ds['time.year']*100 + ds['time.month']
-        ds["pr"] = ds["pr"].groupby('year_month').apply(decumilate)
+
+        ds.coords["year_month"] = ds["time.year"] * 100 + ds["time.month"]
+        ds["pr"] = ds["pr"].groupby("year_month").apply(decumilate)
 
     ds = _set_global_attributes(ds, metadata_info)
 
@@ -337,9 +338,9 @@ def RADCLIM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     ds = _set_global_attributes(ds, metadata_info)
 
     if "nlon" in ds.dims:
-        ds = ds.rename({"nlon" : "lon"})
+        ds = ds.rename({"nlon": "lon"})
     if "nlat" in ds.dims:
-        ds = ds.rename({"nlat" : "lat"})
+        ds = ds.rename({"nlat": "lat"})
 
     cf_status(ds)
 
