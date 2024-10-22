@@ -18,14 +18,4 @@ diagnostic.Model2Ref
 
       ~Model2Ref.__init__
       ~Model2Ref.apply
-      ~Model2Ref.plot
-
-
-
-
-
-   .. rubric:: Attributes
-
-   .. autosummary::
-
-      ~Model2Ref.description
+      ~Model2Ref.visualize

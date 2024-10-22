@@ -1,17 +1,15 @@
 import xarray as xr
 import numpy as np
 
-
 ########### To Kelvin ############
 def _convert_Celcius_to_Kelvin(da: xr.DataArray):
     """
     Convert values in xarray DataArray from °C to K
     """
     da = da + 273.15  # Celcius to Kelvin
-    da.attrs["units"] = "K"  # Naming as in CORDEX_variables.yml
+    da.attrs["units"] = "K" #Naming as in CORDEX_variables.yml
 
     return da
-
 
 ########### To Celsius ############
 def _convert_Kelvin_to_Celcius(da: xr.DataArray):
@@ -23,7 +21,6 @@ def _convert_Kelvin_to_Celcius(da: xr.DataArray):
 
     return da
 
-
 ########### To Pa ############
 def _convert_hPa_to_Pa(da: xr.DataArray):
     """
@@ -34,7 +31,6 @@ def _convert_hPa_to_Pa(da: xr.DataArray):
 
     return da
 
-
 ########### To hPa ############
 def _convert_Pa_to_hPa(da: xr.DataArray):
     """
@@ -44,7 +40,6 @@ def _convert_Pa_to_hPa(da: xr.DataArray):
     da.attrs["units"] = "hPa"
 
     return da
-
 
 ########### To kg m-2 s-1 ############
 def _convert_mm_to_kg_m2s(da: xr.DataArray):
@@ -59,16 +54,14 @@ def _convert_mm_to_kg_m2s(da: xr.DataArray):
 
     return da
 
-
 def _convert_mm_hr_to_kg_m2s(da: xr.DataArray):
     """
     Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
     """
-    da = da / 3600  # mm to kg m^-2 s^-1
+    da = da / 3600 # mm to kg m^-2 s^-1
     da.attrs["units"] = "kg m-2 s-1"
 
     return da
-
 
 def _convert_kg_m2_to_kg_m2s(da: xr.DataArray):
     """
@@ -92,7 +85,6 @@ def _convert_m_to_kg_m2s(da: xr.DataArray):
 
     return da
 
-
 def _convert_m_hr_to_kg_m2s(da: xr.DataArray):
     """
     Convert values in xarray DataArray from m hr^-1 to kg m^-2 s^-1s
@@ -103,7 +95,6 @@ def _convert_m_hr_to_kg_m2s(da: xr.DataArray):
 
     return da
 
-
 ########### To m h-1 ############
 def _convert_kg_m2s_to_mh(da: xr.DataArray):
     """
@@ -113,7 +104,6 @@ def _convert_kg_m2s_to_mh(da: xr.DataArray):
     da.attrs["units"] = "mm hr-1"
 
     return da
-
 
 ########### To W m-2 ############
 def _convert_J_m2_to_W_m2(da: xr.DataArray):
@@ -137,7 +127,6 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
     da.attrs["units"] = "W m-2"
 
     return da
-
 
 ########### To % ############
 def _convert_fraction_to_percent(da: xr.DataArray):

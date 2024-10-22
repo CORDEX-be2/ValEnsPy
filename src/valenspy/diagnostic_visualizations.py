@@ -4,7 +4,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
 from valenspy._regions import region_bounds
-from valenspy.diagnostic_functions import perkins_skill_score
+from valenspy.diagnostic_functions import perkins_skill_score, get_ranks_metrics
 
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
@@ -214,11 +214,7 @@ def plot_spatial_bias(da: xr.DataArray, ax=None, region=None, **kwargs):
 
 
 def plot_maps_mod_ref_diff(
-    da_mod: xr.DataArray,
-    da_ref: xr.DataArray,
-    da_diff: xr.DataArray,
-    region=None,
-    **kwargs,
+    da_mod: xr.DataArray, da_ref: xr.DataArray, da_diff: xr.DataArray, region=None
 ):
     """
     Plots comparison maps for model data, reference data, and their difference.
@@ -255,15 +251,9 @@ def plot_maps_mod_ref_diff(
     cbar_label = f"{da_ref.attrs['long_name']} ({da_ref.attrs['units']})"
     cbar_kwargs = {"label": cbar_label}
 
-    if "vmin" in kwargs:
-        vmin = kwargs.pop("vmin")
-    else:  # plotting boundaries
-        vmin = float(min(da_mod.min().values, da_ref.min().values))
-
-    if "vmax" in kwargs:
-        vmax = kwargs.pop("vmax")
-    else:  # plotting boundaries
-        vmax = float(max(da_mod.max().values, da_ref.max().values))
+    # plotting bounds
+    vmin = float(min(da_mod.min().values, da_ref.min().values))
+    vmax = float(max(da_mod.max().values, da_ref.max().values))
 
     # titles - use the dataset attribute if available
     if "dataset" in da_mod.attrs:
@@ -291,27 +281,15 @@ def plot_maps_mod_ref_diff(
     _add_features(ax, region=region)
 
     # bias
-    diff_bound = float(max(abs(da_diff.min().values), abs(da_diff.max().values)))
-
-    if "vmin_bias" in kwargs:
-        vmin = kwargs.pop("vmin_bias")
-    else:  # plotting boundaries
-        vmin = -diff_bound
-
-    if "vmax_bias" in kwargs:
-        vmax = kwargs.pop("vmax_bias")
-    else:  # plotting boundaries
-        vmax = diff_bound
-
     ax = axes[2]
+    diff_bound = float(max(abs(da_diff.min().values), abs(da_diff.max().values)))
     da_diff.plot(
         ax=ax,
         cmap="coolwarm",
-        vmax=vmax,
+        vmax=diff_bound,
         vmin=-diff_bound,
         cbar_kwargs=cbar_kwargs,
     )
-
     ax.set_title("")
     ax.set_title(f"{mod_title} - {ref_title}", loc="right")
     _add_features(ax, region=region)
@@ -466,7 +444,7 @@ def visualize_perkins_skill_score(da_mod: xr.DataArray, da_obs: xr.DataArray, bi
     fig.tight_layout()
     plt.show()
 
-def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = None, hex_color2=None, **kwargs):
+def plot_metric_ranking(df_metric, ax=None, title=None, plot_colorbar=True, hex_color1 = None, hex_color2=None, cmap=None):
     """
     Plots a heatmap of the ranking of metrics for different model members.
 
@@ -474,6 +452,7 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
     for each model member, and creates a heatmap representing the ranks. The plot can 
     optionally include a colorbar to represent the ranking levels. If no axis is provided, 
     a new figure and axis are created for the plot.
+
     Parameters:
     -----------
     df_metric : pd.DataFrame
@@ -489,6 +468,8 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
         The starting color of the colormap in hex format (e.g., '#FF0000' for red).
     hex_color2 : str
         The ending color of the colormap in hex format (e.g., '#0000FF' for blue).
+    num_colors : int
+        The number of colors to generate in the colormap, including both the start and end colors.
 
     Returns:
     --------
@@ -508,37 +489,40 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
     plot_metric_ranking(df_metric, ax=None, plot_colorbar=True)
     -> Generates a heatmap of metric rankings for each model member, with an optional colorbar.
     """
+    
+    df_metric_rank = get_ranks_metrics(df_metric)
 
-    df_p = df_metric.pivot(index=["metric"], columns="member", values="rank")
-    df_p = df_p[df_p.sum().sort_values().index]
+    members = df_metric_rank.columns.tolist()
 
-    num_levels = df_metric["member"].nunique()
-    if "cmap" not in kwargs:
+    # Define the number of levels based on the length of experiments
+    num_levels = len(members)
+
+    # Create a custom colormap if hex colors are provided, otherwise use the default cmap
+    if cmap is None:
         if hex_color1 and hex_color2:
             cmap = create_custom_cmap(hex_color1=hex_color1, hex_color2=hex_color2, num_colors=num_levels)
         else:
-            cmap = plt.get_cmap('summer', num_levels)
-    else:
-        cmap = plt.get_cmap(kwargs.pop("cmap"), num_levels)
+            cmap = plt.get_cmap('summer', num_levels)  # Get the 'summer' colormap with num_levels
     
-    boundaries = np.arange(1, num_levels + 2, 1)
+
+
+    # Define boundaries and normalization for the number of levels
+    boundaries = np.arange(1, num_levels + 2, 1)  # Create boundaries based on the number of levels
     norm = mcolors.BoundaryNorm(boundaries, cmap.N, clip=True)
 
     if ax is None: 
         fig, ax = plt.subplots()
 
-    if "title" in kwargs:
-        ax.set_title(kwargs.pop("title"), loc="right")
-
-    heatmap = sns.heatmap(df_p, ax=ax, cbar=plot_colorbar, cmap=cmap, norm=norm, **kwargs)
+    heatmap = sns.heatmap(df_metric_rank, ax=ax, cbar=plot_colorbar, cmap=cmap, norm=norm)
     ax.set_ylabel(' ')
-    ax.set_xlabel('Members')
-    
-    if plot_colorbar:
+    if not title == None:  
+        ax.set_title(title, loc='right')
+
+    if plot_colorbar: 
         colorbar = heatmap.collections[0].colorbar
-        colorbar.set_ticks(np.arange(1, num_levels + 1) + .5)  # Set the ticks you want
-        colorbar.set_ticklabels(range(1, num_levels + 1))  # Set the custom labels for the ticks
-    
+        colorbar.set_ticks(np.arange(1, len(members) + 1) + .5)  # Set the ticks you want
+        colorbar.set_ticklabels(range(1, len(members) + 1))  # Set the custom labels for the ticks
+
     return ax
 
 ##################################

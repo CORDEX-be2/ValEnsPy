@@ -396,78 +396,124 @@ document.write(`
 
   <h1>Source code for inputconverter_functions</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">valenspy.cf_checks</span> <span class="kn">import</span> <span class="n">is_cf_compliant</span><span class="p">,</span> <span class="n">cf_status</span>
-<span class="kn">from</span> <span class="nn">valenspy._utilities</span> <span class="kn">import</span> <span class="n">load_yml</span>
-<span class="kn">from</span> <span class="nn">valenspy._unit_conversions</span> <span class="kn">import</span> <span class="n">convert_all_units_to_CF</span>
-<span class="kn">from</span> <span class="nn">valenspy.unit_conversion_functions</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">_determine_time_interval</span><span class="p">,</span>
-    <span class="n">_convert_mm_to_kg_m2s</span><span class="p">,</span>
-<span class="p">)</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">safe_load</span>
+<span class="kn">from</span> <span class="nn">valenspy.cf_checks</span> <span class="kn">import</span> <span class="n">is_cf_compliant</span><span class="p">,</span> <span class="n">cf_status</span>
 
-<span class="n">CORDEX_VARIABLES</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span><span class="s2">&quot;CORDEX_variables&quot;</span><span class="p">)</span>
+<span class="c1"># get path of source code (current path)</span>
+<span class="n">src_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
 
-
-<span class="k">def</span> <span class="nf">_set_global_attributes</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="k">return</span> <span class="n">ds</span>
+<span class="c1"># open CORDEX variable lookup dictionary</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_path</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="s2">&quot;CORDEX_variables.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">CORDEX_VARIABLES</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_rename_to_lon</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">lon_name</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename_vars</span><span class="p">({</span><span class="n">ds</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">lon_name</span><span class="p">})</span>
-
-
-<span class="k">def</span> <span class="nf">_rename_to_lat</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">lat_name</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename_vars</span><span class="p">({</span><span class="n">ds</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">lat_name</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">_non_convertor</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A dummy function that does not convert the input paths.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s2">&quot;by_coords&quot;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="EOBS_to_CF">
 <a class="viewcode-back" href="../_autosummary/inputconverter_functions.EOBS_to_CF.html#inputconverter_functions.EOBS_to_CF">[docs]</a>
-<span class="k">def</span> <span class="nf">EOBS_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">EOBS_to_CF</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert the EOBS xarray netCDF to a CF compliant xarray Dataset</span>
+<span class="sd">    Convert the EOBS netCDF paths to an xarray netCDF in CF convention</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    ds : xr.Dataset</span>
-<span class="sd">        The xarray Dataset of EOBS observations to convert</span>
-<span class="sd">    metadata_info : dict, optional</span>
-<span class="sd">        A dictionary containing additional metadata information to add to the dataset</span>
+<span class="sd">    paths : Path or a list of Paths</span>
+<span class="sd">        The path(s) to the netCDF file of specific variable to convert</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Dataset</span>
 <span class="sd">        The CF compliant EOBS observations for the specified variable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Unique information regarding the EOBS dataset</span>
+
+    <span class="c1"># open the observation dataset</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s2">&quot;by_coords&quot;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+
+    <span class="c1"># open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator?</span>
     <span class="n">obsdata_name</span> <span class="o">=</span> <span class="s2">&quot;EOBS&quot;</span>
-    <span class="n">raw_LOOKUP</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obsdata_name</span><span class="si">}</span><span class="s2">_lookup&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">metadata_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Set standard metadata if not provided</span>
-        <span class="n">metadata_info</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;freq&quot;</span><span class="p">:</span> <span class="s2">&quot;daily&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;spatial_resolution&quot;</span><span class="p">:</span> <span class="s2">&quot;0.1deg&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="s2">&quot;europe&quot;</span><span class="p">,</span>
-        <span class="p">}</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+        <span class="n">src_path</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">obsdata_name</span> <span class="o">+</span> <span class="s2">&quot;_lookup.yml&quot;</span><span class="p">)</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">obs_LOOKUP</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
-    <span class="c1"># Convert all units to CF, add metadata and set global attributes</span>
-    <span class="n">metadata_info</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
+    <span class="c1"># make EOBS CF compliant</span>
 
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">convert_all_units_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">raw_LOOKUP</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">_set_global_attributes</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">var_obs</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
 
-    <span class="c1"># rename dimensions if not yet renamed</span>
-    <span class="k">if</span> <span class="s2">&quot;lon&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">})</span>
-    <span class="k">if</span> <span class="s2">&quot;lat&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">})</span>
+        <span class="c1"># Get the CORDEX variable in the observational dataset using the observational lookup table</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obs_LOOKUP</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;obs_name&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">var_obs</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span>
 
-    <span class="c1"># make sure lat and lon are sorted ascending</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s2">&quot;lon&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">var</span><span class="p">:</span>  <span class="c1"># Dont processes variables that are not in the lookup table.</span>
+
+            <span class="c1"># update variable name to CORDEX variable name</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename_vars</span><span class="p">({</span><span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_name&quot;</span><span class="p">]:</span> <span class="n">var</span><span class="p">})</span>
+
+            <span class="c1"># from here on, use CORDEX variable name to access data array and do rest of conversion</span>
+
+            <span class="c1"># Unit conversion - hard coded EOBS units for units different to CORDEX</span>
+            <span class="k">if</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Celcius&quot;</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_Celcius_to_Kelvin</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;hPa&quot;</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_hPa_to_Pa</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>  <span class="c1"># hPa to Pa</span>
+            <span class="k">elif</span> <span class="p">(</span>
+                <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;mm&quot;</span>
+            <span class="p">):</span>  <span class="c1"># ! note observations remain daily time frequency</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_mm_to_kg_m2s</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>  <span class="c1"># mm to kg m^-2 s^-1</span>
+
+            <span class="c1"># add necessary metadata</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;standard_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">var</span><span class="p">][</span>
+                <span class="s2">&quot;standard_name&quot;</span>
+            <span class="p">]</span>  <span class="c1"># from the CORDEX look-up table</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">var</span><span class="p">][</span>
+                <span class="s2">&quot;long_name&quot;</span>
+            <span class="p">]</span>  <span class="c1"># from the CORDEX look-up table</span>
+
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;original_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_name&quot;</span><span class="p">]</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;original_long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_long_name&quot;</span><span class="p">]</span>
+
+            <span class="c1"># rename dimensions if not yet renamed</span>
+            <span class="k">if</span> <span class="s2">&quot;lon&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+                <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">})</span>
+            <span class="k">if</span> <span class="s2">&quot;lat&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+                <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">})</span>
+
+            <span class="c1"># convert the time dimension to a pandas datetime index</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+
+            <span class="c1"># additional attributes, on data-array level -- hard coded for EOBS</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
+
+            <span class="c1"># if metadata_info is given, create global attributes</span>
+            <span class="k">if</span> <span class="n">metadata_info</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+            <span class="c1"># if not, include hard-coded attributes (dataset dependent!)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;daily&quot;</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spatial_resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0.1deg&quot;</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;region&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;europe&quot;</span>
+
+    <span class="c1"># set global attributes for whole dataset</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
+
+    <span class="c1"># if metadata_info is given, create global attributes</span>
+    <span class="k">if</span> <span class="n">metadata_info</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># if not, include hard-coded attributes (dataset dependent!)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;daily&quot;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spatial_resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0.1deg&quot;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;region&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;europe&quot;</span>
 
     <span class="c1"># Soft check for CF compliance</span>
     <span class="n">cf_status</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
@@ -478,180 +524,116 @@ document.write(`
 
 <div class="viewcode-block" id="ERA5_to_CF">
 <a class="viewcode-back" href="../_autosummary/inputconverter_functions.ERA5_to_CF.html#inputconverter_functions.ERA5_to_CF">[docs]</a>
-<span class="k">def</span> <span class="nf">ERA5_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">ERA5_to_CF</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert the ERA5 xarray dataset to a xarray Dataset in CF convention</span>
+<span class="sd">    Convert the ERA5 netCDF file to a xarray Dataset in CF convention</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    ds : xr.Dataset</span>
-<span class="sd">        The xarray Dataset of ERA5 observations to convert</span>
-<span class="sd">    metadata_info : dict, optional</span>
-<span class="sd">        A dictionary containing additional metadata information to add to the dataset</span>
+<span class="sd">    file : Path</span>
+<span class="sd">        The path to the netCDF file of specific variable to convert</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Dataset</span>
 <span class="sd">        The CF compliant ERA5 observations for the specified variable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Unique information regarding the ERA5 dataset</span>
+
     <span class="n">obsdata_name</span> <span class="o">=</span> <span class="s2">&quot;ERA5&quot;</span>
-    <span class="n">raw_LOOKUP</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obsdata_name</span><span class="si">}</span><span class="s2">_lookup&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">metadata_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Set standard metadata if not provided</span>
-        <span class="n">metadata_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;freq&quot;</span><span class="p">:</span> <span class="n">_determine_time_interval</span><span class="p">(</span><span class="n">ds</span><span class="p">)}</span>
-
-    <span class="c1"># Convert all units to CF, add metadata and set global attributes</span>
-    <span class="n">metadata_info</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
-
-    <span class="c1"># bugfix ERA5 (found in clh): replace valid_time by time</span>
-    <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;valid_time&#39;</span><span class="p">:</span><span class="s1">&#39;time&#39;</span><span class="p">})</span>
-
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">convert_all_units_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">raw_LOOKUP</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">_set_global_attributes</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
-
-    <span class="c1"># rename dimensions if not yet renamed</span>
-    <span class="k">if</span> <span class="s2">&quot;lon&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">})</span>
-    <span class="k">if</span> <span class="s2">&quot;lat&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">})</span>
-
-    <span class="c1"># make sure lat and lon are sorted ascending</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s2">&quot;lon&quot;</span><span class="p">)</span>
-
-    <span class="n">cf_status</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">ds</span></div>
-
-
-
-<div class="viewcode-block" id="ERA5Land_to_CF">
-<a class="viewcode-back" href="../_autosummary/inputconverter_functions.ERA5Land_to_CF.html#inputconverter_functions.ERA5Land_to_CF">[docs]</a>
-<span class="k">def</span> <span class="nf">ERA5Land_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert the ERA5-Land xarray dataset to a xarray Dataset in CF convention.</span>
-<span class="sd">    Uses the same lookup table as ERA5.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    ds : xr.Dataset</span>
-<span class="sd">        The xarray Dataset of ERA5-Land observations to convert</span>
-<span class="sd">    metadata_info : dict, optional</span>
-<span class="sd">        A dictionary containing additional metadata information to add to the dataset</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Dataset</span>
-<span class="sd">        The CF compliant ERA5-Land observations for the specified variable.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Unique information regarding the ERA5 dataset</span>
-    <span class="n">obsdata_name</span> <span class="o">=</span> <span class="s2">&quot;ERA5-Land&quot;</span>
-    <span class="n">raw_LOOKUP</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;ERA5_lookup&quot;</span>
-    <span class="p">)</span>  <span class="c1"># Note that the ERA5 lookup is used for both ERA5 and ERA5-Land</span>
-
-    <span class="k">if</span> <span class="n">metadata_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Set standard metadata if not provided</span>
-        <span class="n">metadata_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;freq&quot;</span><span class="p">:</span> <span class="n">_determine_time_interval</span><span class="p">(</span><span class="n">ds</span><span class="p">)}</span>
-
-    <span class="c1"># Convert all units to CF, add metadata and set global attributes</span>
-    <span class="n">metadata_info</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
-
-    <span class="c1"># bugfix ERA5 (found in clh): replace valid_time by time</span>
-    <span class="k">if</span> <span class="s2">&quot;time&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;valid_time&#39;</span><span class="p">:</span><span class="s1">&#39;time&#39;</span><span class="p">})</span>
-
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">convert_all_units_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">raw_LOOKUP</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">_set_global_attributes</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
-
-    <span class="c1"># rename dimensions if not yet renamed</span>
-    <span class="k">if</span> <span class="s2">&quot;lon&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">})</span>
-    <span class="k">if</span> <span class="s2">&quot;lat&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">})</span>
-
-    <span class="c1"># make sure lat and lon are sorted ascending</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s2">&quot;lat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s2">&quot;lon&quot;</span><span class="p">)</span>
-
-    <span class="n">cf_status</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">ds</span></div>
-
-
-
-<div class="viewcode-block" id="CLIMATE_GRID_to_CF">
-<a class="viewcode-back" href="../_autosummary/inputconverter_functions.CLIMATE_GRID_to_CF.html#inputconverter_functions.CLIMATE_GRID_to_CF">[docs]</a>
-<span class="k">def</span> <span class="nf">CLIMATE_GRID_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert the CLIMATE_GRID xarray dataset to a xarray Dataset in CF convention</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    ds : xr.Dataset</span>
-<span class="sd">        The xarray Dataset of CLIMATE_GRID observations to convert</span>
-<span class="sd">    metadata_info : dict, optional</span>
-<span class="sd">        A dictionary containing additional metadata information to add to the dataset</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Dataset</span>
-<span class="sd">        The CF compliant CLIMATE_GRID observations for the specified variable.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">obsdata_name</span> <span class="o">=</span> <span class="s2">&quot;CLIMATE_GRID&quot;</span>
-    <span class="n">raw_LOOKUP</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obsdata_name</span><span class="si">}</span><span class="s2">_lookup&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">metadata_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Set standard metadata if not provided</span>
-        <span class="n">metadata_info</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;freq&quot;</span><span class="p">:</span> <span class="s2">&quot;daily&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;spatial_resolution&quot;</span><span class="p">:</span> <span class="s2">&quot;0.07° x 0.045° (~5km)&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;region&quot;</span><span class="p">:</span> <span class="s2">&quot;belgium&quot;</span><span class="p">,</span>
-        <span class="p">}</span>
-
-    <span class="n">metadata_info</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
-
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">convert_all_units_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">raw_LOOKUP</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">_set_global_attributes</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
-
-    <span class="n">cf_status</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">ds</span></div>
-
-
-
-<div class="viewcode-block" id="CCLM_to_CF">
-<a class="viewcode-back" href="../_autosummary/inputconverter_functions.CCLM_to_CF.html#inputconverter_functions.CCLM_to_CF">[docs]</a>
-<span class="k">def</span> <span class="nf">CCLM_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert the CCLM xarray netCDF to a CF compliant xarray Dataset</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    ds : xr.Dataset</span>
-<span class="sd">        The xarray Dataset of CCLM simulation to convert</span>
-<span class="sd">    metadata_info : dict, optional</span>
-<span class="sd">        A dictionary containing additional metadata information to add to the dataset</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    Dataset</span>
-<span class="sd">        The CF compliant CCLM model data for the specified variable.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># open observational specific lookyp dictionary - now hardcoded for EOBS, but this can be automated, potentially in the Path generator?</span>
-    <span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;CCLM&quot;</span>
+    <span class="c1"># open the observation dataset</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s2">&quot;by_coords&quot;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
 
     <span class="c1"># open observational specific lookup dictionary</span>
-    <span class="n">raw_LOOKUP</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">_lookup&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_path</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;ERA5_lookup.yml&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">lookup_file</span><span class="p">:</span>
+        <span class="n">obs_LOOKUP</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">lookup_file</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">metadata_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Set standard metadata if not provided</span>
-        <span class="n">metadata_info</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;experiment&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+    <span class="c1"># make observation CF compliant</span>
+    <span class="k">for</span> <span class="n">var_obs</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
 
-    <span class="n">metadata_info</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_name</span>
+        <span class="c1"># Get the CORDEX variable in the observational dataset using the observational lookup table</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obs_LOOKUP</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;obs_name&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">var_obs</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span>
 
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">convert_all_units_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">raw_LOOKUP</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">var</span><span class="p">:</span>  <span class="c1"># Dont processes variables that are not in the lookup table.</span>
+
+            <span class="c1"># update variable name to CORDEX variable name</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename_vars</span><span class="p">({</span><span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_name&quot;</span><span class="p">]:</span> <span class="n">var</span><span class="p">})</span>
+
+            <span class="c1"># from here on, use CORDEX variable name to access data array and do rest of conversion</span>
+
+            <span class="c1"># Unit conversion - hard coded ERA5 units for CORDEX CORE, double check beyond.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Celcius&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;degC&quot;</span>
+            <span class="p">):</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_Celcius_to_Kelvin</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+
+            <span class="k">elif</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;hPa&quot;</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_hPa_to_Pa</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>  <span class="c1"># hPa to Pa</span>
+
+            <span class="k">elif</span> <span class="p">(</span><span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;mm&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;mm/hr&quot;</span>
+            <span class="p">):</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_mm_to_kg_m2s</span><span class="p">(</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+                <span class="p">)</span>  <span class="c1"># mm to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion</span>
+
+            <span class="k">elif</span> <span class="p">(</span><span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;m/hr&quot;</span>
+            <span class="p">):</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_m_to_kg_m2s</span><span class="p">(</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+                <span class="p">)</span>  <span class="c1"># m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion</span>
+
+            <span class="k">elif</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;J/m^2&quot;</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_m_to_kg_m2s</span><span class="p">(</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+                <span class="p">)</span>  <span class="c1"># m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2</span>
+
+            <span class="c1"># add necessary metadata</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;standard_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">var</span><span class="p">][</span>
+                <span class="s2">&quot;standard_name&quot;</span>
+            <span class="p">]</span>  <span class="c1"># from the CORDEX look-up table</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">var</span><span class="p">][</span>
+                <span class="s2">&quot;long_name&quot;</span>
+            <span class="p">]</span>  <span class="c1"># from the CORDEX look-up table</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;original_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_name&quot;</span><span class="p">]</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;original_long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_long_name&quot;</span><span class="p">]</span>
+
+            <span class="c1"># rename dimensions if not yet renamed</span>
+            <span class="k">if</span> <span class="s2">&quot;lon&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+                <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">})</span>
+            <span class="k">if</span> <span class="s2">&quot;lat&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+                <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">})</span>
+
+            <span class="c1"># convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+
+            <span class="c1"># additional attributes at data array level.</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
+
+            <span class="k">if</span> <span class="n">metadata_info</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+            <span class="c1"># if not, include hard-coded attributes (dataset dependent!)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_determine_time_interval</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
 
     <span class="c1"># set attributes in whole dataset</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">_set_global_attributes</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
+
+    <span class="c1"># if metadata_info is given, create global attributes</span>
+    <span class="k">if</span> <span class="n">metadata_info</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># if not, include hard-coded attributes (dataset dependent!)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_determine_time_interval</span><span class="p">(</span>
+            <span class="n">ds</span>
+        <span class="p">)</span>  <span class="c1"># automatically check on time interval based on time axis.</span>
 
     <span class="c1"># Soft check for CF compliance</span>
     <span class="n">cf_status</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
@@ -660,59 +642,412 @@ document.write(`
 
 
 
-<div class="viewcode-block" id="ALARO_K_to_CF">
-<a class="viewcode-back" href="../_autosummary/inputconverter_functions.ALARO_K_to_CF.html#inputconverter_functions.ALARO_K_to_CF">[docs]</a>
-<span class="k">def</span> <span class="nf">ALARO_K_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+<div class="viewcode-block" id="ERA5Land_to_CF">
+<a class="viewcode-back" href="../_autosummary/inputconverter_functions.ERA5Land_to_CF.html#inputconverter_functions.ERA5Land_to_CF">[docs]</a>
+<span class="k">def</span> <span class="nf">ERA5Land_to_CF</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert the ALARO_K (converted with Kwintens R scripts) from xarray netCDF to a CF compliant xarray Dataset</span>
+<span class="sd">    Convert the ERA5-Land netCDF file to a xarray Dataset in CF convention</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    ds : xr.Dataset</span>
-<span class="sd">        The xarray Dataset of ALARO_K simulation to convert</span>
-<span class="sd">    metadata_info : dict, optional</span>
-<span class="sd">        A dictionary containing additional metadata information to add to the dataset</span>
+<span class="sd">    file : Path</span>
+<span class="sd">        The path to the netCDF file of specific variable to convert</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Dataset</span>
-<span class="sd">        The CF compliant CCLM model data for the specified variable.</span>
+<span class="sd">        The CF compliant ERA5-Land observations for the specified variable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;ALARO-SFX_K&quot;</span>
-    <span class="n">raw_LOOKUP</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span><span class="n">model_name</span> <span class="o">+</span> <span class="s2">&quot;_lookup&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">metadata_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Set standard metadata if not provided</span>
-        <span class="n">metadata_info</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">obsdata_name</span> <span class="o">=</span> <span class="s2">&quot;ERA5-Land&quot;</span>
 
-    <span class="n">metadata_info</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_name</span>
+    <span class="c1"># open the observation dataset</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s2">&quot;by_coords&quot;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
 
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">convert_all_units_to_CF</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">raw_LOOKUP</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
+    <span class="c1"># open observational specific lookup dictionary</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_path</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;ERA5_lookup.yml&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">lookup_file</span><span class="p">:</span>
+        <span class="n">obs_LOOKUP</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">lookup_file</span><span class="p">)</span>
 
-    <span class="c1"># Special conversion for precipitation</span>
-    <span class="k">if</span> <span class="s2">&quot;rain_convective&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span> <span class="ow">and</span> <span class="s2">&quot;rain_stratiform&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;pr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_mm_to_kg_m2s</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;rain_convective&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;rain_stratiform&quot;</span><span class="p">])</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;pr&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;standard_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;precipitation_flux&quot;</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;pr&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Precipitation&quot;</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;pr&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_name</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;pr&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;original_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;rain_convective + rain_stratiform&quot;</span>
+    <span class="c1"># make observation CF compliant</span>
+    <span class="k">for</span> <span class="n">var_obs</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+
+        <span class="c1"># Get the CORDEX variable in the observational dataset using the observational lookup table</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obs_LOOKUP</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;obs_name&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">var_obs</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">var</span><span class="p">:</span>  <span class="c1"># Dont processes variables that are not in the lookup table.</span>
+
+            <span class="c1"># update variable name to CORDEX variable name</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename_vars</span><span class="p">({</span><span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_name&quot;</span><span class="p">]:</span> <span class="n">var</span><span class="p">})</span>
+
+            <span class="c1"># from here on, use CORDEX variable name to access data array and do rest of conversion</span>
+
+            <span class="c1"># Unit conversion - hard coded ERA5 units for CORDEX CORE, double check beyond.</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Celcius&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;degC&quot;</span>
+            <span class="p">):</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_Celcius_to_Kelvin</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+
+            <span class="k">elif</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;hPa&quot;</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_hPa_to_Pa</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>  <span class="c1"># hPa to Pa</span>
+
+            <span class="k">elif</span> <span class="p">(</span><span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;mm&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;mm/hr&quot;</span>
+            <span class="p">):</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_mm_to_kg_m2s</span><span class="p">(</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+                <span class="p">)</span>  <span class="c1"># mm to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion</span>
+
+            <span class="k">elif</span> <span class="p">(</span><span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;m&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;m/hr&quot;</span>
+            <span class="p">):</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_m_to_kg_m2s</span><span class="p">(</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+                <span class="p">)</span>  <span class="c1"># m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion</span>
+
+            <span class="k">elif</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_units&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;J/m^2&quot;</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">_convert_J_m2_to_W_m2</span><span class="p">(</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+                <span class="p">)</span>  <span class="c1"># m to kg m^-2 s^-1 conversion function reads time frequency (nseconds) of input ds to do conversion_convert_J_m2_to_W_m2</span>
+
+            <span class="c1"># add necessary metadata</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;standard_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">var</span><span class="p">][</span>
+                <span class="s2">&quot;standard_name&quot;</span>
+            <span class="p">]</span>  <span class="c1"># from the CORDEX look-up table</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CORDEX_VARIABLES</span><span class="p">[</span><span class="n">var</span><span class="p">][</span>
+                <span class="s2">&quot;long_name&quot;</span>
+            <span class="p">]</span>  <span class="c1"># from the CORDEX look-up table</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;original_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_name&quot;</span><span class="p">]</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;original_long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;obs_long_name&quot;</span><span class="p">]</span>
+
+            <span class="c1"># rename dimensions if not yet renamed</span>
+            <span class="k">if</span> <span class="s2">&quot;lon&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+                <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lon&quot;</span><span class="p">})</span>
+            <span class="k">if</span> <span class="s2">&quot;lat&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">:</span>
+                <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="s2">&quot;lat&quot;</span><span class="p">})</span>
+
+            <span class="c1"># convert the time dimension to a pandas datetime index --  do we want this to happen within the convertor? Or do we leave it up to the user?</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">][</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">time</span><span class="p">)</span>
+
+            <span class="c1"># additional attributes -- set both globally at dataset level as at data array level</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
+
+            <span class="k">if</span> <span class="n">metadata_info</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+            <span class="c1"># if not, include hard-coded attributes (dataset dependent!)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_determine_time_interval</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+
+    <span class="c1"># set attributes in whole dataset</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
+
+    <span class="c1"># if metadata_info is given, create global attributes</span>
+    <span class="k">if</span> <span class="n">metadata_info</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;pr&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-        <span class="c1">#Assuming monthly decumilation! This is not always the case!</span>
-        <span class="k">def</span> <span class="nf">decumilate</span><span class="p">(</span><span class="n">ds</span><span class="p">):</span>
-            <span class="n">ds_decum</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
-            <span class="c1">#Add the first value of the month of original dataset to the decumilated dataset</span>
-            <span class="n">ds_decum</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">ds</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">ds_decum</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">ds_decum</span>
-        <span class="n">ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;year_month&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;time.year&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;time.month&#39;</span><span class="p">]</span>
-        <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;pr&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;pr&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;year_month&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">decumilate</span><span class="p">)</span>
+    <span class="c1"># if not, include hard-coded attributes (dataset dependent!)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_determine_time_interval</span><span class="p">(</span>
+            <span class="n">ds</span>
+        <span class="p">)</span>  <span class="c1"># automatically check on time interval based on time axis.</span>
 
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">_set_global_attributes</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
-
+    <span class="c1"># Soft check for CF compliance</span>
     <span class="n">cf_status</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ds</span></div>
 
+
+
+<div class="viewcode-block" id="CLIMATE_GRID_to_CF">
+<a class="viewcode-back" href="../_autosummary/inputconverter_functions.CLIMATE_GRID_to_CF.html#inputconverter_functions.CLIMATE_GRID_to_CF">[docs]</a>
+<span class="k">def</span> <span class="nf">CLIMATE_GRID_to_CF</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert the CLIMATE_GRID netCDF paths to an xarray netCDF in CF convention</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    paths : Path or a list of Paths</span>
+<span class="sd">        The path(s) to the netCDF file of specific variable to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Dataset</span>
+<span class="sd">        The CF compliant CLIMATE_GRID observations for the specified variable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">obsdata_name</span> <span class="o">=</span> <span class="s2">&quot;CLIMATE_GRID&quot;</span>
+
+    <span class="c1"># open the observation dataset</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_mfdataset</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">combine</span><span class="o">=</span><span class="s2">&quot;by_coords&quot;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">)</span>
+
+    <span class="c1"># open observational specific lookup dictionary</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span>
+        <span class="n">src_path</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">obsdata_name</span> <span class="o">+</span> <span class="s2">&quot;_lookup.yml&quot;</span><span class="p">)</span>
+    <span class="p">)</span> <span class="k">as</span> <span class="n">lookup_file</span><span class="p">:</span>
+        <span class="n">obs_LOOKUP</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">lookup_file</span><span class="p">)</span>
+
+    <span class="c1"># make observation CF compliant</span>
+    <span class="k">for</span> <span class="n">var_obs</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+
+        <span class="c1"># Get the CORDEX variable in the observational dataset using the observational lookup table</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obs_LOOKUP</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;obs_name&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">var_obs</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">var</span><span class="p">:</span>  <span class="c1"># Dont processes variables that are not in the lookup table.</span>
+
+            <span class="c1"># additional attributes -- set both globally at dataset level as at data array level</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
+
+            <span class="k">if</span> <span class="n">metadata_info</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+            <span class="c1"># if not, include hard-coded attributes (dataset dependent!)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;daily&quot;</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spatial_resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;5km&quot;</span>
+                <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;region&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;belgium&quot;</span>  <span class="c1"># leave empty per default.</span>
+
+    <span class="c1"># set attributes in whole dataset</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obsdata_name</span>
+
+    <span class="c1"># if metadata_info is given, create global attributes</span>
+    <span class="k">if</span> <span class="n">metadata_info</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1"># if not, include hard-coded attributes (dataset dependent!)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;freq&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;daily&quot;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spatial_resolution&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;5km&quot;</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;region&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;belgium&quot;</span>  <span class="c1"># leave empty per default.</span>
+
+    <span class="k">return</span> <span class="n">ds</span></div>
+
+
+
+<span class="c1"># helper functions for unit conversion - can be moved to more appropriate place</span>
+
+<span class="c1">## imports for helpen functions</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="c1"># Do we want other possible inputs than data arrays?</span>
+<span class="k">def</span> <span class="nf">_convert_Celcius_to_Kelvin</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert values in xarray DataArray from °C to K</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">+</span> <span class="mf">273.15</span>  <span class="c1"># Celcius to Kelvin</span>
+
+    <span class="c1"># update units attribute --  naming of units defined in ./src/valenspy/ancilliary_data/CORDEX_variables.yml</span>
+    <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;K&quot;</span>
+
+    <span class="k">return</span> <span class="n">da</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_Kelvin_to_Celcius</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert values in xarray DataArray from K to °C</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">-</span> <span class="mf">273.15</span>  <span class="c1"># Kelvin to Celcius</span>
+
+    <span class="c1"># update units attribute</span>
+    <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;°C&quot;</span>
+
+    <span class="k">return</span> <span class="n">da</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_hPa_to_Pa</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert values in xarray DataArray from hPa to Pa</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="c1"># update units attribute</span>
+    <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Pa&quot;</span>
+
+    <span class="k">return</span> <span class="n">da</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_Pa_to_hPa</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert values in xarray DataArray from Pa to hPa</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">/</span> <span class="mi">100</span>
+
+    <span class="c1"># update units attribute</span>
+    <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hPa&quot;</span>
+
+    <span class="k">return</span> <span class="n">da</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_mm_to_kg_m2s</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds</span>
+    <span class="n">timestep_nseconds</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>
+
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">/</span> <span class="n">timestep_nseconds</span>  <span class="c1"># mm to kg m^-2 s^-1</span>
+
+    <span class="c1"># update units attribute</span>
+    <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;kg m-2 s-1&quot;</span>
+
+    <span class="k">return</span> <span class="n">da</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_m_to_kg_m2s</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert values in xarray DataArray from mm hr^-1 to kg m^-2 s^-1</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">/</span> <span class="mi">3600</span>  <span class="c1"># mm hr^-1 to kg m^-2 s^-1</span>
+
+    <span class="c1"># update units attribute</span>
+    <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;kg m-2 s-1&quot;</span>
+
+    <span class="k">return</span> <span class="n">da</span>
+
+    <span class="c1"># Convert J/m²/hr to W/m²</span>
+    <span class="n">w_m2</span> <span class="o">=</span> <span class="n">j_m2_hr</span> <span class="o">/</span> <span class="n">seconds_per_hour</span>
+
+
+<span class="k">def</span> <span class="nf">_convert_J_m2_to_W_m2</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert values in xarray DataArray from J m^2 to W m^2</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray to convert</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.DataArray</span>
+<span class="sd">        The  converted xarray DataArray</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># first, get timestep (frequency) by calculating the difference between the first consecutive time values in seconds</span>
+    <span class="n">timestep_nseconds</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>
+
+    <span class="c1"># do conversion</span>
+    <span class="n">da</span> <span class="o">=</span> <span class="n">da</span> <span class="o">/</span> <span class="n">timestep_nseconds</span>  <span class="c1"># J m^2 to W m^2</span>
+
+    <span class="c1"># update units attribute</span>
+    <span class="n">da</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;W m-2&quot;</span>
+
+    <span class="k">return</span> <span class="n">da</span>
+
+
+<span class="k">def</span> <span class="nf">_determine_time_interval</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the time interval (freq) of the input data array based on it&#39;s time axis, by calculating the difference between the first two time instances.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The xarray DataArray with time axis to check the time interval</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    freq : string</span>
+<span class="sd">        The frequency string containing &quot;hourly, daily, monthly or yearly&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Check for exact differences</span>
+    <span class="k">if</span> <span class="n">diff</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;h&quot;</span><span class="p">):</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="s2">&quot;hourly&quot;</span>
+    <span class="k">elif</span> <span class="n">diff</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">):</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="s2">&quot;daily&quot;</span>
+    <span class="k">elif</span> <span class="n">diff</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">):</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="s2">&quot;monthly&quot;</span>
+    <span class="k">elif</span> <span class="n">diff</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">timedelta64</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">):</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="s2">&quot;yearly&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s2">&quot;Difference does not match exact hourly, daily, monthly, or yearly units.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">freq</span>
 </pre></div>
 
                 </article>

@@ -49,8 +49,8 @@ Handling Dependencies
 -------------------------
 
 If you make code adaptations and introduce a new dependency (aka import a new package),
-you need to specify this in order for packaging. This is to make sure that all
-dependencies are compatible with each other.
+you need to specify this in order for packaging. This is to make shure that all
+dependencies are campatible with each other.
 
 If you introduce a new dependency, you must add it in the `deployment/dev_pipeline.sh` script
 under "Add dependencies to pyproject".
@@ -69,7 +69,7 @@ takes care of this.
 If you added a dependency, that is not required for using the ValEnsPy package
 (i.g. Poetry -- for packaging, jupyter-lab -- for making examples, ...), you can
 add the dependencies in a seperated group. This is to make shure that if a user
-wants to install the package, these dependencies are not installed. But a developer
+whants to install the package, these dependencies are not installed. But a developer
 has the option to install them by
 
 .. code-block::

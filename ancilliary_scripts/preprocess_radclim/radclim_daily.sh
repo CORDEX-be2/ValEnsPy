@@ -18,6 +18,7 @@ export OMPI_MCA_btl='^uct,ofi'
 export OMPI_MCA_pml='ucx'
 export OMPI_MCA_mtl='^ofi'
 
-cd $PBS_O_WORKDIR
+cd $PBS_O_WORKDIR 
 
 python radclim_daily.py
+

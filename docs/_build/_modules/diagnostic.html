@@ -410,7 +410,7 @@ document.write(`
 <div class="viewcode-block" id="Diagnostic.__init__">
 <a class="viewcode-back" href="../_autosummary/diagnostic.Diagnostic.html#diagnostic.Diagnostic.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">visualization_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Diagnostic.</span>
 
@@ -418,7 +418,7 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        diagnostic_function</span>
 <span class="sd">            The function that applies a diagnostic to the data.</span>
-<span class="sd">        plotting_function</span>
+<span class="sd">        visualization_function</span>
 <span class="sd">            The function that visualizes the results of the diagnostic.</span>
 <span class="sd">        name : str</span>
 <span class="sd">            The name of the diagnostic.</span>
@@ -426,9 +426,9 @@ document.write(`
 <span class="sd">            The description of the diagnostic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">description</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span> <span class="o">=</span> <span class="n">diagnostic_function</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span> <span class="o">=</span> <span class="n">plotting_function</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visualization_function</span> <span class="o">=</span> <span class="n">visualization_function</span></div>
 
 
 <div class="viewcode-block" id="Diagnostic.apply">
@@ -440,7 +440,7 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        data</span>
-<span class="sd">            The data to apply the diagnostic to. Data can be an xarray DataTree, Dataset or DataArray.</span>
+<span class="sd">            The data to apply the diagnostic to.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -450,61 +450,22 @@ document.write(`
         <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="Diagnostic.plot">
-<a class="viewcode-back" href="../_autosummary/diagnostic.Diagnostic.html#diagnostic.Diagnostic.plot">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the diagnostic.</span>
-
+<div class="viewcode-block" id="Diagnostic.visualize">
+<a class="viewcode-back" href="../_autosummary/diagnostic.Diagnostic.html#diagnostic.Diagnostic.visualize">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">visualize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize the diagnostic.</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        result : xr.Dataset or xr.DataArray or DataTree</span>
+<span class="sd">        Result</span>
 <span class="sd">            The output of the diagnostic function.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        ax : matplotlib.axis.Axis</span>
-<span class="sd">            The axis (singular) of the plot.</span>
+<span class="sd">        Figure</span>
+<span class="sd">            The figure representing the diagnostic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">)</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="si">}</span><span class="se">\n</span><span class="s2"> Diagnostic function: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="o">.</span><span class="vm">__doc__</span><span class="si">}</span><span class="se">\n</span><span class="s2"> Visualization function: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span><span class="o">.</span><span class="vm">__doc__</span><span class="si">}</span><span class="s2">&quot;</span></div>
-
-
-
-<div class="viewcode-block" id="Model2Self">
-<a class="viewcode-back" href="../_autosummary/diagnostic.Model2Self.html#diagnostic.Model2Self">[docs]</a>
-<span class="k">class</span> <span class="nc">Model2Self</span><span class="p">(</span><span class="n">Diagnostic</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a diagnostic that compares a model to itself.&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="Model2Self.__init__">
-<a class="viewcode-back" href="../_autosummary/diagnostic.Model2Self.html#diagnostic.Model2Self.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Model2Self diagnostic.&quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Model2Self.apply">
-<a class="viewcode-back" href="../_autosummary/diagnostic.Model2Self.html#diagnostic.Model2Self.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to the data.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        ds : xr.Dataset</span>
-<span class="sd">            The data to apply the diagnostic to.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        xr.Dataset</span>
-<span class="sd">            The data after applying the diagnostic.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">pass</span></div>
 </div>
 
 
@@ -517,20 +478,20 @@ document.write(`
 <div class="viewcode-block" id="Model2Ref.__init__">
 <a class="viewcode-back" href="../_autosummary/diagnostic.Model2Ref.html#diagnostic.Model2Ref.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">visualization_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Model2Ref diagnostic.&quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">visualization_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Model2Ref.apply">
 <a class="viewcode-back" href="../_autosummary/diagnostic.Model2Ref.html#diagnostic.Model2Ref.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to the data. Only the common variables between the data and the reference are used.</span>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to the data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        ds : xr.Dataset</span>
+<span class="sd">        data : xr.Dataset</span>
 <span class="sd">            The data to apply the diagnostic to.</span>
 <span class="sd">        ref : xr.Dataset</span>
 <span class="sd">            The reference data to compare the data to.</span>
@@ -540,120 +501,31 @@ document.write(`
 <span class="sd">        xr.Dataset</span>
 <span class="sd">            The data after applying the diagnostic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">ds</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">_select_common_vars</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-</div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="Ensemble2Self">
-<a class="viewcode-back" href="../_autosummary/diagnostic.Ensemble2Self.html#diagnostic.Ensemble2Self">[docs]</a>
-<span class="k">class</span> <span class="nc">Ensemble2Self</span><span class="p">(</span><span class="n">Diagnostic</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a diagnostic that compares an ensemble to itself.&quot;&quot;&quot;</span>
-
-<div class="viewcode-block" id="Ensemble2Self.__init__">
-<a class="viewcode-back" href="../_autosummary/diagnostic.Ensemble2Self.html#diagnostic.Ensemble2Self.__init__">[docs]</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Ensemble2Self diagnostic.&quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Ensemble2Self.apply">
-<a class="viewcode-back" href="../_autosummary/diagnostic.Ensemble2Self.html#diagnostic.Ensemble2Self.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to the data.</span>
+<div class="viewcode-block" id="Model2Ref.visualize">
+<a class="viewcode-back" href="../_autosummary/diagnostic.Model2Ref.html#diagnostic.Model2Ref.visualize">[docs]</a>
+    <span class="k">def</span> <span class="nf">visualize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize the diagnostic.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        dt : DataTree</span>
-<span class="sd">            The data to apply the diagnostic to.</span>
+<span class="sd">        result :</span>
+<span class="sd">            The output of the diagnostic function.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        DataTree or dict</span>
-<span class="sd">            The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Ensemble2Self.plot">
-<a class="viewcode-back" href="../_autosummary/diagnostic.Ensemble2Self.html#diagnostic.Ensemble2Self.plot">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the diagnostic.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        result : DataTree</span>
-<span class="sd">            The result of applying the ensemble diagnostic to a DataTree.</span>
-<span class="sd">        axes : matplotlib.axes.Axes or list of matplotlib.axes.Axes, optional</span>
-<span class="sd">            The axes (possibly plural) to plot the diagnostic on. If None, a new figure and axes are created.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Figure</span>
+<span class="sd">        Figure :</span>
 <span class="sd">            The figure representing the diagnostic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">axes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">facetted</span><span class="p">:</span>
-                <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">5</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="n">facetted</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Ensemble2Self.from_model2self">
-<a class="viewcode-back" href="../_autosummary/diagnostic.Ensemble2Self.html#diagnostic.Ensemble2Self.from_model2self">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_model2self</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">model2self</span><span class="p">:</span> <span class="n">Model2Self</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an Ensemble2Self diagnostic from a Model2Self diagnostic.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        model2self : Model2Self</span>
-<span class="sd">            The Model2Self diagnostic to convert.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Ensemble2Self</span>
-<span class="sd">            The Ensemble2Self diagnostic.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">def</span> <span class="nf">diagnostic_function</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">map_over_subtree</span><span class="p">(</span><span class="n">model2self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">plotting_function</span><span class="p">(</span>
-            <span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="n">facetted</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">):</span>
-            <span class="k">if</span> <span class="n">facetted</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">ds</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">leaves</span><span class="p">,</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
-                    <span class="k">if</span> <span class="n">variable</span><span class="p">:</span>
-                        <span class="n">model2self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">model2self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">dt</span><span class="o">.</span><span class="n">leaves</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">variable</span><span class="p">:</span>
-                        <span class="n">model2self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-                            <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span>
-                            <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span>
-                            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-                            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-                        <span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">model2self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-                            <span class="n">ds</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-                        <span class="p">)</span>
-            <span class="k">return</span> <span class="n">axes</span>
-
-        <span class="k">return</span> <span class="n">Ensemble2Self</span><span class="p">(</span>
-            <span class="n">diagnostic_function</span><span class="p">,</span>
-            <span class="n">plotting_function</span><span class="p">,</span>
-            <span class="n">model2self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">model2self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization_function</span><span class="p">(</span><span class="o">*</span><span class="n">result</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization_function</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ax</span></div>
 </div>
 
 
@@ -666,43 +538,42 @@ document.write(`
 <div class="viewcode-block" id="Ensemble2Ref.__init__">
 <a class="viewcode-back" href="../_autosummary/diagnostic.Ensemble2Ref.html#diagnostic.Ensemble2Ref.__init__">[docs]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">visualization_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Ensemble2Ref diagnostic.&quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">visualization_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Ensemble2Ref.apply">
 <a class="viewcode-back" href="../_autosummary/diagnostic.Ensemble2Ref.html#diagnostic.Ensemble2Ref.apply">[docs]</a>
-    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to the data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        dt : DataTree</span>
+<span class="sd">        data : xr.Dataset</span>
 <span class="sd">            The data to apply the diagnostic to.</span>
-<span class="sd">        ref : xr.DataSet or DataTree</span>
+<span class="sd">        ref : xr.DataArray</span>
 <span class="sd">            The reference data to compare the data to.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        DataTree or dict</span>
-<span class="sd">            The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.</span>
+<span class="sd">        xr.Dataset</span>
+<span class="sd">            The data after applying the diagnostic.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Ensemble2Ref.plot">
-<a class="viewcode-back" href="../_autosummary/diagnostic.Ensemble2Ref.html#diagnostic.Ensemble2Ref.plot">[docs]</a>
-    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the diagnostic.</span>
+<div class="viewcode-block" id="Ensemble2Ref.visualize">
+<a class="viewcode-back" href="../_autosummary/diagnostic.Ensemble2Ref.html#diagnostic.Ensemble2Ref.visualize">[docs]</a>
+    <span class="k">def</span> <span class="nf">visualize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Visualize the diagnostic.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        data : xr.Dataset or xr.DataArray</span>
-<span class="sd">            The data to plot.</span>
-<span class="sd">        ref : xr.Dataset or xr.DataArray</span>
+<span class="sd">        data : xr.Dataset</span>
+<span class="sd">            The data to visualize.</span>
+<span class="sd">        ref : xr.Dataset</span>
 <span class="sd">            The reference data to compare the data to.</span>
 
 <span class="sd">        Returns</span>
@@ -715,7 +586,9 @@ document.write(`
                 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="mi">5</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="n">facetted</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">visualization_function</span><span class="p">(</span>
+            <span class="n">result</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="n">facetted</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Ensemble2Ref.from_model2ref">
@@ -736,101 +609,41 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">diagnostic_function</span><span class="p">(</span><span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">ensemble_results</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">DataTree</span><span class="p">):</span>
-                <span class="n">ensemble_results</span> <span class="o">=</span> <span class="p">{}</span>
                 <span class="k">for</span> <span class="n">data_node</span><span class="p">,</span> <span class="n">ref_node</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">leaves</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">leaves</span><span class="p">):</span>
-                    <span class="n">ds</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">_select_common_vars</span><span class="p">(</span><span class="n">data_node</span><span class="o">.</span><span class="n">ds</span><span class="p">,</span> <span class="n">ref_node</span><span class="o">.</span><span class="n">ds</span><span class="p">)</span>
                     <span class="n">ensemble_results</span><span class="p">[</span><span class="n">data_node</span><span class="o">.</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">model2ref</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span>
-                        <span class="n">ds</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                        <span class="n">data_node</span><span class="o">.</span><span class="n">ds</span><span class="p">,</span> <span class="n">ref_node</span><span class="o">.</span><span class="n">ds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
                     <span class="p">)</span>
-                <span class="k">return</span> <span class="n">DataTree</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">ensemble_results</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">map_over_subtree</span><span class="p">(</span>
-                    <span class="n">model2ref</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">data_node</span> <span class="ow">in</span> <span class="n">dt</span><span class="o">.</span><span class="n">leaves</span><span class="p">:</span>
+                    <span class="n">ensemble_results</span><span class="p">[</span><span class="n">data_node</span><span class="o">.</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">model2ref</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span>
+                        <span class="n">data_node</span><span class="o">.</span><span class="n">ds</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                    <span class="p">)</span>
+            <span class="k">return</span> <span class="n">ensemble_results</span>
 
-        <span class="k">def</span> <span class="nf">plotting_function</span><span class="p">(</span>
-            <span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="n">facetted</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">):</span>
+        <span class="k">def</span> <span class="nf">visualization_function</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="n">facetted</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">facetted</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">ds</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">leaves</span><span class="p">,</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()):</span>
-                    <span class="k">if</span> <span class="n">variable</span><span class="p">:</span>
-                        <span class="n">model2ref</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">model2ref</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                    <span class="n">results</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">results</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+                <span class="p">):</span>
+                    <span class="n">model2ref</span><span class="o">.</span><span class="n">visualize</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">dt</span><span class="o">.</span><span class="n">leaves</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">variable</span><span class="p">:</span>
-                        <span class="n">model2ref</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-                            <span class="n">ds</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span>
-                            <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span>
-                            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
-                            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-                        <span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">model2ref</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-                            <span class="n">ds</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ds</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-                        <span class="p">)</span>
+                <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">model2ref</span><span class="o">.</span><span class="n">visualize</span><span class="p">(</span>
+                        <span class="n">result</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+                    <span class="p">)</span>
             <span class="k">return</span> <span class="n">axes</span>
 
         <span class="k">return</span> <span class="n">Ensemble2Ref</span><span class="p">(</span>
             <span class="n">diagnostic_function</span><span class="p">,</span>
-            <span class="n">plotting_function</span><span class="p">,</span>
+            <span class="n">visualization_function</span><span class="p">,</span>
             <span class="n">model2ref</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">model2ref</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
         <span class="p">)</span></div>
 </div>
 
-
-
-<span class="k">def</span> <span class="nf">_common_vars</span><span class="p">(</span><span class="n">ds1</span><span class="p">,</span> <span class="n">ds2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the common variables in two datasets.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">ds1</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ds2</span><span class="o">.</span><span class="n">data_vars</span><span class="p">))</span>
-
-
-<span class="k">def</span> <span class="nf">_select_common_vars</span><span class="p">(</span><span class="n">ds1</span><span class="p">,</span> <span class="n">ds2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Select the common variables in two datasets.&quot;&quot;&quot;</span>
-    <span class="n">common_vars</span> <span class="o">=</span> <span class="n">_common_vars</span><span class="p">(</span><span class="n">ds1</span><span class="p">,</span> <span class="n">ds2</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ds1</span><span class="p">[</span><span class="n">common_vars</span><span class="p">],</span> <span class="n">ds2</span><span class="p">[</span><span class="n">common_vars</span><span class="p">]</span>
-
-
-<span class="c1"># =============================================================================</span>
-<span class="c1"># Pre-made diagnostics</span>
-<span class="c1"># =============================================================================</span>
-
-<span class="kn">from</span> <span class="nn">valenspy.diagnostic_functions</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">valenspy.diagnostic_visualizations</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="c1"># Model2Self diagnostics</span>
-<span class="n">DiurnalCycle</span> <span class="o">=</span> <span class="n">Model2Self</span><span class="p">(</span>
-    <span class="n">diurnal_cycle</span><span class="p">,</span> <span class="n">plot_diurnal_cycle</span><span class="p">,</span> <span class="s2">&quot;Diurnal Cycle&quot;</span><span class="p">,</span> <span class="s2">&quot;The diurnal cycle of the data.&quot;</span>
-<span class="p">)</span>
-<span class="n">TimeSeriesSpatialMean</span> <span class="o">=</span> <span class="n">Model2Self</span><span class="p">(</span>
-    <span class="n">time_series_spatial_mean</span><span class="p">,</span>
-    <span class="n">plot_time_series</span><span class="p">,</span>
-    <span class="s2">&quot;Time Series Spatial Mean&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;The time series of the spatial mean of the data.&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="c1"># Model2Ref diagnostics</span>
-<span class="n">SpatialBias</span> <span class="o">=</span> <span class="n">Model2Ref</span><span class="p">(</span>
-    <span class="n">spatial_bias</span><span class="p">,</span>
-    <span class="n">plot_spatial_bias</span><span class="p">,</span>
-    <span class="s2">&quot;Spatial Bias&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;The spatial bias of the data compared to the reference.&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">TemporalBias</span> <span class="o">=</span> <span class="n">Model2Ref</span><span class="p">(</span>
-    <span class="n">temporal_bias</span><span class="p">,</span>
-    <span class="n">plot_time_series</span><span class="p">,</span>
-    <span class="s2">&quot;Temporal Bias&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;The temporal bias of the data compared to the reference.&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">DiurnalCycleBias</span> <span class="o">=</span> <span class="n">Model2Ref</span><span class="p">(</span>
-    <span class="n">diurnal_cycle_bias</span><span class="p">,</span>
-    <span class="n">plot_diurnal_cycle</span><span class="p">,</span>
-    <span class="s2">&quot;Diurnal Cycle Bias&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;The diurnal cycle bias of the data compared to the reference.&quot;</span><span class="p">,</span>
-<span class="p">)</span>
 </pre></div>
 
                 </article>

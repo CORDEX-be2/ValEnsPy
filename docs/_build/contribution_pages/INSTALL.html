@@ -450,13 +450,9 @@ First time using git/github? Read this small git <a class="reference internal" h
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
-<li><p>Create a conda environment and install the required packages.</p></li>
+<li><p>Create a conda environment and install the required packages.
+Note! Replace -n valenspy_dev with -p /path/to/conda/env if you want to install the environment in a specific location!</p></li>
 </ol>
-<p>You can specify the location that you want to install the conda environment. The default location is in the home directory, which is often limited in size.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>config<span class="w"> </span>--add<span class="w"> </span>envs_dirs<span class="w"> </span>/path/to/your/envs
-</pre></div>
-</div>
-<p>Then create the environment with python and poetry.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>valenspy_dev<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="nv">python</span><span class="o">==</span><span class="m">3</span>.9<span class="w"> </span><span class="nv">poetry</span><span class="o">=</span><span class="m">1</span>.8
 <span class="nb">source</span><span class="w"> </span>activate<span class="w"> </span>valenspy_dev
 </pre></div>
@@ -468,23 +464,7 @@ Make sure you are in the branch you want to work in before installing the packag
 </div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>ValEnsPy
 git<span class="w"> </span>checkout<span class="w"> </span>dev
-</pre></div>
-</div>
-<p>Finally install all required packages.</p>
-<blockquote>
-<div><p>[!NOTE]
-Optionally useful packages can be installed by installing specific groups of packages by adding the <code class="docutils literal notranslate"><span class="pre">--with</span></code> flag followed by the group name.
-Available groups are:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">examples</span></code> to be able to run example notebooks (e.g. for ipykernel for jupyter notebooks)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">docs</span></code> for building the documentation</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dev</span></code> for development tools</p></li>
-</ul>
-</div></blockquote>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">#Recommended for users</span>
-poetry<span class="w"> </span>install<span class="w"> </span>--with<span class="w"> </span>examples
-<span class="c1">#For developers</span>
-<span class="c1">#poetry install --with examples --with dev --with docs</span>
+poetry<span class="w"> </span>install
 </pre></div>
 </div>
 <p>To test if the installation was successful, run the tests:</p>

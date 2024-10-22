@@ -395,18 +395,24 @@ document.write(`
                 <article class="bd-article">
 
   <h1>Source code for input_manager</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span></span><span class="c1">#Load the dataset_PATHS.yml</span>
+<span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">safe_load</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">permutations</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">from</span> <span class="nn">datatree</span> <span class="kn">import</span> <span class="n">DataTree</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 
 <span class="kn">from</span> <span class="nn">valenspy.inputconverter</span> <span class="kn">import</span> <span class="n">INPUT_CONVERTORS</span>
-<span class="kn">from</span> <span class="nn">valenspy._utilities</span> <span class="kn">import</span> <span class="n">load_yml</span>
 
-<span class="n">DATASET_PATHS</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span><span class="s2">&quot;dataset_PATHS&quot;</span><span class="p">)</span>
-<span class="n">CORDEX_VARIABLES</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span><span class="s2">&quot;CORDEX_variables&quot;</span><span class="p">)</span>
+<span class="n">src_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
 
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_path</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="s2">&quot;dataset_PATHS.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">DATASET_PATHS</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_path</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="s2">&quot;CORDEX_variables.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">CORDEX_VARIABLES</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
 
 <div class="viewcode-block" id="InputManager">
 <a class="viewcode-back" href="../_autosummary/input_manager.InputManager.html#input_manager.InputManager">[docs]</a>
@@ -420,9 +426,7 @@ document.write(`
 
 <div class="viewcode-block" id="InputManager.load_m_data">
 <a class="viewcode-back" href="../_autosummary/input_manager.InputManager.html#input_manager.InputManager.load_m_data">[docs]</a>
-    <span class="k">def</span> <span class="nf">load_m_data</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">datasets_dict</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tas&quot;</span><span class="p">],</span> <span class="n">cf_convert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="p">{}</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">load_m_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">datasets_dict</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tas&quot;</span><span class="p">],</span> <span class="n">cf_convert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="p">{}):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load multiple datasets and variables and return a DataTree object.</span>
 
@@ -431,7 +435,7 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        datasets_dict : dict</span>
-<span class="sd">            A dictionary of datasets to load. The keys are the dataset names and the values are dictionaries containing the period, frequency,</span>
+<span class="sd">            A dictionary of datasets to load. The keys are the dataset names and the values are dictionaries containing the period, frequency, </span>
 <span class="sd">            region and path_identifiers as keys.</span>
 <span class="sd">        variables : list</span>
 <span class="sd">            The variables to load. The default is [&quot;tas&quot;]. These should be CORDEX variables defined in CORDEX_variables.yml.</span>
@@ -439,7 +443,7 @@ document.write(`
 <span class="sd">            Whether to convert the data to CF-Compliant format. The default is True.</span>
 <span class="sd">        metadata_info : dict, optional</span>
 <span class="sd">            Other metadata information to pass to the input converter. The default is {}.</span>
-
+<span class="sd">        </span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        DataTree</span>
@@ -449,58 +453,46 @@ document.write(`
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; manager = InputManager(machine=&#39;hortense&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; # Get all ERA5 tas (temperature at 2m) at a daily frequency for the years 2000 and 2001. The paths must include &quot;max&quot;.</span>
-<span class="sd">        &gt;&gt;&gt; data_request_dict={</span>
+<span class="sd">        &gt;&gt;&gt; data_request_dict={ </span>
 <span class="sd">            &quot;EOBS&quot;:</span>
 <span class="sd">                {&quot;path_identifiers&quot;:[&quot;mean&quot;]},</span>
 <span class="sd">            &quot;ERA5&quot;:</span>
 <span class="sd">                {&quot;period&quot;:[2000,2001],</span>
 <span class="sd">                &quot;freq&quot;:&quot;daily&quot;,</span>
 <span class="sd">                &quot;region&quot;:&quot;europe&quot;,</span>
-<span class="sd">                &quot;path_identifiers&quot;:[&quot;min&quot;]}</span>
+<span class="sd">                &quot;path_identifiers&quot;:[&quot;min&quot;]} </span>
 <span class="sd">            }</span>
 <span class="sd">        &gt;&gt;&gt; dt = manager.load_m_data(data_request_dict, variables=[&quot;tas&quot;,&quot;pr&quot;])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">ds_dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">dataset_name</span><span class="p">,</span> <span class="n">dataset_info</span> <span class="ow">in</span> <span class="n">datasets_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="c1"># pass all the dataset info as kwargs to the load_data method</span>
+            <span class="c1">#pass all the dataset info as kwargs to the load_data method</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading data for </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
-            <span class="n">ds_dict</span><span class="p">[</span><span class="n">dataset_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span>
-                <span class="n">dataset_name</span><span class="p">,</span>
-                <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span>
-                <span class="n">cf_convert</span><span class="o">=</span><span class="n">cf_convert</span><span class="p">,</span>
-                <span class="n">metadata_info</span><span class="o">=</span><span class="n">metadata_info</span><span class="p">,</span>
-                <span class="o">**</span><span class="n">dataset_info</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="n">ds_dict</span><span class="p">[</span><span class="n">dataset_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span>
+                                                    <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span>
+                                                    <span class="n">cf_convert</span><span class="o">=</span><span class="n">cf_convert</span><span class="p">,</span>
+                                                    <span class="n">metadata_info</span><span class="o">=</span><span class="n">metadata_info</span><span class="p">,</span>
+                                                    <span class="o">**</span><span class="n">dataset_info</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">DataTree</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">ds_dict</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="InputManager.load_data">
 <a class="viewcode-back" href="../_autosummary/input_manager.InputManager.html#input_manager.InputManager.load_data">[docs]</a>
-    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">dataset_name</span><span class="p">,</span>
-        <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tas&quot;</span><span class="p">],</span>
-        <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">cf_convert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">path_identifiers</span><span class="o">=</span><span class="p">[],</span>
-        <span class="n">metadata_info</span><span class="o">=</span><span class="p">{},</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tas&quot;</span><span class="p">],</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cf_convert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path_identifiers</span><span class="o">=</span><span class="p">[],</span> <span class="n">metadata_info</span><span class="o">=</span><span class="p">{}):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Load the data for the specified dataset, variables, period and frequency and transform it into ValEnsPy CF-Compliant format.</span>
-
-<span class="sd">        For files to be found and loaded they should be in a subdirectory of the dataset path and contain</span>
-<span class="sd">        the raw_long_name or raw_name or CORDEX variable name, the year (optional), frequency and path_identifiers (optional) in the file name.</span>
+<span class="sd">        </span>
+<span class="sd">        For files to be found and loaded they should be in a subdirectory of the dataset path and contain </span>
+<span class="sd">        the obs_long_name, year (optional), frequency and path_identifiers (optional) in the file name.</span>
 
 <span class="sd">        A regex search is used to match any netcdf (.nc) file paths that start with the dataset_path from the dataset_PATHS.yml and contains:</span>
-<span class="sd">        1) The raw_long_name of the CORDEX variables given the dataset_name_lookup.yml</span>
+<span class="sd">        1) The obs_long_name of the CORDEX variables given the dataset_name_lookup.yml</span>
 <span class="sd">        2) Any YYYY string within the period</span>
 <span class="sd">        3) The frequency of the data (daily, monthly, yearly)</span>
 <span class="sd">        4) Any additional path_identifiers</span>
 
-<span class="sd">        The order of these components is irrelevant. The dataset is then loaded using xarray.open_mfdataset and if cf_convert is True, the data is converted</span>
+<span class="sd">        The order of these components is irrelevant. The dataset is then loaded using xarray.open_mfdataset and if cf_convert is True, the data is converted </span>
 <span class="sd">        to CF-Compliant format using the appropriate input converter. If no period is specified, all files matching the other components are loaded.</span>
 
 <span class="sd">        Parameters</span>
@@ -509,8 +501,8 @@ document.write(`
 <span class="sd">            The name of the dataset to load. This should be in the dataset_PATHS.yml file for the specified machine.</span>
 <span class="sd">        variables : list, optional</span>
 <span class="sd">            The variables to load. The default is [&quot;tas&quot;]. These should be CORDEX variables defined in CORDEX_variables.yml.</span>
-<span class="sd">        period : list or an int, optional</span>
-<span class="sd">            The period to load. If a list, the start and end years of the period. For a single year both an int and a list with one element are valid. The default is None.</span>
+<span class="sd">        period : list, optional</span>
+<span class="sd">            The period to load start and end dates. The default is None.</span>
 <span class="sd">        freq : str, optional</span>
 <span class="sd">            The frequency of the data. The default is None.</span>
 <span class="sd">        region : str, optional</span>
@@ -531,35 +523,20 @@ document.write(`
 <span class="sd">        ------</span>
 <span class="sd">        FileNotFoundError</span>
 <span class="sd">            If no files are found for the specified dataset, variables, period, frequency and path_identifiers.</span>
-
+<span class="sd">        </span>
 <span class="sd">        ValueError</span>
 <span class="sd">            If the dataset name is not valid for the machine. i.e. not in the dataset_PATHS.yml file.</span>
-
+<span class="sd">        </span>
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt; manager = InputManager(machine=&#39;hortense&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; # Get all ERA5 tas (temperature at 2m) at a daily frequency for the years 2000 and 2001. The paths must include &quot;max&quot;.</span>
 <span class="sd">        &gt;&gt;&gt; ds = manager.load_data(&quot;ERA5&quot;, variables=[&quot;tas&quot;], period=[2000,2001], path_identifiers=[&quot;max&quot;])</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">period</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Period must be a list at most 2 elements or an int.&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">period</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">period</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">period</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_valid_dataset_name</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">):</span>
-            <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_file_paths</span><span class="p">(</span>
-                <span class="n">dataset_name</span><span class="p">,</span>
-                <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span>
-                <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span>
-                <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span>
-                <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span>
-                <span class="n">path_identifiers</span><span class="o">=</span><span class="n">path_identifiers</span><span class="p">,</span>
-            <span class="p">)</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_file_paths</span><span class="p">(</span><span class="n">dataset_name</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span> <span class="n">period</span><span class="o">=</span><span class="n">period</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="n">region</span><span class="p">,</span> <span class="n">path_identifiers</span><span class="o">=</span><span class="n">path_identifiers</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">files</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;No files found for dataset </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">, variables </span><span class="si">{</span><span class="n">variables</span><span class="si">}</span><span class="s2">, period </span><span class="si">{</span><span class="n">period</span><span class="si">}</span><span class="s2">, frequency </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">, region </span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2"> and path_identifiers </span><span class="si">{</span><span class="n">path_identifiers</span><span class="si">}</span><span class="s2">.&quot;</span>
-                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No files found for dataset </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2">, variables </span><span class="si">{</span><span class="n">variables</span><span class="si">}</span><span class="s2">, period </span><span class="si">{</span><span class="n">period</span><span class="si">}</span><span class="s2">, frequency </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">, region </span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2"> and path_identifiers </span><span class="si">{</span><span class="n">path_identifiers</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;File paths found:&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -579,65 +556,41 @@ document.write(`
         <span class="k">return</span> <span class="n">ds</span></div>
 
 
-    <span class="k">def</span> <span class="nf">_get_file_paths</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">dataset_name</span><span class="p">,</span>
-        <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tas&quot;</span><span class="p">],</span>
-        <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">path_identifiers</span><span class="o">=</span><span class="p">[],</span>
-    <span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">_get_file_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tas&quot;</span><span class="p">],</span> <span class="n">period</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">region</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">path_identifiers</span><span class="o">=</span><span class="p">[]):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the file paths for the specified dataset, variables, period and frequency.&quot;&quot;&quot;</span>
 
         <span class="c1"># ERA5Land has same lookuptable as ERA5</span>
-        <span class="k">if</span> <span class="n">dataset_name</span> <span class="o">==</span> <span class="s2">&quot;ERA5-Land&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dataset_name</span><span class="o">==</span><span class="s1">&#39;ERA5-Land&#39;</span><span class="p">:</span>
             <span class="n">dataset_name_lookup</span> <span class="o">=</span> <span class="s2">&quot;ERA5&quot;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dataset_name_lookup</span> <span class="o">=</span> <span class="n">dataset_name</span>
 
-        <span class="n">raw_LOOKUP</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dataset_name_lookup</span><span class="si">}</span><span class="s2">_lookup&quot;</span><span class="p">)</span>
-
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">src_path</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dataset_name_lookup</span><span class="si">}</span><span class="s2">_lookup.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">obs_LOOKUP</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
         <span class="n">dataset_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_paths</span><span class="p">[</span><span class="n">dataset_name</span><span class="p">])</span>
         <span class="n">file_paths</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">variables</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="p">[</span><span class="n">variables</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">variables</span>
-        <span class="p">)</span>  <span class="c1"># if single variable inputted as string, convert to list</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">variables</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">variables</span> <span class="c1"># if single variable inputted as string, convert to list</span>
         <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">variable</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">raw_LOOKUP</span><span class="p">:</span>
-                <span class="n">var_regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">raw_long_name</span> <span class="o">=</span> <span class="n">raw_LOOKUP</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="s2">&quot;raw_long_name&quot;</span><span class="p">]</span>
-                <span class="n">raw_name</span> <span class="o">=</span> <span class="n">raw_LOOKUP</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="s2">&quot;raw_name&quot;</span><span class="p">]</span>
-                <span class="n">var_regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">raw_long_name</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">raw_name</span><span class="si">}</span><span class="s2">_|</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">_)&quot;</span>
-            <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">var_regex</span><span class="p">]</span> <span class="o">+</span> <span class="n">path_identifiers</span>
+            <span class="n">obs_long_name</span> <span class="o">=</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="s2">&quot;obs_long_name&quot;</span><span class="p">]</span>
+            <span class="n">obs_name</span> <span class="o">=</span> <span class="n">obs_LOOKUP</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="s2">&quot;obs_name&quot;</span><span class="p">]</span>
+            <span class="n">var_regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">obs_long_name</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">obs_name</span><span class="si">}</span><span class="s2">_|</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">_)&quot;</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">var_regex</span><span class="p">]</span><span class="o">+</span><span class="n">path_identifiers</span>
             <span class="k">if</span> <span class="n">period</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">period</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-                    <span class="n">year_regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">period</span><span class="si">}</span><span class="s2">)&quot;</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">year_regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">year</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nb">range</span><span class="p">(</span><span class="n">period</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">period</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="n">year_regex</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">year</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nb">range</span><span class="p">(</span><span class="n">period</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">period</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span><span class="si">}</span><span class="s2">)&quot;</span>
                 <span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">year_regex</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">freq</span><span class="p">:</span>
                 <span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freq</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">region</span><span class="p">:</span>
                 <span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
-            <span class="n">file_paths</span> <span class="o">+=</span> <span class="p">[</span>
-                <span class="n">f</span>
-                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">dataset_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*.nc&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
-                    <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dataset_path</span><span class="si">}</span><span class="s2">/.*</span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">.*&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
-                    <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span>
-                <span class="p">)</span>
-            <span class="p">]</span>
+            <span class="n">file_paths</span><span class="o">+=</span><span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">dataset_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;**/*.nc&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dataset_path</span><span class="si">}</span><span class="s2">/.*</span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">.*&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">))</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">components</span><span class="p">)]</span>
 
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">file_paths</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_is_valid_dataset_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset_name</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the dataset name is valid for the machine.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">dataset_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset_paths</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Dataset name </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2"> is not valid for machine </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="si">}</span><span class="s2">. Valid dataset names are </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_paths</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">. See dataset_PATHS.yml.&quot;</span>
-            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dataset name </span><span class="si">{</span><span class="n">dataset_name</span><span class="si">}</span><span class="s2"> is not valid for machine </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">machine</span><span class="si">}</span><span class="s2">. Valid dataset names are </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset_paths</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">. See dataset_PATHS.yml.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="kc">True</span></div>
 
 </pre></div>

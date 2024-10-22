@@ -453,8 +453,8 @@ To do this, you run the <cite>dev_pipeline.sh</cite> script:</p>
 <section id="handling-dependencies">
 <h2>Handling Dependencies<a class="headerlink" href="#handling-dependencies" title="Link to this heading">#</a></h2>
 <p>If you make code adaptations and introduce a new dependency (aka import a new package),
-you need to specify this in order for packaging. This is to make sure that all
-dependencies are compatible with each other.</p>
+you need to specify this in order for packaging. This is to make shure that all
+dependencies are campatible with each other.</p>
 <p>If you introduce a new dependency, you must add it in the <cite>deployment/dev_pipeline.sh</cite> script
 under “Add dependencies to pyproject”.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#example: add shapely as a dependency, add this in the dev_pipeline script</span>
@@ -466,7 +466,7 @@ takes care of this.</p>
 <p>If you added a dependency, that is not required for using the ValEnsPy package
 (i.g. Poetry – for packaging, jupyter-lab – for making examples, …), you can
 add the dependencies in a seperated group. This is to make shure that if a user
-wants to install the package, these dependencies are not installed. But a developer
+whants to install the package, these dependencies are not installed. But a developer
 has the option to install them by</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#install the package (and the required dependencies)</span>
 <span class="n">poetry</span> <span class="n">install</span>
