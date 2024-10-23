@@ -126,12 +126,15 @@ def diurnal_cycle_bias(ds: xr.Dataset, ref: xr.Dataset, calc_relative=False):
         calc_relative=calc_relative,
     )
 
-def calc_metrics_da(da_mod: xr.DataArray, da_obs: xr.DataArray, metrics=None):
+def calc_metrics_da(da_mod: xr.DataArray, da_obs: xr.DataArray, metrics=None, pss_binwidth=None):
     """
     Calculate statistical performance metrics for model data against observed data for a single variable.
     """
     if metrics is None:
-        binwidth = get_userdefined_binwidth(da_mod.name)
+        if not pss_binwidth:
+            binwidth = get_userdefined_binwidth(da_mod.name)
+        else:
+            binwidth = pss_binwidth
         metrics = {
             "mean_bias": mean_bias,
             "mean_absolute_error": mean_absolute_error,
@@ -146,17 +149,17 @@ def calc_metrics_da(da_mod: xr.DataArray, da_obs: xr.DataArray, metrics=None):
 
     return {metric: metrics[metric](da_mod, da_obs) for metric in metrics}  
 
-def calc_metrics_ds(ds_mod: xr.Dataset, ds_obs: xr.Dataset, metrics=None):
+def calc_metrics_ds(ds_mod: xr.Dataset, ds_obs: xr.Dataset, metrics=None, pss_binwidth=None):
     """
     Calculate statistical performance metrics for model data against observed data for a dataset.
     """
-    return {variable: calc_metrics_da(ds_mod[variable], ds_obs[variable], metrics) for variable in ds_mod.data_vars}
+    return {variable: calc_metrics_da(ds_mod[variable], ds_obs[variable], metrics, pss_binwidth=pss_binwidth) for variable in ds_mod.data_vars}
 
 #####################################
 # Ensemble2Ref diagnostic functions #
 #####################################
 
-def calc_metrics_dt(dt_mod: DataTree, da_obs: xr.Dataset, metrics=None):
+def calc_metrics_dt(dt_mod: DataTree, da_obs: xr.Dataset, metrics=None, pss_binwidth=None):
     """
     Calculate statistical performance metrics for model data against observed data.
 
@@ -174,6 +177,8 @@ def calc_metrics_dt(dt_mod: DataTree, da_obs: xr.Dataset, metrics=None):
         The observed data to compare against the model data.
     metrics : dict, optional
         A dictionary containing the names of the metrics to calculate and the corresponding functions. Default is the below specified metrics.
+    pss_binwidth : float, optional
+        The bin width to use for the Perkins Skill Score (PSS) calculation. If not provided, the optimal bin width is calculated.a
     
     Returns:
     --------
@@ -193,7 +198,7 @@ def calc_metrics_dt(dt_mod: DataTree, da_obs: xr.Dataset, metrics=None):
     - Perkins Skill Score
     """
 
-    data = {member.name: calc_metrics_ds(member.ds, da_obs, metrics=metrics) for member in dt_mod.leaves}
+    data = {member.name: calc_metrics_ds(member.ds, da_obs, metrics=metrics, pss_binwidth=pss_binwidth) for member in dt_mod.leaves}
     #Create a pandas dataframe from a dictionary of dictionaries - each unique value of the most inner dictionary is a row
     df = pd.DataFrame.from_dict({(i,j): data[i][j]
                              for i in data.keys()
