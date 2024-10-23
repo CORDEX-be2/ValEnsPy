@@ -6,32 +6,32 @@ import pandas as pd
 import warnings
 from valenspy._utilities import load_yml
 from valenspy._utilities.unit_conversion_functions import (
-    _convert_Celcius_to_Kelvin,
-    _convert_hPa_to_Pa,
-    _convert_mm_hr_to_kg_m2s,
-    _convert_m_hr_to_kg_m2s,
-    _convert_mm_to_kg_m2s,
-    _convert_m_to_kg_m2s,
-    _convert_kg_m2_to_kg_m2s,
-    _convert_J_m2_to_W_m2,
-    _convert_kWh_m2_day_to_W_m2,
-    _convert_fraction_to_percent,
+    convert_Celcius_to_Kelvin,
+    convert_hPa_to_Pa,
+    convert_mm_hr_to_kg_m2s,
+    convert_m_hr_to_kg_m2s,
+    convert_mm_to_kg_m2s,
+    convert_m_to_kg_m2s,
+    convert_kg_m2_to_kg_m2s,
+    convert_J_m2_to_W_m2,
+    convert_kWh_m2_day_to_W_m2,
+    convert_fraction_to_percent,
     _determine_time_interval,
 )
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
 UNIT_CONVERSION_FUNCTIONS = {
-    "Celcius": _convert_Celcius_to_Kelvin,
-    "hPa": _convert_hPa_to_Pa,
-    "mm": _convert_mm_to_kg_m2s,
-    "mm/hr": _convert_mm_hr_to_kg_m2s,
-    "m": _convert_m_to_kg_m2s,
-    "m/hr": _convert_m_hr_to_kg_m2s,
-    "kg m-2": _convert_kg_m2_to_kg_m2s,
-    "J/m^2": _convert_J_m2_to_W_m2,
-    "kWh/m2/day": _convert_kWh_m2_day_to_W_m2,
-    "(0 - 1)": _convert_fraction_to_percent,
+    "Celcius": convert_Celcius_to_Kelvin,
+    "hPa": convert_hPa_to_Pa,
+    "mm": convert_mm_to_kg_m2s,
+    "mm/hr": convert_mm_hr_to_kg_m2s,
+    "m": convert_m_to_kg_m2s,
+    "m/hr": convert_m_hr_to_kg_m2s,
+    "kg m-2": convert_kg_m2_to_kg_m2s,
+    "J/m^2": convert_J_m2_to_W_m2,
+    "kWh/m2/day": convert_kWh_m2_day_to_W_m2,
+    "(0 - 1)": convert_fraction_to_percent,
 }
 
 # Units that are equivalent. Note that the key is the raw unit (and should never be a CORDEX unit!)

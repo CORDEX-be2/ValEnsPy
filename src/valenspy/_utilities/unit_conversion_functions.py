@@ -3,7 +3,7 @@ import numpy as np
 
 
 ########### To Kelvin ############
-def _convert_Celcius_to_Kelvin(da: xr.DataArray):
+def convert_Celcius_to_Kelvin(da: xr.DataArray):
     """
     Convert values in xarray DataArray from °C to K
     """
@@ -14,7 +14,7 @@ def _convert_Celcius_to_Kelvin(da: xr.DataArray):
 
 
 ########### To Celsius ############
-def _convert_Kelvin_to_Celcius(da: xr.DataArray):
+def convert_Kelvin_to_Celcius(da: xr.DataArray):
     """
     Convert values in xarray DataArray from K to °C
     """
@@ -25,7 +25,7 @@ def _convert_Kelvin_to_Celcius(da: xr.DataArray):
 
 
 ########### To Pa ############
-def _convert_hPa_to_Pa(da: xr.DataArray):
+def convert_hPa_to_Pa(da: xr.DataArray):
     """
     Convert values in xarray DataArray from hPa to Pa
     """
@@ -36,7 +36,7 @@ def _convert_hPa_to_Pa(da: xr.DataArray):
 
 
 ########### To hPa ############
-def _convert_Pa_to_hPa(da: xr.DataArray):
+def convert_Pa_to_hPa(da: xr.DataArray):
     """
     Convert values in xarray DataArray from Pa to hPa
     """
@@ -47,7 +47,7 @@ def _convert_Pa_to_hPa(da: xr.DataArray):
 
 
 ########### To kg m-2 s-1 ############
-def _convert_mm_to_kg_m2s(da: xr.DataArray):
+def convert_mm_to_kg_m2s(da: xr.DataArray):
     """
     Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
     """
@@ -60,7 +60,7 @@ def _convert_mm_to_kg_m2s(da: xr.DataArray):
     return da
 
 
-def _convert_mm_hr_to_kg_m2s(da: xr.DataArray):
+def convert_mm_hr_to_kg_m2s(da: xr.DataArray):
     """
     Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
     """
@@ -70,7 +70,7 @@ def _convert_mm_hr_to_kg_m2s(da: xr.DataArray):
     return da
 
 
-def _convert_kg_m2_to_kg_m2s(da: xr.DataArray):
+def convert_kg_m2_to_kg_m2s(da: xr.DataArray):
     """
     Convert daily (!) values in xarray DataArray from kg m^-2 to kg m^-2 s^-1
     """
@@ -82,7 +82,7 @@ def _convert_kg_m2_to_kg_m2s(da: xr.DataArray):
     return da
 
 
-def _convert_m_to_kg_m2s(da: xr.DataArray):
+def convert_m_to_kg_m2s(da: xr.DataArray):
     """
     Convert values in xarray DataArray from mm hr^-1 to kg m^-2 s^-1
     """
@@ -93,7 +93,7 @@ def _convert_m_to_kg_m2s(da: xr.DataArray):
     return da
 
 
-def _convert_m_hr_to_kg_m2s(da: xr.DataArray):
+def convert_m_hr_to_kg_m2s(da: xr.DataArray):
     """
     Convert values in xarray DataArray from m hr^-1 to kg m^-2 s^-1s
     """
@@ -105,7 +105,7 @@ def _convert_m_hr_to_kg_m2s(da: xr.DataArray):
 
 
 ########### To m h-1 ############
-def _convert_kg_m2s_to_mh(da: xr.DataArray):
+def convert_kg_m2s_to_mh(da: xr.DataArray):
     """
     Convert values in xarray DataArray from kg m^-2 s^-1 to mm hr^-1
     """
@@ -116,7 +116,7 @@ def _convert_kg_m2s_to_mh(da: xr.DataArray):
 
 
 ########### To W m-2 ############
-def _convert_J_m2_to_W_m2(da: xr.DataArray):
+def convert_J_m2_to_W_m2(da: xr.DataArray):
     """
     Convert values in xarray DataArray from J m^2 to W m^2
     """
@@ -129,7 +129,7 @@ def _convert_J_m2_to_W_m2(da: xr.DataArray):
     return da
 
 
-def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
+def convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
     """
     Convert values in xarray DataArray from kWh/m2/day to W m^2
     """
@@ -140,7 +140,7 @@ def _convert_kWh_m2_day_to_W_m2(da: xr.DataArray):
 
 
 ########### To % ############
-def _convert_fraction_to_percent(da: xr.DataArray):
+def convert_fraction_to_percent(da: xr.DataArray):
     """
     Convert values in xarray DataArray from unitless to %
     """

@@ -3,7 +3,7 @@ from valenspy._utilities import load_yml, is_cf_compliant, cf_status
 from valenspy.input.unit_converter import convert_all_units_to_CF
 from valenspy._utilities.unit_conversion_functions import (
     _determine_time_interval,
-    _convert_mm_to_kg_m2s,
+    convert_mm_to_kg_m2s,
 )
 import xarray as xr
 import pandas as pd
@@ -275,7 +275,7 @@ def ALARO_K_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     # Special conversion for precipitation
     if "rain_convective" in ds.data_vars and "rain_stratiform" in ds.data_vars:
-        ds["pr"] = _convert_mm_to_kg_m2s(ds["rain_convective"] + ds["rain_stratiform"])
+        ds["pr"] = convert_mm_to_kg_m2s(ds["rain_convective"] + ds["rain_stratiform"])
         ds["pr"].attrs["standard_name"] = "precipitation_flux"
         ds["pr"].attrs["long_name"] = "Precipitation"
         ds["pr"].attrs["dataset"] = model_name
