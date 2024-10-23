@@ -1,6 +1,6 @@
 from pathlib import Path
 from valenspy._utilities import load_yml, is_cf_compliant, cf_status
-from valenspy.input._unit_conversions import convert_all_units_to_CF
+from valenspy.input.unit_converter import convert_all_units_to_CF
 from valenspy._utilities.unit_conversion_functions import (
     _determine_time_interval,
     _convert_mm_to_kg_m2s,
