@@ -1,4 +1,4 @@
-name: Automatic tests pipeline
+name: Automatic package build and version test
 
 on:
    push:

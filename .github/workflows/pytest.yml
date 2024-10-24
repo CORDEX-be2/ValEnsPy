@@ -1,0 +1,25 @@
+name: ValEnsPy pytests
+
+on:
+   push:
+
+jobs:
+  pytests:
+    name: Push pytests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python39
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - name: Download the package build
+        uses: actions/download-artifact@v3
+        with:
+          name: package_build
+      - name: Install the package
+        run: |
+            python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
+      - name: Run tests
+        run: |
+            pytest tests/push_tests/test_*.py
