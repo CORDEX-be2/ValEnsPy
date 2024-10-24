@@ -65,10 +65,10 @@ mkdir -p conda_envs
 conda config --add envs_dirs /dodrio/scratch/projects/2022_200/project_output/__INSTITUTE__/__VSC_USERNAME__/conda_envs
 ```
 
-First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).
+First initialize the conda environment and install python (version 3.10) and poetry (a python package manager).
 
 ```bash
-conda create -n valenspy_dev -c conda-forge python==3.9 poetry=1.8
+conda create -n valenspy_dev -c conda-forge python==3.10 poetry=1.8
 source activate valenspy_dev
 ```
 > [!NOTE]
