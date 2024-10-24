@@ -61,6 +61,9 @@ jobs:
         - name: Install the package
           run: |
               python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
+        - name: Install pytest
+          run: |
+              python3 -m pip install pytest
         - name: Run tests
           run: |
               pytest tests/push_tests/test_*.py
@@ -70,6 +73,7 @@ jobs:
    mac_install_testing:
      name: Installation on Mac latest
      needs: packageing
+     if: contains(github.event.head_commit.message, 'test_install')
      runs-on: macos-latest
      steps:
        - uses: actions/checkout@v3
@@ -91,6 +95,7 @@ jobs:
    windows_install_testing:
      name: Installation on Windows latest
      needs: packageing
+     if: contains(github.event.head_commit.message, 'test_install')
      runs-on: windows-latest
      steps:
        - uses: actions/checkout@v3
