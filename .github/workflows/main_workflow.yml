@@ -65,7 +65,7 @@ jobs:
              python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
        - name: Run tests
          run: |
-             python tests\push_tests\test_import.py
+             python tests/push_tests/test_import.py
 
    windows_install_testing:
      name: Installation on Windows latest
