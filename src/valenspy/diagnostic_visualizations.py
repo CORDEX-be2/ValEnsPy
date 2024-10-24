@@ -4,6 +4,13 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
 from valenspy._regions import region_bounds
+from valenspy.diagnostic_functions import perkins_skill_score
+
+import seaborn as sns
+from matplotlib.colors import LinearSegmentedColormap
+import matplotlib.colors as mcolors
+import matplotlib.cm as cm
+import numpy as np
 
 # make sure xarray passes the attributes when doing operations - change default for this
 xr.set_options(keep_attrs=True)
@@ -121,6 +128,44 @@ def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
 # Model2Ref diagnostic visuals   #
 ##################################
 
+def create_custom_cmap(hex_color1: str, hex_color2: str, num_colors: int):
+    """
+    Create a custom colormap that transitions between two given hex colors and generates a specified number of colors.
+
+    Parameters
+    ----------
+    hex_color1 : str
+        The starting color of the colormap in hex format (e.g., '#FF0000' for red).
+    hex_color2 : str
+        The ending color of the colormap in hex format (e.g., '#0000FF' for blue).
+    num_colors : int
+        The number of colors to generate in the colormap, including both the start and end colors.
+
+    Returns
+    -------
+    cmap : matplotlib.colors.LinearSegmentedColormap
+        A colormap that can be used in plotting functions to visualize data with a color gradient from hex_color1 to hex_color2.
+    colors : numpy.ndarray
+        An array of the RGB values for each of the colors in the generated colormap.
+    
+    Example
+    -------
+    >>> cmap, colors = create_custom_cmap("#FF0000", "#0000FF", 10)
+    >>> plt.imshow([colors], aspect='auto')
+    >>> plt.show()
+
+    """
+    # Convert hex colors to RGB
+    rgb_color1 = mcolors.hex2color(hex_color1)
+    rgb_color2 = mcolors.hex2color(hex_color2)
+
+    # Create colormap
+    cmap = LinearSegmentedColormap.from_list("custom_cmap", [rgb_color1, rgb_color2], N=num_colors)
+
+
+    return cmap
+
+
 
 def plot_spatial_bias(da: xr.DataArray, ax=None, region=None, **kwargs):
     """
@@ -169,7 +214,11 @@ def plot_spatial_bias(da: xr.DataArray, ax=None, region=None, **kwargs):
 
 
 def plot_maps_mod_ref_diff(
-    da_mod: xr.DataArray, da_ref: xr.DataArray, da_diff: xr.DataArray, region=None
+    da_mod: xr.DataArray,
+    da_ref: xr.DataArray,
+    da_diff: xr.DataArray,
+    region=None,
+    **kwargs,
 ):
     """
     Plots comparison maps for model data, reference data, and their difference.
@@ -206,9 +255,15 @@ def plot_maps_mod_ref_diff(
     cbar_label = f"{da_ref.attrs['long_name']} ({da_ref.attrs['units']})"
     cbar_kwargs = {"label": cbar_label}
 
-    # plotting bounds
-    vmin = float(min(da_mod.min().values, da_ref.min().values))
-    vmax = float(max(da_mod.max().values, da_ref.max().values))
+    if "vmin" in kwargs:
+        vmin = kwargs.pop("vmin")
+    else:  # plotting boundaries
+        vmin = float(min(da_mod.min().values, da_ref.min().values))
+
+    if "vmax" in kwargs:
+        vmax = kwargs.pop("vmax")
+    else:  # plotting boundaries
+        vmax = float(max(da_mod.max().values, da_ref.max().values))
 
     # titles - use the dataset attribute if available
     if "dataset" in da_mod.attrs:
@@ -236,15 +291,27 @@ def plot_maps_mod_ref_diff(
     _add_features(ax, region=region)
 
     # bias
-    ax = axes[2]
     diff_bound = float(max(abs(da_diff.min().values), abs(da_diff.max().values)))
+
+    if "vmin_bias" in kwargs:
+        vmin = kwargs.pop("vmin_bias")
+    else:  # plotting boundaries
+        vmin = -diff_bound
+
+    if "vmax_bias" in kwargs:
+        vmax = kwargs.pop("vmax_bias")
+    else:  # plotting boundaries
+        vmax = diff_bound
+
+    ax = axes[2]
     da_diff.plot(
         ax=ax,
         cmap="coolwarm",
-        vmax=diff_bound,
+        vmax=vmax,
         vmin=-diff_bound,
         cbar_kwargs=cbar_kwargs,
     )
+
     ax.set_title("")
     ax.set_title(f"{mod_title} - {ref_title}", loc="right")
     _add_features(ax, region=region)
@@ -348,6 +415,131 @@ def plot_points_on_map(d_point_coords: dict, ax=None, region=None):
 
     return ax
 
+
+def visualize_perkins_skill_score(da_mod: xr.DataArray, da_obs: xr.DataArray, binwidth: float = None):
+    """
+    Visualize the Perkins Skill Score (PSS) by plotting the normalized histograms 
+    of the model and reference data, and display the PSS score and bin width used.
+    For testing bin_widths
+    
+    Parameters
+    ----------
+    da_mod : xr.DataArray
+        The model data to compare.
+    da_obs : xr.DataArray
+        The reference data to compare against.
+    binwidth : float, optional
+        The width of each bin for the histogram. If None, an optimal bin width 
+        should be calculated within the function (default is None).
+    
+    Returns
+    -------
+    None
+        This function does not return any value. It displays a plot with the 
+        normalized histograms and Perkins Skill Score.
+    
+    Notes
+    -----
+    The function calculates the Perkins Skill Score using the provided or default
+    bin width, and plots the normalized histograms of the model and reference data.
+    The plot also includes annotations for the Perkins Skill Score and bin width used.
+    """
+    # Calculate Perkins Skill Score and histograms
+    pss_score, freq_m, freq_r, binwidth = perkins_skill_score(da_mod, da_obs, binwidth=binwidth)
+
+    # Create the plot
+    fig, ax = plt.subplots()
+
+    # Plot the histograms
+    ax.plot(freq_m, label="model")
+    ax.plot(freq_r, label="ref", color="k")
+    ax.set_title('Normalized histograms for calculating Perkins Skill Score', loc='right')
+    ax.set_xlabel('bins')
+    ax.set_ylabel('frequency')
+    ax.legend(frameon=False, loc='upper right')
+
+    # Annotate the plot with PSS score and bin width
+    ax.text(0.05, 0.9, f"Perkins skill score: {pss_score:.3f}", transform=ax.transAxes)
+    ax.text(0.05, 0.85, f"Used binwidth: {binwidth:.2f}", transform=ax.transAxes)
+
+    # Adjust layout
+    fig.tight_layout()
+    plt.show()
+
+def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = None, hex_color2=None, **kwargs):
+    """
+    Plots a heatmap of the ranking of metrics for different model members.
+
+    This function takes a DataFrame of metrics, calculates the rankings of these metrics 
+    for each model member, and creates a heatmap representing the ranks. The plot can 
+    optionally include a colorbar to represent the ranking levels. If no axis is provided, 
+    a new figure and axis are created for the plot.
+    Parameters:
+    -----------
+    df_metric : pd.DataFrame
+        A DataFrame containing the calculated metrics for different model members. Each column 
+        represents a model member, and each row represents a metric.
+    ax : matplotlib.axes.Axes, optional
+        A pre-existing axis to plot the heatmap. If None (default), a new figure and axis 
+        are created.
+    plot_colorbar : bool, optional
+        If True (default), a colorbar is added to the plot to represent the rank levels. 
+        If False, the heatmap is plotted without a colorbar.
+    hex_color1 : str
+        The starting color of the colormap in hex format (e.g., '#FF0000' for red).
+    hex_color2 : str
+        The ending color of the colormap in hex format (e.g., '#0000FF' for blue).
+
+    Returns:
+    --------
+    ax : matplotlib.axes.Axes
+        The axis object containing the heatmap plot.
+
+    Notes:
+    ------
+    - The color map has the 'summer' palette as default and is resampled to the number of model members.
+    - A customized color map can be included or determined as an interpolation between two colorcodes (hex codes)
+    - Rankings are normalized based on the number of model members.
+    - The function supports colorbar ticks to represent custom rank labels, which are added 
+      only if `plot_colorbar=True`.
+    
+    Example:
+    --------
+    plot_metric_ranking(df_metric, ax=None, plot_colorbar=True)
+    -> Generates a heatmap of metric rankings for each model member, with an optional colorbar.
+    """
+
+    df_p = df_metric.pivot(index=["metric"], columns="member", values="rank")
+    df_p = df_p[df_p.sum().sort_values().index]
+
+    num_levels = df_metric["member"].nunique()
+    if "cmap" not in kwargs:
+        if hex_color1 and hex_color2:
+            cmap = create_custom_cmap(hex_color1=hex_color1, hex_color2=hex_color2, num_colors=num_levels)
+        else:
+            cmap = plt.get_cmap('summer', num_levels)
+    else:
+        cmap = plt.get_cmap(kwargs.pop("cmap"), num_levels)
+    
+    boundaries = np.arange(1, num_levels + 2, 1)
+    norm = mcolors.BoundaryNorm(boundaries, cmap.N, clip=True)
+
+    if ax is None: 
+        fig, ax = plt.subplots()
+
+    if "title" in kwargs:
+        ax.set_title(kwargs.pop("title"), loc="right")
+
+    heatmap = sns.heatmap(df_p, ax=ax, cbar=plot_colorbar, cmap=cmap, norm=norm, **kwargs)
+    ax.set_ylabel(' ')
+    ax.set_xlabel('Members')
+    
+    if plot_colorbar:
+        colorbar = heatmap.collections[0].colorbar
+        colorbar.set_ticks(np.arange(1, num_levels + 1) + .5)  # Set the ticks you want
+        colorbar.set_ticklabels(range(1, num_levels + 1))  # Set the custom labels for the ticks
+    
+    return ax
 
 ##################################
 # Helper functions               #

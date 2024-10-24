@@ -45,7 +45,9 @@ def test_equivalent_units_definition():
     """
     equivalent_units = set([unit for unit in EQUIVALENT_UNITS])
     convertable_units = set([unit for unit in UNIT_CONVERSION_FUNCTIONS])
-    CORDEX_VARIABLES_units = set([var_attr["units"] for _, var_attr in load_yml("CORDEX_variables").items()])
+    CORDEX_VARIABLES_units = set(
+        [var_attr["units"] for _, var_attr in load_yml("CORDEX_variables").items()]
+    )
 
     convertable_or_CORDEX_units = convertable_units.union(CORDEX_VARIABLES_units)
 
