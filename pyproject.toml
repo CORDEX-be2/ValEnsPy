@@ -30,6 +30,7 @@ scipy = "^1.13.0"
 shapely = "^2.0.3"
 xarray = "^2024.2.0"
 xarray-datatree = "^0.0.14"
+seaborn = "^0.13.2"
 
 [tool.poetry.group.dev]
 # Development group
