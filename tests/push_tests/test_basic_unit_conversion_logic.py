@@ -1,5 +1,5 @@
 from valenspy._utilities import load_yml
-from valenspy._unit_conversions import UNIT_CONVERSION_FUNCTIONS, EQUIVALENT_UNITS
+from valenspy.input.unit_converter import UNIT_CONVERSION_FUNCTIONS, EQUIVALENT_UNITS
 
 import pytest
 

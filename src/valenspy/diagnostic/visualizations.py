@@ -4,7 +4,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
 from valenspy._utilities._regions import region_bounds
-from valenspy.diagnostic_functions import perkins_skill_score
+from valenspy.diagnostic.functions import perkins_skill_score
 
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
