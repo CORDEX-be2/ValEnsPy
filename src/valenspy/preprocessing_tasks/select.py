@@ -6,6 +6,7 @@ import regionmask
 import geopandas as gpd
 from pathlib import Path
 from valenspy._regions import region_bounds
+import pyproj
 
 
 # make sure attributes are passed through
@@ -86,6 +87,29 @@ def convert_geo_to_rot(coord: tuple, ds: xr.Dataset):
     # Return the rotated pole coordinates as a list
     return [p_rlon, p_rlat]
 
+def convert_geo_to_LCC(coord: tuple, ds: xr.Dataset):
+    """
+    Convert the geographic coordinates to Lambert Conformal Coordinates.
+
+    Parameters
+    ----------
+    coord : tuple
+        Geographic coordinates as a (longitude, latitude) pair in degrees.
+    ds : xarray.Dataset
+        The input dataset containing the Lambert Conformal Conic grid information.
+    
+    Returns
+    -------
+    tuple
+        The corresponding Lambert Conformal Coordinates as (x, y) in meters.
+    """
+
+    proj="+proj=lcc +lat_0=42.5 +lon_0=-100 +lat_1=25 +lat_2=60 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+
+    transformer = pyproj.Transformer.from_crs("EPSG:4326", proj, always_xy=True)
+
+    lat, lon = coord
+    return transformer.transform(lon, lat)
 
 def select_point(ds: xr.Dataset, lon_lat_point: tuple, rotated_pole: bool = False):
     """
