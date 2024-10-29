@@ -1,0 +1,51 @@
+name.general,units,name.long,name.short,param.id,an,fc,cumul
+10 metre U wind component,m s**-1,10m_u_component_of_wind,u10,165,,x,0
+10 metre V wind component,m s**-1,10m_v_component_of_wind,v10,166,,x,0
+w10,m s**-1,w10,w10,166,,x,0
+2 metre dewpoint temperature,K,2m_dewpoint_temperature,d2m,168,,x,0
+2 metre temperature,K,2m_temperature,t2m,167,,x,0
+Evaporation from bare soil,m of water equivalent,evaporation_from_bare_soil,evabs,228101,,x,1
+Evaporation from open water surfaces excluding oceans,m of water equivalent,evaporation_from_open_water_surfaces_excluding_oceans,evaow,228102,,x,1
+Evaporation from the top of canopy,m of water equivalent,evaporation_from_the_top_of_canopy,evatc,228100,,x,1
+Evaporation from vegetation transpiration,m of water equivalent,evaporation_from_vegetation_transpiration,evavt,228103,,x,1
+Forecast albedo,(0 - 1),forecast_albedo,fal,243,,x,0
+Lake bottom temperature,K,lake_bottom_temperature,lblt,228010,x,,0
+Lake ice depth,m,lake_ice_depth,licd,228014,x,,0
+Lake ice temperature,K,lake_ice_temperature,lict,228013,x,,0
+Lake mix-layer depth,m,lake_mix_layer_depth,lmld,228009,x,,0
+Lake mix-layer temperature,K,lake_mix_layer_temperature,lmlt,228008,x,,0
+Lake shape factor,dimensionless,lake_shape_factor,lshf,228012,x,,0
+Lake total layer temperature,K,lake_total_layer_temperature,ltlt,228011,x,,0
+"Leaf area index, high vegetation2",m**2 m**-2,leaf_area_index_high_vegetation,lai_hv,67,,x,0
+"Leaf area index, low vegetation2",m**2 m**-2,leaf_area_index_low_vegetation,lai_lv,66,,x,0
+Potential evaporation,m,potential_evaporation,pev,228251,,x,1
+Runoff,m,runoff,ro,205,,x,1
+Skin reservoir content,m of water equivalent,skin_reservoir_content,src,198,x,,0
+Skin temperature,K,skin_temperature,skt,235,x,,0
+Snow albedo,(0 - 1),snow_albedo,asn,32,x,,0
+Snow cover,%,snow_cover,snowc,260038,,x,0
+Snow density,kg m**-3,snow_density,rsn,33,x,,0
+Snow depth,m,snow_depth,sde,3066,,x,0
+Snow depth water equivalent,m of water equivalent,snow_depth_water_equivalent,sd,141,x,,0
+Snowfall,m of water equivalent,snowfall,sf,144,,x,1
+Snowmelt,m of water equivalent,snowmelt,smlt,45,,x,1
+Soil temperature level 11,K,soil_temperature_level_1,stl1,139,x,,0
+Soil temperature level 21,K,soil_temperature_level_2,stl2,170,x,,0
+Soil temperature level 31,K,soil_temperature_level_3,stl3,183,x,,0
+Soil temperature level 41,K,soil_temperature_level_4,stl4,236,x,,0
+Sub-surface runoff,m,sub_surface_runoff,ssro,9,,x,1
+Surface latent heat flux,J m**-2,surface_latent_heat_flux,slhf,147,,x,1
+Surface net solar radiation,J m**-2,surface_net_solar_radiation,ssr,176,,x,1
+Surface net thermal radiation,J m**-2,surface_net_thermal_radiation,str,177,,x,1
+Surface pressure,Pa,surface_pressure,sp,134,,x,0
+Surface runoff,m,surface_runoff,sro,8,,x,1
+Surface sensible heat flux,J m**-2,surface_sensible_heat_flux,sshf,146,,x,1
+Surface solar radiation downwards,J m**-2,surface_solar_radiation_downwards,ssrd,169,,x,1
+Surface thermal radiation downwards,J m**-2,surface_thermal_radiation_downwards,strd,175,,x,1
+Temperature of snow layer,K,temperature_of_snow_layer,tsn,238,x,,0
+Total Evaporation,m of water equivalent,evaporation,e,182,,x,1
+Total precipitation,m,total_precipitation,tp,228,,x,1
+Volumetric soil water layer 11,m**3 m**-3,volumetric_soil_water_layer_1,swvl1,39,x,,0
+Volumetric soil water layer 21,m**3 m**-3,volumetric_soil_water_layer_2,swvl2,40,x,,0
+Volumetric soil water layer 31,m**3 m**-3,volumetric_soil_water_layer_3,swvl3,41,x,,0
+Volumetric soil water layer 41,m**3 m**-3,volumetric_soil_water_layer_4,swvl4,42,x,,0
