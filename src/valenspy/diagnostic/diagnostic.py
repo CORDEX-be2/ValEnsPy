@@ -143,27 +143,30 @@ class Ensemble2Self(Diagnostic):
         """
         return self.diagnostic_function(dt, **kwargs)
 
-    def plot(self, result, axes=None, facetted=True, **kwargs):
+    def plot(self, result, facetted=True, **kwargs):
         """Plot the diagnostic.
+
+        If axes are provided, the diagnostic is plotted facetted. If ax is provided, the diagnostic is plotted non-facetted. 
+        If neither axes nor ax are provided, the diagnostic is plotted on the current axis and no facetting is applied.
 
         Parameters
         ----------
         result : DataTree
             The result of applying the ensemble diagnostic to a DataTree.
-        axes : matplotlib.axes.Axes or list of matplotlib.axes.Axes, optional
-            The axes (possibly plural) to plot the diagnostic on. If None, a new figure and axes are created.
 
         Returns
         -------
         Figure
             The figure representing the diagnostic.
         """
-        if axes is None:
-            if facetted:
-                fig, axes = plt.subplots(1, len(result), figsize=(5 * len(result), 5))
-            else:
-                axes = plt.gca()
-        return self.plotting_function(result, axes=axes, facetted=facetted, **kwargs)
+        if "ax" in kwargs and "axes" in kwargs:
+            raise ValueError("Either ax or axes can be provided, not both.")
+        elif "ax" not in kwargs and "axes" not in kwargs:
+            ax = plt.gca()
+            return self.plotting_function(result, ax=ax, **kwargs)
+        else:
+            return self.plotting_function(result, **kwargs)
+
 
     @classmethod
     def from_model2self(cls, model2self: Model2Self, facetted=True):
@@ -184,29 +187,19 @@ class Ensemble2Self(Diagnostic):
             return dt.map_over_subtree(model2self.diagnostic_function, **kwargs)
 
         def plotting_function(
-            dt: DataTree, axes, variable=None, facetted=facetted, **kwargs
+            dt: DataTree, variable=None, **kwargs
         ):
-            if facetted:
+            if "axes" in kwargs:
+                axes = kwargs.pop("axes")
                 for ds, ax in zip(dt.leaves, axes.flatten()):
-                    if variable:
-                        model2self.plot(ds[variable], ax=ax, **kwargs)
-                    else:
-                        model2self.plot(ds, ax=ax, **kwargs)
+                    model2self.plot(ds[variable], ax=ax, **kwargs)
                     ax.set_title(ds.path.replace("/", " "))
-            else:
+                return axes
+            if "ax" in kwargs:
+                ax = kwargs.pop("ax")
                 for ds in dt.leaves:
-                    if variable:
-                        model2self.plot(
-                            ds[variable],
-                            ax=axes,
-                            label=f'{ds.path.replace("/", " ")}',
-                            **kwargs,
-                        )
-                    else:
-                        model2self.plot(
-                            ds, ax=axes, label=f'{ds.path.replace("/", " ")}', **kwargs
-                        )
-            return axes
+                    model2ref.plot(ds[variable], ax=ax, label=f'{ds.path.replace("/", " ")}', **kwargs)
+                return ax
 
         return Ensemble2Self(
             diagnostic_function,
@@ -243,27 +236,30 @@ class Ensemble2Ref(Diagnostic):
         # TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.
         return self.diagnostic_function(dt, ref, **kwargs)
 
-    def plot(self, result, axes=None, facetted=True, **kwargs):
+    def plot(self, result, facetted=True, **kwargs):
         """Plot the diagnostic.
+
+        If axes are provided, the diagnostic is plotted facetted. If ax is provided, the diagnostic is plotted non-facetted. 
+        If neither axes nor ax are provided, the diagnostic is plotted on the current axis and no facetting is applied.
 
         Parameters
         ----------
-        data : xr.Dataset or xr.DataArray
-            The data to plot.
-        ref : xr.Dataset or xr.DataArray
-            The reference data to compare the data to.
+        result : DataTree
+            The result of applying the ensemble diagnostic to a DataTree.
 
         Returns
         -------
         Figure
             The figure representing the diagnostic.
         """
-        if axes is None:
-            if facetted:
-                fig, axes = plt.subplots(1, len(result), figsize=(5 * len(result), 5))
-            else:
-                ax = plt.gca()
-        return self.plotting_function(result, axes=axes, facetted=facetted, **kwargs)
+        if "ax" in kwargs and "axes" in kwargs:
+            raise ValueError("Either ax or axes can be provided, not both.")
+        elif "ax" not in kwargs and "axes" not in kwargs:
+            ax = plt.gca()
+            return self.plotting_function(result, ax=ax, **kwargs)
+        else:
+            return self.plotting_function(result, **kwargs)
+
 
     @classmethod
     def from_model2ref(cls, model2ref: Model2Ref, facetted=True):
@@ -295,29 +291,19 @@ class Ensemble2Ref(Diagnostic):
                 )
 
         def plotting_function(
-            dt: DataTree, axes, variable=None, facetted=facetted, **kwargs
+            dt: DataTree, variable=None, **kwargs
         ):
-            if facetted:
+            if "axes" in kwargs:
+                axes = kwargs.pop("axes")
                 for ds, ax in zip(dt.leaves, axes.flatten()):
-                    if variable:
-                        model2ref.plot(ds[variable], ax=ax, **kwargs)
-                    else:
-                        model2ref.plot(ds, ax=ax, **kwargs)
+                    model2ref.plot(ds[variable], ax=ax, **kwargs)
                     ax.set_title(ds.path.replace("/", " "))
-            else:
+                return axes
+            if "ax" in kwargs:
+                ax = kwargs.pop("ax")
                 for ds in dt.leaves:
-                    if variable:
-                        model2ref.plot(
-                            ds[variable],
-                            axes=axes,
-                            label=f'{ds.path.replace("/", " ")}',
-                            **kwargs,
-                        )
-                    else:
-                        model2ref.plot(
-                            ds, ax=axes, label=f'{ds.path.replace("/", " ")}', **kwargs
-                        )
-            return axes
+                    model2ref.plot(ds[variable], ax=ax, label=f'{ds.path.replace("/", " ")}', **kwargs)
+                return ax
 
         return Ensemble2Ref(
             diagnostic_function,
@@ -325,6 +311,7 @@ class Ensemble2Ref(Diagnostic):
             model2ref.name,
             model2ref.description,
         )
+
 
 
 def _common_vars(ds1, ds2):
@@ -373,4 +360,12 @@ DiurnalCycleBias = Model2Ref(
     plot_diurnal_cycle,
     "Diurnal Cycle Bias",
     "The diurnal cycle bias of the data compared to the reference.",
+)
+
+# Ensemble2Ref diagnostics
+MetricsRankings = Ensemble2Ref(
+    calc_metrics_dt,
+    plot_metric_ranking,
+    "Metrics Rankings",
+    "The rankings of ensemble members with respect to several metrics when compared to the reference."
 )
