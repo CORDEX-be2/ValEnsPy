@@ -37,6 +37,7 @@ poetry add shapely
 poetry add xarray
 poetry add xarray-datatree
 poetry add cartopy
+poetry add seaborn
 
 #add to dev (= development) group
 poetry add --group dev 'pre-commit'
