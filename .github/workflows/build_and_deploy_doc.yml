@@ -1,5 +1,8 @@
 name: Build and deploy documentation
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:
@@ -37,10 +40,10 @@ jobs:
               poetry install --with dev --with docs
               poetry run sphinx-build -a -E docs _build
         #WHEN PUBLIC, UNCOMMENT FOR DEPLOYING DOC TO GH-PAGES!!!!
-        #- name: deploy documentation
-        #  uses: peaceiris/actions-gh-pages@v3
-        #  with:
-        #    publish_branch: gh-pages
-        #    github_token: ${{ secrets.GITHUB_TOKEN }}
-        #    publish_dir: _build/
-        #    force_orphan: true
+        - name: deploy documentation
+          uses: peaceiris/actions-gh-pages@v3
+          with:
+           publish_branch: gh-pages
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           publish_dir: _build/
+           force_orphan: true

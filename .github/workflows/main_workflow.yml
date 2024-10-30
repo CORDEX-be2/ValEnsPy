@@ -7,6 +7,8 @@ on:
       - dev
    pull_request:
     types: [review_requested]
+  #Add a manual trigger
+   workflow_dispatch:
 
 
 jobs:
@@ -18,7 +20,7 @@ jobs:
         pkg_file: ${{ steps.base_def.outputs.filename }}
       steps:
       - uses: actions/checkout@v3
-      - name: Set up Python310
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'

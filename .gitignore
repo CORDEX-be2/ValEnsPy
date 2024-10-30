@@ -79,7 +79,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-!docs/_build #Include until public release of documentation
+docs/_build
 docs/_autosummary
 !docs/_templates #keep track of these!
 !docs/_static #keep track of these
