@@ -1,6 +1,0 @@
-diagnostic\_visualizations.plot\_map
-====================================
-
-.. currentmodule:: diagnostic_visualizations
-
-.. autofunction:: plot_map

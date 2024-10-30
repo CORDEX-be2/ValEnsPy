@@ -1,6 +1,0 @@
-diagnostic\_functions.time\_series\_spatial\_mean
-=================================================
-
-.. currentmodule:: diagnostic_functions
-
-.. autofunction:: time_series_spatial_mean
