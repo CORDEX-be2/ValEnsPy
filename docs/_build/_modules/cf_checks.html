@@ -397,16 +397,11 @@ document.write(`
   <h1>Source code for cf_checks</h1><div class="highlight"><pre>
 <span></span><span class="c1"># Create functionality which checks if the an xarray dataset is a ValEnsPy CF compliant dataset</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">from</span> <span class="nn">yaml</span> <span class="kn">import</span> <span class="n">safe_load</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
-
-<span class="c1"># Get the current file directory and load the variables.yml file</span>
+<span class="kn">from</span> <span class="nn">valenspy._utilities</span> <span class="kn">import</span> <span class="n">load_yml</span><span class="p">,</span> <span class="n">load_xarray_from_data_sources</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-<span class="n">files</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">files</span> <span class="o">/</span> <span class="s2">&quot;ancilliary_data&quot;</span> <span class="o">/</span> <span class="s2">&quot;CORDEX_variables.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-    <span class="n">CORDEX_VARIABLES</span> <span class="o">=</span> <span class="n">safe_load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="n">CORDEX_VARIABLES</span> <span class="o">=</span> <span class="n">load_yml</span><span class="p">(</span><span class="s2">&quot;CORDEX_variables&quot;</span><span class="p">)</span>
 
 <span class="c1"># Expected metadata attributes</span>
 <span class="n">MAIN_METADATA</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Conventions&quot;</span><span class="p">,</span> <span class="s2">&quot;history&quot;</span><span class="p">]</span>
@@ -425,11 +420,11 @@ document.write(`
 <span class="sd">        The netCDF file to check or the xarray dataset to check</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">_load_xarray</span><span class="p">(</span><span class="n">netCDF</span><span class="p">)</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">load_xarray_from_data_sources</span><span class="p">(</span><span class="n">netCDF</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span>
         <span class="s2">&quot;The file is </span><span class="si">{status}</span><span class="s2">ValEnsPy CF compliant.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">status</span><span class="o">=</span><span class="s2">&quot;NOT &quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_cf_compliant</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">status</span><span class="o">=</span><span class="s2">&quot;NOT &quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">is_cf_compliant</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
         <span class="p">)</span>
     <span class="p">)</span>
 
@@ -501,7 +496,7 @@ document.write(`
 <span class="sd">        True</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ds</span> <span class="o">=</span> <span class="n">_load_xarray</span><span class="p">(</span><span class="n">netCDF</span><span class="p">)</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">load_xarray_from_data_sources</span><span class="p">(</span><span class="n">netCDF</span><span class="p">)</span>
 
     <span class="n">var_meta_data_ok</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span>
         <span class="p">[</span>
@@ -518,6 +513,7 @@ document.write(`
             <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">CORDEX_VARIABLES</span>
         <span class="p">]</span>
     <span class="p">)</span>
+    <span class="n">time_dimension_ok</span> <span class="o">=</span> <span class="n">_check_time_dimension</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">var_meta_data_ok</span><span class="p">:</span>
@@ -526,43 +522,33 @@ document.write(`
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Main metadata is missing or incorrect&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">cordex_vars_data_ok</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Variable attributes are missing or incorrect&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">time_dimension_ok</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time dimension is missing or has an incorrect type&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">var_meta_data_ok</span> <span class="ow">and</span> <span class="n">main_meta_data_ok</span> <span class="ow">and</span> <span class="n">cordex_vars_data_ok</span></div>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">var_meta_data_ok</span>
+        <span class="ow">and</span> <span class="n">main_meta_data_ok</span>
+        <span class="ow">and</span> <span class="n">cordex_vars_data_ok</span>
+        <span class="ow">and</span> <span class="n">time_dimension_ok</span>
+    <span class="p">)</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">_load_xarray</span><span class="p">(</span><span class="n">netCDF</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">]):</span>
+<span class="k">def</span> <span class="nf">_check_time_dimension</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Load an xarray dataset from a file or return the dataset if it is already an xarray dataset.</span>
+<span class="sd">    Check if the time dimension is present and is of the type datetime64</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    netCDF : Union[str, Path, xr.Dataset]</span>
-<span class="sd">        The netCDF file to load or the xarray dataset</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The dataset to check</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    xr.Dataset</span>
-<span class="sd">        The xarray dataset</span>
-
-<span class="sd">    Errors</span>
-<span class="sd">    ------</span>
-<span class="sd">    IOError</span>
-<span class="sd">        If the file does not have the correct extension</span>
-<span class="sd">    TypeError</span>
-<span class="sd">        If the input is not a valid type - str, Path or xr.Dataset</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the time dimension is present and is of the type datetime64, False otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">netCDF</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">netCDF</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">_check_file_extension</span><span class="p">(</span><span class="n">netCDF</span><span class="p">):</span>
-            <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">netCDF</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;The file does not have the correct extension&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">netCDF</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">netCDF</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;The input is not a valid type&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">ds</span>
+    <span class="k">return</span> <span class="s2">&quot;time&quot;</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">dims</span> <span class="ow">and</span> <span class="n">ds</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s2">&quot;datetime64[ns]&quot;</span>
 
 
 <span class="k">def</span> <span class="nf">_check_variable_by_name</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
@@ -626,14 +612,6 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="nb">all</span><span class="p">([</span><span class="n">attr</span> <span class="ow">in</span> <span class="n">da</span><span class="o">.</span><span class="n">attrs</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">VARIABLE_METADATA</span><span class="p">])</span>
-
-
-<span class="k">def</span> <span class="nf">_check_file_extension</span><span class="p">(</span><span class="n">file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the file extension is netcdf (.nc)&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.nc&quot;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">file</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.nc&quot;</span>
 </pre></div>
 
                 </article>

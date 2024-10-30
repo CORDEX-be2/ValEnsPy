@@ -55,3 +55,10 @@ sfcWind:
   raw_units: m s-1
   raw_grid_mapping: Lambert_Conformal
   raw_cell_methods: 'time: point'
+
+clt:
+  raw_name: cloudfraction
+  raw_long_name: cloudfraction
+  raw_units: '(0 - 1)'
+  raw_grid_mapping: Lambert_Conformal
+  raw_cell_methods: 'time: point'

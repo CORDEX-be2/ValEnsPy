@@ -397,7 +397,16 @@ document.write(`
   <h1>Source code for inputconverter</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">valenspy.inputconverter_functions</span> <span class="kn">import</span> <span class="n">EOBS_to_CF</span><span class="p">,</span> <span class="n">ERA5_to_CF</span><span class="p">,</span> <span class="n">ERA5Land_to_CF</span><span class="p">,</span> <span class="n">CLIMATE_GRID_to_CF</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">from</span> <span class="nn">valenspy._utilities</span> <span class="kn">import</span> <span class="n">load_xarray_from_data_sources</span>
+<span class="kn">from</span> <span class="nn">valenspy.inputconverter_functions</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">EOBS_to_CF</span><span class="p">,</span>
+    <span class="n">ERA5_to_CF</span><span class="p">,</span>
+    <span class="n">ERA5Land_to_CF</span><span class="p">,</span>
+    <span class="n">CLIMATE_GRID_to_CF</span><span class="p">,</span>
+    <span class="n">CCLM_to_CF</span><span class="p">,</span>
+    <span class="n">ALARO_K_to_CF</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="InputConverter">
@@ -421,24 +430,33 @@ document.write(`
 
 <div class="viewcode-block" id="InputConverter.convert_input">
 <a class="viewcode-back" href="../_autosummary/inputconverter.InputConverter.html#inputconverter.InputConverter.convert_input">[docs]</a>
-    <span class="k">def</span> <span class="nf">convert_input</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">paths</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]],</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Path</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the paths file to CF convention.</span>
+    <span class="k">def</span> <span class="nf">convert_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_sources</span><span class="p">,</span> <span class="n">metadata_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the input file(s)/xarray dataset to CF convention.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        paths : Path or list(Path)</span>
-<span class="sd">            The input file or list of input files to convert.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">paths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">converter</span><span class="p">(</span><span class="n">paths</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span>
+<span class="sd">        data_sources : Path or list(Path) or xarray.Dataset</span>
+<span class="sd">            The input file or list of input files or an xarray dataset to convert.</span>
 
-        <span class="k">return</span> <span class="n">paths</span></div>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xarray.Dataset</span>
+<span class="sd">            An xarray dataset in CF convention.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">load_xarray_from_data_sources</span><span class="p">(</span><span class="n">data_sources</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">converter</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">metadata_info</span><span class="p">)</span></div>
 </div>
 
 
 
-<span class="n">INPUT_CONVERTORS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ERA5&quot;</span><span class="p">:</span> <span class="n">InputConverter</span><span class="p">(</span><span class="n">ERA5_to_CF</span><span class="p">),</span><span class="s2">&quot;ERA5-Land&quot;</span><span class="p">:</span><span class="n">InputConverter</span><span class="p">(</span><span class="n">ERA5Land_to_CF</span><span class="p">),</span> <span class="s2">&quot;EOBS&quot;</span><span class="p">:</span> <span class="n">InputConverter</span><span class="p">(</span><span class="n">EOBS_to_CF</span><span class="p">),</span> <span class="s2">&quot;CLIMATE_GRID&quot;</span><span class="p">:</span> <span class="n">InputConverter</span><span class="p">(</span><span class="n">CLIMATE_GRID_to_CF</span><span class="p">)}</span>
+<span class="n">INPUT_CONVERTORS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ERA5&quot;</span><span class="p">:</span> <span class="n">InputConverter</span><span class="p">(</span><span class="n">ERA5_to_CF</span><span class="p">),</span>
+    <span class="s2">&quot;ERA5-Land&quot;</span><span class="p">:</span> <span class="n">InputConverter</span><span class="p">(</span><span class="n">ERA5Land_to_CF</span><span class="p">),</span>
+    <span class="s2">&quot;EOBS&quot;</span><span class="p">:</span> <span class="n">InputConverter</span><span class="p">(</span><span class="n">EOBS_to_CF</span><span class="p">),</span>
+    <span class="s2">&quot;CLIMATE_GRID&quot;</span><span class="p">:</span> <span class="n">InputConverter</span><span class="p">(</span><span class="n">CLIMATE_GRID_to_CF</span><span class="p">),</span>
+    <span class="s2">&quot;CCLM&quot;</span><span class="p">:</span> <span class="n">InputConverter</span><span class="p">(</span><span class="n">CCLM_to_CF</span><span class="p">),</span>
+    <span class="s2">&quot;ALARO_K&quot;</span><span class="p">:</span> <span class="n">InputConverter</span><span class="p">(</span><span class="n">ALARO_K_to_CF</span><span class="p">),</span>
+<span class="p">}</span>
 
 <span class="c1"># Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.</span>
 
@@ -446,9 +464,6 @@ document.write(`
 <span class="c1">#  - Some helper functions to extend input to glob arguments, str arguments etc.</span>
 <span class="c1">#  - Extend input so that already loaded datasets can also be input</span>
 <span class="c1">#  - CF Checker functionality</span>
-
-<span class="c1"># To be discussed -&gt; Do we expect inputconvertor function to work at the file level? Or should they be able to manage a collection of files?</span>
-<span class="c1"># If file level the InputConverter can seperately provide them to the function and handel concetanating/joining these.</span>
 </pre></div>
 
                 </article>
