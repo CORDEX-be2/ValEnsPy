@@ -39,7 +39,10 @@ jobs:
         #WHEN PUBLIC, UNCOMMENT FOR DEPLOYING DOC TO GH-PAGES!!!!
         - name: deploy documentation
           uses: peaceiris/actions-gh-pages@v3
+          permissions:
+            contents: write
           with:
            publish_branch: gh-pages
+           github_token: ${{ secrets.GITHUB_TOKEN }}
            publish_dir: _build/
            force_orphan: true
