@@ -7,7 +7,6 @@ on:
       - dev
    pull_request:
     types: [review_requested]
-  #Add a manual trigger
    workflow_dispatch:
 
 
