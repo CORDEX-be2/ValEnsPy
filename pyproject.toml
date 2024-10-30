@@ -2,16 +2,44 @@
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 
-[tool.poetry]
+[project]
+name = "ValEnsPy"
+version = "0.1.0"
+requires-python = ">= 3.9"
 authors = [
-  "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
-  "Inne Vanderkelen <inne.vanderkelen@kuleuven.be>",
+  {name = "Kobe Vandelanotte", email = "kobe.vandelanotte@meteo.be"},
+  {name = "Inne Vanderkelen", email = "inne.vanderkelen@kuleuven.be},
+]
+maintainers = = [
+  {name = "Kobe Vandelanotte", email = "kobe.vandelanotte@meteo.be"},
+  {name = "Inne Vanderkelen", email = "inne.vanderkelen@kuleuven.be},
 ]
 description = "A Python package to validate gridded model data."
-license = "GPL-3.0"
-name = "ValEnsPy"
 readme = "README.md"
-version = "0.1.0"
+license = {file = "LICENSE"}
+keywords = ["validation", "ensemble", "climate", "meteorology", "model", "data"]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Atmospheric Science"
+]
+
+[project.urls]
+Repository = "https://github.com/CORDEX-be2/ValEnsPy"
+Issues = "https://github.com/CORDEX-be2/ValEnsPy/issues"
+Documentation = "https://cordex-be2.github.io/ValEnsPy/"
+Changelog = "https://github.com/CORDEX-be2/ValEnsPy/releases"
+
+[tool.poetry]
 
 [tool.poetry.dependencies]
 cartopy = "^0.23.0"
