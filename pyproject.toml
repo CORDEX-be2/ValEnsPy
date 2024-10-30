@@ -5,11 +5,11 @@ requires = ["poetry-core"]
 [tool.poetry]
 authors = [
   "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
-  " ... "
+  "Inne Vanderkelen <inne.vanderkelen@kuleuven.be>",
 ]
 description = "A Python package to validate gridded model data."
-license = ","
-name = "valenspy"
+license = "GPL-3.0"
+name = "ValEnsPy"
 readme = "README.md"
 version = "0.1.0"
 
