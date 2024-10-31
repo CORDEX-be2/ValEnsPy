@@ -1,3 +1,10 @@
+
+# personal testing notebooks
+notebooks/
+
+# directory in which output (figures, tables) is written
+output/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -5,6 +12,9 @@ __pycache__/
 *.swp
 # C extensions
 *.so
+
+# Folder for local exploration
+notebooks/
 
 # Distribution / packaging
 .Python
@@ -69,7 +79,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-!docs/_build #Include until public release of documentation
+docs/_build
 docs/_autosummary
 !docs/_templates #keep track of these!
 !docs/_static #keep track of these

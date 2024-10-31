@@ -1,0 +1,13 @@
+# RADCLIM variable name conversion table based on CORDEX variables
+
+# Format
+
+# CORDEX VariableName:
+#    raw_name: RADCLIM_VariableName (The name of the variable in the dataset which corresponds to the CORDEX variable)
+#    raw_long_name: RADCLIM_VariableLongName (The long name of the variable in the dataset which corresponds to the CORDEX variable)
+#    raw_units: RADCLIM_VariableUnits (The units of the variable in the dataset)
+
+pr:
+  raw_name: precipitation
+  raw_long_name: Radar estimated precipitation
+  raw_units: mm

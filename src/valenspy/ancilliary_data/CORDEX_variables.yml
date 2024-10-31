@@ -1,0 +1,1429 @@
+# This file contains the list of CORDEX variables and their attributes
+
+# Format:
+#VariableName:
+#  units:
+#  standard_name:
+#  long_name:
+#  realm:
+#  aggregation(optional): i: instantaneous, a:averaged over output interval.
+#  comment: comments from the original table
+
+#List based on CORDEX-CMIP6 Request "https://cordex.org/wp-content/uploads/2022/09/CORDEX_CMIP6_Atmosphere_Variable_List.xlsx"
+
+# variables are automatically retrieved from CORDEX table using this script in Valenspy: ancilliary_scripts/convert_CORDEX_excel_to_yaml/convert_CORDEX_excel_to_yaml.py
+# and then manually copied in this file.
+
+###############################
+## Atmosphere CORE Variables ##
+###############################
+
+tas:
+  aggregation: i
+  long_name: Near-Surface Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+tasmax:
+  comments: maximum from all integrated time steps per day
+  long_name: Daily Maximum Near-Surface Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+tasmin:
+  comments: minimum from all integrated time steps per day
+  long_name: Daily Minimum Near-Surface Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+pr:
+  aggregation: a
+  long_name: Precipitation
+  realm: atmos
+  standard_name: precipitation_flux
+  units: kg m-2 s-1
+
+evspsbl:
+  aggregation: a
+  long_name: Evaporation Including Sublimation and Transpiration
+  realm: atmos
+  standard_name: water_evapotranspiration_flux
+  units: kg m-2 s-1
+
+huss:
+  aggregation: i
+  long_name: Near-Surface Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hurs:
+  aggregation: i
+  long_name: Near-Surface Relative Humidity
+  realm: atmos
+  standard_name: relative_humidity
+  units: '%'
+
+ps:
+  aggregation: i
+  long_name: Surface Air Pressure
+  realm: atmos
+  standard_name: surface_air_pressure
+  units: Pa
+
+psl:
+  aggregation: i
+  long_name: Sea Level Pressure
+  realm: atmos
+  standard_name: air_pressure_at_mean_sea_level
+  units: Pa
+
+sfcWind:
+  aggregation: i
+  long_name: Near-Surface Wind Speed
+  realm: atmos
+  standard_name: wind_speed
+  units: m s-1
+
+uas:
+  aggregation: i
+  long_name: Eastward Near-Surface Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+vas:
+  aggregation: i
+  long_name: Northward Near-Surface Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+clt:
+  aggregation: a
+  long_name: Total Cloud Cover Percentage
+  realm: atmos
+  standard_name: cloud_area_fraction
+  units: '%'
+
+rsds:
+  aggregation: a
+  long_name: Surface Downwelling Shortwave Radiation
+  realm: atmos
+  standard_name: surface_downwelling_shortwave_flux_in_air
+  units: W m-2
+
+rlds:
+  aggregation: a
+  long_name: Surface Downwelling Longwave Radiation
+  realm: atmos
+  standard_name: surface_downwelling_longwave_flux_in_air
+  units: W m-2
+
+orog:
+  long_name: Surface Altitude
+  realm: atmos
+  standard_name: surface_altitude
+  units: m
+
+sftlf:
+  long_name: Percentage of the Grid Cell Occupied by Land
+  realm: atmos
+  standard_name: land_area_fraction
+  units: '%'
+
+
+#################################
+## Atmosphere Tier 1 Variables ##
+#################################
+ts:
+  aggregation: i
+  long_name: Surface Temperature
+  realm: atmos
+  standard_name: surface_temperature
+  units: K
+
+tsl:
+  aggregation: i
+  comments: ' Temperature of each soil layer (3D variable). Reported as missing for grid cells with no land.'
+  long_name: Temperature of Soil
+  realm: atmos
+  standard_name: soil_temperature
+  units: K
+
+prc:
+  aggregation: a
+  long_name: Convective Precipitation
+  realm: atmos
+  standard_name: convective_precipitation_flux
+  units: kg m-2 s-1
+
+prhmax:
+  comments: 'Defined as maximum of the precipitation rate averaged over the whole hour. '
+  long_name: Daily Maximum Hourly Precipitation Rate
+  realm: atmos
+  standard_name: precipitation_flux
+  units: kg m-2 s-1
+
+prsn:
+  aggregation: a
+  long_name: Snowfall Flux
+  realm: atmos
+  standard_name: snowfall_flux
+  units: kg m-2 s-1
+
+mrros:
+  aggregation: a
+  long_name: Surface Runoff
+  realm: atmos
+  standard_name: surface_runoff_flux
+  units: kg m-2 s-1
+
+mrro:
+  aggregation: a
+  long_name: Total Runoff
+  realm: atmos
+  standard_name: runoff_flux
+  units: kg m-2 s-1
+
+snm:
+  aggregation: a
+  long_name: Surface Snow Melt
+  realm: atmos
+  standard_name: surface_snow_melt_flux
+  units: kg m-2 s-1
+
+tauu:
+  aggregation: a
+  long_name: Surface Downward Eastward Wind Stress
+  realm: atmos
+  standard_name: surface_downward_eastward_stress
+  units: Pa
+
+tauv:
+  aggregation: a
+  long_name: Surface Downward Northward Wind Stress
+  realm: atmos
+  standard_name: surface_downward_northward_stress
+  units: Pa
+
+sfcWindmax:
+  comments: Maximum from all integrated time steps per day
+  long_name: Daily Maximum Near-Surface Wind Speed
+  realm: atmos
+  standard_name: wind_speed
+  units: m s-1
+
+sund:
+  comments: The WMO definition of sunshine is that the surface incident radiative
+    flux from the solar beam (i.e. excluding diffuse skylight) exceeds 120 W m-2.
+    "Duration" is the length of time for which a condition holds.
+  long_name: Daily Duration of Sunshine
+  realm: atmos
+  standard_name: duration_of_sunshine
+  units: s
+
+rsdsdir:
+  aggregation: a
+  long_name: Surface Direct Downwelling Shortwave Radiation
+  realm: atmos
+  standard_name: surface_direct_downwelling_shortwave_flux_in_air
+  units: W m-2
+
+rsus:
+  aggregation: a
+  long_name: Surface Upwelling Shortwave Radiation
+  realm: atmos
+  standard_name: surface_upwelling_shortwave_flux_in_air
+  units: W m-2
+
+rlus:
+  aggregation: a
+  long_name: Surface Upwelling Longwave Radiation
+  realm: atmos
+  standard_name: surface_upwelling_longwave_flux_in_air
+  units: W m-2
+
+rlut:
+  aggregation: a
+  long_name: TOA Outgoing Longwave Radiation
+  realm: atmos
+  standard_name: toa_outgoing_longwave_flux
+  units: W m-2
+
+rsdt:
+  aggregation: a
+  long_name: TOA Incident Shortwave Radiation
+  realm: atmos
+  standard_name: toa_incoming_shortwave_flux
+  units: W m-2
+
+rsut:
+  aggregation: a
+  long_name: TOA Outgoing Shortwave Radiation
+  realm: atmos
+  standard_name: toa_outgoing_shortwave_flux
+  units: W m-2
+
+hfls:
+  aggregation: a
+  long_name: Surface Upward Latent Heat Flux
+  realm: atmos
+  standard_name: surface_upward_latent_heat_flux
+  units: W m-2
+
+hfss:
+  aggregation: a
+  long_name: Surface Upward Sensible Heat Flux
+  realm: atmos
+  standard_name: surface_upward_sensible_heat_flux
+  units: W m-2
+
+mrfso:
+  aggregation: i
+  comments: The mass of frozen water per unit area, summed over all soil layers. Reported  as missing for grid cells with no land.
+  long_name: Soil Frozen Water Content
+  realm: atmos
+  standard_name: soil_frozen_water_content
+  units: kg m-2
+
+mrfsos:
+  aggregation: i
+  comments: The mass of frosen water  in the upper 10cm of the soil layer. Reported
+    as missing for grid cells with no land. (not in CMIP)
+  long_name: Frozen Water Content in Upper Portion of Soil Column
+  realm: atmos
+  standard_name: frozen_water_content_of_soil_layer
+  units: kg m-2
+
+mrsfl:
+  aggregation: i
+  comments: The mass of frosen water in each soil layer (3D variable). Reported as missing for grid cells with no land. (not in CMIP) [mrfsol -> mrsfl, 2022.09.22, https://github.com/WCRP-CORDEX/cordex-cmip6-data-request/issues/2 ]
+  long_name: Frozen Water Content of Soil Layer
+  realm: atmos
+  standard_name: frozen_water_content_of_soil_layer
+  units: kg m-2
+
+mrso:
+  aggregation: i
+  comments: The mass of water in all phases per unit area, summed over all soil layers.
+  long_name: Total Soil Moisture Content
+  realm: atmos
+  standard_name: 'mass_content_of_water_in_soil'
+  units: kg m-2
+
+mrsos:
+  aggregation: i
+  comments: The mass of water in all phases in the upper 10cm of the soil layer. Reported as missing for grid cells with no land.
+  long_name: Moisture in Upper Portion of Soil Column
+  realm: atmos
+  standard_name: 'mass_content_of_water_in_soil_layer'
+  units: kg m-2
+
+mrsol:
+  aggregation: i
+  comments: ' The mass of water in all phases in each soil layer (3D variable). Reported as missing for grid cells with no land.'
+  long_name: Total Water Content of Soil Layer
+  realm: atmos
+  standard_name: mass_content_of_water_in_soil_layer
+  units: kg m-2
+
+snw:
+  aggregation: i
+  long_name: Surface Snow Amount
+  realm: atmos
+  standard_name: surface_snow_amount
+  units: kg m-2
+
+snc:
+  aggregation: i
+  long_name: Snow Area Percentage
+  realm: atmos
+  standard_name: surface_snow_area_fraction
+  units: '%'
+
+snd:
+  aggregation: i
+  long_name: Snow Depth
+  realm: atmos
+  standard_name: surface_snow_thickness
+  units: m
+
+siconca:
+  comments: daily and monthly means
+  long_name: Sea-Ice Area Percentage (Atmospheric Grid)
+  realm: atmos
+  standard_name: sea_ice_area_fraction
+  units: '%'
+
+zmla:
+  aggregation: i
+  long_name: Height of Boundary Layer
+  realm: atmos
+  standard_name: atmosphere_boundary_layer_thickness
+  units: m
+
+prw:
+  aggregation: i
+  long_name: Water Vapor Path
+  realm: atmos
+  standard_name: atmosphere_mass_content_of_water_vapor
+  units: kg m-2
+
+clwvi:
+  aggregation: i
+  long_name: Condensed Water Path
+  realm: atmos
+  standard_name: atmosphere_mass_content_of_cloud_condensed_water
+  units: kg m-2
+
+clivi:
+  aggregation: i
+  long_name: Ice Water Path
+  realm: atmos
+  standard_name: atmosphere_mass_content_of_cloud_ice
+  units: kg m-2
+
+ua1000:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua925:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+ua850:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua700:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua600:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua500:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua400:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua300:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua250:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua200:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+va1000:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va925:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va850:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va700:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va600:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va500:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va400:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va300:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va250:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va200:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+ta1000:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta925:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta850:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta700:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta600:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta500:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta400:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta300:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta250:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta200:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+hus1000:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus925:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus850:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus700:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus600:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus500:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus400:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus300:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus250:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus200:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+zg1000:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg925:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg850:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg700:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg600:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg500:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg400:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg300:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg250:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg200:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+wa1000:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa925:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa850:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa700:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa600:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa500:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa400:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa300:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa250:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa200:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+ua50m:
+  aggregation: i
+  long_name: Eastward Wind at 50m
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua100m:
+  aggregation: i
+  long_name: Eastward Wind at 100m
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua150m:
+  aggregation: i
+  long_name: Eastward Wind at 150m
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+va50m:
+  aggregation: i
+  long_name: Northward Wind at 50m
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va100m:
+  aggregation: i
+  long_name: Northward Wind at 100m
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va150m:
+  aggregation: i
+  long_name: Northward Wind at 150m
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+ta50m:
+  aggregation: i
+  comments: 'requested for urban modeling'
+  long_name: Air Temperature at 50m
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+hus50m:
+  aggregation: i
+  comments: 'requested for urban modeling'
+  long_name: Specific Humidity at 50m
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+
+#################################
+## Atmosphere Tier 2 Variables ##
+#################################
+
+evspsblpot:
+  aggregation: a
+  long_name: Potential Evapotranspiration
+  realm: atmos
+  standard_name: water_potential_evaporation_flux
+  units: kg m-2 s-1
+
+wsgsmax:
+  long_name: Daily Maximum Near-Surface Wind Speed of Gust
+  realm: atmos
+  standard_name: 'wind_speed_of_gust '
+  units: m s-1
+
+clh:
+  aggregation: a
+  comments: above 440 hPa
+  long_name: High Level Cloud Fraction
+  realm: atmos
+  standard_name: cloud_area_fraction_in_atmosphere_layer
+  units: '%'
+
+clm:
+  aggregation: a
+  comments: between 680 and 440 hPa
+  long_name: Mid Level Cloud Fraction
+  realm: atmos
+  standard_name: cloud_area_fraction_in_atmosphere_layer
+  units: '%'
+
+cll:
+  aggregation: a
+  comments: below 680 hPa
+  long_name: Low Level Cloud Fraction
+  realm: atmos
+  standard_name: cloud_area_fraction_in_atmosphere_layer
+  units: '%'
+rsdscs:
+  aggregation: a
+  long_name: Surface Downwelling Clear-Sky Shortwave Radiation
+  realm: atmos
+  standard_name: surface_downwelling_shortwave_flux_in_air_assuming_clear_sky
+  units: W m-2
+
+rldscs:
+  aggregation: a
+  long_name: Surface Downwelling Clear-Sky Longwave Radiation
+  realm: atmos
+  standard_name: surface_downwelling_longwave_flux_in_air_assuming_clear_sky
+  units: W m-2
+
+rsuscs:
+  aggregation: a
+  long_name: Surface Upwelling Clear-Sky Shortwave Radiation
+  realm: atmos
+  standard_name: surface_upwelling_shortwave_flux_in_air_assuming_clear_sky
+  units: W m-2
+
+rluscs:
+  aggregation: a
+  long_name: Surface Upwelling Clear-Sky Longwave Radiation
+  realm: atmos
+  standard_name: surface_upwelling_longwave_flux_in_air_assuming_clear_sky
+  units: W m-2
+
+rsutcs:
+  aggregation: a
+  long_name: TOA Outgoing Clear-Sky Shortwave Radiation
+  realm: atmos
+  standard_name: toa_outgoing_shortwave_flux_assuming_clear_sky
+  units: W m-2
+
+rlutcs:
+  aggregation: a
+  long_name: TOA Outgoing Clear-Sky Longwave Radiation
+  realm: atmos
+  standard_name: toa_outgoing_longwave_flux_assuming_clear_sky
+  units: W m-2
+
+z0:
+  aggregation: i
+  long_name: Surface Roughness Length
+  realm: atmos
+  standard_name: surface_roughness_length
+  units: m
+
+CAPE:
+  aggregation: i
+  long_name: Convective Available Potential Energy
+  realm: atmos
+  standard_name: atmosphere_convective_available_potential_energy_wrt_surface
+  units: J kg-1
+
+LI:
+  aggregation: i
+  long_name: Lifted Index
+  realm: atmos
+  standard_name: temperature_difference_between_ambient_air_and_air_lifted_adiabatically_from_the_surface
+  units: K
+
+CIN:
+  aggregation: i
+  long_name: Convective Inhibition
+  realm: atmos
+  standard_name: atmosphere_convective_inhibition_wrt_surface
+  units: J kg-1
+
+CAPEmax:
+  long_name: Daily Maximum Convective Available Potential Energy
+  realm: atmos
+  standard_name: atmosphere_convective_available_potential_energy_wrt_surface
+  units: J kg-1
+
+LImax:
+  long_name: Daily Maximum Lifted Index
+  realm: atmos
+  standard_name: temperature_difference_between_ambient_air_and_air_lifted_adiabatically_from_the_surface
+  units: K
+
+CINmax:
+  long_name: Daily Maximum Convective Inhibition
+  realm: atmos
+  standard_name: atmosphere_convective_inhibition_wrt_surface
+  units: J kg-1
+
+od550aer:
+  comments: long_name fixed, 2022.09.22  https://github.com/WCRP-CORDEX/cordex-cmip6-data-request/issues/6
+  long_name: Ambient Aerosol Optical Thickness at 550nm
+  realm: atmos
+  standard_name: atmosphere_optical_thickness_due_to_ambient_aerosol_particles
+  units: 1
+
+ua150:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua100:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua70:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua50:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua30:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua20:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua10:
+  aggregation: i
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+va150:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va100:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va70:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va50:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va30:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va20:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va10:
+  aggregation: i
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+ta150:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta100:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta70:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta50:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta30:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta20:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+ta10:
+  aggregation: i
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+hus150:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus100:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus70:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus50:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus30:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus20:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+hus10:
+  aggregation: i
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+zg150:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg100:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg70:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg50:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg30:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg20:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+zg10:
+  aggregation: i
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+wa150:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa100:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa70:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa50:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa30:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa20:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+wa10:
+  aggregation: i
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+ua750:
+  aggregation: i
+  comments: requested by CORDEX-Africa
+  long_name: Eastward Wind
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+va750:
+  aggregation: i
+  comments: requested by CORDEX-Africa
+  long_name: Northward Wind
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+ta750:
+  aggregation: i
+  comments: requested by CORDEX-Africa
+  long_name: Air Temperature
+  realm: atmos
+  standard_name: air_temperature
+  units: K
+
+hus750:
+  aggregation: i
+  comments: requested by CORDEX-Africa
+  long_name: Specific Humidity
+  realm: atmos
+  standard_name: specific_humidity
+  units: 1
+
+zg750:
+  aggregation: i
+  comments: requested by CORDEX-Africa
+  long_name: Geopotential Height
+  realm: atmos
+  standard_name: geopotential_height
+  units: m
+
+wa750:
+  aggregation: i
+  comments: requested by CORDEX-Africa
+  long_name: Upward Air Velocity
+  realm: atmos
+  standard_name: upward_air_velocity
+  units: m s-1
+
+ua200m:
+  aggregation: i
+  long_name: Eastward Wind at 200m
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua250m:
+  aggregation: i
+  long_name: Eastward Wind at 250m
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+ua300m:
+  aggregation: i
+  long_name: Eastward Wind at 250m
+  realm: atmos
+  standard_name: eastward_wind
+  units: m s-1
+
+va200m:
+  aggregation: i
+  long_name: Northward Wind at 200m
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va250m:
+  aggregation: i
+  long_name: Northward Wind at 250m
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+va300m:
+  aggregation: i
+  long_name: Northward Wind at 350m
+  realm: atmos
+  standard_name: northward_wind
+  units: m s-1
+
+sftgif:
+  long_name: Percentage of the Grid Cell Covered by Glacier
+  realm: atmos
+  standard_name: land_ice_area_fraction
+  units: '%'
+
+mrsofc:
+  long_name: Capacity of Soil to Store Water  (Field Capacity)
+  realm: atmos
+  standard_name: soil_moisture_content_at_field_capacity
+  units: kg m-2
+
+rootd:
+  long_name: Maximum Root Depth
+  realm: atmos
+  standard_name: root_depth
+  units: m
+
+sftlaf:
+  comments: 'not in CMIP or in CF '
+  long_name: Percentage of the Grid Cell Occupied by Lake
+  realm: atmos
+  standard_name: lake_area_fraction
+  units: '%'
+
+sfturf:
+  comments: 'not in CMIP or in CF '
+  long_name: Percentage of the Grid Cell Occupied by City
+  realm: atmos
+  standard_name: urban_area_fraction
+  units: '%'
+
+dtb:
+  comments: not in CMIP or in CF (lower boundary of land surface models)
+  long_name: Depth to Bedrock
+  realm: atmos
+  standard_name: bedrock_depth
+  units: m
+
+areacella:
+  long_name: Atmosphere Grid-Cell Area
+  realm: atmos
+  standard_name: cell_area
+  units: m2

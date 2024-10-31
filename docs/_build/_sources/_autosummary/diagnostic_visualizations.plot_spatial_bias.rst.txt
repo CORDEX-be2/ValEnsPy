@@ -1,6 +1,0 @@
-diagnostic\_visualizations.plot\_spatial\_bias
-==============================================
-
-.. currentmodule:: diagnostic_visualizations
-
-.. autofunction:: plot_spatial_bias

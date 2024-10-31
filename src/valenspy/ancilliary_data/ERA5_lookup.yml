@@ -1,0 +1,183 @@
+# ERA5 variable name conversion table based on CORDEX variables
+
+# Note: this table is based on the var_era5_cordex.csv table of Bert Van Schaeybroeck.
+# This is not complete, when downloading or using additional ERA5(-Land) data, this needs to be filled.
+# please push the additions, so that they become usefull for future users.
+
+# Format
+
+# CORDEX VariableName:
+#    raw_name:
+#    raw_long_name:
+#    raw_units:
+
+# More info on ERA5: https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels?tab=overview
+# Overview of ERA5 parameter listings: https://confluence.ecmwf.int/display/CKB/ERA5%3A+data+documentation#ERA5:datadocumentation-Parameterlistings
+# ERA5-Land: https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land?tab=overview
+# Overview of ERA5-Land parameter listings: https://confluence.ecmwf.int/display/CKB/ERA5-Land%3A+data+documentation#ERA5Land:datadocumentation-parameterlistingParameterlistings
+
+
+pr:
+    raw_name: tp
+    raw_long_name: total_precipitation
+    raw_units: m
+
+prsn:
+    raw_name: sf
+    raw_long_name: snowfall
+    raw_units: m
+
+prw:
+    raw_name: tcwv
+    raw_long_name: total_column_water_vapour
+    raw_units: mm
+
+snw:
+    raw_name: sde
+    raw_long_name: snow_depth
+    raw_units: m
+
+snd:
+    raw_name: sd
+    raw_long_name: snow_depth_water_equivalent
+    raw_units: m
+
+mrros:
+    raw_name: sro
+    raw_long_name: surface_runoff
+    raw_units: m
+
+mrro:
+    raw_name: ro
+    raw_long_name: runoff
+    raw_units: m
+
+tas:
+    raw_name: t2m
+    raw_long_name: 2m_temperature
+    raw_units: K
+
+ts:
+    raw_name: skt
+    raw_long_name: skin_temperature
+    raw_units: K
+
+evspsbl:
+    raw_name: e
+    raw_long_name: evaporation
+    raw_units: m
+
+evspsblpot:
+    raw_name: pev
+    raw_long_name: potential_evaporation
+    raw_units: m
+
+uas:
+    raw_name: 10u
+    raw_long_name: 10m_u_component_of_wind
+    raw_units: m/s
+
+sfcWind:
+    raw_name: 10v
+    raw_long_name: 10m_v_component_of_wind
+    raw_units: m/s
+
+hfls:
+    raw_name: slhf
+    raw_long_name: surface_latent_heat_flux
+    raw_units: J/m^2
+
+hfss:
+    raw_name: sshf
+    raw_long_name: surface_sensible_heat_flux
+    raw_units: J/m^2
+
+rsds:
+    raw_name: ssrd
+    raw_long_name: surface_solar_radiation_downwards
+    raw_units: J/m^2
+
+rlds:
+    raw_name: strd
+    raw_long_name: surface_thermal_radiation_downwards
+    raw_units: J/m^2
+
+ps:
+    raw_name: sp
+    raw_long_name: surface_pressure
+    raw_units: Pa
+
+psl:
+    raw_name: msl
+    raw_long_name: mean_sea_level_pressure
+    raw_units: Pa
+
+zmla:
+    raw_name: blh
+    raw_long_name: boundary_layer_height
+    raw_units: m
+
+clt:
+    raw_name: tcc
+    raw_long_name: total_cloud_cover
+    raw_units: (0 - 1)
+
+cll:
+    raw_name: lcc
+    raw_long_name: low_cloud_cover
+    raw_units: (0 - 1)
+clm:
+    raw_name: mcc
+    raw_long_name: medium_cloud_cover
+    raw_units: (0 - 1)
+
+clh:
+    raw_name: hcc
+    raw_long_name: high_cloud_cover
+    raw_units: (0 - 1)
+
+rsdt:
+    raw_name: tisr
+    raw_long_name: toa_incident_solar_radiation
+    raw_units: J/m^2
+
+hurs:
+    raw_name: r
+    raw_long_name: relative_humidity
+    raw_units: '%'
+
+
+# Variables to double check when needed by user.
+
+# aggregation
+# prhmax:
+#     raw_name:
+#     raw_long_name: total_precipitation_max
+#     raw_units: m
+
+# tasmax:
+#     raw_name:
+#     raw_long_name: 2m_temperature_max
+#     raw_units: K
+
+tasmin:
+    raw_name:
+    raw_long_name: 2m_temperature_min
+    raw_units: K
+
+# sfcWindmax:
+#     raw_name:
+#     raw_long_name: 10m_w_component_of_wind_max
+#     raw_units: m/s
+
+# is cordex unit correct?
+wsgsmax:
+    raw_name: 10fg
+    raw_long_name: 10m_wind_gust_since_previous_post_processing_max
+    raw_units: m/s
+
+# # mrso is total soil moisture content in CORDEX, not corresponding to volumetric_soil_water of first layer + check units!
+# mrso:
+#     raw_name:
+#     raw_long_name: volumetric_soil_water_layer_1
+#     raw_units: m

@@ -4,8 +4,10 @@ Contribution and Dev notes
 
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    CONTRIBUTING
-   CONTRIBUTING_VSC
+   INSTALL
+   INSTALL_VSC
+   GIT
    dev_notes

@@ -1,0 +1,66 @@
+# CLIMATE_GRID variable name conversion table based on CORDEX variables
+
+# Format
+
+# CORDEX VariableName:
+#    raw_name: CLIMATE_GRID_VariableName (The name of the variable in the dataset which corresponds to the CORDEX variable)
+#    raw_long_name: CLIMATE_GRID_VariableLongName (The long name of the variable in the dataset which corresponds to the CORDEX variable)
+#    raw_units: CLIMATE_GRID_VariableUnits (The units of the variable in the dataset)
+
+# More info on CLIMATE_GRID: https://opendata.meteo.be/geonetwork/srv/eng/catalog.search#/metadata/RMI_DATASET_GRIDDEDOBS
+
+
+tas:
+  raw_name: TEMP_AVG
+  raw_long_name: Near-Surface Air Temperature
+  raw_units: degC
+
+tasmax:
+  raw_name: TEMP_MAX
+  raw_long_name: Daily Maximum Near-Surface Air Temperature
+  raw_units: degC
+
+tasmin:
+  raw_name: TEMP_MIN
+  raw_long_name: Daily Minimum Near-Surface Air Temperature
+  raw_units: degC
+
+pr:
+  raw_name: PRECIP_QUANTITY
+  raw_long_name: precipitation quantity
+  raw_units: mm
+
+hurs:
+  raw_name: HUMIDITY_RELATIVE
+  raw_long_name: Near-Surface Relative Humidity
+  raw_units: "%"
+
+sfcWind:
+  raw_name: WIND_SPEED
+  raw_long_name: average wind speed
+  raw_units: m/s
+
+rsds:
+  raw_name: SHORT_WAVE_FROM_SKY
+  raw_long_name: average daily global solar radiation
+  raw_units: kWh/m2/day
+
+prhmax:
+  raw_name: PRECIP_1H_MAX
+  raw_long_name: maximum precipitation quantity in one hour
+  raw_units: mm
+
+evspsblpot:
+  raw_name: EVAPOTRANS_REF
+  raw_long_name: reference evapotranspiration ET0
+  raw_units: mm
+
+sfcWindmax:
+  raw_name: WIND_PEAK_SPEED
+  raw_long_name: maximum gusts speed from the closest station
+  raw_units: m/s
+
+psl:
+  raw_name: PRESSURE
+  raw_long_name: sea level pressure
+  raw_units: hPa

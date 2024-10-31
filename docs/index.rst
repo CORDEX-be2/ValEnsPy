@@ -29,7 +29,16 @@ A Python package to validate gridded climate model data.
 Description
 -----------
 
-Some info on the package and the developers funding etc.
+The package is designed to validate gridded climate model data.
+The building-blocks are xarray and dask, in particular xarray-DataTrees are used to manage multiple models and gridded observations.
+It contains three main components:
+* **Input processor**: Reads the input data and prepares it into a CF-compliant format.
+* **Pre-processor**: Transforms all input datasets to enable intercomparison.
+* **Diagnostic**: Calculates the diagnostic metrics and plots the results.
+
+The package is designed to be modular, allowing users to use the components independently or together.
+
+A visual representation of the package structure is shown below.
 
 .. image:: package_structure.png
     :alt: logo

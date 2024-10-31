@@ -1,0 +1,396 @@
+# CCLM variable name conversion table based on CORDEX variables
+
+# NOTE this is work in progress and still requires manual checks
+
+# Format
+
+# CORDEX VariableName:
+#    raw_name:
+#    raw_long_name:
+#    raw_units:
+
+
+tas:
+  raw_name: T_2M
+  raw_standard_name: air_temperature
+  raw_long_name: 2m temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ps:
+  raw_name: PS
+  raw_standard_name: surface_air_pressure
+  raw_long_name: surface pressure
+  raw_units: Pa
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+psl:
+  raw_name: PMSL
+  raw_standard_name: air_pressure_at_mean_sea_level
+  raw_long_name: mean sea level pressure
+  raw_units: Pa
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+zmla:
+  raw_name: HPBL
+  raw_standard_name: atmosphere_boundary_layer_thickness
+  raw_long_name: Height of boundary layer
+  raw_units: m
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+pr:
+  raw_name: TOT_PREC
+  raw_standard_name: precipitation_amount
+  raw_long_name: total precipitation amount
+  raw_units: kg m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: sum'
+
+clt:
+  raw_name: CLCT
+  raw_standard_name: cloud_area_fraction
+  raw_long_name: total cloud cover
+  raw_units: '(0 - 1)'
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+
+huss:
+  raw_name: QV
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+cll:
+  raw_name: CLCL
+  raw_standard_name: low_type_cloud_area_fraction
+  raw_long_name: low cloud cover
+  raw_units: '(0 - 1)'
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+clm:
+  raw_name: CLCM
+  raw_standard_name: medium_type_cloud_area_fraction
+  raw_long_name: medium cloud cover
+  raw_units: '(0 - 1)'
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+clh:
+  raw_name: CLCH
+  raw_standard_name: high_type_cloud_area_fraction
+  raw_long_name: low cloud cover
+  raw_units: '(0 - 1)'
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+
+
+# doublecheck
+
+hfss:
+  raw_name: SHFL_S
+  raw_standard_name: surface_downward_sensible_heat_flux
+  raw_long_name: surface sensible heat flux
+  raw_units: W m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hfls:
+  raw_name: LHFL_S
+  raw_standard_name: surface_downward_latent_heat_flux
+  raw_long_name: surface latent heat flux
+  raw_units: W m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ts:
+  raw_name: T_S
+  raw_standard_name: soil surface temperature
+  raw_long_name: soil surface temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+
+prw:
+  raw_name: TQV
+  raw_standard_name: atmosphere_mass_content_of_water_vapor
+  raw_long_name: precipitable water
+  raw_units: kg m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+clivi:
+  raw_name: TQI
+  raw_standard_name: atmosphere_mass_content_of_cloud_ice
+  raw_long_name: vertical integrated cloud ice
+  raw_units: kg m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+# # to add cclm variable
+
+
+# pressure levels
+ta1000:
+  raw_name: T1000p
+  raw_standard_name: air_temperature
+  raw_long_name: temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+
+ta925:
+  raw_name: T925p
+  raw_standard_name: air_temperature
+  raw_long_name: temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ta850:
+  raw_name: T850p
+  raw_standard_name: air_temperature
+  raw_long_name: temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ta700:
+  raw_name: T700p
+  raw_standard_name: air_temperature
+  raw_long_name: temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ta600:
+  raw_name: T600p
+  raw_standard_name: air_temperature
+  raw_long_name: temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ta500:
+  raw_name: T500p
+  raw_standard_name: air_temperature
+  raw_long_name: temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ta400:
+  raw_name: T400p
+  raw_standard_name: air_temperature
+  raw_long_name: temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ta300:
+  raw_name: T300p
+  raw_standard_name: air_temperature
+  raw_long_name: temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ta250:
+  raw_name: T250p
+  raw_standard_name: air_temperature
+  raw_long_name: temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ta200:
+  raw_name: T200p
+  raw_standard_name: air_temperature
+  raw_long_name: temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hus1000:
+  raw_name: QV1000p
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+
+hus925:
+  raw_name: QV925p
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hus850:
+  raw_name: QV850p
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hus700:
+  raw_name: QV700p
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hus600:
+  raw_name: QV600p
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hus500:
+  raw_name: QV500p
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hus400:
+  raw_name: QV400p
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hus300:
+  raw_name: QV300p
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hus250:
+  raw_name: QV250p
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hus200:
+  raw_name: QV200p
+  raw_standard_name: specific_humidity
+  raw_long_name: specific humidity
+  raw_units: kg kg-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+
+
+
+
+
+#   raw_units: K
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: VMFL_S
+#   raw_standard_name: surface_downward_northward_stress
+#   raw_long_name: northward stress
+#   raw_units: Pa
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: UMFL_S
+#   raw_standard_name: surface_downward_eastward_stress
+#   raw_long_name: eastward stress
+#   raw_units: Pa
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+
+#   raw_name: TQR
+#   raw_standard_name: atmosphere_mass_content_of_liquid_precipitation
+#   raw_long_name: total rain water content vertically integrated
+#   raw_units: kg m-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+
+
+#   raw_name: TQC
+#   raw_standard_name: atmosphere_mass_content_of_cloud_liquid_water
+#   raw_long_name: vertical integrated cloud water
+#   raw_units: kg m-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+
+
+#   raw_name: TQG
+#   raw_standard_name: atmosphere_mass_content_of_graupel
+#   raw_long_name: total graupel content vertically integrated
+#   raw_units: kg m-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: TQS
+#   raw_standard_name: atmosphere_mass_content_of_snow
+#   raw_long_name: total snow content vertically integrated
+#   raw_units: kg m-2
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+
+#   raw_name: CLCT_AV
+#   raw_standard_name: cloud_area_fraction
+#   raw_long_name: averaged total cloud cover
+#   raw_units: '(0 - 1)'
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: mean'
+
+
+
+#   raw_name: FRESHSNW
+#   raw_long_name: freshness of snow
+#   raw_units: '(0 - 1)'
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: QC
+#   raw_standard_name: mass_fraction_of_cloud_liquid_water_in_air
+#   raw_long_name: specific cloud liquid water content
+#   raw_units: kg kg-1
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: QI
+#   raw_standard_name: mass_fraction_of_cloud_ice_in_air
+#   raw_long_name: specific cloud ice content
+#   raw_units: kg kg-1
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'
+
+#   raw_name: QV_S
+#   raw_standard_name: surface_specific_humidity
+#   raw_long_name: surface specific humidity
+#   raw_units: kg kg-1
+#   raw_grid_mapping: rotated_pole
+#   raw_cell_methods: 'time: point'

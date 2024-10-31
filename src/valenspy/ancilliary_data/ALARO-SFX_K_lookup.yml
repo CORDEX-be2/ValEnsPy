@@ -1,0 +1,64 @@
+# ALARO K lookup table to convert variable names to CORDEX standard names and units
+# This starts from the ALARO netcdf file from kwintens fa to nc conversion scripts
+
+# NOTE this is work in progress and still requires manual checks. TODO:
+# -> Check all the cell_methods!
+# -> Long_names are currently the same as the raw_name
+
+# Format
+
+# CORDEX VariableName:
+#    raw_name:
+#    raw_long_name:
+#    raw_units:
+
+
+tas:
+  raw_name: temperature_2m_atm
+  raw_long_name: temperature_2m_atm
+  raw_units: K
+  raw_grid_mapping: Lambert_Conformal
+  raw_cell_methods: 'time: point'
+
+# surface_pressure is this ps or psl? ask kwinten
+# ps:
+#   raw_name: surface_pressure
+#   raw_long_name: surface_pressure
+#   raw_units: Pa
+#   raw_grid_mapping: Lambert_Conformal
+#   raw_cell_methods: 'time: point'
+
+ts:
+  raw_name: temperature_surface
+  raw_long_name: temperature_surface
+  raw_units: K
+  raw_grid_mapping: Lambert_Conformal
+  raw_cell_methods: 'time: point'
+
+uas:
+  raw_name: u_wind
+  raw_long_name: u_wind
+  raw_units: m s-1
+  raw_grid_mapping: Lambert_Conformal
+  raw_cell_methods: 'time: point'
+
+vas:
+  raw_name: v_wind
+  raw_long_name: v_wind
+  raw_units: m s-1
+  raw_grid_mapping: Lambert_Conformal
+  raw_cell_methods: 'time: point'
+
+sfcWind:
+  raw_name: wind_speed_10m
+  raw_long_name: wind_speed_10m
+  raw_units: m s-1
+  raw_grid_mapping: Lambert_Conformal
+  raw_cell_methods: 'time: point'
+
+clt:
+  raw_name: cloudfraction
+  raw_long_name: cloudfraction
+  raw_units: '(0 - 1)'
+  raw_grid_mapping: Lambert_Conformal
+  raw_cell_methods: 'time: point'

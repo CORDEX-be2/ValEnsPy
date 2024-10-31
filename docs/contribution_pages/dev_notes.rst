@@ -7,6 +7,24 @@ other developers.
 On general, the `deployment` folder contains executable (bash) scripts, to
 streamline some typical development procedures.
 
+Merging and Pull Requests
+---------------------------
+
+Once you are satisfied with your code and are ready to share it with the rest of the team, you can create a *Pull request* in github.
+A *Pull request* is a request to merge your code into the *dev* branch. It allows other developers to review your code and suggest changes.
+Even if you are not ready to merge your code, you can still create a *Pull request*. This is useful to have an overview of incoming changes.
+
+Here are some guidelines for creating a *Pull request*:
+- Make sure that you have referred the corresponding issues to the *Pull request* (if any).
+- If your code adaptations are still *work-in-progress*, add the ![Static Badge](https://img.shields.io/badge/WIP%20-%20%23A21079) label to it - this will indicate to other developers that the code is not ready for review.
+- If your code is ready for review, you can add the ![Static Badge](https://img.shields.io/badge/Ready_for_Review%20-%20%230315E4) label to it.
+
+After the code review, and all review marks are resolved, your contributions will be merged to the *dev* branch.
+
+Versioning/Tagging
+---------------------
+
+From time to time the *dev* branch will be merged with the master with a new [*Release tag*](https://github.com/CORDEX-be2/ValEnsPy/releases).
 
 Packaging
 ------------
@@ -31,8 +49,8 @@ Handling Dependencies
 -------------------------
 
 If you make code adaptations and introduce a new dependency (aka import a new package),
-you need to specify this in order for packaging. This is to make shure that all
-dependencies are campatible with each other.
+you need to specify this in order for packaging. This is to make sure that all
+dependencies are compatible with each other.
 
 If you introduce a new dependency, you must add it in the `deployment/dev_pipeline.sh` script
 under "Add dependencies to pyproject".
@@ -51,7 +69,7 @@ takes care of this.
 If you added a dependency, that is not required for using the ValEnsPy package
 (i.g. Poetry -- for packaging, jupyter-lab -- for making examples, ...), you can
 add the dependencies in a seperated group. This is to make shure that if a user
-whants to install the package, these dependencies are not installed. But a developer
+wants to install the package, these dependencies are not installed. But a developer
 has the option to install them by
 
 .. code-block::
@@ -83,7 +101,6 @@ and if you do not change them, the documentation will not change as well (trivia
 * Dynamic part: When you make a code contribution, your contribution must be represented in the API page of the documentation.
 So this means that each time you make a code contribution, the documentation (only the API part), must be upated as well. This is the
 reason that every developer must know how to build the documentation form there working branch.
-
 
 To build the documentation, simply run the `deployment/dev_pipeline.sh` file.
 If you want to build the documentation without building the package, you must

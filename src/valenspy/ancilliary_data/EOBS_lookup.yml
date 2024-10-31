@@ -1,0 +1,51 @@
+# EOBS variable name conversion table based on CORDEX variables
+
+# Format
+
+# CORDEX VariableName:
+#    raw_name:
+#    raw_long_name:
+#    raw_units:
+
+# More info on EOBS: https://www.ecad.eu/download/ensembles/download.php
+
+tas:
+  raw_name: tg
+  raw_long_name: daily mean temperature
+  raw_units: Celcius
+
+tasmax:
+  raw_name: tn
+  raw_long_name: daily minimum temperature
+  raw_units: Celcius
+
+tasmin:
+    raw_name: tx
+    raw_long_name: daily maximum temperature
+    raw_units: Celcius
+
+pr:
+  raw_name: rr
+  raw_long_name: daily precipitation sum
+  raw_units: mm
+
+psl:
+  raw_name: pp
+  raw_long_name: daily averaged sea level pressure
+  raw_units: hPa
+
+hurs:
+  raw_name: hu
+  raw_long_name: daily averaged relative humidity
+  raw_units: "%"
+
+sfcWind:
+  raw_name: fg
+  raw_long_name: daily mean wind speed
+  raw_units: m/s
+
+## to do: find corresponding CORDEX variable for mean global radiation variable in EOBS
+# - radiation
+    #raw_name: qq
+    #raw_long_name: daily mean global radiation
+    #raw_units: W/m2
