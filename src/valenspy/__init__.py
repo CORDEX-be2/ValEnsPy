@@ -16,6 +16,4 @@ from valenspy._utilities.unit_conversion_functions import *
 # Version
 # =============================================================================
 
-# DO not change this manually!
-
-__version__ = "0.1.0"
+__version__ = "0.2.0a0"

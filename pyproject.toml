@@ -2,16 +2,44 @@
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 
+[project]
+
+[project.urls]
+Repository = "https://github.com/CORDEX-be2/ValEnsPy"
+Issues = "https://github.com/CORDEX-be2/ValEnsPy/issues"
+Documentation = "https://cordex-be2.github.io/ValEnsPy/"
+Changelog = "https://github.com/CORDEX-be2/ValEnsPy/releases"
+
 [tool.poetry]
+name = "ValEnsPy"
+version = "0.2.0a0"
 authors = [
   "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
-  " ... "
-]
+  "Inne Vanderkelen <inne.vanderkelen@kuleuven.be"
+  ]
+maintainers = [
+  "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
+  "Inne Vanderkelen <inne.vanderkelen@kuleuven.be"
+  ]
 description = "A Python package to validate gridded model data."
-license = ","
-name = "valenspy"
 readme = "README.md"
-version = "0.1.0"
+license = "GPL-3.0"
+keywords = ["validation", "ensemble", "climate", "meteorology", "model", "data"]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Atmospheric Science"
+]
+
 
 [tool.poetry.dependencies]
 cartopy = "^0.23.0"
@@ -28,7 +56,7 @@ python = "^3.9"
 regionmask = "^0.12.1"
 scipy = "^1.13.0"
 shapely = "^2.0.3"
-xarray = "^2024.2.0"
+xarray = ">2024.2.0,<2024.10"
 xarray-datatree = "^0.0.14"
 seaborn = "^0.13.2"
 
