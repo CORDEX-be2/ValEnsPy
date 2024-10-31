@@ -1,0 +1,6 @@
+diagnostic.functions.mean\_absolute\_error
+==========================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: mean_absolute_error

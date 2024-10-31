@@ -1,0 +1,6 @@
+diagnostic.functions.spatial\_bias
+==================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: spatial_bias

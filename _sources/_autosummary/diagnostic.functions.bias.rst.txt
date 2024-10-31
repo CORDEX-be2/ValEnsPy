@@ -1,0 +1,6 @@
+diagnostic.functions.bias
+=========================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: bias
