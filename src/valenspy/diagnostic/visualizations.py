@@ -22,8 +22,15 @@ xr.set_options(keep_attrs=True)
 
 def plot_diurnal_cycle(data: xr.DataArray, ax=None, **kwargs):
     """Plot the daily cycle of the data."""
+    if ax is None:
+        fig, ax = plt.subplots()
+        
+    if "title" not in kwargs:
+        ax.set_title("Diurnal Cycle")
+    else:
+        ax.set_title(kwargs.pop("title"))
+    
     data.plot(ax=ax, **kwargs)
-    ax.set_title("Diurnal Cycle")
     return ax
 
 
@@ -48,12 +55,17 @@ def plot_time_series(da: xr.DataArray, ax=None, **kwargs):
     if ax is None:
         fig, ax = plt.subplots()
 
+    if "title" not in kwargs:
+        ax.set_title(da.attrs.get("long_name", ""), loc="left")
+        ax.set_title(" ", loc="center")
+    else:
+        ax.set_title(kwargs.pop("title"))
+
     # Plot the data array on the provided or newly created axes
     da.plot(ax=ax, **kwargs)
 
     # Set the title based on the 'long_name' attribute
-    ax.set_title(da.attrs.get("long_name", ""), loc="left")
-    ax.set_title(" ", loc="center")
+
 
     return ax
 
