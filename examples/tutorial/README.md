@@ -36,7 +36,8 @@ Example of the processing step, including regridding, time and domain selection.
 ## 4. Diagnostics
 Different notebooks showcasing individual diagnostics
 
-### 4.1 
+### 4.1 Bias maps
+
 
 
 ### 4.2 Skill scores
