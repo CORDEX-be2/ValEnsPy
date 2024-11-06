@@ -27,19 +27,23 @@ Detailed overview on the input processor and all its functionalities
 
 
 ## 3. Processing
-Example of the processing step, including regridding, time and domain selection. 
+Example of the processing step, including domain selection, remapping, time selection or resampling and point selection. 
 
 [3_processing.ipynb](./3_processing.ipynb)
 
 
-
 ## 4. Diagnostics
-Different notebooks showcasing individual diagnostics
+Different notebooks showcasing different diagnostics
+
 
 ### 4.1 Bias maps
 
+Calculation of the mean bias plotted on a map. 
 
+[4_1_diagnostic_biasmap.ipynb](./4_1_diagnostic_biasmap.ipynb)
 
 ### 4.2 Skill scores
+[4_1_diagnostic_biasmap.ipynb](./4_1_diagnostic_biasmap.ipynb)
 
-### More to come!
+### More examples to come!
+If you are curious, have a look in the [examples directory](https://github.com/CORDEX-be2/ValEnsPy/tree/main/examples)
