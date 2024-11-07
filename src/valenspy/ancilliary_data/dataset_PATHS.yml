@@ -15,6 +15,9 @@ hortense:
   CCLM:         /dodrio/scratch/projects/2022_200/project_output/rcs/CORDEXBE2/postprocessing/
   RADCLIM:      /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/data/RADCLIM
 
+tier2_VO_geo:
+  ERA5:         /data/gent/vo/002/gvo00202/vsc46032/ERA5
+  CLIMATE_GRID: /data/gent/vo/002/gvo00202/master/data/Belgium/observations/climate_grid
 
 kili:
   ERA5:
