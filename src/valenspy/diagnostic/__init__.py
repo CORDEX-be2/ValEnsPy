@@ -5,4 +5,5 @@ from .diagnostic import (
     SpatialBias,
     TemporalBias,
     DiurnalCycleBias,
+    MetricsRankings,
 )
