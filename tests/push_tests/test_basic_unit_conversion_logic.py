@@ -3,7 +3,7 @@ from valenspy.input.unit_converter import UNIT_CONVERSION_FUNCTIONS, EQUIVALENT_
 
 import pytest
 
-lookup_tables = ["EOBS_lookup", "CCLM_lookup", "ALARO-SFX_K_lookup","ERA5_lookup","CLIMATE_GRID_lookup", "RADCLIM_lookup"]
+lookup_tables = ["EOBS_lookup", "CCLM_lookup", "ALARO-SFX_K_lookup","ERA5_lookup","CLIMATE_GRID_lookup", "RADCLIM_lookup", "GPM_IMERGE_lookup"]
 
 @pytest.mark.parametrize("lookup_name", lookup_tables)
 def test_lookup_unit_conversion_coverage(lookup_name):
