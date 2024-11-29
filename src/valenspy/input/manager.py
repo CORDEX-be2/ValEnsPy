@@ -3,6 +3,7 @@ import xarray as xr
 from datatree import DataTree
 import re
 import glob
+import os
 
 from valenspy.input.converter import INPUT_CONVERTORS
 from valenspy._utilities import load_yml
@@ -141,7 +142,7 @@ class InputManager:
                 period = int(period[0])
 
         if self._is_valid_dataset_name(dataset_name):
-            files = self._get_file_paths(
+            files = self._get_file_paths_walk(
                 dataset_name,
                 variables=variables,
                 period=period,
@@ -170,6 +171,63 @@ class InputManager:
             else:
                 ds = xr.open_mfdataset(files, chunks="auto")
         return ds
+
+    def _get_file_paths_walk(
+        self,
+        dataset_name,
+        variables=["tas"],
+        period=None,
+        freq=None,
+        region=None,
+        path_identifiers=[],
+    ):
+        """Get the file paths for the specified dataset, variables, period and frequency."""
+        if dataset_name == "ERA5-Land":
+            dataset_name_lookup = "ERA5"
+        else:
+            dataset_name_lookup = dataset_name
+
+        raw_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
+
+        dataset_path = Path(self.dataset_paths[dataset_name])
+        file_paths = set()
+        variables = (
+            [variables] if isinstance(variables, str) else variables
+        )  # if single variable inputted as string, convert to list
+        vars_regex = []
+        for variable in variables:
+            if variable not in raw_LOOKUP:
+                var_regex = f"{variable}"
+            else:
+                raw_long_name = raw_LOOKUP[variable]["raw_long_name"]
+                raw_name = raw_LOOKUP[variable]["raw_name"]
+                var_regex = f"({raw_long_name}|{raw_name}_|{variable}_)"
+            vars_regex.append(var_regex)
+        variable_regex = "|".join(vars_regex)
+
+        components = [variable_regex] + path_identifiers
+
+        if period:
+            if isinstance(period, int):
+                year_regex = f"({period})"
+            else:
+                year_regex = f"({'|'.join([str(year) for year in range(period[0], period[1]+1)])})"
+            components.append(year_regex)
+        if freq:
+            components.append(freq)
+        if region:
+            components.append(region)
+
+        for path, dirs, files in os.walk(dataset_path):
+            for f in files:
+                if f.endswith(".nc"):
+                    if all(
+                        re.search(f"{dataset_path}/.*{component}.*", os.path.join(path, f))
+                        for component in components
+                    ):
+                        file_paths.add(os.path.join(path, f))
+
+        return list(file_paths)
 
     def _get_file_paths(
         self,
