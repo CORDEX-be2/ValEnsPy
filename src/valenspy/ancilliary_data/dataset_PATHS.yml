@@ -9,7 +9,7 @@
 hortense:
   ERA5:         /dodrio/scratch/projects/2022_200/external/era5/
   ERA5-Land:    /dodrio/scratch/projects/2022_200/external/era5-land/
-  EOBS:         /dodrio/scratch/projects/2022_200/external/0.1deg/
+  EOBS:         /dodrio/scratch/projects/2022_200/external/eobs/
   CLIMATE_GRID: /dodrio/scratch/projects/2022_200/external/climate_grid/
   shapefiles:   /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/shapefiles/
   CCLM:         /dodrio/scratch/projects/2022_200/project_output/rcs/CORDEXBE2/postprocessing/

@@ -7,4 +7,5 @@ import xarray as xr
 region_bounds = {
     "europe": {"lat_bounds": [35, 70], "lon_bounds": [-15, 40]},
     "belgium": {"lat_bounds": [49, 52], "lon_bounds": [2, 7]},
+    "brussels": {"lat_bounds": [50.761016,50.926208], "lon_bounds": [4.222554,4.484509]}
 }
