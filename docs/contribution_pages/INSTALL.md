@@ -38,7 +38,7 @@ conda config --add envs_dirs /path/to/your/envs
 
 Then create the environment with python and poetry.
 ```bash
-conda create -n valenspy_dev -c conda-forge python==3.9 poetry=1.8
+conda create -n valenspy_dev -c conda-forge python==3.10 poetry=1.8
 source activate valenspy_dev
 ```
 Now install the required packages using poetry: All required packages are listed in the pyproject.toml file and will be installed automatically by poetry.
@@ -47,10 +47,24 @@ Now install the required packages using poetry: All required packages are listed
 > Make sure you are in the branch you want to work in before installing the packages, as different branches may have different dependencies. The 'dev' branch is a good starting point.
 
 ```bash
-
 cd ValEnsPy
 git checkout dev
-poetry install
+```
+
+Finally install all required packages.
+
+> [!NOTE]
+> Optionally useful packages can be installed by installing specific groups of packages by adding the `--with` flag followed by the group name.
+> Available groups are:
+> - `examples` to be able to run example notebooks (e.g. for ipykernel for jupyter notebooks)
+> - `docs` for building the documentation
+> - `dev` for development tools
+
+```bash
+#Recommended for users
+poetry install --with examples
+#For developers
+#poetry install --with examples --with dev --with docs
 ```
 
 To test if the installation was successful, run the tests:

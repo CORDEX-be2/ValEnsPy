@@ -65,10 +65,10 @@ mkdir -p conda_envs
 conda config --add envs_dirs /dodrio/scratch/projects/2022_200/project_output/__INSTITUTE__/__VSC_USERNAME__/conda_envs
 ```
 
-First initialize the conda environment and install python (version 3.9) and poetry (a python package manager).
+First initialize the conda environment and install python (version 3.10) and poetry (a python package manager).
 
 ```bash
-conda create -n valenspy_dev -c conda-forge python==3.9 poetry=1.8
+conda create -n valenspy_dev -c conda-forge python==3.10 poetry=1.8
 source activate valenspy_dev
 ```
 > [!NOTE]
@@ -82,7 +82,22 @@ Now install the required packages using poetry: All required packages are listed
 ```bash
 cd ValEnsPy
 git checkout dev
-poetry install --all-extras
+```
+
+Finally install all required packages.
+
+> [!NOTE]
+> Optionally useful packages can be installed by installing specific groups of packages by adding the `--with` flag followed by the group name.
+> Available groups are:
+> - `examples` to be able to run example notebooks (e.g. for ipykernel for jupyter notebooks)
+> - `docs` for building the documentation
+> - `dev` for development tools
+
+```bash
+#Recommended for users
+poetry install --with examples
+#For developers
+#poetry install --with examples --with dev --with docs
 ```
 
 To test if the installation was successful, run the tests:

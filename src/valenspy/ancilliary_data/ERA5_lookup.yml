@@ -20,12 +20,12 @@
 pr:
     raw_name: tp
     raw_long_name: total_precipitation
-    raw_units: m/hr
+    raw_units: m
 
 prsn:
     raw_name: sf
     raw_long_name: snowfall
-    raw_units: m/hr
+    raw_units: m
 
 prw:
     raw_name: tcwv
@@ -33,9 +33,9 @@ prw:
     raw_units: mm
 
 snw:
-    raw_name: sd
+    raw_name: sde
     raw_long_name: snow_depth
-    raw_units: cm
+    raw_units: m
 
 snd:
     raw_name: sd
@@ -45,12 +45,12 @@ snd:
 mrros:
     raw_name: sro
     raw_long_name: surface_runoff
-    raw_units: m/hr
+    raw_units: m
 
 mrro:
     raw_name: ro
     raw_long_name: runoff
-    raw_units: m/hr
+    raw_units: m
 
 tas:
     raw_name: t2m
@@ -65,12 +65,12 @@ ts:
 evspsbl:
     raw_name: e
     raw_long_name: evaporation
-    raw_units: m/hr
+    raw_units: m
 
 evspsblpot:
     raw_name: pev
     raw_long_name: potential_evaporation
-    raw_units: m/hr
+    raw_units: m
 
 uas:
     raw_name: 10u
@@ -150,25 +150,25 @@ hurs:
 # Variables to double check when needed by user.
 
 # aggregation
-prhmax:
-    raw_name:
-    raw_long_name: total_precipitation_max
-    raw_units: m/hr
+# prhmax:
+#     raw_name:
+#     raw_long_name: total_precipitation_max
+#     raw_units: m
 
-tasmax:
-    raw_name:
-    raw_long_name: 2m_temperature_max
-    raw_units: K
+# tasmax:
+#     raw_name:
+#     raw_long_name: 2m_temperature_max
+#     raw_units: K
 
 tasmin:
     raw_name:
     raw_long_name: 2m_temperature_min
     raw_units: K
 
-sfcWindmax:
-    raw_name:
-    raw_long_name: 10m_w_component_of_wind_max
-    raw_units: m/s
+# sfcWindmax:
+#     raw_name:
+#     raw_long_name: 10m_w_component_of_wind_max
+#     raw_units: m/s
 
 # is cordex unit correct?
 wsgsmax:
@@ -176,8 +176,8 @@ wsgsmax:
     raw_long_name: 10m_wind_gust_since_previous_post_processing_max
     raw_units: m/s
 
-# mrso is total soil moisture content in CORDEX, not corresponding to volumetric_soil_water of first layer + check units!
-mrso:
-    raw_name:
-    raw_long_name: volumetric_soil_water_layer_1
-    raw_units: m
+# # mrso is total soil moisture content in CORDEX, not corresponding to volumetric_soil_water of first layer + check units!
+# mrso:
+#     raw_name:
+#     raw_long_name: volumetric_soil_water_layer_1
+#     raw_units: m

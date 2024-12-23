@@ -2,18 +2,47 @@
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 
+[project]
+
+[project.urls]
+Repository = "https://github.com/CORDEX-be2/ValEnsPy"
+Issues = "https://github.com/CORDEX-be2/ValEnsPy/issues"
+Documentation = "https://cordex-be2.github.io/ValEnsPy/"
+Changelog = "https://github.com/CORDEX-be2/ValEnsPy/releases"
+
 [tool.poetry]
+name = "ValEnsPy"
+version = "0.2.0a0"
 authors = [
   "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
-  " ... "
-]
+  "Inne Vanderkelen <inne.vanderkelen@kuleuven.be"
+  ]
+maintainers = [
+  "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
+  "Inne Vanderkelen <inne.vanderkelen@kuleuven.be"
+  ]
 description = "A Python package to validate gridded model data."
-license = ","
-name = "valenspy"
 readme = "README.md"
-version = "0.1.0"
+license = "GPL-3.0"
+keywords = ["validation", "ensemble", "climate", "meteorology", "model", "data"]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Atmospheric Science"
+]
+
 
 [tool.poetry.dependencies]
+cartopy = "^0.23.0"
 cdo = "^1.6.1"
 cf-xarray = "^0.9.4"
 dask = "^2024.3.1"
@@ -27,18 +56,20 @@ python = "^3.9"
 regionmask = "^0.12.1"
 scipy = "^1.13.0"
 shapely = "^2.0.3"
-xarray = "^2024.2.0"
+xarray = ">2024.2.0,<2024.10"
 xarray-datatree = "^0.0.14"
+seaborn = "^0.13.2"
 
-# Development group
 [tool.poetry.group.dev]
+# Development group
 optional = true
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.6.2"  # To ensure clean-coding standards
+pytest = "^8.3.2"  # Poissble moved to dev group
 
-# Documentation group
 [tool.poetry.group.docs]
+# Documentation group
 optional = true
 
 [tool.poetry.group.docs.dependencies]
@@ -49,15 +80,14 @@ pydata-sphinx-theme = "^0.15.2"
 sphinx-copybutton = "^0.5.2"
 sphinx-rtd-theme = "^2.0.0"
 
-# Examples group
 [tool.poetry.group.examples]
+# Examples group
+optional = true
 
 [tool.poetry.group.examples.dependencies]
-gcsfs = "^2024.3.1"
+ipykernel = "^6.29.5"
 jinja2 = "^3.1.4"
-zarr = "^2.18.0"
 
-# Packaging group
 [tool.poetry.group.packaging]
 
 [tool.poetry.group.packaging.dependencies]

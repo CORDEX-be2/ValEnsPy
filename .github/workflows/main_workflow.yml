@@ -1,9 +1,13 @@
-name: Automatic tests pipeline
+name: Automatic testing
 
 on:
    push:
+    branches:
+      - main
+      - dev
    pull_request:
-      types: [opened]
+    types: [review_requested]
+   workflow_dispatch:
 
 jobs:
 #--- Build the package and save as artifacts----
@@ -12,13 +16,12 @@ jobs:
       runs-on: ubuntu-latest
       outputs:
         pkg_file: ${{ steps.base_def.outputs.filename }}
-      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev' || contains(github.event.head_commit.message, 'test')
       steps:
       - uses: actions/checkout@v3
-      - name: Set up Python39
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.10'
           #cache: 'poetry'
 
       - name: remove previous builds
@@ -29,8 +32,6 @@ jobs:
       - name: Install dependencies and build
         run: |
               pip install poetry
-              #poetry update --without titan,documentation
-              #poetry install --without titan,documentation
               poetry update
               poetry install
               poetry build
@@ -47,6 +48,31 @@ jobs:
             name: package_build
             path: dist/*.tar.gz
 
+#---- Testing the package ----#
+   pytests:
+      name: pytests
+      needs: packageing
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - name: Set up Python310
+          uses: actions/setup-python@v4
+          with:
+            python-version: "3.10"
+        - name: Download the package build
+          uses: actions/download-artifact@v3
+          with:
+            name: package_build
+        - name: Install the package
+          run: |
+              python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
+        - name: Install pytest
+          run: |
+              python3 -m pip install pytest
+        - name: Run tests
+          run: |
+              pytest tests/push_tests/test_*.py
+
 # ---- Installing the package test ------#
    #--- Package os installation ---
    mac_install_testing:
@@ -55,21 +81,20 @@ jobs:
      runs-on: macos-latest
      steps:
        - uses: actions/checkout@v3
-       - name: Set up Python39
+       - name: Set up Python310
          uses: actions/setup-python@v4
          with:
-           python-version: "3.9"
+           python-version: "3.10"
        - name: Download the package build
          uses: actions/download-artifact@v3
          with:
            name: package_build
-
        - name: Install the package
          run: |
              python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
        - name: Run tests
          run: |
-             python tests/push_tests/import_test.py
+             python tests/push_tests/test_import.py
 
    windows_install_testing:
      name: Installation on Windows latest
@@ -77,10 +102,10 @@ jobs:
      runs-on: windows-latest
      steps:
        - uses: actions/checkout@v3
-       - name: Set up Python39
+       - name: Set up Python310
          uses: actions/setup-python@v4
          with:
-           python-version: "3.9"
+           python-version: "3.10"
        - name: Download the package build
          uses: actions/download-artifact@v3
          with:
@@ -91,7 +116,9 @@ jobs:
              python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
        - name: Run tests
          run: |
-             python tests\push_tests\import_test.py
+             python tests\push_tests\test_import.py
+
+
 
 
 #---- Version Control -----#
@@ -114,3 +141,6 @@ jobs:
          run: |
            echo "version tags are not aligned!"
            exit 1
+
+
+
