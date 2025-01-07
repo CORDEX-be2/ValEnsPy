@@ -34,7 +34,7 @@ jobs:
               rm -f dist/metobs_toolkit-*.tar.gz
         - name: Install poetry
           run: |
-              pip install poetry
+              pip install poetry==1.8.5
         - name: Install dependencies and build
           run: |
               poetry install --with dev --with docs
