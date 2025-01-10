@@ -1,6 +1,7 @@
 from datatree import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
+from valenspy.processing.mask import add_prudence_regions
 
 from abc import abstractmethod
 
@@ -75,7 +76,7 @@ class Model2Self(Diagnostic):
         """Initialize the Model2Self diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
 
-    def apply(self, ds: xr.Dataset, **kwargs):
+    def apply(self, ds: xr.Dataset, mask=None, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
@@ -88,6 +89,8 @@ class Model2Self(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
+        if mask == "prudence":
+            ds = add_prudence_regions(ds)
         return self.diagnostic_function(ds, **kwargs)
 
 
@@ -100,7 +103,7 @@ class Model2Ref(Diagnostic):
         """Initialize the Model2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
 
-    def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):
+    def apply(self, ds: xr.Dataset, ref: xr.Dataset, mask=None, **kwargs):
         """Apply the diagnostic to the data. Only the common variables between the data and the reference are used.
 
         Parameters
@@ -115,7 +118,12 @@ class Model2Ref(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
+        if mask == "prudence":
+            ds = add_prudence_regions(ds)
+            ref = add_prudence_regions(ref)
+
         ds, ref = _select_common_vars(ds, ref)
+
         return self.diagnostic_function(ds, ref, **kwargs)
 
 
