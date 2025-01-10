@@ -10,6 +10,10 @@ output_path = os.path.join(test_path, "plots")
 
 ds = xr.tutorial.open_dataset('air_temperature').isel(time=slice(0, 10))
 
+ds_europe = ds.copy()
+ds_europe['lat'] = ds_europe['lat'] + 10
+ds_europe['lon'] = ds_europe['lon'] - 220
+
 ##########################
 # Model2Self Diagnostics #
 ##########################
@@ -33,6 +37,14 @@ def test_personalized_M2S_plot(diagnostic, ds):
     ax.set_xlabel("Personalized X-axis")
     ax.set_ylabel("Personalized Y-axis")
     plt.savefig(os.path.join(output_path, f"M2S_{diagnostic.name}_personalized.png"))
+    plt.close()
+
+@pytest.mark.parametrize("diagnostic", m2s_diagnostics)
+@pytest.mark.parametrize("ds", [ds_europe])
+def test_facetted_M2S_plot(diagnostic, ds):
+    result = diagnostic.apply(ds, mask="prudence")
+    diagnostic.plot(result.air, col="region", col_wrap=3)
+    plt.savefig(os.path.join(output_path, f"M2S_{diagnostic.name}_facetted.png"))
     plt.close()
 
 ##########################
@@ -59,8 +71,17 @@ def test_personalized_M2R_plot(diagnostic, ds):
     if len(result.air.dims) == 1:
         diagnostic.plot(result.air, ax=ax, color="red", alpha=0.5)
     else:
-        diagnostic.plot(result.air, ax=ax, cmap="blues", alpha=0.5, cbar_kwargs={'orientation': 'horizontal'})
+        diagnostic.plot(result.air, ax=ax, cmap="Blues", alpha=0.5, cbar_kwargs={'orientation': 'horizontal'})
     ax.set_xlabel("Personalized X-axis")
     ax.set_ylabel("Personalized Y-axis")
     plt.savefig(os.path.join(output_path, f"M2R_{diagnostic.name}_personalized.png"))
+    plt.close()
+
+@pytest.mark.parametrize("diagnostic", m2r_diagnostics)
+@pytest.mark.parametrize("ds", [ds_europe])
+def test_facetted_M2R_plot(diagnostic, ds):
+    ref = ds + 2
+    result = diagnostic.apply(ds, ref, mask="prudence")
+    diagnostic.plot(result.air, col="region", col_wrap=3)
+    plt.savefig(os.path.join(output_path, f"M2R_{diagnostic.name}_facetted.png"))
     plt.close()
