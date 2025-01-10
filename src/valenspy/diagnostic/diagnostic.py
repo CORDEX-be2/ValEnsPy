@@ -45,7 +45,7 @@ class Diagnostic:
         """
         pass
 
-    def plot(self, result, ax=None, **kwargs):
+    def plot(self, result, **kwargs):
         """Plot the diagnostic.
 
         Parameters
@@ -58,7 +58,7 @@ class Diagnostic:
         ax : matplotlib.axis.Axis
             The axis (singular) of the plot.
         """
-        return self.plotting_function(result, ax=ax, **kwargs)
+        return self.plotting_function(result, **kwargs)
 
     @property
     def description(self):
@@ -262,7 +262,7 @@ class Ensemble2Ref(Diagnostic):
 
 
     @classmethod
-    def from_model2ref(cls, model2ref: Model2Ref, facetted=True):
+    def from_model2ref(cls, model2ref: Model2Ref, color=False):
         """Create an Ensemble2Ref diagnostic from a Model2Ref diagnostic.
 
         Parameters
@@ -334,7 +334,10 @@ from valenspy.diagnostic.visualizations import *
 
 # Model2Self diagnostics
 DiurnalCycle = Model2Self(
-    diurnal_cycle, plot_diurnal_cycle, "Diurnal Cycle", "The diurnal cycle of the data."
+    diurnal_cycle, 
+    plot_diurnal_cycle, 
+    "Diurnal Cycle", 
+    "The diurnal cycle of the data."
 )
 TimeSeriesSpatialMean = Model2Self(
     time_series_spatial_mean,
