@@ -1,6 +1,0 @@
-inputconverter\_functions.CLIMATE\_GRID\_to\_CF
-===============================================
-
-.. currentmodule:: inputconverter_functions
-
-.. autofunction:: CLIMATE_GRID_to_CF
