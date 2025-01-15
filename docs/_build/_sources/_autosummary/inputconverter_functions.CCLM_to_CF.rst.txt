@@ -1,6 +1,0 @@
-inputconverter\_functions.CCLM\_to\_CF
-======================================
-
-.. currentmodule:: inputconverter_functions
-
-.. autofunction:: CCLM_to_CF

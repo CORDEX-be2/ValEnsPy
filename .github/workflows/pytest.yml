@@ -1,0 +1,46 @@
+#Create a workflow which runs the tests in the tests folder on push
+
+name: Pytests
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'test')"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+              pip install poetry==1.8.5
+              poetry update
+              poetry install --with dev
+      - name: Run tests
+        run: |
+          poetry run pytest tests/push_tests/test_*.py
+
+#---- Version Control -----#
+  versiontest:
+    name: check if version is valid
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: get version
+        id: 'version_info'
+        run: |
+          CURRENT_VERSION="$(grep -oP '__version__ = "\K\d+\.\d+\.\d+' src/valenspy/__init__.py)"
+          echo "current version (init) = ${CURRENT_VERSION}"
+          echo "::set-output name=current_version::$CURRENT_VERSION"
+          PYPROJECT_VERSION="$(grep -oP 'version = "\K\d+\.\d+\.\d+' pyproject.toml)"
+          echo "current version (pyproject) = ${PYPROJECT_VERSION}"
+          echo "::set-output name=pyproject_version::$PYPROJECT_VERSION"
+      - name: version-is-correct
+        if: ${{ steps.version_info.outputs.current_version != steps.version_info.outputs.pyproject_version }}
+        run: |
+          echo "version tags are not aligned!"
+          exit 1

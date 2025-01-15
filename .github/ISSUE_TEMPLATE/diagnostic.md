@@ -2,7 +2,7 @@
 name: Diagnostic
 about: A proposal for a new diagnostic
 title: 'Diagnostic: [DIAGNOSTIC]'
-labels: enhancement, evaluation
+labels: "Type: Enhancement"
 assignees: ''
 
 ---

@@ -38,7 +38,7 @@ conda config --add envs_dirs /path/to/your/envs
 
 Then create the environment with python and poetry.
 ```bash
-conda create -n valenspy_dev -c conda-forge python==3.9 poetry=1.8
+conda create -n valenspy_dev -c conda-forge python==3.10 poetry=1.8
 source activate valenspy_dev
 ```
 Now install the required packages using poetry: All required packages are listed in the pyproject.toml file and will be installed automatically by poetry.

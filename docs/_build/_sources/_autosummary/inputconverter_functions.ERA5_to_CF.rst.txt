@@ -1,6 +1,0 @@
-inputconverter\_functions.ERA5\_to\_CF
-======================================
-
-.. currentmodule:: inputconverter_functions
-
-.. autofunction:: ERA5_to_CF
