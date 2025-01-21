@@ -39,7 +39,34 @@ def plot_diurnal_cycle(da: xr.DataArray, **kwargs):
     da.plot(**kwargs)
 
     ax = plt.gca()
-    ax.set_xlabel("Dialy cycle of the data")
+    
+    ax.set_xlabel('Hour of day')
+    ax.set_xticks(range(0, 24, 3))
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: '{:02d}:00'.format(int(x))))
+
+    return ax
+
+def plot_annual_cycle(da: xr.DataArray, **kwargs):
+    """Plot the annual cycle of the data.
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The data array to plot the annual cycle of.
+    **kwargs : dict
+        Additional keyword arguments to pass to the xarray DataArray plot method.
+
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+        The axes with the plotted annual cycle.
+    """
+    da.plot(**kwargs)
+
+    ax = plt.gca()
+
+    ax.set_xlabel('Month')
+
     return ax
 
 
@@ -61,14 +88,13 @@ def plot_time_series(da: xr.DataArray, **kwargs):
     da.plot(**kwargs)
 
     ax = plt.gca()
-    ax.set_title(da.attrs.get("long_name", ""), loc="left")
 
     return ax
 
 @default_plot_kwargs({
     'subplot_kws': {'projection': ccrs.PlateCarree()}
     })
-def plot_map(da: xr.DataArray, title=None, **kwargs):
+def plot_map(da: xr.DataArray, **kwargs):
     """
     Plots a simple map of a 2D xarray DataArray.
 
@@ -96,10 +122,6 @@ def plot_map(da: xr.DataArray, title=None, **kwargs):
     da.plot(**kwargs)
 
     ax = plt.gca()
-    if title is None:
-        ax.set_title(f"{da.attrs.get('long_name', 'Data')} ({da.name})")
-    else:
-        ax.set_title(title)
 
     return ax
 
@@ -150,7 +172,7 @@ def create_custom_cmap(hex_color1: str, hex_color2: str, num_colors: int):
     'subplot_kws': {'projection': ccrs.PlateCarree()},
     "cmap" : "coolwarm"
     })
-def plot_spatial_bias(da: xr.DataArray, title=None, **kwargs):
+def plot_spatial_bias(da: xr.DataArray, **kwargs):
     """
     Plot the spatial bias of a given data array on a map.
 
@@ -168,7 +190,7 @@ def plot_spatial_bias(da: xr.DataArray, title=None, **kwargs):
         The axes with the plotted spatial bias and map features.
     """
 
-    plot_map(da, title, **kwargs)
+    plot_map(da, **kwargs)
     ax = plt.gca()
 
     return ax

@@ -30,6 +30,23 @@ def diurnal_cycle(ds: xr.Dataset):
 
     return ds.groupby("time.hour").mean("time")
 
+def annual_cycle(ds: xr.Dataset):
+    """Calculate the annual cycle of the data. If lat and lon are present, the data is averaged over the spatial dimensions lat and lon.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The data to calculate the annual cycle of.
+
+    Returns
+    -------
+    xr.Dataset
+        The annual cycle of the data.
+    """
+    ds = _average_over_dims(ds, ["lat", "lon"])
+
+    return ds.groupby("time.month").mean("time")
+
 
 def time_series_spatial_mean(ds: xr.Dataset):
     """Calculate the time series of the data. If lat and lon are present, the data is averaged over the spatial dimensions lat and lon.
