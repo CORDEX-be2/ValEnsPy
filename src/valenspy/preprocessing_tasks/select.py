@@ -7,6 +7,7 @@ import geopandas as gpd
 from pathlib import Path
 from valenspy._regions import region_bounds
 import pyproj
+import cartopy.crs as ccrs
 
 
 # make sure attributes are passed through
@@ -104,14 +105,21 @@ def convert_geo_to_LCC(coord: tuple, ds: xr.Dataset):
         The corresponding Lambert Conformal Coordinates as (x, y) in meters.
     """
 
-    proj="+proj=lcc +lat_0=42.5 +lon_0=-100 +lat_1=25 +lat_2=60 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+    crs = ccrs.LambertConformal(
+        central_longitude=ds.crs.longitude_of_central_meridian,
+        central_latitude=ds.crs.latitude_of_projection_origin,
+        false_easting=ds.crs.false_easting*1000,
+        false_northing=ds.crs.false_northing*1000,
+        standard_parallels=[ds.crs.standard_parallel]
+    )
 
-    transformer = pyproj.Transformer.from_crs("EPSG:4326", proj, always_xy=True)
+    transformer = pyproj.Transformer.from_crs(ccrs.PlateCarree(), crs)
+    x,y = transformer.transform(*coord)
+    return x/1000, y/1000
 
-    lat, lon = coord
-    return transformer.transform(lon, lat)
-
-def select_point(ds: xr.Dataset, lon_lat_point: tuple, rotated_pole: bool = False):
+#TODO: fix this function to work using the ds.crs attribute so that not each crs has to be handled separately
+#This adds the responsibility to the user to have a wel defined crs attribute (maybe some functionality to check this or help add this in input converter would be nice!)
+def select_point(ds: xr.Dataset, lon_lat_point: tuple, projection: str = None):
     """
     Select a point from the dataset based on the provided geographic coordinates.
 
@@ -121,22 +129,25 @@ def select_point(ds: xr.Dataset, lon_lat_point: tuple, rotated_pole: bool = Fals
         The input dataset from which to select the point.
     lon_lat_point : tuple
         Geographic coordinates as a (longitude, latitude) pair in degrees.
-    rotated_pole : bool, optional
-        If True, the dataset is in a rotated pole projection and the input coordinates
-        will be converted to rotated pole coordinates before selection. Default is False.
+    projection : str, optional
+        The projection of the dataset. The point will be projected to the dataset's coordinate system before selection. 
+        Currently supported projections are 'rotated_pole' and 'lcc' (Lambert Conformal Coordinates).
 
     Returns
     -------
     xarray.Dataset
         The dataset subset at the nearest point to the specified coordinates.
     """
-    if rotated_pole:
+    if projection == "rotated_pole":
         # Convert geographic coordinates to rotated pole coordinates
         lon_lat_point_rot = convert_geo_to_rot(lon_lat_point, ds)
         # Select the nearest point in the rotated pole coordinates
         ds_point = ds.sel(
             rlon=lon_lat_point_rot[0], rlat=lon_lat_point_rot[1], method="nearest"
         )
+    elif projection == "lcc":
+        point = convert_geo_to_LCC(lon_lat_point, ds)
+        ds_point = ds.sel(x=point[0], y=point[1], method="nearest")
     else:
         # Select the nearest point based on geographic coordinates
         ds_point = ds.sel(lon=lon_lat_point[0], lat=lon_lat_point[1], method="nearest")
@@ -145,6 +156,7 @@ def select_point(ds: xr.Dataset, lon_lat_point: tuple, rotated_pole: bool = Fals
 
 
 def get_shapefile_mask(ds: xr.Dataset, shapefile_path: Path):
+
     """
     Generates a mask from a shapefile to apply to an xarray Dataset.
 
