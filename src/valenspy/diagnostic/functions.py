@@ -49,7 +49,7 @@ def time_series_spatial_mean(ds: xr.Dataset):
     """
     return _average_over_dims(ds, ["lat", "lon"])
 
-#  @acceptable_variables(["tas", "tasmax", "tasmin"])
+@acceptable_variables(["tas", "tasmax", "tasmin"])
 def urban_heat_island(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple, projection=None):
     """
     Calculate the urban heat island effect as the difference in temperature between an urban and rural area. 
@@ -76,7 +76,7 @@ def urban_heat_island(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple, pr
 
     return urban - rural
 
-# @acceptable_variables(["tas", "tasmax", "tasmin"])
+@acceptable_variables(["tas", "tasmax", "tasmin"])
 def urban_heat_island_diurnal_cycle(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple, projection=None):
     """
     Calculate the diurnal cycle of the urban heat island effect as the difference in temperature between an urban and rural area.

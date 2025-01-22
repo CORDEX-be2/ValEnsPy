@@ -34,14 +34,14 @@ def required_variables(variables):
         def wrapper(ds, *args, **kwargs):
             required_vars = [variables] if isinstance(variables, str) else variables
             # Do the check for the ds
-            if not all(var in ds.variables for var in required_vars):
+            if not all(var in ds.data_vars for var in required_vars):
                 raise ValueError(
                     f"Variables {required_vars} are required to apply the diagnostic."
                 )
             # Do the check for the reference if it is present, the reference is the second argument after the ds argument and should be a xr.Dataset.
             if len(args) > 0 and isinstance(args[0], xr.Dataset):
                 ref = args[0]
-                if not all(var in ref.variables for var in required_vars):
+                if not all(var in ref.data_vars for var in required_vars):
                     raise ValueError(
                         f"Variables {required_vars} are required to apply the diagnostic."
                     )
@@ -76,12 +76,12 @@ def acceptable_variables(variables):
         def wrapper(ds, *args, **kwargs):
             acceptable_vars = [variables] if isinstance(variables, str) else variables
             # Check if at least one of the acceptable variables is present in the dataset
-            if not any(var in ds.variables for var in acceptable_vars):
+            if not any(var in ds.data_vars for var in acceptable_vars):
                 raise ValueError(
                     f"At least one of the variables {acceptable_vars} is required to apply the diagnostic."
                 )
             # Drop all variables that are not in the acceptable variables
-            ds = ds.drop([var for var in ds.variables if var not in acceptable_vars])
+            ds = ds.drop_vars([var for var in ds.data_vars if var not in acceptable_vars])
             return diagnostic_function(ds, *args, **kwargs)
 
         return wrapper
