@@ -7,7 +7,7 @@ on:
       - dev
    pull_request:
     types: [review_requested]
-
+   workflow_dispatch:
 
 jobs:
 #--- Build the package and save as artifacts----
@@ -18,7 +18,7 @@ jobs:
         pkg_file: ${{ steps.base_def.outputs.filename }}
       steps:
       - uses: actions/checkout@v3
-      - name: Set up Python310
+      - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
@@ -31,7 +31,7 @@ jobs:
 
       - name: Install dependencies and build
         run: |
-              pip install poetry
+              pip install poetry==1.8.5
               poetry update
               poetry install
               poetry build

@@ -197,7 +197,7 @@ def calc_metrics_da(da_mod: xr.DataArray, da_obs: xr.DataArray, metrics=None, ps
         }
 
     return {metric: metrics[metric](da_mod, da_obs) for metric in metrics}  
-
+ 
 def calc_metrics_ds(ds_mod: xr.Dataset, ds_obs: xr.Dataset, metrics=None, pss_binwidth=None):
     """
     Calculate statistical performance metrics for model data against observed data for a dataset.
