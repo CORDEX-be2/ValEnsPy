@@ -50,7 +50,7 @@ def time_series_spatial_mean(ds: xr.Dataset):
     return _average_over_dims(ds, ["lat", "lon"])
 
 #  @acceptable_variables(["tas", "tasmax", "tasmin"])
-def urban_heat_island(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple):
+def urban_heat_island(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple, projection=None):
     """
     Calculate the urban heat island effect as the difference in temperature between an urban and rural area. 
     The grid-boxes closest to the urban and rural coordinates are selected and a difference is calculated between the two.
@@ -63,19 +63,21 @@ def urban_heat_island(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple):
         The coordinates of the urban area in the format (lat, lon).
     rural_coord : tuple
         The coordinates of the rural area in the format (lat, lon).
+    projection : str, optional
+        The projection used to convert the urban and rural coordinates to the dataset's projection.
     
     Returns
     -------
     xr.Dataset
         The urban heat island effect as the difference in temperature between the urban and rural area.
     """
-    urban = select_point(ds, urban_coord)
-    rural = select_point(ds, rural_coord)
+    urban = select_point(ds, urban_coord, projection=projection)
+    rural = select_point(ds, rural_coord, projection=projection)
 
     return urban - rural
 
 # @acceptable_variables(["tas", "tasmax", "tasmin"])
-def urban_heat_island_diurnal_cycle(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple):
+def urban_heat_island_diurnal_cycle(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple, projection=None):
     """
     Calculate the diurnal cycle of the urban heat island effect as the difference in temperature between an urban and rural area.
     The grid-boxes closest to the urban and rural coordinates are selected and a difference is calculated between the two.
@@ -88,13 +90,15 @@ def urban_heat_island_diurnal_cycle(ds: xr.Dataset, urban_coord: tuple, rural_co
         The coordinates of the urban area in the format (lat, lon).
     rural_coord : tuple
         The coordinates of the rural area in the format (lat, lon).
+    projection : str, optional
+        The projection used to convert the urban and rural coordinates to the dataset's projection.
 
     Returns
     -------
     xr.Dataset
         The diurnal cycle of the urban heat island effect as the difference in temperature between the urban and rural area.
     """
-    return diurnal_cycle(urban_heat_island(ds, urban_coord, rural_coord))
+    return diurnal_cycle(urban_heat_island(ds, urban_coord, rural_coord, projection=projection))
 
 ##################################
 # Model2Ref diagnostic functions #
