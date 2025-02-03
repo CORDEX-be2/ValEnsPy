@@ -63,6 +63,25 @@ def time_series_spatial_mean(ds: xr.Dataset):
     """
     return _average_over_dims(ds, ["lat", "lon"])
 
+def temporal_cumulative_sum_spatial_mean(ds: xr.Dataset, cum_period: str = "year"):
+    """
+    Calculate the cumulative sum of the data for blocks of time (e.g., years, seasons, months, days).
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The data to calculate the cumulative sum of.
+    cum_period : str, optional
+        The period for which to calculate the cumulative sum. Default is 'year'.
+        Possible values are 'year', 'season', 'month', 'day', 'hour'.
+
+    Returns
+    -------
+    xr.Dataset
+        The cumulative sum of the data for the specified period.
+    """
+    ds = _average_over_dims(ds, ["lat", "lon"])
+    return ds.groupby(f"time.{cum_period}").sum("time")
 
 ##################################
 # Model2Ref diagnostic functions #

@@ -125,6 +125,28 @@ def plot_map(da: xr.DataArray, **kwargs):
 
     return ax
 
+def plot_histogram(da: xr.DataArray, **kwargs):
+    """
+    Plot a histogram of the data values in the DataArray.
+
+    Parameters
+    ----------
+    da : xr.DataArray
+        The data array to plot the histogram of.
+    **kwargs : dict
+        Additional keyword arguments to pass to the xarray DataArray plot.hist method.
+
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+        The axes with the plotted histogram.
+    """
+    df = da.to_pandas()
+    df.plot.bar(**kwargs)
+
+    ax = plt.gca()
+
+    return ax
 
 ##################################
 # Model2Ref diagnostic visuals   #

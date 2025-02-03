@@ -418,6 +418,12 @@ TimeSeriesSpatialMean = Model2Self(
     "Time Series",
     "The time series of the data - if the data is spatial, the spatial mean is taken."
 )
+TemporalCumalitiveSumSpatialMean = Model2Self(
+    temporal_cumulative_sum_spatial_mean,
+    plot_histogram,
+    "Temporal Cumulative Sum",
+    "The temporal cumulative sum over a periods (i.e. years, months, etc..) - if the data is spatial, the spatial mean is taken."
+)
 # Model2Ref diagnostics
 SpatialBias = Model2Ref(
     spatial_bias,
