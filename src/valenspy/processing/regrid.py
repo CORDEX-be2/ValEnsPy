@@ -1,7 +1,32 @@
 import cdo
 import xarray as xr
 import cf_xarray
+import xesmf as xe
 
+def remap_xesmf(ds, ds_out, method="bilinear", regridder_kwargs={}, regridding_kwargs={}):
+    """Remap the input dataset to the target grid using xESMF.
+
+    Parameters
+    ----------
+    ds : xarray.Dataset
+        The input dataset to remap.
+    ds_out : xarray.Dataset
+        The target grid dataset.
+    method : str, optional
+        The remap method to use, by default "bilinear".
+    regridder_kwargs : dict
+        Keyword arguments for the creation of the regridder. See xe.Regridder for more information.
+    regridding_kwargs : dict
+        Keyword arguments for the actual regridding. See xe.Regridder.regrid_dataset() for more information.
+
+    Returns
+    -------
+    xarray.Dataset
+        The remapped dataset in xarray format.
+    """
+    regridder = xe.Regridder(ds, ds_out, method, **regridder_kwargs)
+    ds_reg = regridder(ds, **regridding_kwargs)
+    return ds_reg
 
 def remap_cdo(target_grid, ds, remap_method="bil", tempdir=None, output_path=None):
     """Remap the input dataset to the target grid using CDO.
