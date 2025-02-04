@@ -43,7 +43,7 @@ jobs:
               echo "filename=$(basename "$rel_path")" >> $GITHUB_OUTPUT
 
       - name: save package as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
             name: package_build
             path: dist/*.tar.gz
@@ -60,7 +60,7 @@ jobs:
           with:
             python-version: "3.10"
         - name: Download the package build
-          uses: actions/download-artifact@v3
+          uses: actions/download-artifact@v4
           with:
             name: package_build
         - name: Install the package
@@ -86,7 +86,7 @@ jobs:
          with:
            python-version: "3.10"
        - name: Download the package build
-         uses: actions/download-artifact@v3
+         uses: actions/download-artifact@v4
          with:
            name: package_build
        - name: Install the package
@@ -107,7 +107,7 @@ jobs:
          with:
            python-version: "3.10"
        - name: Download the package build
-         uses: actions/download-artifact@v3
+         uses: actions/download-artifact@v4
          with:
            name: package_build
 
