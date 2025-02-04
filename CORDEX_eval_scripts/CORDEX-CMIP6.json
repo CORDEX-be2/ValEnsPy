@@ -2,7 +2,7 @@
     "esmcat_version": "0.1.0",
     "id": "CORDEXbeII",
     "description": "This is an ESM collection for CORDEX-CMIP6 formatted data residing on the VSC Tier 1 machine.",
-    "catalog_file": "https://github.com/CORDEX-be2/ValEnsPy/blob/CORDEX_basic_eval/CORDEX_eval_scripts/catalog.csv",
+    "catalog_file": "https://raw.githubusercontent.com/CORDEX-be2/ValEnsPy/blob/CORDEX_basic_eval/CORDEX_eval_scripts/catalog.csv",
     "attributes": [
       {
         "column_name": "project_id"
