@@ -3,7 +3,7 @@ import xarray as xr
 import cf_xarray
 
 
-def remap_cdo(target_grid, ds, remap_method="bil", tempdir=None, output_path=None):
+def remap_cdo(ds, target_grid, remap_method="bil", tempdir=None, output_path=None):
     """Remap the input dataset to the target grid using CDO.
 
     Parameters
