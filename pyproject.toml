@@ -52,13 +52,14 @@ nc-time-axis = "^1.4.1"
 netCDF4 = "^1.6.5"
 pandas = "^2.2.1"
 pooch = "^1.8.1"
-python = "^3.9"
+python = ">=3.10,<4.0"
 regionmask = "^0.12.1"
 scipy = "^1.13.0"
 shapely = "^2.0.3"
 xarray = ">2024.2.0,<2024.10"
 xarray-datatree = "^0.0.14"
 seaborn = "^0.13.2"
+intake-esm = "^2024.2.6"
 
 [tool.poetry.group.dev]
 # Development group
