@@ -1,17 +1,18 @@
 name: Automatic testing
 
 on:
-   push:
+  push:
     branches:
       - main
       - dev
-   pull_request:
-    types: [review_requested]
-   workflow_dispatch:
+  pull_request:
+    types: [labeled]
 
 jobs:
 #--- Build the package and save as artifacts----
    packageing:
+      if: >
+        (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push')
       name: Build the package
       runs-on: ubuntu-latest
       outputs:
@@ -43,7 +44,7 @@ jobs:
               echo "filename=$(basename "$rel_path")" >> $GITHUB_OUTPUT
 
       - name: save package as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
             name: package_build
             path: dist/*.tar.gz
@@ -60,7 +61,7 @@ jobs:
           with:
             python-version: "3.10"
         - name: Download the package build
-          uses: actions/download-artifact@v3
+          uses: actions/download-artifact@v4
           with:
             name: package_build
         - name: Install the package
@@ -86,7 +87,7 @@ jobs:
          with:
            python-version: "3.10"
        - name: Download the package build
-         uses: actions/download-artifact@v3
+         uses: actions/download-artifact@v4
          with:
            name: package_build
        - name: Install the package
@@ -107,7 +108,7 @@ jobs:
          with:
            python-version: "3.10"
        - name: Download the package build
-         uses: actions/download-artifact@v3
+         uses: actions/download-artifact@v4
          with:
            name: package_build
 
@@ -124,6 +125,8 @@ jobs:
 #---- Version Control -----#
    versiontest:
      name: check if version is valid
+     if: >
+      (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push')
      runs-on: ubuntu-latest
      steps:
        - uses: actions/checkout@v3
