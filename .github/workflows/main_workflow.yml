@@ -44,7 +44,7 @@ jobs:
               echo "filename=$(basename "$rel_path")" >> $GITHUB_OUTPUT
 
       - name: save package as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
             name: package_build
             path: dist/*.tar.gz
