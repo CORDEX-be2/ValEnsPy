@@ -11,7 +11,8 @@ on:
 jobs:
 #--- Build the package and save as artifacts----
    packageing:
-      if: (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push')
+      if: >
+        (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push')
       name: Build the package
       runs-on: ubuntu-latest
       outputs:
@@ -124,7 +125,8 @@ jobs:
 #---- Version Control -----#
    versiontest:
      name: check if version is valid
-     if: (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push')
+     if: >
+      (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push')
      runs-on: ubuntu-latest
      steps:
        - uses: actions/checkout@v3
