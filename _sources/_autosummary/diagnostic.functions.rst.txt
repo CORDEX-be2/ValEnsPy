@@ -1,0 +1,47 @@
+diagnostic.functions
+====================
+
+.. automodule:: diagnostic.functions
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      bias
+      calc_metrics_da
+      calc_metrics_ds
+      calc_metrics_dt
+      diurnal_cycle
+      diurnal_cycle_bias
+      get_userdefined_binwidth
+      mean_absolute_error
+      mean_bias
+      optimal_bin_width
+      perkins_skill_score
+      perkins_skill_score_value
+      requires_variables
+      root_mean_square_error
+      spatial_bias
+      spearman_correlation
+      temporal_bias
+      time_series_spatial_mean
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

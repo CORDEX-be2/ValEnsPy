@@ -1,0 +1,6 @@
+diagnostic.functions.optimal\_bin\_width
+========================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: optimal_bin_width

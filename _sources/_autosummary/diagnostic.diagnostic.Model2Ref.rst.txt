@@ -1,0 +1,33 @@
+diagnostic.diagnostic.Model2Ref
+===============================
+
+.. currentmodule:: diagnostic.diagnostic
+
+.. autoclass:: Model2Ref
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Model2Ref.__init__
+      ~Model2Ref.apply
+      ~Model2Ref.plot
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Model2Ref.description
+   
+   

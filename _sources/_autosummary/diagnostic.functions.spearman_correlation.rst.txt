@@ -1,0 +1,6 @@
+diagnostic.functions.spearman\_correlation
+==========================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: spearman_correlation

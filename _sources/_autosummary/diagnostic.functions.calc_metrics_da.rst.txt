@@ -1,0 +1,6 @@
+diagnostic.functions.calc\_metrics\_da
+======================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: calc_metrics_da
