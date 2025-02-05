@@ -61,7 +61,7 @@ jobs:
           with:
             python-version: "3.10"
         - name: Download the package build
-          uses: actions/download-artifact@v3
+          uses: actions/download-artifact@v4
           with:
             name: package_build
         - name: Install the package
@@ -87,7 +87,7 @@ jobs:
          with:
            python-version: "3.10"
        - name: Download the package build
-         uses: actions/download-artifact@v3
+         uses: actions/download-artifact@v4
          with:
            name: package_build
        - name: Install the package
@@ -108,7 +108,7 @@ jobs:
          with:
            python-version: "3.10"
        - name: Download the package build
-         uses: actions/download-artifact@v3
+         uses: actions/download-artifact@v4
          with:
            name: package_build
 
