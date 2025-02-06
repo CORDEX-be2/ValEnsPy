@@ -1,0 +1,5 @@
+project_id,mip_era,activity_id,domain_id,institution_id,driving_source_id,driving_experiment_id,driving_variant_label,source_id,version_realization,frequency,version,variable_id
+CORDEX,CMIP6,DD,EUR-12,RMIB-UGent,ERA5,evaluation,r1i1p1f1,ALARO1-SFX,v1-r1,1hr,v20241009,"['hurs', 'rsds', 'sfcWind', 'psl', 'ps', 'tas', 'vas', 'clt', 'rlds', 'pr', 'uas', 'huss', 'evspsbl']"
+CORDEX,CMIP6,DD,EUR-12,RMIB-UGent,ERA5,evaluation,r1i1p1f1,ALARO1-SFX,v1-r1,day,v20241009,"['hurs', 'rsds', 'sfcWind', 'psl', 'tasmax', 'ps', 'tasmin', 'tas', 'vas', 'clt', 'rlds', 'pr', 'uas', 'huss', 'evspsbl']"
+CORDEX,CMIP6,DD,EUR-12,RMIB-UGent,ERA5,evaluation,r1i1p1f1,ALARO1-SFX,v1-r1,fx,v20241009,"['sftlf', 'orog']"
+CORDEX,CMIP6,DD,EUR-12,RMIB-UGent,ERA5,evaluation,r1i1p1f1,ALARO1-SFX,v1-r1,mon,v20241009,"['hurs', 'rsds', 'sfcWind', 'psl', 'tasmax', 'ps', 'tasmin', 'tas', 'vas', 'clt', 'rlds', 'pr', 'uas', 'huss', 'evspsbl']"
