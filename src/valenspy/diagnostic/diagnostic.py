@@ -34,6 +34,10 @@ class Diagnostic:
         self.diagnostic_function = diagnostic_function
         self.plotting_function = plotting_function
 
+    def __call__(self, data, *args, **kwargs):
+        return self.apply(data, *args, **kwargs)
+        
+
     @abstractmethod
     def apply(self, data):
         """Apply the diagnostic to the data.
