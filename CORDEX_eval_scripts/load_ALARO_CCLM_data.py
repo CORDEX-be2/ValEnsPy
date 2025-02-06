@@ -26,7 +26,7 @@ manager = vp.InputManager(machine="hortense")
 #MODEL data
 # Load the ALARO data
 
-df_alaro = pd.read_csv("/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/ValEnsPy/CORDEX_eval_scripts/catalog.csv")
+df_alaro = pd.read_csv(git_dir / "CORDEX_eval_scripts/catalog.csv")
 df_alaro = df_alaro[df_alaro['frequency'] == 'day']
 df_alaro = df_alaro[df_alaro['variable_id'].isin(variables)]
 df_alaro
