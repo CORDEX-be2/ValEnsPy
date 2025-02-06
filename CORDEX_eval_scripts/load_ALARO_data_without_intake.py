@@ -5,6 +5,10 @@ from pathlib import Path
 import pandas as pd
 from dask.diagnostics import ProgressBar
 import matplotlib.pyplot as plt
+import os
+
+#Get the git directory using the Path object using an os command
+git_dir = Path(os.popen("git rev-parse --show-toplevel").read().strip())
 
 #User options
 variables = ["tas", "pr"]
