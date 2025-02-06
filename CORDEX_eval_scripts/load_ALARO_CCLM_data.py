@@ -45,6 +45,8 @@ del ds_cclm_tas, ds_cclm_pr
 
 
 # Load the MAR data
+## palceholder for MAR data -for plotting purposes
+ds_mar = ds_alaro
 
 #OBSERVATIONAL data
 
@@ -55,8 +57,9 @@ ds_ref = manager.load_data("CLIMATE_GRID", variables, path_identifiers=["regridd
 
 # Create a DataTree object
 data_dict = {
-    "RCM/ERA5/CCLM6-0-1-URB-ESG": ds_cclm,
     "RCM/ERA5/ALARO1_SFX": ds_alaro,
+    "RCM/ERA5/CCLM6-0-1-URB-ESG": ds_cclm,
+    "RCM/ERA5/MAR": ds_mar,
     "obs/CLIMATE_GRID": ds_ref
 }
 
