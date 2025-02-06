@@ -59,6 +59,7 @@ shapely = "^2.0.3"
 xarray = ">2024.2.0,<2024.10"
 xarray-datatree = "^0.0.14"
 seaborn = "^0.13.2"
+xesmf = "^0.8.8"
 
 [tool.poetry.group.dev]
 # Development group
