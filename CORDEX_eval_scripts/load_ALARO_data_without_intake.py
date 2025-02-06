@@ -48,6 +48,11 @@ dt["RCM"] = dt["RCM"].map_over_subtree(vp.remap_xesmf, dt.obs.CLIMATE_GRID.to_da
 dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
 
 #Apply diagnostics
+
+#Compute the data once (not for every diagnostic separately)
+with ProgressBar():
+    dt = dt.compute()
+
 #Model2Self
 from valenspy.diagnostic import AnnualCycle
 
@@ -70,10 +75,14 @@ ax[1].legend()
 plt.show()
 plt.savefig("CORDEX_eval_scripts/plots/diurnal_cycle.png")
 
-##Model2Ref
-diag = vp.diagnostic.SpatialBias
+#Model2Ref
+## Spatial Bias
+from valenspy.diagnostic import SpatialBias
 with ProgressBar():
-    ds_spbias = diag.apply(dt["RCM/ERA5/ALARO1_SFX"], dt["obs/CLIMATE_GRID"])
+    ds_spbias = SpatialBias(dt["RCM/ERA5/ALARO1_SFX"].to_dataset(), dt["obs/CLIMATE_GRID"].to_dataset())
     ds_spbias = ds_spbias.compute()
-    
-diag.plot(ds_spbias)
+
+fig, ax = plt.subplots(1, 2, figsize=(15, 5))
+SpatialBias.plot(ds_spbias.tas, ax=ax[0])
+SpatialBias.plot(ds_spbias.pr, ax=ax[1])
+plt.savefig("CORDEX_eval_scripts/plots/Spatial_bias.png")
