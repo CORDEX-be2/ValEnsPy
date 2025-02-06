@@ -42,6 +42,7 @@ del ds_cclm_tas, ds_cclm_pr
 # Load the MAR data
 
 #OBSERVATIONAL data
+
 # Load CLIMATE_GRID
 ## Issue - currently can't load the ungridded CLIMATE_GRID data as there is no unique identifier for the data 
 
@@ -56,9 +57,15 @@ data_dict = {
 
 dt = DataTree.from_dict(data_dict)
 
-#Some preprocessing steps
+############################################
+# STEP 2: Preprocessing the data
+
 ## Regrid (currently to CLIMATE_GRID)
 dt["RCM"] = dt["RCM"].map_over_subtree(vp.remap_xesmf, dt.obs.CLIMATE_GRID.to_dataset(), method="bilinear", regridding_kwargs={"keep_attrs": True})
 
 ## Select the time period from 1980 to 2002 (inclusive)
 dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
+
+
+############################################
+# STEP 3: Diagnostics
