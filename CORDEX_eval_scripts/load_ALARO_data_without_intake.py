@@ -8,12 +8,12 @@ import matplotlib.pyplot as plt
 
 #User options
 variables = ["tas", "pr"]
-period = [1980,2002]
+period = [1980,2019]
 target_grid="/dodrio/scratch/projects/2022_200/external/climate_grid/TEMP_AVG_CLIMATE_GRID_1954_2023_daily.nc"
 ############################################
 
 #MODEL data
-# Load the ALARO data
+# Load the ALARO datad
 df = pd.read_csv("/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/ValEnsPy/CORDEX_eval_scripts/catalog.csv")
 df = df[df['frequency'] == 'day']
 df = df[df['variable_id'].isin(variables)]
@@ -49,20 +49,26 @@ dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
 
 #Apply diagnostics
 #Model2Self
-diag = vp.diagnostic.DiurnalCycle
+from valenspy.diagnostic import AnnualCycle
+
 with ProgressBar():
-    ds_alaro = diag.apply(dt["RCM/ERA5/ALARO1_SFX"].to_dataset())
+    ds_alaro = AnnualCycle(dt["RCM/ERA5/ALARO1_SFX"].to_dataset())
     ds_alaro = ds_alaro.compute()
-    ds_obs = diag.apply(dt["obs/CLIMATE_GRID"].to_dataset())
+    ds_obs = AnnualCycle(dt["obs/CLIMATE_GRID"].to_dataset())
     ds_obs = ds_obs.compute()
 
 fig, ax = plt.subplots(1, 2, figsize=(15, 5))
-diag.plot(ds_alaro["tas"], ax=ax[0], label="ALARO1_SFX")
-diag.plot(ds_obs["tas"], ax=ax[1], label="CLIMATE_GRID")
-#Add a legend
-plt.legend()
+AnnualCycle.plot(ds_alaro["tas"], ax=ax[0], label="ALARO1_SFX", color="red")
+AnnualCycle.plot(ds_obs["tas"], ax=ax[0], label="CLIMATE_GRID", color="blue")
+AnnualCycle.plot(ds_alaro["pr"], ax=ax[1], label="ALARO1_SFX", color="red")
+AnnualCycle.plot(ds_obs["pr"], ax=ax[1], label="CLIMATE_GRID", color="blue")
+#Set the axis label
+ax[0].set_title("Annual Cycle of tas")
+ax[0].legend()
+ax[1].set_title("Annual Cycle of pr")
+ax[1].legend()
 plt.show()
-plt.savefig("diurnal_cycle.png")
+plt.savefig("CORDEX_eval_scripts/plots/diurnal_cycle.png")
 
 ##Model2Ref
 diag = vp.diagnostic.SpatialBias
