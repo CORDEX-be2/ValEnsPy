@@ -1,8 +1,13 @@
 from datatree import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
+from valenspy.processing.mask import add_prudence_regions
+
+#Import get_axis from xarray
+from xarray.plot.utils import get_axis
 
 from abc import abstractmethod
+import warnings
 
 
 class Diagnostic:
@@ -29,6 +34,10 @@ class Diagnostic:
         self.diagnostic_function = diagnostic_function
         self.plotting_function = plotting_function
 
+    def __call__(self, data, *args, **kwargs):
+        return self.apply(data, *args, **kwargs)
+        
+
     @abstractmethod
     def apply(self, data):
         """Apply the diagnostic to the data.
@@ -45,7 +54,7 @@ class Diagnostic:
         """
         pass
 
-    def plot(self, result, ax=None, **kwargs):
+    def plot(self, result, title=None, **kwargs):
         """Plot the diagnostic.
 
         Parameters
@@ -58,7 +67,11 @@ class Diagnostic:
         ax : matplotlib.axis.Axis
             The axis (singular) of the plot.
         """
-        return self.plotting_function(result, ax=ax, **kwargs)
+        ax = self.plotting_function(result, **kwargs)
+        if not title:
+            title = self.name
+        ax.set_title(title)
+        return ax
 
     @property
     def description(self):
@@ -75,7 +88,7 @@ class Model2Self(Diagnostic):
         """Initialize the Model2Self diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
 
-    def apply(self, ds: xr.Dataset, **kwargs):
+    def apply(self, ds: xr.Dataset, mask=None, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
@@ -88,6 +101,8 @@ class Model2Self(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
+        if mask == "prudence":
+            ds = add_prudence_regions(ds)
         return self.diagnostic_function(ds, **kwargs)
 
 
@@ -100,7 +115,7 @@ class Model2Ref(Diagnostic):
         """Initialize the Model2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description)
 
-    def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):
+    def apply(self, ds: xr.Dataset, ref: xr.Dataset, mask=None, **kwargs):
         """Apply the diagnostic to the data. Only the common variables between the data and the reference are used.
 
         Parameters
@@ -115,7 +130,12 @@ class Model2Ref(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
+        if mask == "prudence":
+            ds = add_prudence_regions(ds)
+            ref = add_prudence_regions(ref)
+
         ds, ref = _select_common_vars(ds, ref)
+
         return self.diagnostic_function(ds, ref, **kwargs)
 
 
@@ -123,12 +143,14 @@ class Ensemble2Self(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to itself."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None
+        self, diagnostic_function, plotting_function, name=None, description=None, iterative_plotting=False
     ):
         """Initialize the Ensemble2Self diagnostic."""
+        self.iterative_plotting = iterative_plotting
         super().__init__(diagnostic_function, plotting_function, name, description)
+        
 
-    def apply(self, dt: DataTree, **kwargs):
+    def apply(self, dt: DataTree, mask=None, **kwargs):
         """Apply the diagnostic to the data.
 
         Parameters
@@ -141,13 +163,15 @@ class Ensemble2Self(Diagnostic):
         DataTree or dict
             The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
+        if mask == "prudence":
+            dt = dt.map_over_subtree(add_prudence_regions)
+
         return self.diagnostic_function(dt, **kwargs)
 
-    def plot(self, result, facetted=True, **kwargs):
+    def plot(self, result, variables=None, title=None, facetted=None, **kwargs):
         """Plot the diagnostic.
 
-        If axes are provided, the diagnostic is plotted facetted. If ax is provided, the diagnostic is plotted non-facetted. 
-        If neither axes nor ax are provided, the diagnostic is plotted on the current axis and no facetting is applied.
+        If facetted multiple plots on different axes are created. If not facetted, the plots are created on the same axis.
 
         Parameters
         ----------
@@ -159,17 +183,66 @@ class Ensemble2Self(Diagnostic):
         Figure
             The figure representing the diagnostic.
         """
-        if "ax" in kwargs and "axes" in kwargs:
-            raise ValueError("Either ax or axes can be provided, not both.")
-        elif "ax" not in kwargs and "axes" not in kwargs:
-            ax = plt.gca()
-            return self.plotting_function(result, ax=ax, **kwargs)
+        if not self.iterative_plotting:
+            if facetted is not None:
+                warnings.warn("facetted is ignored when using a non-iterative plotting function.")
+            return self._plot_non_iterative(result, title=title, **kwargs)
         else:
-            return self.plotting_function(result, **kwargs)
+            if variables is None:
+                raise ValueError("variables must be provided when using an iterative plotting function. The variables can be a list of variables to plot or a single variable to plot.")
+            return self._plot_iterative(result, title=title, variables=variables, facetted=facetted, **kwargs)
 
+    def _plot_non_iterative(self, dt, title=None, **kwargs):
+        """Plot the diagnostic in a non-iterative way. i.e. the plotting function is applied to the whole DataTree at once"""
+        ax = self.plotting_function(dt, **kwargs)
+        if not title:
+            title = self.name
+        ax.set_title(title)
+        return ax
+
+    def _plot_iterative(self, dt, title=None, variables=None, facetted=True, **kwargs):
+        if not title:
+            title = self.name
+
+        if "axes" in kwargs and "ax" in kwargs:
+            raise ValueError("Either ax or axes can be provided, not both.")
+
+        if facetted and ("ax" in kwargs or "axes" in kwargs):
+            warnings.warn("facetted is ignored when axes or ax are provided.")
+
+        #If axes are not provided, create new axes or one new axis depending on the facetted argument
+        if (not "axes" in kwargs) and (not "ax" in kwargs):
+            subplot_kws = kwargs.pop("subplot_kws", {})
+            if facetted:
+                fig, axes = _initialize_multiaxis_plot(len(dt.leaves), subplot_kws=subplot_kws)
+            else:
+                ax = get_axis(figsize=kwargs.pop("figsize", None), 
+                                size=kwargs.pop("size", None), 
+                                aspect=kwargs.pop("aspect", None),
+                                **subplot_kws
+                )
+
+        if "ax" in kwargs:
+            facetted = False
+            ax = kwargs.pop("ax")
+
+        elif "axes" in kwargs:
+            facetted = True
+            axes = kwargs.pop("axes")
+
+        #Do the actual plotting
+        if facetted:                
+            for ds, ax in zip(dt.leaves, axes.flatten()):
+                self.plotting_function(ds.to_dataset()[variables], ax=ax, **kwargs)
+                ax.set_title(ds.path.replace("/", " "))
+            return axes
+        else:
+            for ds in dt.leaves:
+                self.plotting_function(ds.to_dataset()[variables], ax=ax, label=f'{ds.path.replace("/", " ")}', **kwargs)
+            return ax
 
     @classmethod
-    def from_model2self(cls, model2self: Model2Self, facetted=True):
+    def from_model2self(cls, model2self: Model2Self):
         """Create an Ensemble2Self diagnostic from a Model2Self diagnostic.
 
         Parameters
@@ -187,25 +260,16 @@ class Ensemble2Self(Diagnostic):
             return dt.map_over_subtree(model2self.diagnostic_function, **kwargs)
 
         def plotting_function(
-            dt: DataTree, variable=None, **kwargs
+            ds, title=None, **kwargs
         ):
-            if "axes" in kwargs:
-                axes = kwargs.pop("axes")
-                for ds, ax in zip(dt.leaves, axes.flatten()):
-                    model2self.plot(ds[variable], ax=ax, **kwargs)
-                    ax.set_title(ds.path.replace("/", " "))
-                return axes
-            if "ax" in kwargs:
-                ax = kwargs.pop("ax")
-                for ds in dt.leaves:
-                    model2ref.plot(ds[variable], ax=ax, label=f'{ds.path.replace("/", " ")}', **kwargs)
-                return ax
+            return model2self.plotting_function(ds, **kwargs)
 
         return Ensemble2Self(
             diagnostic_function,
             plotting_function,
             model2self.name,
             model2self.description,
+            iterative_plotting=True
         )
 
 
@@ -262,7 +326,7 @@ class Ensemble2Ref(Diagnostic):
 
 
     @classmethod
-    def from_model2ref(cls, model2ref: Model2Ref, facetted=True):
+    def from_model2ref(cls, model2ref: Model2Ref, color=False):
         """Create an Ensemble2Ref diagnostic from a Model2Ref diagnostic.
 
         Parameters
@@ -324,6 +388,13 @@ def _select_common_vars(ds1, ds2):
     common_vars = _common_vars(ds1, ds2)
     return ds1[common_vars], ds2[common_vars]
 
+def _initialize_multiaxis_plot(n, subplot_kws={}):
+    """Initialize a multi-axis plot."""
+    fig, axes = plt.subplots(
+            nrows=n//2+1, ncols=2, figsize=(10, 5 * n), subplot_kw=subplot_kws
+        )
+    return fig, axes
+
 
 # =============================================================================
 # Pre-made diagnostics
@@ -334,13 +405,22 @@ from valenspy.diagnostic.visualizations import *
 
 # Model2Self diagnostics
 DiurnalCycle = Model2Self(
-    diurnal_cycle, plot_diurnal_cycle, "Diurnal Cycle", "The diurnal cycle of the data."
+    diurnal_cycle, 
+    plot_diurnal_cycle, 
+    "Diurnal Cycle", 
+    "The diurnal cycle of the data."
+)
+AnnualCycle = Model2Self(
+    annual_cycle,
+    plot_annual_cycle,
+    "Annual Cycle",
+    "The annual cycle of the data."
 )
 TimeSeriesSpatialMean = Model2Self(
     time_series_spatial_mean,
     plot_time_series,
-    "Time Series Spatial Mean",
-    "The time series of the spatial mean of the data.",
+    "Time Series",
+    "The time series of the data - if the data is spatial, the spatial mean is taken."
 )
 # Model2Ref diagnostics
 SpatialBias = Model2Ref(
