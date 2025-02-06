@@ -4,6 +4,7 @@ from datatree import DataTree
 from pathlib import Path
 import pandas as pd
 from dask.diagnostics import ProgressBar
+import matplotlib.pyplot as plt
 
 #User options
 variables = ["tas", "pr"]
@@ -39,4 +40,34 @@ data_dict = {
 
 dt = DataTree.from_dict(data_dict)
 
-dt.to_netcdf("/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/ValEnsPy/notebooks/intermediate_data/ALARO_interm_20250204.nc")
+#Some preprocessing steps
+## Regrid (currently to CLIMATE_GRID)
+dt["RCM"] = dt["RCM"].map_over_subtree(vp.remap_xesmf, dt.obs.CLIMATE_GRID.to_dataset(), method="bilinear", regridding_kwargs={"keep_attrs": True})
+
+## Select the time period from 1980 to 2002 (inclusive)
+dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
+
+#Apply diagnostics
+#Model2Self
+diag = vp.diagnostic.DiurnalCycle
+with ProgressBar():
+    ds_alaro = diag.apply(dt["RCM/ERA5/ALARO1_SFX"].to_dataset())
+    ds_alaro = ds_alaro.compute()
+    ds_obs = diag.apply(dt["obs/CLIMATE_GRID"].to_dataset())
+    ds_obs = ds_obs.compute()
+
+fig, ax = plt.subplots(1, 2, figsize=(15, 5))
+diag.plot(ds_alaro["tas"], ax=ax[0], label="ALARO1_SFX")
+diag.plot(ds_obs["tas"], ax=ax[1], label="CLIMATE_GRID")
+#Add a legend
+plt.legend()
+plt.show()
+plt.savefig("diurnal_cycle.png")
+
+##Model2Ref
+diag = vp.diagnostic.SpatialBias
+with ProgressBar():
+    ds_spbias = diag.apply(dt["RCM/ERA5/ALARO1_SFX"], dt["obs/CLIMATE_GRID"])
+    ds_spbias = ds_spbias.compute()
+    
+diag.plot(ds_spbias)
