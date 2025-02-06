@@ -77,7 +77,7 @@ ax[0].legend()
 ax[1].set_title("Annual Cycle of pr")
 ax[1].legend()
 plt.show()
-plt.savefig("CORDEX_eval_scripts/plots/diurnal_cycle.png")
+plt.savefig(git_dir / "CORDEX_eval_scripts/plots/diurnal_cycle.png")
 
 #Model2Ref
 ## Spatial Bias
@@ -89,4 +89,4 @@ with ProgressBar():
 fig, ax = plt.subplots(1, 2, figsize=(15, 5))
 SpatialBias.plot(ds_spbias.tas, ax=ax[0])
 SpatialBias.plot(ds_spbias.pr, ax=ax[1])
-plt.savefig("CORDEX_eval_scripts/plots/Spatial_bias.png")
+plt.savefig(git_dir / "CORDEX_eval_scripts/plots/spatial_bias.png")
