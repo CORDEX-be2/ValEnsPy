@@ -24,6 +24,9 @@ def remap_xesmf(ds, ds_out, method="bilinear", regridder_kwargs={}, regridding_k
     xarray.Dataset
         The remapped dataset in xarray format.
     """
+    if method=="conservative":
+        if not ("lat_bounds" in ds.variables and "lon_bounds" in ds.variables):
+            ds = ds.cf.add_bounds(("lat", "lon"))
     regridder = xe.Regridder(ds, ds_out, method, **regridder_kwargs)
     ds_reg = regridder(ds, **regridding_kwargs)
     return ds_reg
