@@ -62,7 +62,7 @@ def convert_mm_to_kg_m2s(da: xr.DataArray):
 
 def convert_mm_hr_to_kg_m2s(da: xr.DataArray):
     """
-    Convert daily (!) values in xarray DataArray from mm to kg m^-2 s^-1
+    Convert hourly (!) values in xarray DataArray from mm to kg m^-2 s^-1
     """
     da = da / 3600  # mm to kg m^-2 s^-1
     da.attrs["units"] = "kg m-2 s-1"
@@ -107,13 +107,23 @@ def convert_m_hr_to_kg_m2s(da: xr.DataArray):
 ########### To m h-1 ############
 def convert_kg_m2s_to_mh(da: xr.DataArray):
     """
-    Convert values in xarray DataArray from kg m^-2 s^-1 to mm hr^-1
+    Convert values in xarray DataArray from kg m^-2 s^-1 to m hr^-1
     """
-    da = da * 3600 / 1000  # kg m^-2 s^-1 to mm hr^-1
-    da.attrs["units"] = "mm hr-1"
+    da = da * 3600 / 1000  # kg m^-2 s^-1 to m hr^-1
+    da.attrs["units"] = "m hr-1"
 
     return da
 
+########### To m day-1 ############
+def convert_kg_m2s_to_mm_day(da: xr.DataArray):
+    """
+    Convert values in xarray DataArray from kg m^-2 s^-1 to mm day^-1
+    """
+    # do conversion
+    da = da * 86400  # kg m^-2 s^-1 to mm day^-1
+    da.attrs["units"] = "mm day-1"
+
+    return da
 
 ########### To W m-2 ############
 def convert_J_m2_to_W_m2(da: xr.DataArray):
