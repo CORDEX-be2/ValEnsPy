@@ -22,12 +22,12 @@ manager = vp.InputManager(machine="hortense")
 # Load the ALARO data
 
 df_alaro = pd.read_csv("/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/ValEnsPy/CORDEX_eval_scripts/catalog.csv")
-df_alaro = df[df['frequency'] == 'day']
-df_alaro = df[df['variable_id'].isin(variables)]
+df_alaro = df_alaro[df_alaro['frequency'] == 'day']
+df_alaro = df_alaro[df_alaro['variable_id'].isin(variables)]
 df_alaro
 
 #Load all the paths in the df into one xarray dataset
-ds_alaro = xr.open_mfdataset(df['path'].values, decode_coords='all', chunks="auto")
+ds_alaro = xr.open_mfdataset(df_alaro['path'].values, decode_coords='all', chunks="auto")
 ds_alaro
 
 # Load the COSMO data
