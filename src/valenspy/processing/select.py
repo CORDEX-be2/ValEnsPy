@@ -37,7 +37,7 @@ def select_region(ds: xr.Dataset, region: str):
     )
     return ds_sel
 
-def select_point(ds: xr.Dataset, lon_lat_point: tuple, rotated_pole: bool = False):
+def select_point(ds: xr.Dataset, lon_point: float, lat_point: float, rotated_pole: bool = False):
     """
     Select a point from the dataset based on the provided geographic coordinates.
 
@@ -45,8 +45,10 @@ def select_point(ds: xr.Dataset, lon_lat_point: tuple, rotated_pole: bool = Fals
     ----------
     ds : xarray.Dataset
         The input dataset from which to select the point.
-    lon_lat_point : tuple
-        Geographic coordinates as a (longitude, latitude) pair in degrees.
+    lon_point : float
+        Geographic longitude coordinate 
+    lat_point : float
+        Geographic latitude coordinate        
     rotated_pole : bool, optional
         If True, the dataset is in a rotated pole projection and the input coordinates
         will be converted to rotated pole coordinates before selection. Default is False.
@@ -58,14 +60,14 @@ def select_point(ds: xr.Dataset, lon_lat_point: tuple, rotated_pole: bool = Fals
     """
     if rotated_pole:
         # Convert geographic coordinates to rotated pole coordinates
-        lon_lat_point_rot = convert_geo_to_rot(lon_lat_point, ds)
+        lon_lat_point_rot = convert_geo_to_rot((lon_point,lat_point), ds)
         # Select the nearest point in the rotated pole coordinates
         ds_point = ds.sel(
-            rlon=lon_lat_point_rot[0], rlat=lon_lat_point_rot[1], method="nearest"
+            rlon=lon_point, rlat=lat_point, method="nearest"
         )
     else:
         # Select the nearest point based on geographic coordinates
-        ds_point = ds.sel(lon=lon_lat_point[0], lat=lon_lat_point[1], method="nearest")
+        ds_point = ds.sel(lon=lon_point, lat=lon_lat_point[1], method="nearest")
 
     return ds_point
 
