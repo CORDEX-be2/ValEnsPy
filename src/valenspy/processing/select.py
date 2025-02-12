@@ -147,7 +147,7 @@ def select_point(ds: xr.Dataset, lon_point: float, lat_point: float, projection:
             rlon=lon_lat_point_rot[0], rlat=lon_lat_point_rot[1], method="nearest"
         )
     elif projection == "lcc":
-        point = convert_geo_to_LCC((lon_point,lat_point)), ds)
+        point = convert_geo_to_LCC((lon_point,lat_point), ds)
         ds_point = ds.sel(x=point[0], y=point[1], method="nearest")
     else:
         # Select the nearest point based on geographic coordinates
