@@ -39,6 +39,9 @@ ds_alaro
 experiment = "CB2_CCLM_EUR11_ERA5_evaluation"
 ds_cclm_tas = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "mean"])
 ds_cclm_pr  = manager.load_data("CCLM", ["pr"], freq="daily", path_identifiers=[experiment, "sum"])
+ds_cclm_tasmax  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "max"])
+ds_cclm_tasmin  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "min"])
+
 ds_cclm = xr.merge([ds_cclm_tas, ds_cclm_pr])
 del ds_cclm_tas, ds_cclm_pr
 
