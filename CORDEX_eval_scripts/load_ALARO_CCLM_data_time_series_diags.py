@@ -130,10 +130,20 @@ plt.legend()
 plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/Uccle_time_series_{heat_wave[0]}_{heat_wave[1]}.png")
 
 #Trend figures ??
-ds = dt.obs.CLIMATE_GRID.to_dataset()
-ds_m = ds.mean(dim=["lat","lon"])
-ds_t = ds_m.rolling(time=365*10).mean()
+from valenspy.diagnostic import TimeSeriesTrendSpatialMean
+dt_Ukkel = dt.map_over_subtree(vp.select_point, Ukkel)
+
+#Compared to their own 1980-1985 mean
+dt_Ukkel = dt_Ukkel - dt_Ukkel.sel(time=slice("1980-01-01", "1985-12-31")).mean("time")
+
+with ProgressBar():
+    dt_time_series_trend = dt_Ukkel.map_over_subtree(TimeSeriesTrendSpatialMean, window_size=366*5)
+    dt_time_series_trend = dt_time_series_trend.compute()
 
 fig, ax = plt.subplots(figsize=(15, 5))
-ds_t.tas.plot()
-plt.savefig(git_dir / "test.png")
+for leaf in dt_time_series_trend.leaves:
+    TimeSeriesTrendSpatialMean.plot(leaf["tas"], ax=ax, label=leaf.name)
+
+plt.legend()
+plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/Uccle_time_series_trend_normalized.png")
+
