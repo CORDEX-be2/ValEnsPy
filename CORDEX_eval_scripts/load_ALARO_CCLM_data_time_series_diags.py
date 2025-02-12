@@ -113,7 +113,7 @@ plt.legend()
 plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/Bel_mean_time_series_{heat_wave[0]}_{heat_wave[1]}.png")
 
 #TimeSeries - Ukkel
-Ukkel = (50.79, 4.37)
+Ukkel = (4.37, 50.79)
 
 #Note this is beter done in the native grid (here we use the regridded grid)
 dt_heat_uccle = dt_heat.map_over_subtree(vp.select_point, Ukkel)
@@ -130,3 +130,10 @@ plt.legend()
 plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/Uccle_time_series_{heat_wave[0]}_{heat_wave[1]}.png")
 
 #Trend figures ??
+ds = dt.obs.CLIMATE_GRID.to_dataset()
+ds_m = ds.mean(dim=["lat","lon"])
+ds_t = ds_m.rolling(time=365*10).mean()
+
+fig, ax = plt.subplots(figsize=(15, 5))
+ds_t.tas.plot()
+plt.savefig(git_dir / "test.png")
