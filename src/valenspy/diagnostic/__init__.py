@@ -3,6 +3,7 @@ from .diagnostic import (
     DiurnalCycle,
     AnnualCycle,
     TimeSeriesSpatialMean,
+    TimeSeriesTrendSpatialMean,
     SpatialBias,
     TemporalBias,
     DiurnalCycleBias,
