@@ -33,7 +33,6 @@ classifiers = [
   "Natural Language :: English",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -52,7 +51,7 @@ nc-time-axis = "^1.4.1"
 netCDF4 = "^1.6.5"
 pandas = "^2.2.1"
 pooch = "^1.8.1"
-python = "^3.9"
+python = "^3.10"
 regionmask = "^0.12.1"
 scipy = "^1.13.0"
 shapely = "^2.0.3"
