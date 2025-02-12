@@ -67,7 +67,7 @@ def select_point(ds: xr.Dataset, lon_point: float, lat_point: float, rotated_pol
         )
     else:
         # Select the nearest point based on geographic coordinates
-        ds_point = ds.sel(lon=lon_point, lat=lon_lat_point[1], method="nearest")
+        ds_point = ds.sel(lon=lon_point, lat=lat_point, method="nearest")
 
     return ds_point
 
