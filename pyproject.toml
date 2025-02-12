@@ -33,7 +33,6 @@ classifiers = [
   "Natural Language :: English",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -60,6 +59,7 @@ xarray = ">2024.2.0,<2024.10"
 xarray-datatree = "^0.0.14"
 seaborn = "^0.13.2"
 xesmf = "^0.8.8"
+xclim = "^0.54.0"
 
 [tool.poetry.group.dev]
 # Development group
