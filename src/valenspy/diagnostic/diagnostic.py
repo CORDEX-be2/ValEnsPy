@@ -1,7 +1,9 @@
 from datatree import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
-from valenspy.processing.mask import add_prudence_regions
+from valenspy.processing.mask import add_regionmask_region
+
+import regionmask
 
 #Import get_axis from xarray
 from xarray.plot.utils import get_axis
@@ -101,8 +103,8 @@ class Model2Self(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
-        if mask == "prudence":
-            ds = add_prudence_regions(ds)
+        if isinstance(mask, regionmask.Regions):
+            ds = add_regionmask_region(ds, mask)
         return self.diagnostic_function(ds, **kwargs)
 
 
@@ -130,9 +132,9 @@ class Model2Ref(Diagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
-        if mask == "prudence":
-            ds = add_prudence_regions(ds)
-            ref = add_prudence_regions(ref)
+        if isinstance(mask, regionmask.Regions):
+            ds = add_regionmask_region(ds)
+            ref = add_regionmask_region(ref)
 
         ds, ref = _select_common_vars(ds, ref)
 
@@ -163,8 +165,8 @@ class Ensemble2Self(Diagnostic):
         DataTree or dict
             The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
-        if mask == "prudence":
-            dt = dt.map_over_subtree(add_prudence_regions)
+        if isinstance(mask, regionmask.Regions):
+            dt = dt.map_over_subtree(add_regionmask_region, mask)
 
         return self.diagnostic_function(dt, **kwargs)
 
