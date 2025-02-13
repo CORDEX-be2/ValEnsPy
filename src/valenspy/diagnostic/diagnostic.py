@@ -422,6 +422,12 @@ TimeSeriesSpatialMean = Model2Self(
     "Time Series",
     "The time series of the data - if the data is spatial, the spatial mean is taken."
 )
+TimeSeriesTrendSpatialMean = Model2Self(
+    time_series_trend,
+    plot_time_series,
+    "Time Series Trend",
+    "The time series trend of the data - if the data is spatial, the spatial mean is taken."
+)
 # Model2Ref diagnostics
 SpatialBias = Model2Ref(
     spatial_bias,
