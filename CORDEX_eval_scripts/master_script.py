@@ -35,12 +35,15 @@ from valenspy.diagnostic.functions import root_mean_square_error
 
 git_dir = Path(os.popen("git rev-parse --show-toplevel").read().strip())
 
+# %%
+from valenspy.input.unit_converter import CORDEX_VARIABLES
+
 # %% [markdown]
 # User options
 
 # %%
 # Load data options
-variables = ["tas", "pr", "tasmin", "tasmax"]
+variables = ["tas"]  # "pr", "tasmin", "tasmax"
 period = [1980, 2019]
 
 # Plotting options - to be moved to a seperate "config" file
@@ -53,14 +56,12 @@ mpl.rc('axes',labelsize=10)
 mpl.rc('axes', titlelocation="right")
 mpl.rc('xtick',color='dimgrey')
 mpl.rc('xtick',labelsize=10)
-
 mpl.rc('ytick',color='dimgrey')
 mpl.rc('ytick',labelsize=10)
-
 mpl.rc('legend',fontsize='large')
-mpl.rc('legend',fancybox=False)
-
+mpl.rc('legend',frameon=False)
 mpl.rc('text',color='dimgrey')
+mpl.rc('figure', titlesize=16)
 
 
 ## Specify colors for the specific models
@@ -76,12 +77,14 @@ d_cmap_diverging = { "tas": 'RdBu_r', "tasmax":'RdBu_r', "tasmin":'RdBu_r', "pr"
 # Diagnostic switches
 
 ## Model2Self
-AnnualCycle = True
-TimeSeries = True
-TimeSeriesUkkel = True
-Trends = True
-SpatialBias = True
-SpatialMean = True
+do_AnnualCycle = True
+do_TimeSeries = True
+do_TimeSeriesUkkel = True
+do_Trends = True
+do_SpatialMean = True
+## Model2Ref
+do_SpatialBias = True
+
 
 #Add iteration over the variables that we would like to be plotted.
 #Add color maps per diagnostic
@@ -108,11 +111,12 @@ ds_alaro
 # COSMO (Using the input manager - currently variables loaded manually)
 experiment      = "CB2_CCLM_BEL28_ERA5_evaluation"
 ds_cclm_tas     = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "mean"])
-ds_cclm_tasmax  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "max"]).rename({'tas':'tasmax'})
-ds_cclm_tasmin  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "min"]).rename({'tas':'tasmin'})
-ds_cclm_pr      = manager.load_data("CCLM", ["pr"], freq="daily", path_identifiers=[experiment, "sum"])
-ds_cclm         = xr.merge([ds_cclm_tas, ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin])
-del ds_cclm_tas, ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
+# ds_cclm_tasmax  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "max"]).rename({'tas':'tasmax'})
+# ds_cclm_tasmin  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "min"]).rename({'tas':'tasmin'})
+# ds_cclm_pr      = manager.load_data("CCLM", ["pr"], freq="daily", path_identifiers=[experiment, "sum"])
+# ds_cclm         = xr.merge([ds_cclm_tas, ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin])
+#del ds_cclm_tas , ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
+ds_cclm = ds_cclm_tas
 
 ## (Requires user adjustment)
 # MAR (Placeholder for MAR data - for plotting purposes)
@@ -150,6 +154,12 @@ dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
 # %% [markdown]
 # STEP 3: Diagnostics
 
+# %%
+from valenspy.diagnostic import AnnualCycle
+from valenspy.diagnostic import TimeSeriesSpatialMean
+from valenspy.diagnostic import TimeSeriesTrendSpatialMean
+from valenspy.diagnostic import SpatialBias
+
 # %% [markdown]
 # Model2Self
 
@@ -157,17 +167,14 @@ dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
 # Annual Cycle
 
 # %%
-if AnnualCycle:
-    from valenspy.diagnostic import AnnualCycle
+if do_AnnualCycle:
     with ProgressBar():
-        dt_annual_cycle = dt.map_over_subtree(AnnualCycle)
-        dt_annual_cycle = dt_annual_cycle.compute()
+        dt_annual_cycle = AnnualCycle(dt).compute()
 
 # %%
 if AnnualCycle:
     fig, ax = plt.subplots(figsize=(15, 5))
-    for leaf in dt_annual_cycle.leaves:
-        AnnualCycle.plot(leaf["tas"], ax=ax, label=leaf.name, color=color_dict[leaf.path])
+    AnnualCycle.plot_dt(dt_annual_cycle, var="tas", ax=ax, label="name", colors=color_dict)
     plt.legend()
     plt.savefig(git_dir / "CORDEX_eval_scripts/plots/Bel_mean_annual_cycle.png")
 
@@ -175,61 +182,52 @@ if AnnualCycle:
 # TimeSeries
 
 # %%
-if TimeSeries:
-    from valenspy.diagnostic import TimeSeriesSpatialMean
+if do_TimeSeries:
     heat_wave=["1997-06-01", "1997-08-31"]
     with ProgressBar():
         dt_time_series = dt.sel(time=slice(heat_wave[0], heat_wave[1]))
-        dt_time_series = dt.map_over_subtree(TimeSeriesSpatialMean)
-        dt_time_series = dt_time_series.compute()
+        dt_time_series = TimeSeriesSpatialMean(dt_time_series).compute()
 
 # %%
-if TimeSeries:    
+if do_TimeSeries:
     fig, ax = plt.subplots(figsize=(15, 5))
-    for leaf in dt_time_series.leaves:
-        TimeSeriesSpatialMean.plot(leaf["tas"], ax=ax, label=leaf.name, color=color_dict[leaf.path])
+    TimeSeriesSpatialMean.plot_dt(dt_time_series, var="tas", ax=ax, label="name", colors=color_dict)
     plt.legend()
-    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/Bel_mean__time_series_{heat_wave[0]}_{heat_wave[1]}.png")
+    plt.savefig(git_dir / "CORDEX_eval_scripts/plots/Bel_mean_heat_wave.png")
 
 # %% [markdown]
 # TimeSeries (Ukkel)
 
 # %%
-if TimeSeriesUkkel:
-    from valenspy.diagnostic import TimeSeriesSpatialMean
+if do_TimeSeriesUkkel:
     Ukkel = (4.37, 50.79)
     heat_wave=["1997-06-01", "1997-08-31"]
     with ProgressBar():
-        dt_time_series_uccle = dt.map_over_subtree(vp.select_point, Ukkel[0], Ukkel[1]).map_over_subtree(TimeSeriesSpatialMean)
-        dt_time_series_uccle = dt_time_series_uccle.compute()
+        dt_ukkel_hw = dt.map_over_subtree(vp.select_point, Ukkel[0], Ukkel[1]).sel(time=slice(heat_wave[0], heat_wave[1]))
+        dt_time_series_uccle = TimeSeriesSpatialMean(dt_ukkel_hw).compute()
 
 # %%
-if TimeSeriesUkkel:
+if do_TimeSeriesUkkel:
     fig, ax = plt.subplots(figsize=(15, 5))
-    for leaf in dt_time_series_uccle.leaves:
-        TimeSeriesSpatialMean.plot(leaf["tas"], ax=ax, label=leaf.name, color=color_dict[leaf.path])
+    TimeSeriesSpatialMean.plot_dt(dt_time_series_uccle, var="tas", ax=ax, label="name", colors=color_dict)
     plt.legend()
-    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/Uccle_time_series_{heat_wave[0]}_{heat_wave[1]}.png")
-
+    plt.savefig(git_dir / "CORDEX_eval_scripts/plots/Ukkel_heat_wave.png")
 
 # %% [markdown]
 # Trends
 
 # %%
-if Trends:
-    from valenspy.diagnostic import TimeSeriesTrendsSpatialMean
+if do_Trends:
     Ukkel = (4.37, 50.79)
     dt_Ukkel = dt.map_over_subtree(vp.select_point, Ukkel[0], Ukkel[1])
     dt_Ukkel = dt_Ukkel - dt_Ukkel.sel(time=slice("1980-01-01", "1985-12-31")).mean("time")
     with ProgressBar():
-        dt_trends = dt.map_over_subtree(TimeSeriesTrendsSpatialMean)
-        dt_trends = dt_trends.compute()
+        dt_trends = TimeSeriesTrendSpatialMean(dt_Ukkel, window_size=366*5).compute()
 
 # %%
-if Trends:
+if do_Trends:
     fig, ax = plt.subplots(figsize=(15, 5))
-    for leaf in dt_trends.leaves:
-        TimeSeriesTrendsSpatialMean.plot(leaf["tas"], ax=ax, label=leaf.name, color=color_dict[leaf.path])
+    TimeSeriesTrendSpatialMean.plot_dt(dt_trends, var="tas", ax=ax, label="name", colors=color_dict)
     plt.legend()
     plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/Uccle_time_series_trend_normalized.png")
 
@@ -240,16 +238,13 @@ if Trends:
 # SpatialBias
 
 # %%
-if SpatialBias:
-    var="tas"
-    from valenspy.diagnostic import SpatialBias
+if do_SpatialBias:
     with ProgressBar():
         ds_ref = dt.obs.CLIMATE_GRID.to_dataset()
-        dt_spatial_bias = dt.RCM.map_over_subtree(SpatialBias, ref=ds_ref)
-        dt_spatial_bias = dt_spatial_bias.compute()
+        dt_spatial_bias = SpatialBias(dt.RCM, ref=ds_ref).compute()
 
 # %%
-if SpatialBias:
+if do_SpatialBias:
     for var in variables:
         fig, axes = plt.subplots(1, 3, figsize=(15, 5), subplot_kw={"projection": ccrs.PlateCarree()})
         axes = axes.flatten()
@@ -266,14 +261,33 @@ if SpatialBias:
             #ax.set_title(' ')
             _add_features(ax, region='belgium')
 
-        fig.suptitle(f'{var} bias compared to CLIMATE_GRID', fontsize=16, y=0.8)
+        fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} bias compared to CLIMATE_GRID', y=0.8)
+        fig.tight_layout()
+        plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/spatialbias_{var}.png")
+
+# %%
+if SpatialBias:
+#Plot option 2
+    for var in variables:
+        fig, axes = plt.subplots(1, 3, figsize=(15, 5), subplot_kw={"projection": ccrs.PlateCarree()})
+        axes = axes.flatten()
+        cbar_kwargs={"shrink": 0.52}
+
+        SpatialBias.plot_type = "facetted"
+
+        SpatialBias.plot_dt(dt_spatial_bias, var=var, axes=axes, shared_cbar="abs", label="name", cbar_kwargs=cbar_kwargs, cmap=d_cmap_diverging[var])
+        
+        for ax in axes:
+            _add_features(ax, region='belgium')
+
+        fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} bias compared to CLIMATE_GRID', y=0.8)
         fig.tight_layout()
         plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/spatialbias_{var}.png")
 
 # %%
   
 ## SpatialMean
-if SpatialMean:
+if do_SpatialMean:
     d_cmap_sequential = {
     "tas": 'YlOrRd',
     "tasmax": 'YlOrRd',
