@@ -9,3 +9,5 @@ from .converter_functions import (
     ALARO_K_to_CF,
     RADCLIM_to_CF,
 )
+
+from .unit_converter import CORDEX_VARIABLES
