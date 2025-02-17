@@ -1,0 +1,15 @@
+# GPM_IMERG variable name conversion table based on CORDEX variables
+
+# Format
+
+# CORDEX VariableName:
+#    raw_name:
+#    raw_long_name:
+#    raw_units:
+
+# More info on GPM_IMERG: https://gpm.nasa.gov/data/imerg
+
+pr:
+    raw_name: precipitation
+    raw_long_name: Complete merged microwave-infrared (gauge-adjusted) precipitation estimate;  formerly precipitationCal
+    raw_units: mm/hr

@@ -358,3 +358,32 @@ def RADCLIM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
     cf_status(ds)
 
     return ds
+
+def GPM_IMERG_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
+    """
+    Convert the GPM IMERG xarray netCDF to a CF compliant xarray Dataset
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The xarray Dataset of GPM IMERG observations to convert
+    metadata_info : dict, optional
+        A dictionary containing additional metadata information to add to the dataset
+
+    Returns
+    -------
+    Dataset
+        The CF compliant GPM IMERG observations for the specified variable.
+    """
+    obsdata_name = "GPM_IMERG"
+    raw_LOOKUP = load_yml(f"{obsdata_name}_lookup")
+
+    if metadata_info is None:  # Set standard metadata if not provided
+        metadata_info = {"freq": "hourly"}
+
+    ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
+    ds = _set_global_attributes(ds, metadata_info)
+
+    cf_status(ds)
+
+    return ds
