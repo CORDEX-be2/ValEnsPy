@@ -168,34 +168,6 @@ def create_custom_cmap(hex_color1: str, hex_color2: str, num_colors: int):
     return cmap
 
 
-@default_plot_kwargs({
-    'subplot_kws': {'projection': ccrs.PlateCarree()},
-    "cmap" : "coolwarm"
-    })
-def plot_spatial_bias(da: xr.DataArray, **kwargs):
-    """
-    Plot the spatial bias of a given data array on a map.
-
-    Parameters
-    ----------
-    da : xarray.DataArray
-        The DataArray containing the bias data to be plotted. It is assumed that the data represents some
-        form of spatial bias, and the plot will visualize this bias on a map.
-    **kwargs : dict
-        Additional keyword arguments passed to the underlying plotting function `plot_map`.
-
-    Returns
-    -------
-    matplotlib.axes.Axes
-        The axes with the plotted spatial bias and map features.
-    """
-
-    plot_map(da, **kwargs)
-    ax = plt.gca()
-
-    return ax
-
-
 def plot_maps_mod_ref_diff(
     da_mod: xr.DataArray,
     da_ref: xr.DataArray,
