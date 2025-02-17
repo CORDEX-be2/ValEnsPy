@@ -1,6 +1,6 @@
 import xarray as xr
 import numpy as np
-from scipy.stats import spearmanr
+from scipy.stats import spearmanr, pearsonr
 from datatree import DataTree
 import pandas as pd
 from functools import partial
@@ -416,6 +416,35 @@ def spearman_correlation(da_mod: xr.DataArray, da_ref: xr.DataArray) -> float:
 
     # Calculate Spearman's rank correlation
     correlation, _ = spearmanr(mod_data, ref_data, nan_policy='omit')
+    
+    return correlation
+
+def pearson_correlation(da_mod: xr.DataArray, da_ref: xr.DataArray) -> float:
+    """
+    Calculate Pearson's rank correlation coefficient between model data and reference data.
+
+    Parameters
+    ----------
+    da_mod : xr.DataArray
+        The model data to compare (2D array where rows are observations and columns are variables).
+    da_ref : xr.DataArray
+        The reference data to compare (2D array where rows are observations and columns are variables).
+
+    Returns
+    -------
+    float
+        Pearson's rank correlation coefficient between the flattened model and reference data.
+    """
+    # Flatten the DataArrays to 1D arrays for correlation calculation
+    mod_data = da_mod.values.flatten()
+    ref_data = da_ref.values.flatten()
+    
+    # Ensure that the flattened arrays have the same length
+    if len(mod_data) != len(ref_data):
+        raise ValueError("Model and reference data must have the same length after flattening.")
+
+    # Calculate Spearman's rank correlation
+    correlation, _ = pearsonr(mod_data, ref_data)
     
     return correlation
 
