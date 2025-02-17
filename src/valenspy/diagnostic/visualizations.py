@@ -38,7 +38,7 @@ def plot_diurnal_cycle(da: xr.DataArray, **kwargs):
     """
     da.plot(**kwargs)
 
-    ax = plt.gca()
+    ax = _get_gca(**kwargs)
     
     ax.set_xlabel('Hour of day')
     ax.set_xticks(range(0, 24, 3))
@@ -63,7 +63,7 @@ def plot_annual_cycle(da: xr.DataArray, **kwargs):
     """
     da.plot(**kwargs)
 
-    ax = plt.gca()
+    ax = _get_gca(**kwargs)
 
     ax.set_xlabel('Month')
 
@@ -87,7 +87,7 @@ def plot_time_series(da: xr.DataArray, **kwargs):
     """
     da.plot(**kwargs)
 
-    ax = plt.gca()
+    ax = _get_gca(**kwargs)
 
     return ax
 
@@ -121,7 +121,7 @@ def plot_map(da: xr.DataArray, **kwargs):
 
     da.plot(**kwargs)
 
-    ax = plt.gca()
+    ax = _get_gca(**kwargs)
 
     return ax
 
@@ -500,6 +500,14 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
 # Helper functions               #
 ##################################
 
+def _get_gca(**kwargs):
+    """
+    Get the current axes as the axis passed in the keyword arguments or the current axis.
+    """
+    if "ax" in kwargs:
+        return kwargs["ax"]
+    else:
+        return plt.gca()
 
 # Define a function to add borders, coastlines to the axes
 def _add_features(ax, region=None):
