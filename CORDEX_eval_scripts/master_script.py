@@ -32,18 +32,16 @@ import cartopy.crs as ccrs
 import valenspy as vp
 from valenspy.diagnostic.visualizations import _add_features
 from valenspy.diagnostic.functions import root_mean_square_error
+from valenspy.input.unit_converter import CORDEX_VARIABLES
 
 git_dir = Path(os.popen("git rev-parse --show-toplevel").read().strip())
-
-# %%
-from valenspy.input.unit_converter import CORDEX_VARIABLES
 
 # %% [markdown]
 # User options
 
 # %%
 # Load data options
-variables = ["tas"]  # "pr", "tasmin", "tasmax"
+variables = ["tas", "pr", "tasmin", "tasmax"]
 period = [1980, 2019]
 
 # Plotting options - to be moved to a seperate "config" file
@@ -73,22 +71,45 @@ color_dict = {
 }
 
 d_cmap_diverging = { "tas": 'RdBu_r', "tasmax":'RdBu_r', "tasmin":'RdBu_r', "pr": 'BrBG' }
+d_cmap_sequential = {"tas": 'YlOrRd', "tasmax": 'YlOrRd', "tasmin": 'YlOrRd', "pr": 'YlGnBu' }
 
-# Diagnostic switches
-
+#Diagnostic options
 ## Model2Self
-do_AnnualCycle = True
-do_TimeSeries = True
-do_TimeSeriesUkkel = True
-do_Trends = True
-do_SpatialMean = True
+do_AnnualCycle = {
+    "compute": True,
+    "variables" : variables,
+}
+do_TimeSeries = {
+    "compute": True,
+    "variables" : variables,
+    "periods": [["1997-06-01", "1997-08-31"], ["2003-07-20", "2003-08-20"]]
+}
+do_TimeSeriesUkkel = {
+    "compute": True,
+    "variables" : variables,
+    "periods": [["1997-06-01", "1997-08-31"]]
+}
+do_Trends = {
+    "compute": True,
+    "variables" : variables
+}
+do_SpatialMean = {
+    "compute": True,
+    "variables" : variables,
+    "reference": "/obs/CLIMATE_GRID",
+    "seasons" : ["All", "DJF", "MAM", "JJA", "SON"]
+}
+
 ## Model2Ref
-do_SpatialBias = True
+do_SpatialBias = {
+    "compute": True,
+    "variables" : variables,
+    "reference": "/obs/CLIMATE_GRID",
+    "seasons" : ["All" , "DJF", "MAM", "JJA", "SON"]
+}
 
-
-#Add iteration over the variables that we would like to be plotted.
-#Add color maps per diagnostic
-#Add option for season
+#Add conversion functions for some variables (e.g. pr)
+#Add xclim variables
 
 # %% [markdown]
 # STEP 1: Load the data
@@ -111,12 +132,12 @@ ds_alaro
 # COSMO (Using the input manager - currently variables loaded manually)
 experiment      = "CB2_CCLM_BEL28_ERA5_evaluation"
 ds_cclm_tas     = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "mean"])
-# ds_cclm_tasmax  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "max"]).rename({'tas':'tasmax'})
-# ds_cclm_tasmin  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "min"]).rename({'tas':'tasmin'})
-# ds_cclm_pr      = manager.load_data("CCLM", ["pr"], freq="daily", path_identifiers=[experiment, "sum"])
-# ds_cclm         = xr.merge([ds_cclm_tas, ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin])
-#del ds_cclm_tas , ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
-ds_cclm = ds_cclm_tas
+ds_cclm_tasmax  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "max"]).rename({'tas':'tasmax'})
+ds_cclm_tasmin  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "min"]).rename({'tas':'tasmin'})
+ds_cclm_pr      = manager.load_data("CCLM", ["pr"], freq="daily", path_identifiers=[experiment, "sum"])
+ds_cclm         = xr.merge([ds_cclm_tas, ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin])
+del ds_cclm_tas , ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
+#ds_cclm = ds_cclm_tas
 
 ## (Requires user adjustment)
 # MAR (Placeholder for MAR data - for plotting purposes)
@@ -158,6 +179,7 @@ dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
 from valenspy.diagnostic import AnnualCycle
 from valenspy.diagnostic import TimeSeriesSpatialMean
 from valenspy.diagnostic import TimeSeriesTrendSpatialMean
+from valenspy.diagnostic import SpatialTimeMean
 from valenspy.diagnostic import SpatialBias
 
 # %% [markdown]
@@ -167,69 +189,113 @@ from valenspy.diagnostic import SpatialBias
 # Annual Cycle
 
 # %%
-if do_AnnualCycle:
+if do_AnnualCycle["compute"]:
     with ProgressBar():
         dt_annual_cycle = AnnualCycle(dt).compute()
 
-# %%
-if AnnualCycle:
-    fig, ax = plt.subplots(figsize=(15, 5))
-    AnnualCycle.plot_dt(dt_annual_cycle, var="tas", ax=ax, label="name", colors=color_dict)
-    plt.legend()
-    plt.savefig(git_dir / "CORDEX_eval_scripts/plots/Bel_mean_annual_cycle.png")
+    for var in do_AnnualCycle["variables"]:
+        fig, ax = plt.subplots(figsize=(10, 6))
+        AnnualCycle.plot_dt(dt_annual_cycle, var=var, ax=ax, label="name", colors=color_dict)
+        plt.title(f"Annual cycle of {CORDEX_VARIABLES[var]['long_name']}")
+        plt.legend()
+        plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_bel_mean_annual_cycle.png")
 
 # %% [markdown]
 # TimeSeries
 
 # %%
-if do_TimeSeries:
-    heat_wave=["1997-06-01", "1997-08-31"]
-    with ProgressBar():
-        dt_time_series = dt.sel(time=slice(heat_wave[0], heat_wave[1]))
-        dt_time_series = TimeSeriesSpatialMean(dt_time_series).compute()
+if do_TimeSeries["compute"]:
+    for period in do_TimeSeries["periods"]:
+        if period == "All":
+            dt_time_series = dt
+        else:
+            dt_time_series = dt.sel(time=slice(period[0], period[1]))
+        with ProgressBar():
+            dt_time_series = TimeSeriesSpatialMean(dt_time_series).compute()
 
-# %%
-if do_TimeSeries:
-    fig, ax = plt.subplots(figsize=(15, 5))
-    TimeSeriesSpatialMean.plot_dt(dt_time_series, var="tas", ax=ax, label="name", colors=color_dict)
-    plt.legend()
-    plt.savefig(git_dir / "CORDEX_eval_scripts/plots/Bel_mean_heat_wave.png")
+        for var in do_TimeSeries["variables"]:
+            fig, ax = plt.subplots(figsize=(15, 5))
+            TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict)
+            plt.title(f"Time series of {CORDEX_VARIABLES[var]['long_name']}")
+            plt.legend()
+            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean_{period}.png")
 
 # %% [markdown]
 # TimeSeries (Ukkel)
 
 # %%
-if do_TimeSeriesUkkel:
+if do_TimeSeriesUkkel["compute"]:
     Ukkel = (4.37, 50.79)
-    heat_wave=["1997-06-01", "1997-08-31"]
-    with ProgressBar():
-        dt_ukkel_hw = dt.map_over_subtree(vp.select_point, Ukkel[0], Ukkel[1]).sel(time=slice(heat_wave[0], heat_wave[1]))
-        dt_time_series_uccle = TimeSeriesSpatialMean(dt_ukkel_hw).compute()
+    dt_ukkel_hw = dt.map_over_subtree(vp.select_point, Ukkel[0], Ukkel[1])
+    for period in do_TimeSeries["periods"]:
+        if period == "All":
+            dt_time_series = dt_ukkel_hw
+        else:
+            dt_time_series_uccle = dt_ukkel_hw.sel(time=slice(period[0], period[1]))
+        
+        with ProgressBar():
+            print(f"Computing time series for {period}")
+            dt_time_series_uccle = TimeSeriesSpatialMean(dt_time_series).compute()
 
-# %%
-if do_TimeSeriesUkkel:
-    fig, ax = plt.subplots(figsize=(15, 5))
-    TimeSeriesSpatialMean.plot_dt(dt_time_series_uccle, var="tas", ax=ax, label="name", colors=color_dict)
-    plt.legend()
-    plt.savefig(git_dir / "CORDEX_eval_scripts/plots/Ukkel_heat_wave.png")
+        for var in do_TimeSeries["variables"]:
+            fig, ax = plt.subplots(figsize=(15, 5))
+            TimeSeriesSpatialMean.plot_dt(dt_time_series_uccle, var=var, ax=ax, label="name", colors=color_dict)
+            plt.title(f"Time series of {CORDEX_VARIABLES[var]['long_name']} in Ukkel")
+            plt.legend()
+            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_ukkel_{period}.png")
 
 # %% [markdown]
 # Trends
 
 # %%
-if do_Trends:
+if do_Trends["compute"]:
+    years=5
+    window_size = 366*years # 5 years
     Ukkel = (4.37, 50.79)
     dt_Ukkel = dt.map_over_subtree(vp.select_point, Ukkel[0], Ukkel[1])
     dt_Ukkel = dt_Ukkel - dt_Ukkel.sel(time=slice("1980-01-01", "1985-12-31")).mean("time")
     with ProgressBar():
-        dt_trends = TimeSeriesTrendSpatialMean(dt_Ukkel, window_size=366*5).compute()
+        dt_trends = TimeSeriesTrendSpatialMean(dt_Ukkel, window_size=window_size).compute()
+
+    for var in do_Trends["variables"]:
+        fig, ax = plt.subplots(figsize=(15, 5))
+        TimeSeriesTrendSpatialMean.plot_dt(dt_trends, var=var, ax=ax, label="name", colors=color_dict)
+        plt.legend()
+        plt.title(f"Trend of {CORDEX_VARIABLES[var]['long_name']} in Ukkel")
+        plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_trend_ukkel_window_{years}y.png")
+
+# %% [markdown]
+# Spatial Mean
 
 # %%
-if do_Trends:
-    fig, ax = plt.subplots(figsize=(15, 5))
-    TimeSeriesTrendSpatialMean.plot_dt(dt_trends, var="tas", ax=ax, label="name", colors=color_dict)
-    plt.legend()
-    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/Uccle_time_series_trend_normalized.png")
+if do_SpatialMean["compute"]:
+    #Add other processing steps here (e.g. period selection)
+    for season in do_SpatialMean["seasons"]:
+        #Select season
+        if season != "All":
+            dt_s = dt.map_over_subtree(lambda x: x.sel(time=x.time.dt.season == season))
+        else:
+            dt_s = dt
+        #Compute
+        with ProgressBar():
+            print(f"Computing spatial mean for {season}")
+            dt_spatial_mean = SpatialTimeMean(dt).compute()
+
+        #Plot
+        for var in do_SpatialMean["variables"]:
+            fig, axes = plt.subplots(2, 2, figsize=(9, 5), subplot_kw={"projection": ccrs.PlateCarree()})
+            axes = axes.flatten()
+            
+            SpatialTimeMean.plot_type = "facetted"
+
+            SpatialTimeMean.plot_dt(dt_spatial_mean, var=var, axes=axes,shared_cbar="min_max", label="name", cmap=d_cmap_sequential[var])
+
+            for ax in axes:
+                _add_features(ax, region='belgium')
+            
+            fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} spatial mean (Season: {season})')
+            fig.tight_layout()
+            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatial_mean_{season}.png")
 
 # %% [markdown]
 # Model2Ref
@@ -238,119 +304,31 @@ if do_Trends:
 # SpatialBias
 
 # %%
-if do_SpatialBias:
-    with ProgressBar():
-        ds_ref = dt.obs.CLIMATE_GRID.to_dataset()
-        dt_spatial_bias = SpatialBias(dt.RCM, ref=ds_ref).compute()
+if do_SpatialBias["compute"]:
+    for season in do_SpatialBias["seasons"]:
+        if season != "All":
+            dt_s = dt.map_over_subtree(lambda x: x.sel(time=x.time.dt.season == season))
+        else:
+            dt_s = dt
 
-# %%
-if do_SpatialBias:
-    for var in variables:
-        fig, axes = plt.subplots(1, 3, figsize=(15, 5), subplot_kw={"projection": ccrs.PlateCarree()})
-        axes = axes.flatten()
-        cbar_kwargs={"shrink": 0.52}
+        #Compute    
+        with ProgressBar():
+            print(f"Computing spatial bias for season {season}")
+            ds_ref = dt_s[do_SpatialBias["reference"]].to_dataset()
+            dt_spatial_bias = SpatialBias(dt_s.RCM, ref=ds_ref).compute()
 
-        min = np.max([dt[var].values for dt in dt_spatial_bias.max().leaves])
-        max = np.min([dt[var].values for dt in dt_spatial_bias.min().leaves])
+        #Plot
+        for var in do_SpatialBias["variables"]:
+            fig, axes = plt.subplots(1, 3, figsize=(15, 5), subplot_kw={"projection": ccrs.PlateCarree()})
+            axes = axes.flatten()
+            cbar_kwargs={"shrink": 0.52}
 
-        v_value = np.max([np.abs(min), np.abs(max)])
+            SpatialBias.plot_dt(dt_spatial_bias, var=var, axes=axes, shared_cbar="abs", label="name", cbar_kwargs=cbar_kwargs, cmap=d_cmap_diverging[var])
+            
+            for ax in axes:
+                _add_features(ax, region='belgium')
 
-        for ax, dt_leave in zip(axes, dt_spatial_bias.leaves):
-            SpatialBias.plot(dt_leave[var], ax=ax, cmap=d_cmap_diverging[var], cbar_kwargs=cbar_kwargs, vmin=-v_value, vmax=v_value)
-            ax.set_title(dt_leave.name)
-            #ax.set_title(' ')
-            _add_features(ax, region='belgium')
-
-        fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} bias compared to CLIMATE_GRID', y=0.8)
-        fig.tight_layout()
-        plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/spatialbias_{var}.png")
-
-# %%
-if SpatialBias:
-#Plot option 2
-    for var in variables:
-        fig, axes = plt.subplots(1, 3, figsize=(15, 5), subplot_kw={"projection": ccrs.PlateCarree()})
-        axes = axes.flatten()
-        cbar_kwargs={"shrink": 0.52}
-
-        SpatialBias.plot_type = "facetted"
-
-        SpatialBias.plot_dt(dt_spatial_bias, var=var, axes=axes, shared_cbar="abs", label="name", cbar_kwargs=cbar_kwargs, cmap=d_cmap_diverging[var])
+            fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} bias compared to CLIMATE_GRID (Season: {season})', y=0.8)
+            fig.tight_layout()
+            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatialbias_{season}.png")
         
-        for ax in axes:
-            _add_features(ax, region='belgium')
-
-        fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} bias compared to CLIMATE_GRID', y=0.8)
-        fig.tight_layout()
-        plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/spatialbias_{var}.png")
-
-# %%
-  
-## SpatialMean
-if do_SpatialMean:
-    d_cmap_sequential = {
-    "tas": 'YlOrRd',
-    "tasmax": 'YlOrRd',
-    "tasmin": 'YlOrRd',
-    "pr": 'YlGnBu' }
-    with ProgressBar():
-        dt_spatial_mean = dt.mean(dim="time")
-        dt_spatial_mean = dt_spatial_mean.compute()
-
-    #User input (size of the plots)
-    fig, axes = plt.subplots(2,2,figsize=(9,5), subplot_kw={"projection": ccrs.PlateCarree()})
-    axes = axes.flatten()
-
-    # get overall min and max
-    overall_min, overall_max = get_dt_overall_min_max(dt_timmean, variable)
-
-    # loop over datasets to do plotting
-    for i, dt_leave in enumerate(dt_timmean.leaves):
-        ax = axes[i]
-        ds = dt_leave.to_dataset()
-        ds[variable].plot(ax=ax, cmap=d_cmap_sequential[variable], vmin=overall_min, vmax=overall_max)
-        ax.set_title(dt_leave.name, loc='right')
-        ax.set_title(' ')
-        _add_features(ax, region='belgium')
-
-    fig.suptitle(f'{ds[variable].long_name} ({ds[variable].units})', fontsize=16)
-
-    fig.tight_layout()
-    # Mean maps
-    plt.savefig(f"/dodrio/scratch/users/vsc31332/rmi/vsc31332_inne/ValEnsPy/CORDEX_eval_scripts/plots/timmean_{variable}_{averaging_period}.png")
-
-
-# %%
-## SpatialMean
-if SpatialMean:
-    d_cmap_sequential = {
-    "tas": 'YlOrRd',
-    "tasmax": 'YlOrRd',
-    "tasmin": 'YlOrRd',
-    "pr": 'YlGnBu' }
-    with ProgressBar():
-        dt_spatial_mean = dt.mean(dim="time")
-        dt_spatial_mean = dt_spatial_mean.compute()
-
-    #User input (size of the plots)
-    fig, axes = plt.subplots(2,2,figsize=(9,5), subplot_kw={"projection": ccrs.PlateCarree()})
-    axes = axes.flatten()
-
-    # get overall min and max
-    overall_min, overall_max = get_dt_overall_min_max(dt_timmean, variable)
-
-    # loop over datasets to do plotting
-    for i, dt_leave in enumerate(dt_timmean.leaves):
-        ax = axes[i]
-        ds = dt_leave.to_dataset()
-        ds[variable].plot(ax=ax, cmap=d_cmap_sequential[variable], vmin=overall_min, vmax=overall_max)
-        ax.set_title(dt_leave.name, loc='right')
-        ax.set_title(' ')
-        _add_features(ax, region='belgium')
-
-    fig.suptitle(f'{ds[variable].long_name} ({ds[variable].units})', fontsize=16)
-
-    fig.tight_layout()
-    # Mean maps
-    plt.savefig(f"/dodrio/scratch/users/vsc31332/rmi/vsc31332_inne/ValEnsPy/CORDEX_eval_scripts/plots/timmean_{variable}_{averaging_period}.png")
-
