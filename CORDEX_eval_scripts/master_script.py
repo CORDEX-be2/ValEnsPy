@@ -30,9 +30,11 @@ import os
 
 import cartopy.crs as ccrs
 import valenspy as vp
+from valenspy import convert_kg_m2s_to_mm_day
 from valenspy.diagnostic.visualizations import _add_features
 from valenspy.diagnostic.functions import root_mean_square_error
 from valenspy.input.unit_converter import CORDEX_VARIABLES
+
 
 git_dir = Path(os.popen("git rev-parse --show-toplevel").read().strip())
 
@@ -90,7 +92,7 @@ do_TimeSeriesUkkel = {
     "periods": [["1997-06-01", "1997-08-31"]]
 }
 do_Trends = {
-    "compute": True,
+    "compute": False,
     "variables" : variables
 }
 do_SpatialMean = {
@@ -102,13 +104,13 @@ do_SpatialMean = {
 
 ## Model2Ref
 do_SpatialBias = {
-    "compute": True,
+    "compute": False,
     "variables" : variables,
     "reference": "/obs/CLIMATE_GRID",
     "seasons" : ["All" , "DJF", "MAM", "JJA", "SON"]
 }
 
-#Add conversion functions for some variables (e.g. pr)
+#Improve conversion of units handling
 #Add xclim variables
 
 # %% [markdown]
@@ -162,8 +164,18 @@ data_dict = {
 
 dt = DataTree.from_dict(data_dict)
 
+
 # %% [markdown]
 # STEP 2: Preprocessing the data
+
+# %%
+# convert precipitation units from kg m-2 s-1 to mm day-1
+def convert_kg_m2s_to_mm_day_ds(ds):
+    ds=ds.copy()
+    ds['pr'] = convert_kg_m2s_to_mm_day(ds['pr'])
+    ds['pr'].attrs["units"] = "mm day$^{-1}$"
+    return ds
+
 
 # %%
 #Regid to CLIMATE_GRID
@@ -171,6 +183,8 @@ dt["RCM"] = dt["RCM"].map_over_subtree(vp.remap_xesmf, dt.obs.CLIMATE_GRID.to_da
 
 #Select the time period from period[0] to period[1] (inclusive)
 dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
+
+dt = dt.map_over_subtree(convert_kg_m2s_to_mm_day_ds)
 
 # %% [markdown]
 # STEP 3: Diagnostics
@@ -279,7 +293,7 @@ if do_SpatialMean["compute"]:
         #Compute
         with ProgressBar():
             print(f"Computing spatial mean for {season}")
-            dt_spatial_mean = SpatialTimeMean(dt).compute()
+            dt_spatial_mean = SpatialTimeMean(dt_s).compute()
 
         #Plot
         for var in do_SpatialMean["variables"]:
@@ -331,4 +345,4 @@ if do_SpatialBias["compute"]:
             fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} bias compared to CLIMATE_GRID (Season: {season})', y=0.8)
             fig.tight_layout()
             plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatialbias_{season}.png")
-        
+
