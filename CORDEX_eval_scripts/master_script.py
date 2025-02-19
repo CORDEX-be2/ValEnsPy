@@ -27,6 +27,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import xclim
 
 import cartopy.crs as ccrs
 import valenspy as vp
@@ -134,12 +135,12 @@ ds_alaro
 # COSMO (Using the input manager - currently variables loaded manually)
 experiment      = "CB2_CCLM_BEL28_ERA5_evaluation"
 ds_cclm_tas     = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "mean"])
-ds_cclm_tasmax  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "max"]).rename({'tas':'tasmax'})
-ds_cclm_tasmin  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "min"]).rename({'tas':'tasmin'})
-ds_cclm_pr      = manager.load_data("CCLM", ["pr"], freq="daily", path_identifiers=[experiment, "sum"])
-ds_cclm         = xr.merge([ds_cclm_tas, ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin])
-del ds_cclm_tas , ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
-#ds_cclm = ds_cclm_tas
+# ds_cclm_tasmax  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "max"]).rename({'tas':'tasmax'})
+# ds_cclm_tasmin  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "min"]).rename({'tas':'tasmin'})
+# ds_cclm_pr      = manager.load_data("CCLM", ["pr"], freq="daily", path_identifiers=[experiment, "sum"])
+# ds_cclm         = xr.merge([ds_cclm_tas, ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin])
+# del ds_cclm_tas , ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
+ds_cclm = ds_cclm_tas
 
 ## (Requires user adjustment)
 # MAR (Placeholder for MAR data - for plotting purposes)
@@ -157,24 +158,38 @@ ds_ref = manager.load_data("CLIMATE_GRID", variables, path_identifiers=["regridd
 ## (Requires user adjustment)
 data_dict = {
     "RCM/ERA5/ALARO1_SFX": ds_alaro,
-    "RCM/ERA5/CCLM6-0-1-URB-ESG": ds_cclm,
+    # "RCM/ERA5/CCLM6-0-1-URB-ESG": ds_cclm, #CCLM data not playing nice with xclim!
     "RCM/ERA5/MAR": ds_mar,
     "obs/CLIMATE_GRID": ds_ref
 }
 
 dt = DataTree.from_dict(data_dict)
 
-
 # %% [markdown]
 # STEP 2: Preprocessing the data
 
+# %% [markdown]
+# CCLM xclim to be fixed - freq attribute?
+
 # %%
-# convert precipitation units from kg m-2 s-1 to mm day-1
+da = xclim.indicators.cf.tnn(ds_cclm.tas, freq="YS")
+
+
+# %%
 def convert_kg_m2s_to_mm_day_ds(ds):
     ds=ds.copy()
     ds['pr'] = convert_kg_m2s_to_mm_day(ds['pr'])
     ds['pr'].attrs["units"] = "mm day$^{-1}$"
     return ds
+
+
+# %%
+#Move to valenspy when happy with the implementation
+def xclim_indicator_dt(indicator, dt, var, **kwargs):
+    def xclim_indicator(ds, var, **kwargs):
+        return indicator(ds[var], **kwargs).to_dataset()
+    return dt.map_over_subtree(xclim_indicator, var, **kwargs)
+
 
 
 # %%
@@ -184,7 +199,20 @@ dt["RCM"] = dt["RCM"].map_over_subtree(vp.remap_xesmf, dt.obs.CLIMATE_GRID.to_da
 #Select the time period from period[0] to period[1] (inclusive)
 dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
 
+#Convert pr units to mm/day
 dt = dt.map_over_subtree(convert_kg_m2s_to_mm_day_ds)
+
+# %%
+#Location is important! Before or after regridding?
+dt_tnn = xclim_indicator_dt(xclim.indicators.cf.tnn, dt, var="tas", freq="YS")
+dt_txx = xclim_indicator_dt(xclim.indicators.cf.txx, dt, var="tasmax", freq="YS")
+dt_max_1day_precipitation_amount = xclim_indicator_dt(xclim.atmos.max_1day_precipitation_amount, dt, var="pr", freq="YS")
+
+xclim_dt_dict = {
+    "tnn": dt_tnn,
+    "txx": dt_txx,
+    "rx1day": dt_max_1day_precipitation_amount
+}
 
 # %% [markdown]
 # STEP 3: Diagnostics
@@ -233,6 +261,21 @@ if do_TimeSeries["compute"]:
             plt.title(f"Time series of {CORDEX_VARIABLES[var]['long_name']}")
             plt.legend()
             plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean_{period}.png")
+
+# %% [markdown]
+# Xclim variables and derivatives
+
+# %%
+for var, dt_xclim in xclim_dt_dict.items():
+    with ProgressBar():
+        print(f"Computing TimeSeriesSpatialMean for {var}")
+        dt_time_series = TimeSeriesSpatialMean(dt_xclim).compute()
+
+    fig, ax = plt.subplots(figsize=(15, 5))
+    TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict)
+    plt.title(f"Time series of {var}")
+    plt.legend()
+    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean.png")
 
 # %% [markdown]
 # TimeSeries (Ukkel)
