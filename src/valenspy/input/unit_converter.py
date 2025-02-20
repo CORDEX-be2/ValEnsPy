@@ -2,42 +2,12 @@
 
 ## imports for helpen functions
 import xarray as xr
+import numpy as np
+import xclim
 import pandas as pd
-import warnings
 from valenspy._utilities import load_yml
-from valenspy._utilities.unit_conversion_functions import (
-    convert_Celcius_to_Kelvin,
-    convert_hPa_to_Pa,
-    convert_mm_hr_to_kg_m2s,
-    convert_m_hr_to_kg_m2s,
-    convert_mm_to_kg_m2s,
-    convert_m_to_kg_m2s,
-    convert_kg_m2_to_kg_m2s,
-    convert_J_m2_to_W_m2,
-    convert_kWh_m2_day_to_W_m2,
-    convert_fraction_to_percent,
-    _determine_time_interval,
-)
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
-
-UNIT_CONVERSION_FUNCTIONS = {
-    "Celcius": convert_Celcius_to_Kelvin,
-    "hPa": convert_hPa_to_Pa,
-    "mm": convert_mm_to_kg_m2s,
-    "mm/hr": convert_mm_hr_to_kg_m2s,
-    "m": convert_m_to_kg_m2s,
-    "m/hr": convert_m_hr_to_kg_m2s,
-    "kg m-2": convert_kg_m2_to_kg_m2s,
-    "J/m^2": convert_J_m2_to_W_m2,
-    "kWh/m2/day": convert_kWh_m2_day_to_W_m2,
-    "(0 - 1)": convert_fraction_to_percent,
-}
-
-# Units that are equivalent. Note that the key is the raw unit (and should never be a CORDEX unit!)
-# and the value should either be a CORDEX unit or a unit that is used to identify the conversion function
-EQUIVALENT_UNITS = {"degC": "Celcius", "m/s": "m s-1", "kg kg-1": 1}
-
 
 def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     """Convert all units for all variables in the dataset to the correct units by applying the correct conversion function.
@@ -64,61 +34,72 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
         The converted xarray dataset
     """
 
-    # Key: The unit of the raw data
-    # Value: The unit of the CORDEX equivalent unit or the unit that is used to identify the conversion function
+    for var,var_lookup in raw_LOOKUP.items():
 
-    for raw_var in ds.data_vars:
-        var = next(
-            (k for k, v in raw_LOOKUP.items() if v.get("raw_name") == raw_var), None
-        )
+        raw_var = var_lookup.get("raw_name")
 
-        if var:  # Dont processes variables that are not in the lookup table.
+        if raw_var in ds:
+            raw_units = var_lookup.get("raw_units")
 
-            # Rename variable to CORDEX variable name
+            standard_name = CORDEX_VARIABLES[var].get("standard_name")
+            long_name = CORDEX_VARIABLES[var].get("long_name")
+            units = CORDEX_VARIABLES[var].get("units")
+
+            #Rename the variable
             ds = ds.rename_vars({raw_var: var})
+            ds[var].attrs["standard_name"] = standard_name #This is used by xclim for hydro context (conversions)
 
-            # Convert units - based on the raw units if needed!
-            raw_units = raw_LOOKUP[var]["raw_units"]
-            cordex_var_units = CORDEX_VARIABLES[var]["units"]
+            #Add units 
+            if "units" not in ds[var].attrs:
+                ds[var].attrs["units"] = raw_units
+            #Correct units if they are not the same as the raw units
+            elif ds[var].attrs["units"] != raw_units:
+                ds[var].attrs["ds_original_units"] = ds[var].attrs["units"]
+                ds[var].attrs["units"] = raw_units
 
-            if raw_units in EQUIVALENT_UNITS:
-                raw_units = EQUIVALENT_UNITS[raw_units]
+            ds[var].attrs["original_units"] = raw_units
 
-            # If the raw units are the same as the CORDEX units, no conversion is needed
-            if raw_units != cordex_var_units:
+            #TODO: Check if this is necessary and correct
+            #Guess the frequency of the data and assume the mm values are averaged over that time period
+            if ds[var].attrs["units"] in ["mm", "m"]:
+                freq = _determine_time_interval(ds[var])
+                ds[var].attrs["units"] = f"mm/{freq}"
+            
+            #Use xclim to handle all unit conversions from the raw units (ds[var].attrs["units"]) to the target units 
+            #units attribute is automatically updated
+            ds[var] = xclim.units.convert_units_to(ds[var], CORDEX_VARIABLES[var].get("units"), context="infer")
 
-                # Convert the raw units if possible
-                if raw_units in UNIT_CONVERSION_FUNCTIONS:
-                    ds[var] = UNIT_CONVERSION_FUNCTIONS[raw_units](
-                        ds[var]
-                    )  # Do the conversion
-                else:
-                    # Throw a warning that the raw_unit in the lookup table is not implemented
-                    warnings.warn(
-                        f"Unit conversion for {raw_units} to {cordex_var_units} is not implemented for variable {var}."
-                    )
+            # Add metadata
+            ds[var].attrs["long_name"] = long_name
+            ds[var].attrs["original_name"] = raw_var
+            ds[var].attrs["original_units"] = raw_units
 
-            # If the conversion was successful, add metadata attributes
-            if var in ds:
-                ds[var].attrs["standard_name"] = CORDEX_VARIABLES[var]["standard_name"]
-                ds[var].attrs["long_name"] = CORDEX_VARIABLES[var]["long_name"]
-                if (
-                    "units" not in ds[var].attrs
-                ):  # If the units are already set by the conversion function, do not overwrite them
-                    ds[var].attrs["units"] = CORDEX_VARIABLES[var]["units"]
+            ds[var]["time"] = pd.to_datetime(ds[var].time)
 
-                ds[var].attrs["original_name"] = raw_LOOKUP[var]["raw_name"]
-                ds[var].attrs["original_long_name"] = raw_LOOKUP[var]["raw_long_name"]
-                ds[var].attrs["original_units"] = raw_LOOKUP[var]["raw_units"]
+            if metadata_info:
+                for key, value in metadata_info.items():
+                    ds[var].attrs[key] = value
 
-                ds[var]["time"] = pd.to_datetime(ds[var].time)
-
-                if metadata_info:
-                    for key, value in metadata_info.items():
-                        ds[var].attrs[key] = value
-
-                # If freq is not in the metadata_info, we can try to infer it from the time dimension
-                if "freq" not in ds[var].attrs:
-                    ds[var].attrs["freq"] = _determine_time_interval(ds[var])
-
+            if "freq" not in ds[var].attrs:
+                ds[var].attrs["freq"] = _determine_time_interval(ds[var])
+            
     return ds
+
+def _determine_time_interval(da: xr.DataArray):
+    """
+    Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances.
+    """
+    
+    diff = da.time.diff(dim="time").values[0]
+
+    # Check for exact differences
+    if diff == np.timedelta64(1, "h"):
+        return "hour"
+    elif diff == np.timedelta64(1, "D"):
+        return "day"
+    elif diff == np.timedelta64(1, "M"):
+        return "month"
+    elif diff == np.timedelta64(1, "Y"):
+        return "year"
+    else:
+        return "Unknown"

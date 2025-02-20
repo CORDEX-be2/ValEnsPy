@@ -11,7 +11,6 @@ from valenspy.diagnostic import Diagnostic, Model2Ref, Ensemble2Ref, Ensemble2Se
 from valenspy.diagnostic.visualizations import *
 #Utility
 from valenspy._utilities import is_cf_compliant, cf_status
-from valenspy._utilities.unit_conversion_functions import *
 
 # =============================================================================
 # Version
