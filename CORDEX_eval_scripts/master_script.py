@@ -19,7 +19,7 @@
 
 # %%
 import xarray as xr
-from datatree import DataTree
+from datatree import DataTree, map_over_subtree
 from pathlib import Path
 import pandas as pd
 from dask.diagnostics import ProgressBar
@@ -31,7 +31,6 @@ import xclim
 
 import cartopy.crs as ccrs
 import valenspy as vp
-from valenspy import convert_kg_m2s_to_mm_day
 from valenspy.diagnostic.visualizations import _add_features
 from valenspy.diagnostic.functions import root_mean_square_error
 from valenspy.input.unit_converter import CORDEX_VARIABLES
@@ -46,6 +45,14 @@ git_dir = Path(os.popen("git rev-parse --show-toplevel").read().strip())
 # Load data options
 variables = ["tas", "pr", "tasmin", "tasmax"]
 period = [1980, 2019]
+
+#Unit handeling - choose the units for the output
+unit_dict = {
+    "tas": "C",
+    "tasmax": "C",
+    "tasmin": "C",
+    "pr": "mm/day"
+}
 
 # Plotting options - to be moved to a seperate "config" file
 ## Use the seaborn-v0_8-deep style?
@@ -93,7 +100,7 @@ do_TimeSeriesUkkel = {
     "periods": [["1997-06-01", "1997-08-31"]]
 }
 do_Trends = {
-    "compute": False,
+    "compute": True,
     "variables" : variables
 }
 do_SpatialMean = {
@@ -105,13 +112,12 @@ do_SpatialMean = {
 
 ## Model2Ref
 do_SpatialBias = {
-    "compute": False,
+    "compute": True,
     "variables" : variables,
     "reference": "/obs/CLIMATE_GRID",
     "seasons" : ["All" , "DJF", "MAM", "JJA", "SON"]
 }
 
-#Improve conversion of units handling
 #Add xclim variables
 
 # %% [markdown]
@@ -135,12 +141,12 @@ ds_alaro
 # COSMO (Using the input manager - currently variables loaded manually)
 experiment      = "CB2_CCLM_BEL28_ERA5_evaluation"
 ds_cclm_tas     = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "mean"])
-# ds_cclm_tasmax  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "max"]).rename({'tas':'tasmax'})
-# ds_cclm_tasmin  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "min"]).rename({'tas':'tasmin'})
-# ds_cclm_pr      = manager.load_data("CCLM", ["pr"], freq="daily", path_identifiers=[experiment, "sum"])
-# ds_cclm         = xr.merge([ds_cclm_tas, ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin])
-# del ds_cclm_tas , ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
-ds_cclm = ds_cclm_tas
+ds_cclm_tasmax  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "max"]).rename({'tas':'tasmax'})
+ds_cclm_tasmin  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "min"]).rename({'tas':'tasmin'})
+ds_cclm_pr      = manager.load_data("CCLM", ["pr"], freq="daily", path_identifiers=[experiment, "sum"])
+ds_cclm         = xr.merge([ds_cclm_tas, ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin])
+del ds_cclm_tas , ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
+# ds_cclm = ds_cclm_tas
 
 ## (Requires user adjustment)
 # MAR (Placeholder for MAR data - for plotting purposes)
@@ -165,6 +171,7 @@ data_dict = {
 
 dt = DataTree.from_dict(data_dict)
 
+
 # %% [markdown]
 # STEP 2: Preprocessing the data
 
@@ -172,25 +179,43 @@ dt = DataTree.from_dict(data_dict)
 # CCLM xclim to be fixed - freq attribute?
 
 # %%
-da = xclim.indicators.cf.tnn(ds_cclm.tas, freq="YS")
-
+# da = xclim.indicators.cf.tnn(ds_cclm.tas, freq="YS")
 
 # %%
-def convert_kg_m2s_to_mm_day_ds(ds):
-    ds=ds.copy()
-    ds['pr'] = convert_kg_m2s_to_mm_day(ds['pr'])
-    ds['pr'].attrs["units"] = "mm day$^{-1}$"
+#To be added in valenspy (including a non map_over_subtree version) - which is basically a wrapper over xclim.units.convert_units_to
+@map_over_subtree
+def convert_units_to(ds, var, target_unit, context="infer"):
+    if var in ds:
+        ds = ds.copy()
+        ds[var] = xclim.units.convert_units_to(ds[var], target_unit, context=context)
     return ds
 
 
 # %%
 #Move to valenspy when happy with the implementation
-def xclim_indicator_dt(indicator, dt, var, **kwargs):
-    def xclim_indicator(ds, var, **kwargs):
-        return indicator(ds[var], **kwargs).to_dataset()
-    return dt.map_over_subtree(xclim_indicator, var, **kwargs)
+#How to deal with indicators that require multiple variables?s
+@map_over_subtree
+def xclim_indicator(ds, indicator, vars, **kwargs):
+    if isinstance(vars, str):
+        return indicator(ds[vars], **kwargs).to_dataset()
+    elif isinstance(vars, list): #Order is important!
+        data_arrays = [ds[var] for var in vars]
+        return indicator(*data_arrays, **kwargs).to_dataset()
 
 
+
+# %%
+#Working but requries CCLM data fix
+# Location is important! Before or after regridding? Before or after unit conversion? Best before!
+# dt_tnn = xclim_indicator(dt, xclim.indicators.cf.tnn, vars="tas", freq="YS")
+# dt_txx = xclim_indicator(dt, xclim.indicators.cf.txx, vars="tasmax", freq="YS")
+# dt_max_1day_precipitation_amount = xclim_indicator(dt, xclim.atmos.max_1day_precipitation_amount, vars="pr", freq="YS")
+
+# xclim_dt_dict = {
+#     "tnn": dt_tnn,
+#     "txx": dt_txx,
+#     "rx1day": dt_max_1day_precipitation_amount
+# }
 
 # %%
 #Regid to CLIMATE_GRID
@@ -199,20 +224,9 @@ dt["RCM"] = dt["RCM"].map_over_subtree(vp.remap_xesmf, dt.obs.CLIMATE_GRID.to_da
 #Select the time period from period[0] to period[1] (inclusive)
 dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
 
-#Convert pr units to mm/day
-dt = dt.map_over_subtree(convert_kg_m2s_to_mm_day_ds)
-
-# %%
-#Location is important! Before or after regridding?
-dt_tnn = xclim_indicator_dt(xclim.indicators.cf.tnn, dt, var="tas", freq="YS")
-dt_txx = xclim_indicator_dt(xclim.indicators.cf.txx, dt, var="tasmax", freq="YS")
-dt_max_1day_precipitation_amount = xclim_indicator_dt(xclim.atmos.max_1day_precipitation_amount, dt, var="pr", freq="YS")
-
-xclim_dt_dict = {
-    "tnn": dt_tnn,
-    "txx": dt_txx,
-    "rx1day": dt_max_1day_precipitation_amount
-}
+#Unit conversion to the desired units
+for var, unit in unit_dict.items():
+    dt = convert_units_to(dt, var, unit)
 
 # %% [markdown]
 # STEP 3: Diagnostics
@@ -266,16 +280,16 @@ if do_TimeSeries["compute"]:
 # Xclim variables and derivatives
 
 # %%
-for var, dt_xclim in xclim_dt_dict.items():
-    with ProgressBar():
-        print(f"Computing TimeSeriesSpatialMean for {var}")
-        dt_time_series = TimeSeriesSpatialMean(dt_xclim).compute()
+# for var, dt_xclim in xclim_dt_dict.items():
+#     with ProgressBar():
+#         print(f"Computing TimeSeriesSpatialMean for {var}")
+#         dt_time_series = TimeSeriesSpatialMean(dt_xclim).compute()
 
-    fig, ax = plt.subplots(figsize=(15, 5))
-    TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict)
-    plt.title(f"Time series of {var}")
-    plt.legend()
-    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean.png")
+#     fig, ax = plt.subplots(figsize=(15, 5))
+#     TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict)
+#     plt.title(f"Time series of {var}")
+#     plt.legend()
+#     plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean.png")
 
 # %% [markdown]
 # TimeSeries (Ukkel)
