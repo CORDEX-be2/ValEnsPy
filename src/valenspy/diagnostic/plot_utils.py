@@ -29,13 +29,14 @@ def _augment_kwargs(def_kwargs, **kwargs):
         cbar_kwargs = _merge_kwargs(def_kwargs.pop('cbar_kwargs'), kwargs.pop('cbar_kwargs', {}))
         def_kwargs['cbar_kwargs'] = cbar_kwargs
     
+    #Is this correct? Are the cbar_kwargs not overwritten if defined by the user?
     return _merge_kwargs(def_kwargs, kwargs)
 
 ######################################
 ############## Wrappers ##############
 ######################################
 
-def default_plot_kwargs(kwargs):
+def default_plot_kwargs(def_kwargs):
     """
     Decorator to set the default keyword arguments for the plotting function. User will override and/or be augmented with the default keyword arguments.
     subplot_kws and cbar_kwargs can also be set as default keyword arguments for the plotting function.
@@ -63,7 +64,7 @@ def default_plot_kwargs(kwargs):
 
         @wraps(plotting_function)
         def wrapper(*args, **kwargs):
-            return plotting_function(*args, **_augment_kwargs(def_kwargs=kwargs, **kwargs))
+            return plotting_function(*args, **_augment_kwargs(def_kwargs=def_kwargs, **kwargs))
 
         return wrapper
 
