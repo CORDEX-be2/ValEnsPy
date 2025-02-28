@@ -261,6 +261,37 @@ def calc_metrics_dt(dt_mod: DataTree, da_obs: xr.Dataset, metrics=None, pss_binw
     df = _add_ranks_metrics(df)
     return df
 
+##########################################
+# Ensemble2Ensemble diagnostic functions #
+##########################################
+
+def case_sub_selection(dt_future: DataTree, dt_ref: DataTree, vars):
+    """
+    Select 3 ensemble members based on avg normalized climate change in the variable of interest. 
+    The two extreme and mediaan members are selected.
+    """
+    dt_change = dt_future.mean() - dt_ref.mean()
+    dt_rel_change = dt_change / dt_ref.mean()
+
+    data = [[x.path, var, x[var].values] for x in dt_rel_change.leaves for var in vars if var in x]
+    data_abs = [[x.path, var, x[var].values] for x in dt_change.leaves for var in vars if var in x]
+
+    #Create one dataframe containing the relative change and the absolute change
+    df = pd.DataFrame(data, columns=["label", "var", "rel_change"])
+    df_abs = pd.DataFrame(data_abs, columns=["label", "var", "abs_change"])
+
+    df = pd.merge(df, df_abs, on=["label", "var"])
+    df["rel_change"] = df["rel_change"].astype(float)
+    df["abs_change"] = df["abs_change"].astype(float)
+
+    df["mean"] = df["rel_change"].groupby(df["label"]).transform("mean")
+    df["rank"] = df["mean"].groupby(df["var"]).rank(ascending=True, method='min')
+    df["highest"] = df["rank"] == 1
+    df["lowest"] = df["rank"] == df["rank"].max()
+    df["middle"] = df["rank"] == np.floor(df["rank"].median())
+
+    return df
+
 
 ##################################
 ####### Helper functions #########

@@ -2,8 +2,7 @@ from datatree import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions
-from valenspy.diagnostic.plot_utils import _augment_kwargs
-
+from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs
 #Import get_axis from xarray
 from xarray.plot.utils import get_axis
 
@@ -498,4 +497,17 @@ MetricsRankings = Ensemble2Ref(
     plot_metric_ranking,
     "Metrics Rankings",
     "The rankings of ensemble members with respect to several metrics when compared to the reference."
+)
+
+# Ensemble2Ref diagnostics
+EnsembleSubSelection = Ensemble2Ref(
+    case_sub_selection,
+    default_plot_kwargs({
+    "x": "var",
+    "y": "abs_change", 
+    "selected": ["highest", "middle", "lowest"], 
+    "sel_colors": {"highest": "red", "middle": "blue", "lowest": "green"}
+        })(ensemble_selection_boxplot),
+    "Ensemble Sub Selection",
+    "The sub selection of ensemble members."
 )
