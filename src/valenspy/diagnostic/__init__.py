@@ -8,4 +8,5 @@ from .diagnostic import (
     SpatialBias,
     TemporalBias,
     DiurnalCycleBias,
+    EnsembleSubSelection
 )
