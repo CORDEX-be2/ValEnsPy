@@ -38,7 +38,7 @@ def plot_diurnal_cycle(da: xr.DataArray, **kwargs):
     """
     da.plot(**kwargs)
 
-    ax = plt.gca()
+    ax = _get_gca(**kwargs)
     
     ax.set_xlabel('Hour of day')
     ax.set_xticks(range(0, 24, 3))
@@ -63,7 +63,7 @@ def plot_annual_cycle(da: xr.DataArray, **kwargs):
     """
     da.plot(**kwargs)
 
-    ax = plt.gca()
+    ax = _get_gca(**kwargs)
 
     ax.set_xlabel('Month')
 
@@ -87,7 +87,7 @@ def plot_time_series(da: xr.DataArray, **kwargs):
     """
     da.plot(**kwargs)
 
-    ax = plt.gca()
+    ax = _get_gca(**kwargs)
 
     return ax
 
@@ -121,7 +121,7 @@ def plot_map(da: xr.DataArray, **kwargs):
 
     da.plot(**kwargs)
 
-    ax = plt.gca()
+    ax = _get_gca(**kwargs)
 
     return ax
 
@@ -166,34 +166,6 @@ def create_custom_cmap(hex_color1: str, hex_color2: str, num_colors: int):
 
 
     return cmap
-
-
-@default_plot_kwargs({
-    'subplot_kws': {'projection': ccrs.PlateCarree()},
-    "cmap" : "coolwarm"
-    })
-def plot_spatial_bias(da: xr.DataArray, **kwargs):
-    """
-    Plot the spatial bias of a given data array on a map.
-
-    Parameters
-    ----------
-    da : xarray.DataArray
-        The DataArray containing the bias data to be plotted. It is assumed that the data represents some
-        form of spatial bias, and the plot will visualize this bias on a map.
-    **kwargs : dict
-        Additional keyword arguments passed to the underlying plotting function `plot_map`.
-
-    Returns
-    -------
-    matplotlib.axes.Axes
-        The axes with the plotted spatial bias and map features.
-    """
-
-    plot_map(da, **kwargs)
-    ax = plt.gca()
-
-    return ax
 
 
 def plot_maps_mod_ref_diff(
@@ -528,6 +500,14 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
 # Helper functions               #
 ##################################
 
+def _get_gca(**kwargs):
+    """
+    Get the current axes as the axis passed in the keyword arguments or the current axis.
+    """
+    if "ax" in kwargs:
+        return kwargs["ax"]
+    else:
+        return plt.gca()
 
 # Define a function to add borders, coastlines to the axes
 def _add_features(ax, region=None):

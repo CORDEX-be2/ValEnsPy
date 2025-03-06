@@ -63,6 +63,42 @@ def time_series_spatial_mean(ds: xr.Dataset):
     """
     return _average_over_dims(ds, ["lat", "lon"])
 
+def time_series_trend(ds: xr.Dataset, window_size, min_periods: int = None, center: bool = True, **window_kwargs):
+    """Calculate the trend of the time series data. If lat and lon are present, the data is averaged over the spatial dimensions lat and lon.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The data to calculate the trend of.
+    window_size : int
+        The size - in number of time steps - of the window to use for the rolling average.
+    min_periods : int, optional
+        The minimum number of periods required for a value to be considered valid, by default None
+    center : bool, optional
+        If True, the value is placed in the center of the window, by default True
+
+    Returns
+    -------
+    xr.Dataset
+        The trend of the data.
+    """
+    return _average_over_dims(ds, ["lat", "lon"]).rolling(time=window_size, min_periods=min_periods, center=center, **window_kwargs).mean()
+
+def spatial_time_mean(ds: xr.Dataset):
+    """Calculate the spatial mean of the data. If the time dimension is present, the data is averaged over the time dimension.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The data to calculate the spatial mean of.
+
+    Returns
+    -------
+    xr.Dataset
+        The spatial mean of the data.
+    """
+    return _average_over_dims(ds, "time")
+
 
 ##################################
 # Model2Ref diagnostic functions #

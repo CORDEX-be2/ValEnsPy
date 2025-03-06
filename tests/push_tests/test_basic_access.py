@@ -29,7 +29,6 @@ def test_access_main():
     assert vp.plot_diurnal_cycle, "plot_diurnal_cycle not accessible from valenspy"
     assert vp.plot_time_series, "plot_time_series not accessible from valenspy"
     assert vp.plot_map, "plot_map not accessible from valenspy"
-    assert vp.plot_spatial_bias, "plot_spatial_bias not accessible from valenspy"
     assert vp.plot_maps_mod_ref_diff, "plot_maps_mod_ref_diff not accessible from valenspy"
     assert vp.plot_time_series_mod_ref, "plot_time_series_mod_ref not accessible from valenspy"
     assert vp.plot_points_on_map, "plot_points_on_map not accessible from valenspy"
@@ -51,7 +50,6 @@ def test_access_main():
     assert vp.convert_J_m2_to_W_m2, "convert_J_m2_to_W_m2 not accessible from valenspy"
     assert vp.convert_kWh_m2_day_to_W_m2, "convert_kWh_m2_day_to_W_m2 not accessible from valenspy"
     assert vp.convert_fraction_to_percent, "convert_fraction_to_percent not accessible from valenspy"    
-
 
 def test_access_input():
     """
