@@ -1,7 +1,7 @@
 import xarray as xr
 import numpy as np
 from scipy.stats import spearmanr
-from datatree import DataTree
+from xarray import DataTree
 import pandas as pd
 from functools import partial
 
@@ -270,25 +270,38 @@ def case_sub_selection(dt_future: DataTree, dt_ref: DataTree, vars):
     Select 3 ensemble members based on avg normalized climate change in the variable of interest. 
     The two extreme and mediaan members are selected.
     """
+    #TODO - add direction of indicators
+    #TODO - Check consistnecy with paper (slightly different approach)!
+    #TEST how to leave an extra dimension left over - e.g. regions
+    #Test with different periods of variables (tas_JJA, etc)
+    #Improve the heatmap plot (square default, absolute values of the change?, larger squares)
     dt_change = dt_future.mean() - dt_ref.mean()
     dt_rel_change = dt_change / dt_ref.mean()
 
-    data = [[x.path, var, x[var].values] for x in dt_rel_change.leaves for var in vars if var in x]
-    data_abs = [[x.path, var, x[var].values] for x in dt_change.leaves for var in vars if var in x]
+    data = [[x.path, var, x[var].values] for x in dt_rel_change.leaves for var in x.data_vars]
+    data_abs = [[x.path, var, x[var].values] for x in dt_change.leaves for var in x.data_vars]
 
     #Create one dataframe containing the relative change and the absolute change
     df = pd.DataFrame(data, columns=["label", "var", "rel_change"])
     df_abs = pd.DataFrame(data_abs, columns=["label", "var", "abs_change"])
 
     df = pd.merge(df, df_abs, on=["label", "var"])
+
     df["rel_change"] = df["rel_change"].astype(float)
     df["abs_change"] = df["abs_change"].astype(float)
 
-    df["mean"] = df["rel_change"].groupby(df["label"]).transform("mean")
-    df["rank"] = df["mean"].groupby(df["var"]).rank(ascending=True, method='min')
-    df["highest"] = df["rank"] == 1
-    df["lowest"] = df["rank"] == df["rank"].max()
-    df["middle"] = df["rank"] == np.floor(df["rank"].median())
+    #Normalize the absolute change per variable
+    df["norm_rel_change"] = df.groupby("var")["rel_change"].transform(lambda x: (x - x.mean()) / x.std())
+    df["norm_abs_change"] = df.groupby("var")["abs_change"].transform(lambda x: (x - x.mean()) / x.std())
+
+    #Get the rank per variable
+    df["rank"] = df["norm_abs_change"].groupby(df["var"]).rank(ascending=True, method='min')
+    df["member_rank"] = df["rank"].where(df["var"].isin(vars)).groupby(df["label"]).transform("mean").rank(ascending=True, method='min') #
+    
+    #Rank the ensemble members based on the mean of the normalized absolute change
+    df["highest"] = df["member_rank"] == 1
+    df["lowest"] = df["member_rank"] == df["member_rank"].max()
+    df["middle"] = df["member_rank"] == np.floor(df["member_rank"].median())
 
     return df
 

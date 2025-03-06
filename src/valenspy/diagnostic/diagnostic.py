@@ -1,29 +1,26 @@
-from datatree import DataTree
+from xarray import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions
 from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs
-#Import get_axis from xarray
-from xarray.plot.utils import get_axis
 
 from abc import abstractmethod
 import warnings
-
 
 class Diagnostic:
     """An abstract class representing a diagnostic."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None
+        self, diagnostic_function, plotting_functions, name=None, description=None
     ):
         """Initialize the Diagnostic.
 
         Parameters
         ----------
-        diagnostic_function
+        diagnostic_function : function
             The function that applies a diagnostic to the data.
-        plotting_function
-            The function that visualizes the results of the diagnostic.
+        plotting_functions : function or dict of functions
+            The functions or dictionary of functions that visualize the diagnostic.
         name : str
             The name of the diagnostic.
         description : str
@@ -32,7 +29,11 @@ class Diagnostic:
         self.name = name
         self._description = description
         self.diagnostic_function = diagnostic_function
-        self.plotting_function = plotting_function
+        
+        if callable(plotting_functions):
+            plotting_functions = {"default": plotting_functions}
+
+        self.plotting_functions = plotting_functions
 
     def __call__(self, data, *args, **kwargs):
         return self.apply(data, *args, **kwargs)
@@ -54,7 +55,7 @@ class Diagnostic:
         """
         pass
 
-    def plot(self, result, title=None, **kwargs):
+    def plot(self, result, kind="default", title=None, **kwargs):
         """Plot the diagnostic. Single ax plots.
 
         Parameters
@@ -67,22 +68,39 @@ class Diagnostic:
         ax : matplotlib.axis.Axis
             The axis (singular) of the plot.
         """
-        ax = self.plotting_function(result, **kwargs)
+        ax = self.plotting_functions[kind](result, **kwargs)
         if not title:
             title = self.name
         ax.set_title(title)
         return ax
 
+    #Support easy access to the plotting functions
+    # class PlotAccessor:
+    #     """An accessor to the plotting functions of the diagnostic."""
+
+    #     def __init__(self, diagnostic):
+    #         self.diagnostic = diagnostic
+
+    #     def __getattr__(self, kind):
+    #         def plot_kind(*args, **kwargs):
+    #             return self._diagnostic.plot(*args, kind=kind, **kwargs)
+    #         return plot_kind
+
+    # @property
+    # def plot(self):
+    #     return self.PlotAccessor(self)
+
+
     @property
     def description(self):
         """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
-        return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
+        return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_functions.__name__}\n"
 
 class DataSetDiagnostic(Diagnostic):
     """A class representing a diagnostic that operates on the level of single datasets."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="single"
+        self, diagnostic_function, plotting_functions, name=None, description=None, plot_type="single"
     ):
         """
         Initialize the DataSetDiagnostic.
@@ -94,7 +112,7 @@ class DataSetDiagnostic(Diagnostic):
             If "single", plot_dt will plot all the leaves of the DataTree on the same axis.
             If "facetted", plot_dt will plot all the leaves of the DataTree on different axes.
         """
-        super().__init__(diagnostic_function, plotting_function, name, description)
+        super().__init__(diagnostic_function, plotting_functions, name, description)
         self.plot_type = plot_type
 
     def __call__(self, data, *args, **kwargs):
@@ -118,6 +136,7 @@ class DataSetDiagnostic(Diagnostic):
         """
         return dt.map_over_subtree(self.apply, *args, **kwargs)
 
+    #Currently no support for different plotting kinds
     def plot_dt(self, dt, *args, **kwargs):
         if self.plot_type == "single":
             return self.plot_dt_single(dt, *args, **kwargs)
@@ -211,10 +230,10 @@ class Model2Self(DataSetDiagnostic):
     """A class representing a diagnostic that compares a model to itself."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="single"
+        self, diagnostic_function, plotting_functions, name=None, description=None, plot_type="single"
     ):
         """Initialize the Model2Self diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
+        super().__init__(diagnostic_function, plotting_functions, name, description, plot_type)
 
     def apply(self, ds: xr.Dataset, mask=None, **kwargs):
         """Apply the diagnostic to the data.
@@ -256,10 +275,10 @@ class Model2Ref(DataSetDiagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="facetted"
+        self, diagnostic_function, plotting_functions, name=None, description=None, plot_type="facetted"
     ):
         """Initialize the Model2Ref diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
+        super().__init__(diagnostic_function, plotting_functions, name, description, plot_type)
 
     def apply(self, ds: xr.Dataset, ref: xr.Dataset, mask=None, **kwargs):
         """Apply the diagnostic to the data. Only the common variables between the data and the reference are used.
@@ -310,11 +329,11 @@ class Ensemble2Self(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to itself."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, iterative_plotting=False
+        self, diagnostic_function, plotting_functions, name=None, description=None, iterative_plotting=False
     ):
         """Initialize the Ensemble2Self diagnostic."""
         self.iterative_plotting = iterative_plotting
-        super().__init__(diagnostic_function, plotting_function, name, description)
+        super().__init__(diagnostic_function, plotting_functions, name, description)
         
 
     def apply(self, dt: DataTree, mask=None, **kwargs):
@@ -335,7 +354,7 @@ class Ensemble2Self(Diagnostic):
 
         return self.diagnostic_function(dt, **kwargs)
 
-    def plot(self, result, variables=None, title=None, facetted=None, **kwargs):
+    def plot(self, result, kind="default", variables=None, title=None, facetted=None, **kwargs):
         """Plot the diagnostic.
 
         If facetted multiple plots on different axes are created. If not facetted, the plots are created on the same axis.
@@ -363,10 +382,10 @@ class Ensemble2Ref(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None
+        self, diagnostic_function, plotting_functions, name=None, description=None
     ):
         """Initialize the Ensemble2Ref diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description)
+        super().__init__(diagnostic_function, plotting_functions, name, description)
 
     def apply(self, dt: DataTree, ref, **kwargs):
         """Apply the diagnostic to the data.
@@ -383,10 +402,13 @@ class Ensemble2Ref(Diagnostic):
         DataTree or dict
             The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
-        # TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.
+        #Make sure that the dt and ref are isomorphic
+        if isinstance(ref, DataTree):
+            dt = filter_like(dt, ref)
+            ref = filter_like(ref, dt)            
         return self.diagnostic_function(dt, ref, **kwargs)
 
-    def plot(self, result, facetted=True, **kwargs):
+    def plot(self, result, kind="default", facetted=True, **kwargs):
         """Plot the diagnostic.
 
         If axes are provided, the diagnostic is plotted facetted. If ax is provided, the diagnostic is plotted non-facetted. 
@@ -406,9 +428,9 @@ class Ensemble2Ref(Diagnostic):
             raise ValueError("Either ax or axes can be provided, not both.")
         elif "ax" not in kwargs and "axes" not in kwargs:
             ax = plt.gca()
-            return self.plotting_function(result, ax=ax, **kwargs)
+            return self.plotting_functions[kind](result, ax=ax, **kwargs)
         else:
-            return self.plotting_function(result, **kwargs)
+            return self.plotting_functions[kind](result, **kwargs)
 
 def _common_vars(ds1, ds2):
     """Return the common variables in two datasets."""
@@ -425,6 +447,11 @@ def _initialize_multiaxis_plot(n, subplot_kws={}):
             nrows=n//2+1, ncols=2, figsize=(10, 5 * n), subplot_kw=subplot_kws
         )
     return fig, axes
+
+def filter_like(dt, other):
+    """Filter the dt by the ref."""
+    other = {key for key,_ in other.subtree_with_keys}
+    return dt.filter(lambda node: node.relative_to(dt) in other)
 
 # =============================================================================
 # Pre-made diagnostics
@@ -502,12 +529,19 @@ MetricsRankings = Ensemble2Ref(
 # Ensemble2Ref diagnostics
 EnsembleSubSelection = Ensemble2Ref(
     case_sub_selection,
-    default_plot_kwargs({
-    "x": "var",
-    "y": "abs_change", 
-    "selected": ["highest", "middle", "lowest"], 
-    "sel_colors": {"highest": "red", "middle": "blue", "lowest": "green"}
-        })(ensemble_selection_boxplot),
+    {"default":
+        default_plot_kwargs({
+        "x": "var",
+        "y": "abs_change", 
+        "selected": ["highest", "middle", "lowest"], 
+        "sel_colors": {"highest": "red", "middle": "blue", "lowest": "green"}
+            })(ensemble_selection_boxplot),
+    "heatmap":
+        default_plot_kwargs({
+        "index": "label",
+        "columns": "var",
+        "values": "rel_change"
+        })(ensemble_change_signal_heatmap)},
     "Ensemble Sub Selection",
     "The sub selection of ensemble members."
 )

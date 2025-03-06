@@ -531,6 +531,28 @@ def ensemble_selection_boxplot(df, selected=None, sel_colors=None, ax=None, **kw
     ax = _get_gca(**kwargs)
     return ax
 
+def ensemble_change_signal_heatmap(df, index=None, columns=None, values=None, ax=None, **kwargs):
+    """
+    Create a heatmap of the ensemble change signal for different variables per ensemble member.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        A DataFrame containing the ensemble change signals for different variables per ensemble member.
+    index : str, optional
+        The column name to use as the index for the heatmap.
+    columns : str, optional
+        The column name to use as the columns for the heatmap.
+    values : str, optional
+        The column name to use as the climate signal values for the heatmap.
+    ax : matplotlib.axes.Axes, optional
+        The axes on which to plot the heatmap. If None, a new figure and axes are created.
+    **kwargs : dict
+        Additional keyword arguments passed to `seaborn.heatmap`.
+    """
+    sns.heatmap(data=df.pivot(index=index, columns=columns, values=values), ax=ax, **kwargs)
+    ax = _get_gca(**kwargs)
+    return ax
 
 ##################################
 # Helper functions               #
