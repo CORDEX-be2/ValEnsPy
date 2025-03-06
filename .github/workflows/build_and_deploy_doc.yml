@@ -11,38 +11,39 @@ on:
 
 jobs:
 #---- Deploy documentation MAIN-----#
-   deploy_doc_main:
+  deploy_doc_main:
     name: Deploy main documentation
     runs-on: ubuntu-latest
     steps:
-        - uses: actions/checkout@v3
-        - name: Set up Python39
-          uses: actions/setup-python@v4
-          with:
-            python-version: '3.10'
-            #cache: 'poetry'
-        # You can test your matrix by printing the current Python version
-        - name: Display Python version
+      - uses: actions/checkout@v3
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: '3.11'
+          activate-environment: valenspy_env
+          auto-update-conda: true
+          auto-activate-base: false
+      - name: Create and activate conda environment
+          run: |
+            conda create -n valenspy_env python=3.11 esmpy poetry=1.8 pytest -c conda-forge -y
+            source activate valenspy_env
+      - name: Display Python version
           run: python -c "import sys; print(sys.version)"
-        - name: install pandoc (system wide)
-          run: |
-              sudo apt-get -y install pandoc
-        - name: remove previous builds
-          run: |
-              rm -f dist/metobs_toolkit-*.whl
-              rm -f dist/metobs_toolkit-*.tar.gz
-        - name: Install poetry
-          run: |
-              pip install poetry==1.8.5
-        - name: Install dependencies and build
-          run: |
-              poetry install --with dev --with docs
-              poetry run sphinx-build -a -E docs _build
-        #WHEN PUBLIC, UNCOMMENT FOR DEPLOYING DOC TO GH-PAGES!!!!
-        - name: deploy documentation
-          uses: peaceiris/actions-gh-pages@v3
-          with:
-           publish_branch: gh-pages
-           github_token: ${{ secrets.GITHUB_TOKEN }}
-           publish_dir: _build/
-           force_orphan: true
+      - name: install pandoc (system wide)
+        run: |
+          sudo apt-get -y install pandoc
+      - name: remove previous builds
+        run: |
+          rm -f dist/metobs_toolkit-*.whl
+          rm -f dist/metobs_toolkit-*.tar.gz
+      - name: Install dependencies and build
+        run: |
+          poetry install --with dev --with docs
+          poetry run sphinx-build -a -E docs _build
+      - name: deploy documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _build/
+          force_orphan: true
