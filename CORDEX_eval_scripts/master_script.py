@@ -14,10 +14,13 @@
 #     name: python3
 # ---
 
+# %% [markdown]
+# # CORDEX.be II evaluation 
+#
+
 # %%
 # %matplotlib inline
 
-# %%
 import xarray as xr
 from datatree import DataTree, map_over_subtree
 from pathlib import Path
@@ -32,14 +35,13 @@ import xclim
 import cartopy.crs as ccrs
 import valenspy as vp
 from valenspy.diagnostic.visualizations import _add_features
-from valenspy.diagnostic.functions import root_mean_square_error
 from valenspy.input.unit_converter import CORDEX_VARIABLES
 
 
 git_dir = Path(os.popen("git rev-parse --show-toplevel").read().strip())
 
 # %% [markdown]
-# User options
+# ## User options
 
 # %%
 # Load data options
@@ -74,9 +76,9 @@ mpl.rc('figure', titlesize=16)
 
 ## Specify colors for the specific models
 color_dict = {
-    "/RCM/ERA5/ALARO1_SFX"          : "blue",
-    "/RCM/ERA5/CCLM6-0-1-URB-ESG"   : "red",
-    "/RCM/ERA5/MAR"                 : "green",
+    "/RCM/ERA5/ALARO1_SFX"          : "tab:blue",
+    "/RCM/ERA5/CCLM6-0-1-URB-ESG"   : "tab:orange",
+    "/RCM/ERA5/MAR"                 : "tab:green",
     "/obs/CLIMATE_GRID"             : "black"
 }
 
@@ -121,14 +123,14 @@ do_SpatialBias = {
 #Add xclim variables
 
 # %% [markdown]
-# STEP 1: Load the data
+# ## STEP 1: Load the data
 
 # %%
 manager = vp.InputManager(machine="hortense")
 
 # ALARO (Using the catalog and the variables userinput)
 
-df_alaro = pd.read_csv("/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46032_kobe/ValEnsPy/CORDEX_eval_scripts/catalog.csv")
+df_alaro = pd.read_csv(git_dir/"CORDEX_eval_scripts/catalog.csv")
 df_alaro = df_alaro[df_alaro['frequency'] == 'day']
 df_alaro = df_alaro[df_alaro['variable_id'].isin(variables)]
 df_alaro
@@ -145,6 +147,11 @@ ds_cclm_tasmax  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifi
 ds_cclm_tasmin  = manager.load_data("CCLM", ["tas"], freq="daily", path_identifiers=[experiment, "min"]).rename({'tas':'tasmin'})
 ds_cclm_pr      = manager.load_data("CCLM", ["pr"], freq="daily", path_identifiers=[experiment, "sum"])
 ds_cclm         = xr.merge([ds_cclm_tas, ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin])
+
+# adjust the time from 11:30 to 12:00 to make xclim work. 
+new_time = ds_cclm.tas.time.astype('datetime64[D]') + np.timedelta64(12, 'h')
+ds_cclm = ds_cclm.assign_coords(time=new_time)
+
 del ds_cclm_tas , ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
 # ds_cclm = ds_cclm_tas
 
@@ -158,13 +165,13 @@ ds_mar = ds_alaro
 ds_ref = manager.load_data("CLIMATE_GRID", variables, path_identifiers=["regridded"])
 
 # %% [markdown]
-# Create a DataTree object
+# ### Create a DataTree object
 
 # %%
 ## (Requires user adjustment)
 data_dict = {
     "RCM/ERA5/ALARO1_SFX": ds_alaro,
-    # "RCM/ERA5/CCLM6-0-1-URB-ESG": ds_cclm, #CCLM data not playing nice with xclim!
+    "RCM/ERA5/CCLM6-0-1-URB-ESG": ds_cclm, 
     "RCM/ERA5/MAR": ds_mar,
     "obs/CLIMATE_GRID": ds_ref
 }
@@ -173,13 +180,10 @@ dt = DataTree.from_dict(data_dict)
 
 
 # %% [markdown]
-# STEP 2: Preprocessing the data
+# ## STEP 2: Preprocessing the data
 
 # %% [markdown]
-# CCLM xclim to be fixed - freq attribute?
-
-# %%
-# da = xclim.indicators.cf.tnn(ds_cclm.tas, freq="YS")
+# ### CCLM xclim to be fixed - freq attribute?
 
 # %%
 #To be added in valenspy (including a non map_over_subtree version) - which is basically a wrapper over xclim.units.convert_units_to
@@ -207,15 +211,15 @@ def xclim_indicator(ds, indicator, vars, **kwargs):
 # %%
 #Working but requries CCLM data fix
 # Location is important! Before or after regridding? Before or after unit conversion? Best before!
-# dt_tnn = xclim_indicator(dt, xclim.indicators.cf.tnn, vars="tas", freq="YS")
-# dt_txx = xclim_indicator(dt, xclim.indicators.cf.txx, vars="tasmax", freq="YS")
-# dt_max_1day_precipitation_amount = xclim_indicator(dt, xclim.atmos.max_1day_precipitation_amount, vars="pr", freq="YS")
+dt_tnn = xclim_indicator(dt, xclim.indicators.cf.tnn, vars="tas", freq="YS")
+dt_txx = xclim_indicator(dt, xclim.indicators.cf.txx, vars="tasmax", freq="YS")
+dt_max_1day_precipitation_amount = xclim_indicator(dt, xclim.atmos.max_1day_precipitation_amount, vars="pr", freq="YS")
 
-# xclim_dt_dict = {
-#     "tnn": dt_tnn,
-#     "txx": dt_txx,
-#     "rx1day": dt_max_1day_precipitation_amount
-# }
+xclim_dt_dict = {
+     "TNn": dt_tnn,
+     "TXx": dt_txx,
+     "Rx1day": dt_max_1day_precipitation_amount
+ }
 
 # %%
 #Regid to CLIMATE_GRID
@@ -229,7 +233,7 @@ for var, unit in unit_dict.items():
     dt = convert_units_to(dt, var, unit)
 
 # %% [markdown]
-# STEP 3: Diagnostics
+# ## STEP 3: Diagnostics
 
 # %%
 from valenspy.diagnostic import AnnualCycle
@@ -239,10 +243,10 @@ from valenspy.diagnostic import SpatialTimeMean
 from valenspy.diagnostic import SpatialBias
 
 # %% [markdown]
-# Model2Self
+# ### Model2Self
 
 # %% [markdown]
-# Annual Cycle
+# #### Annual Cycle
 
 # %%
 if do_AnnualCycle["compute"]:
@@ -257,7 +261,7 @@ if do_AnnualCycle["compute"]:
         plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_bel_mean_annual_cycle.png")
 
 # %% [markdown]
-# TimeSeries
+# #### TimeSeries
 
 # %%
 if do_TimeSeries["compute"]:
@@ -271,28 +275,28 @@ if do_TimeSeries["compute"]:
 
         for var in do_TimeSeries["variables"]:
             fig, ax = plt.subplots(figsize=(15, 5))
-            TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict)
+            TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict, alpha=0.5)
             plt.title(f"Time series of {CORDEX_VARIABLES[var]['long_name']}")
             plt.legend()
             plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean_{period}.png")
 
 # %% [markdown]
-# Xclim variables and derivatives
+# ### Xclim variables and derivatives
 
 # %%
-# for var, dt_xclim in xclim_dt_dict.items():
-#     with ProgressBar():
-#         print(f"Computing TimeSeriesSpatialMean for {var}")
-#         dt_time_series = TimeSeriesSpatialMean(dt_xclim).compute()
+for var, dt_xclim in xclim_dt_dict.items():
+     with ProgressBar():
+         print(f"Computing TimeSeriesSpatialMean for {var}")
+         dt_time_series = TimeSeriesSpatialMean(dt_xclim).compute()
 
-#     fig, ax = plt.subplots(figsize=(15, 5))
-#     TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict)
-#     plt.title(f"Time series of {var}")
-#     plt.legend()
-#     plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean.png")
+     fig, ax = plt.subplots(figsize=(15, 5))
+     TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict)
+     plt.title(f"Time series of {var}")
+     plt.legend()
+     plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean.png")
 
 # %% [markdown]
-# TimeSeries (Ukkel)
+# #### TimeSeries (Ukkel)
 
 # %%
 if do_TimeSeriesUkkel["compute"]:
@@ -313,6 +317,7 @@ if do_TimeSeriesUkkel["compute"]:
             TimeSeriesSpatialMean.plot_dt(dt_time_series_uccle, var=var, ax=ax, label="name", colors=color_dict)
             plt.title(f"Time series of {CORDEX_VARIABLES[var]['long_name']} in Ukkel")
             plt.legend()
+            plt.tight_layout()
             plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_ukkel_{period}.png")
 
 # %% [markdown]
@@ -336,7 +341,7 @@ if do_Trends["compute"]:
         plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_trend_ukkel_window_{years}y.png")
 
 # %% [markdown]
-# Spatial Mean
+# ### Spatial Mean
 
 # %%
 if do_SpatialMean["compute"]:
@@ -369,10 +374,10 @@ if do_SpatialMean["compute"]:
             plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatial_mean_{season}.png")
 
 # %% [markdown]
-# Model2Ref
+# ### Model2Ref
 
 # %% [markdown]
-# SpatialBias
+# #### SpatialBias
 
 # %%
 if do_SpatialBias["compute"]:
