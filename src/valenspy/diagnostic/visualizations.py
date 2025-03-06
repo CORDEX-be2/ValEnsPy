@@ -117,7 +117,7 @@ def plot_map(da: xr.DataArray, **kwargs):
     ax : matplotlib.axes.Axes
         The matplotlib Axes with the plot.
     """
-    kwargs = _augment_kwargs({"cbar_kwargs": {"label": f"{da.attrs.get('long_name', 'Data')} ({da.name})"}}, **kwargs)
+    kwargs = _augment_kwargs({"cbar_kwargs": {"label": f"{da.attrs.get('long_name', 'Data')} ({da.units})"}}, **kwargs)
 
     da.plot(**kwargs)
 
