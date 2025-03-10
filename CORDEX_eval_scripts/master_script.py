@@ -9,7 +9,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: Python 3
+#     display_name: valenspy_xesmf
 #     language: python
 #     name: python3
 # ---
@@ -35,6 +35,7 @@ import xclim
 import cartopy.crs as ccrs
 import valenspy as vp
 from valenspy.diagnostic.visualizations import _add_features
+from valenspy.diagnostic.functions import root_mean_square_error
 from valenspy.input.unit_converter import CORDEX_VARIABLES
 
 
@@ -64,6 +65,7 @@ mpl.rc('axes',labelcolor='dimgrey')
 mpl.rc('axes',titlesize=14)
 mpl.rc('axes',labelsize=10)
 mpl.rc('axes', titlelocation="right")
+mpl.rc('axes', xmargin=0)
 mpl.rc('xtick',color='dimgrey')
 mpl.rc('xtick',labelsize=10)
 mpl.rc('ytick',color='dimgrey')
@@ -74,6 +76,7 @@ mpl.rc('text',color='dimgrey')
 mpl.rc('figure', titlesize=16)
 
 
+
 ## Specify colors for the specific models
 color_dict = {
     "/RCM/ERA5/ALARO1_SFX"          : "tab:blue",
@@ -82,8 +85,8 @@ color_dict = {
     "/obs/CLIMATE_GRID"             : "black"
 }
 
-d_cmap_diverging = { "tas": 'RdBu_r', "tasmax":'RdBu_r', "tasmin":'RdBu_r', "pr": 'BrBG' }
-d_cmap_sequential = {"tas": 'YlOrRd', "tasmax": 'YlOrRd', "tasmin": 'YlOrRd', "pr": 'YlGnBu' }
+d_cmap_diverging = { "tas": 'RdBu_r', "tasmax":'RdBu_r', "tasmin":'RdBu_r', "pr": 'BrBG', "tnn":'RdBu_r', "txx":'RdBu_r', "rx1day": 'BrBG'}
+d_cmap_sequential = {"tas": 'YlOrRd', "tasmax": 'YlOrRd', "tasmin": 'YlOrRd', "pr": 'YlGnBu', "tnn":'YlOrRd', "txx":'YlOrRd', "rx1day": 'YlGnBu'}
 
 #Diagnostic options
 ## Model2Self
@@ -209,19 +212,6 @@ def xclim_indicator(ds, indicator, vars, **kwargs):
 
 
 # %%
-#Working but requries CCLM data fix
-# Location is important! Before or after regridding? Before or after unit conversion? Best before!
-dt_tnn = xclim_indicator(dt, xclim.indicators.cf.tnn, vars="tas", freq="YS")
-dt_txx = xclim_indicator(dt, xclim.indicators.cf.txx, vars="tasmax", freq="YS")
-dt_max_1day_precipitation_amount = xclim_indicator(dt, xclim.atmos.max_1day_precipitation_amount, vars="pr", freq="YS")
-
-xclim_dt_dict = {
-     "TNn": dt_tnn,
-     "TXx": dt_txx,
-     "Rx1day": dt_max_1day_precipitation_amount
- }
-
-# %%
 #Regid to CLIMATE_GRID
 dt["RCM"] = dt["RCM"].map_over_subtree(vp.remap_xesmf, dt.obs.CLIMATE_GRID.to_dataset(), method="conservative", regridding_kwargs={"keep_attrs": True})
 
@@ -231,6 +221,19 @@ dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
 #Unit conversion to the desired units
 for var, unit in unit_dict.items():
     dt = convert_units_to(dt, var, unit)
+
+# %%
+#Working but requries CCLM data fix
+# Location is important! Before or after regridding? Before or after unit conversion? Best before!
+dt_tnn = xclim_indicator(dt, xclim.indicators.cf.tnn, vars="tas", freq="YS")
+dt_txx = xclim_indicator(dt, xclim.indicators.cf.txx, vars="tasmax", freq="YS")
+dt_max_1day_precipitation_amount = xclim_indicator(dt, xclim.atmos.max_1day_precipitation_amount, vars="pr", freq="YS")
+
+xclim_dt_dict = {
+     "tnn": dt_tnn,
+     "txx": dt_txx,
+     "rx1day": dt_max_1day_precipitation_amount
+ }
 
 # %% [markdown]
 # ## STEP 3: Diagnostics
@@ -251,6 +254,7 @@ from valenspy.diagnostic import SpatialBias
 # %%
 if do_AnnualCycle["compute"]:
     with ProgressBar():
+        print("Computing annual cycle")
         dt_annual_cycle = AnnualCycle(dt).compute()
 
     for var in do_AnnualCycle["variables"]:
@@ -259,6 +263,7 @@ if do_AnnualCycle["compute"]:
         plt.title(f"Annual cycle of {CORDEX_VARIABLES[var]['long_name']}")
         plt.legend()
         plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_bel_mean_annual_cycle.png")
+        plt.close(fig)
 
 # %% [markdown]
 # #### TimeSeries
@@ -271,6 +276,7 @@ if do_TimeSeries["compute"]:
         else:
             dt_time_series = dt.sel(time=slice(period[0], period[1]))
         with ProgressBar():
+            print(f"Computing time series for period {period}")
             dt_time_series = TimeSeriesSpatialMean(dt_time_series).compute()
 
         for var in do_TimeSeries["variables"]:
@@ -279,9 +285,10 @@ if do_TimeSeries["compute"]:
             plt.title(f"Time series of {CORDEX_VARIABLES[var]['long_name']}")
             plt.legend()
             plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean_{period}.png")
+            plt.close(fig)
 
 # %% [markdown]
-# ### Xclim variables and derivatives
+# ##### Xclim variables and derivatives
 
 # %%
 for var, dt_xclim in xclim_dt_dict.items():
@@ -294,11 +301,16 @@ for var, dt_xclim in xclim_dt_dict.items():
      plt.title(f"Time series of {var}")
      plt.legend()
      plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean.png")
+     plt.close(fig)
 
 # %% [markdown]
 # #### TimeSeries (Ukkel)
 
 # %%
+do_TimeSeries["periods"]
+
+# %%
+
 if do_TimeSeriesUkkel["compute"]:
     Ukkel = (4.37, 50.79)
     dt_ukkel_hw = dt.map_over_subtree(vp.select_point, Ukkel[0], Ukkel[1])
@@ -306,7 +318,7 @@ if do_TimeSeriesUkkel["compute"]:
         if period == "All":
             dt_time_series = dt_ukkel_hw
         else:
-            dt_time_series_uccle = dt_ukkel_hw.sel(time=slice(period[0], period[1]))
+            dt_time_series = dt_ukkel_hw.sel(time=slice(period[0], period[1]))
         
         with ProgressBar():
             print(f"Computing time series for {period}")
@@ -314,14 +326,15 @@ if do_TimeSeriesUkkel["compute"]:
 
         for var in do_TimeSeries["variables"]:
             fig, ax = plt.subplots(figsize=(15, 5))
-            TimeSeriesSpatialMean.plot_dt(dt_time_series_uccle, var=var, ax=ax, label="name", colors=color_dict)
+            TimeSeriesSpatialMean.plot_dt(dt_time_series_uccle, var=var, ax=ax, label="name", colors=color_dict, alpha=0.5)
             plt.title(f"Time series of {CORDEX_VARIABLES[var]['long_name']} in Ukkel")
             plt.legend()
             plt.tight_layout()
             plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_ukkel_{period}.png")
+            plt.close(fig)
 
 # %% [markdown]
-# Trends
+# #### Trends
 
 # %%
 if do_Trends["compute"]:
@@ -339,9 +352,30 @@ if do_Trends["compute"]:
         plt.legend()
         plt.title(f"Trend of {CORDEX_VARIABLES[var]['long_name']} in Ukkel")
         plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_trend_ukkel_window_{years}y.png")
+        plt.close(fig)
 
 # %% [markdown]
-# ### Spatial Mean
+# ##### Xclim variables and derivatives
+
+# %%
+for var, dt_xclim in xclim_dt_dict.items():
+    years=5
+    window_size = years # 5 years
+    Ukkel = (4.37, 50.79)
+    dt_Ukkel = dt_xclim.map_over_subtree(vp.select_point, Ukkel[0], Ukkel[1])
+    dt_Ukkel = dt_Ukkel - dt_Ukkel.sel(time=slice("1980-01-01", "1985-12-31")).mean("time")
+    with ProgressBar():
+        dt_trends = TimeSeriesTrendSpatialMean(dt_Ukkel, window_size=window_size).compute()
+
+    fig, ax = plt.subplots(figsize=(15, 5))
+    TimeSeriesTrendSpatialMean.plot_dt(dt_trends, var=var, ax=ax, label="name", colors=color_dict)
+    plt.legend()
+    plt.title(f"Trend of {var} in Ukkel")
+    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_trend_ukkel_window_{years}y.png")
+    plt.close(fig)
+
+# %% [markdown]
+# #### Spatial Mean
 
 # %%
 if do_SpatialMean["compute"]:
@@ -369,9 +403,34 @@ if do_SpatialMean["compute"]:
             for ax in axes:
                 _add_features(ax, region='belgium')
             
-            fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} spatial mean (Season: {season})')
+            fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} spatial mean (Season: {season})',  y=1.01)
             fig.tight_layout()
             plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatial_mean_{season}.png")
+            plt.close(fig)
+
+# %% [markdown]
+# ##### Xclim variables and derivatives
+
+# %%
+for var, dt_xclim in xclim_dt_dict.items():
+    with ProgressBar():
+        print(f"Computing spatial mean for {var}")
+        dt_spatial_mean = SpatialTimeMean(dt_xclim).compute()
+
+    fig, axes = plt.subplots(2, 2, figsize=(9, 5), subplot_kw={"projection": ccrs.PlateCarree()})
+    axes = axes.flatten()
+
+    SpatialTimeMean.plot_type = "facetted"
+
+    SpatialTimeMean.plot_dt(dt_spatial_mean, var=var, axes=axes, shared_cbar="min_max", label="name", cmap=d_cmap_sequential[var])
+
+    for ax in axes:
+        _add_features(ax, region='belgium')
+
+    fig.suptitle(f'{var} spatial mean',  y=1.01)
+    fig.tight_layout()
+    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatial_mean_{season}.png")
+
 
 # %% [markdown]
 # ### Model2Ref
@@ -407,4 +466,29 @@ if do_SpatialBias["compute"]:
             fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} bias compared to CLIMATE_GRID (Season: {season})', y=0.8)
             fig.tight_layout()
             plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatialbias_{season}.png")
+            plt.close(fig)
 
+
+# %% [markdown]
+# ##### Xclim variables and derivatives
+
+# %%
+for var, dt_xclim in xclim_dt_dict.items():
+    with ProgressBar():
+        print(f"Computing spatial bias for {var}")
+        ds_ref = dt_xclim[do_SpatialBias["reference"]].to_dataset()
+        dt_spatial_bias = SpatialBias(dt_xclim.RCM, ref=ds_ref).compute()
+
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5), subplot_kw={"projection": ccrs.PlateCarree()})
+    axes = axes.flatten()
+    cbar_kwargs={"shrink": 0.52}
+
+    SpatialBias.plot_dt(dt_spatial_bias, var=var, axes=axes, shared_cbar="abs", label="name", cbar_kwargs=cbar_kwargs, cmap=d_cmap_diverging[var])
+
+    for ax in axes:
+        _add_features(ax, region='belgium')
+
+    fig.suptitle(f'{var} bias compared to CLIMATE_GRID', y=0.8)
+    fig.tight_layout()
+    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatialbias.png")
+    plt.close(fig)
