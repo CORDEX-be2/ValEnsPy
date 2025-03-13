@@ -20,11 +20,11 @@ jobs:
       - name: Create and activate conda environment
         run: |
           conda create -n valenspy_env python=3.11 esmpy poetry=1.8 -c conda-forge -y
-          source activate valenspy_env
+          conda activate valenspy_env
           poetry install --with dev
       - name: Run tests
         run: |
-          source activate valenspy_env
+          conda activate valenspy_env
           pytest tests/push_tests/test_*.py
 
   versiontest:
