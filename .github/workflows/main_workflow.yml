@@ -7,11 +7,11 @@ on:
       - dev
   pull_request:
     types: [labeled]
+    types: [review_requested]
 
 jobs:
   #--- Build the package and save as artifacts----
   packageing:
-    if: ${{ github.event.label && github.event.label.name == 'Status: Ready For Review' || github.event_name == 'push' }}
     name: Build the package
     runs-on: ubuntu-latest
     outputs:
@@ -25,6 +25,7 @@ jobs:
           activate-environment: valenspy_env
           auto-update-conda: true
       - name: Create and activate conda environment
+        shell: bash -el {0}
         run: |
           conda create -n valenspy_env python=3.11 esmpy poetry=1.8 -c conda-forge -y
           conda activate valenspy_env
@@ -33,6 +34,7 @@ jobs:
           rm -f dist/metobs_toolkit-*.whl
           rm -f dist/metobs_toolkit-*.tar.gz
       - name: Install dependencies and build
+        shell: bash -el {0}
         run: |
           conda activate valenspy_env
           poetry update
