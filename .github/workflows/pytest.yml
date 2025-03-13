@@ -24,7 +24,7 @@ jobs:
           poetry install --with dev
       - name: Run tests
         run: |
-          conda activate valenspy_env
+          source activate valenspy_env
           pytest tests/push_tests/test_*.py
 
   versiontest:
