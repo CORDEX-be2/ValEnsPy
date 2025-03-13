@@ -142,27 +142,27 @@ jobs:
 
 
 #---- Version Control -----#
-   versiontest:
-     name: check if version is valid
-     if: >
+  versiontest:
+    name: check if version is valid
+    if: >
       (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push')
-     runs-on: ubuntu-latest
-     steps:
-       - uses: actions/checkout@v3
-       - name: get version
-         id: 'version_info'
-         run: |
-           CURRENT_VERSION="$(grep -oP '__version__ = "\K\d+\.\d+\.\d+' src/valenspy/__init__.py)"
-           echo "current version (init) = ${CURRENT_VERSION}"
-           echo "::set-output name=current_version::$CURRENT_VERSION"
-           PYPROJECT_VERSION="$(grep -oP 'version = "\K\d+\.\d+\.\d+' pyproject.toml)"
-           echo "current version (pyproject) = ${PYPROJECT_VERSION}"
-           echo "::set-output name=pyproject_version::$PYPROJECT_VERSION"
-       - name: version-is-correct
-         if: ${{ steps.version_info.outputs.current_version != steps.version_info.outputs.pyproject_version }}
-         run: |
-           echo "version tags are not aligned!"
-           exit 1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: get version
+        id: 'version_info'
+        run: |
+          CURRENT_VERSION="$(grep -oP '__version__ = "\K\d+\.\d+\.\d+' src/valenspy/__init__.py)"
+          echo "current version (init) = ${CURRENT_VERSION}"
+          echo "::set-output name=current_version::$CURRENT_VERSION"
+          PYPROJECT_VERSION="$(grep -oP 'version = "\K\d+\.\d+\.\d+' pyproject.toml)"
+          echo "current version (pyproject) = ${PYPROJECT_VERSION}"
+          echo "::set-output name=pyproject_version::$PYPROJECT_VERSION"
+      - name: version-is-correct
+        if: ${{ steps.version_info.outputs.current_version != steps.version_info.outputs.pyproject_version }}
+        run: |
+          echo "version tags are not aligned!"
+          exit 1
 
 
 
