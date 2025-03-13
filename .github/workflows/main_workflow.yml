@@ -23,6 +23,7 @@ jobs:
           python-version: '3.11'
           activate-environment: valenspy_env
           auto-update-conda: true
+          miniconda-version: "latest"
       - name: Create and activate conda environment
         shell: bash -el {0}
         run: |
@@ -64,6 +65,7 @@ jobs:
           activate-environment: valenspy_env
           auto-update-conda: true
       - name: Create and activate conda environment
+        shell: bash -el {0}
         run: |
           conda create -n valenspy_env python=3.11 esmpy poetry=1.8 pytest -c conda-forge -y
           conda activate valenspy_env
@@ -72,10 +74,12 @@ jobs:
         with:
           name: package_build
       - name: Install the package
+        shell: bash -el {0}
         run: |
           conda activate valenspy_env
           python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
       - name: Run tests
+        shell: bash -el {0}
         run: |
           conda activate valenspy_env
           pytest tests/push_tests/test_*.py
