@@ -118,7 +118,7 @@ jobs:
         shell: bash -el {0}
         run: |
           conda activate valenspy_env
-          pytest tests/push_tests/test_import.py
+          pytest tests/push_tests/test_*.py
 
 
 #---- Version Control -----#
