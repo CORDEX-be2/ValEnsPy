@@ -10,6 +10,7 @@ from valenspy.input.converter_functions import (
     CCLM_to_CF,
     ALARO_K_to_CF,
     RADCLIM_to_CF,
+    GPM_IMERG_to_CF,
 )
 
 
@@ -52,6 +53,7 @@ INPUT_CONVERTORS = {
     "CCLM": InputConverter(CCLM_to_CF),
     "ALARO_K": InputConverter(ALARO_K_to_CF),
     "RADCLIM": InputConverter(RADCLIM_to_CF),
+    "GPM_IMERG": InputConverter(GPM_IMERG_to_CF),
 }
 
 # Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.
