@@ -2,7 +2,7 @@ import pytest
 import os
 import xarray as xr
 import matplotlib.pyplot as plt
-import DataTree 
+from xarray import DataTree 
 
 import valenspy
 
