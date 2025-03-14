@@ -1,6 +1,6 @@
 from pathlib import Path
 import xarray as xr
-from datatree import DataTree
+from xarray import DataTree
 import re
 import glob
 
