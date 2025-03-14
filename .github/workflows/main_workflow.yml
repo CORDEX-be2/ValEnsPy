@@ -75,6 +75,7 @@ jobs:
         run: |
           conda activate valenspy_env
           python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
+          conda install pytest -c conda-forge -y
       - name: Run tests
         shell: bash -el {0}
         run: |
