@@ -1,4 +1,4 @@
-from datatree import DataTree
+from xarray import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions

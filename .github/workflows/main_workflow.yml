@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '3.11'
           activate-environment: valenspy_env
-          auto-update-conda: true
+          auto-update-conda: truee
           miniconda-version: "latest"
       - name: Create and activate conda environment
         shell: bash -el {0}
