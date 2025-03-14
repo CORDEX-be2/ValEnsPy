@@ -2,9 +2,9 @@
 build-backend = "poetry.core.masonry.api"
 
 [project]
-name = "ValEnsPy"
 
 [project.urls]
+name = "ValEnsPy"
 Repository = "https://github.com/CORDEX-be2/ValEnsPy"
 Issues = "https://github.com/CORDEX-be2/ValEnsPy/issues"
 Documentation = "https://cordex-be2.github.io/ValEnsPy/"
