@@ -87,7 +87,7 @@ jobs:
   mac_install_testing:
     name: Installation on Mac latest
     needs: packageing
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v3
       - name: Set up Conda
@@ -96,7 +96,6 @@ jobs:
           python-version: '3.11'
           activate-environment: valenspy_env
           auto-update-conda: true
-          auto-activate-base: false
       - name: Create and activate conda environment
         run: |
           conda create -n valenspy_env python=3.11 esmpy poetry=1.8 pip -c conda-forge -y
