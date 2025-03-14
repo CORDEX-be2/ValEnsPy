@@ -6,23 +6,19 @@ on:
   push:
 
 jobs:
-  test:
+  pytests:
     runs-on: ubuntu-latest
     if: contains(github.event.head_commit.message, 'test')
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Conda
+      - name: Activate conda environment
         uses: conda-incubator/setup-miniconda@v2
         with:
           python-version: '3.11'
           activate-environment: valenspy_env
+          environment-file: environment.yml
           auto-update-conda: true 
-      - name: Create and activate conda environment
-        shell: bash -el {0}
-        run: |
-          conda create -n valenspy_env python=3.11 esmpy poetry=1.8 -c conda-forge -y
-          conda activate valenspy_env
-          poetry install --with dev
+          auto-activate-base: false
       - name: Run tests
         shell: bash -el {0}
         run: |
