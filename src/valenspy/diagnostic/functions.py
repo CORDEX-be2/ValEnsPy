@@ -124,8 +124,8 @@ def urban_heat_island(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple, pr
     xr.Dataset
         The urban heat island effect as the difference in temperature between the urban and rural area.
     """
-    urban = select_point(ds, urban_coord, projection=projection)
-    rural = select_point(ds, rural_coord, projection=projection)
+    urban = select_point(ds, lat_point=urban_coord[0], lon_point=urban_coord[1], projection=projection)
+    rural = select_point(ds, lat_point=rural_coord[0], lon_point=rural_coord[1], projection=projection)
 
     return urban - rural
 
