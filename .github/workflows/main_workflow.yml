@@ -13,7 +13,7 @@ jobs:
   packageing:
     name: Build the package
     if: >
-      (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push') || (github.event.issue.pull_request && contains(github.event.comment.body, 'build test'))
+      (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push') || (github.event_name == 'issue_comment' && contains(github.event.comment.body, 'build'))
     runs-on: ubuntu-latest
     outputs:
       pkg_file: ${{ steps.base_def.outputs.filename }}
