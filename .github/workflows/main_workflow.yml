@@ -85,7 +85,7 @@ jobs:
   # ---- Installing the package test ------#
   #--- Package os installation ---
   install_testing:
-    name: Installation on ${{ matrix.os }} latest
+    name: Installation on ${{ matrix.os }}
     needs: packageing
     runs-on: ${{ matrix.os }}
     strategy:
