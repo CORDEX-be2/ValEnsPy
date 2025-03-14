@@ -8,4 +8,6 @@ from .diagnostic import (
     SpatialBias,
     TemporalBias,
     DiurnalCycleBias,
+    UrbanHeatIsland,
+    UrbanHeatIslandDiurnalCycle
 )

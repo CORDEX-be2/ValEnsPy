@@ -1,4 +1,4 @@
-from datatree import DataTree
+from xarray import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions
@@ -470,6 +470,19 @@ SpatialTimeMean = Model2Self(
     "The spatial representation of the time mean of the data.",
     plot_type="facetted"
 )
+UrbanHeatIsland = Model2Self(
+    urban_heat_island,
+    plot_time_series,
+    "Urban Heat Island",
+    "The urban heat island as the difference in temperature between urban and rural areas.",
+)
+UrbanHeatIslandDiurnalCycle = Model2Self(
+    urban_heat_island_diurnal_cycle,
+    plot_diurnal_cycle,
+    "Urban Heat Island Diurnal Cycle",
+    "The diurnal cycle of the urban heat island.",
+)
+
 # Model2Ref diagnostics
 SpatialBias = Model2Ref(
     spatial_bias,

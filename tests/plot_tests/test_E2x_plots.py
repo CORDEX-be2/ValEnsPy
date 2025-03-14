@@ -2,7 +2,7 @@ import pytest
 import os
 import xarray as xr
 import matplotlib.pyplot as plt
-import DataTree 
+from xarray import DataTree 
 
 import valenspy
 
@@ -39,7 +39,7 @@ m2s_diagnostics_tests = [
 def test_basic_M2S_plot(diagnostic, ds, var):
     result = diagnostic.apply(ds)
     diagnostic.plot(result[var])
-    plt.savefig(os.path.join(output_path, f"M2S_{diagnostic.name}_basic.png"))
+    plt.savefig(os.path.join(output_path, f"M2S_{diagnostic.name.replace(' ', '_')}_basic.png"))
     plt.close()
 
 @pytest.mark.parametrize("diagnostic,ds,var", m2s_diagnostics_tests)
@@ -49,7 +49,7 @@ def test_personalized_M2S_plot(diagnostic, ds, var):
     diagnostic.plot(result[var], ax=ax, color="red", alpha=0.5)
     ax.set_xlabel("Personalized X-axis")
     ax.set_ylabel("Personalized Y-axis")
-    plt.savefig(os.path.join(output_path, f"M2S_{diagnostic.name}_personalized.png"))
+    plt.savefig(os.path.join(output_path, f"M2S_{diagnostic.name.replace(' ', '_')}_personalized.png"))
     plt.close()
 
 m2s_europe_diagnostics_tests = [
@@ -62,7 +62,7 @@ m2s_europe_diagnostics_tests = [
 def test_facetted_M2S_plot(diagnostic, ds, var):
     result = diagnostic.apply(ds, mask="prudence")
     diagnostic.plot(result[var], col="region", col_wrap=3)
-    plt.savefig(os.path.join(output_path, f"M2S_{diagnostic.name}_facetted.png"))
+    plt.savefig(os.path.join(output_path, f"M2S_{diagnostic.name.replace(' ', '_')}_facetted.png"))
     plt.close()
 
 ##########################
@@ -80,7 +80,7 @@ def test_basic_M2R_plot(diagnostic, ds, var):
     ref = ds + 2
     result = diagnostic.apply(ds, ref)
     diagnostic.plot(result[var])
-    plt.savefig(os.path.join(output_path, f"M2R_{diagnostic.name}_basic.png"))
+    plt.savefig(os.path.join(output_path, f"M2R_{diagnostic.name.replace(' ', '_')}_basic.png"))
     plt.close()
 
 @pytest.mark.parametrize("diagnostic,ds,var", m2r_diagnostics_tests)
@@ -94,7 +94,7 @@ def test_personalized_M2R_plot(diagnostic, ds, var):
         diagnostic.plot(result[var], ax=ax, cmap="Blues", alpha=0.5, cbar_kwargs={'orientation': 'horizontal'})
     ax.set_xlabel("Personalized X-axis")
     ax.set_ylabel("Personalized Y-axis")
-    plt.savefig(os.path.join(output_path, f"M2R_{diagnostic.name}_personalized.png"))
+    plt.savefig(os.path.join(output_path, f"M2R_{diagnostic.name.replace(' ', '_')}_personalized.png"))
     plt.close()
 
 m2r_diagnostics_tests_europe = [
@@ -108,5 +108,5 @@ def test_facetted_M2R_plot(diagnostic, ds, var):
     ref = ds + 2
     result = diagnostic.apply(ds, ref, mask="prudence")
     diagnostic.plot(result[var], col="region", col_wrap=3)
-    plt.savefig(os.path.join(output_path, f"M2R_{diagnostic.name}_facetted.png"))
+    plt.savefig(os.path.join(output_path, f"M2R_{diagnostic.name.replace(' ', '_')}_facetted.png"))
     plt.close()
