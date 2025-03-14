@@ -4821,28 +4821,42 @@ files = [
 
 [[package]]
 name = "xarray"
-version = "2025.1.2"
+version = "2024.7.0"
 description = "N-D labeled arrays and datasets in Python"
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.9"
 files = [
-    {file = "xarray-2025.1.2-py3-none-any.whl", hash = "sha256:a7ad6a36c6e0becd67f8aff6a7808d20e4bdcd344debb5205f0a34b1a4a7f8d6"},
-    {file = "xarray-2025.1.2.tar.gz", hash = "sha256:e7675c79ac69d274dd3b3c5450ce57176928d2792947576251ed1c7df1783224"},
+    {file = "xarray-2024.7.0-py3-none-any.whl", hash = "sha256:1b0fd51ec408474aa1f4a355d75c00cc1c02bd425d97b2c2e551fd21810e7f64"},
+    {file = "xarray-2024.7.0.tar.gz", hash = "sha256:4cae512d121a8522d41e66d942fb06c526bc1fd32c2c181d5fe62fe65b671638"},
 ]
 
 [package.dependencies]
-numpy = ">=1.24"
-packaging = ">=23.2"
-pandas = ">=2.1"
+numpy = ">=1.23"
+packaging = ">=23.1"
+pandas = ">=2.0"
 
 [package.extras]
-accel = ["bottleneck", "flox", "numba (>=0.54)", "numbagg", "opt_einsum", "scipy"]
-complete = ["xarray[accel,etc,io,parallel,viz]"]
-dev = ["hypothesis", "jinja2", "mypy", "pre-commit", "pytest", "pytest-cov", "pytest-env", "pytest-timeout", "pytest-xdist", "ruff (>=0.8.0)", "sphinx", "sphinx_autosummary_accessors", "xarray[complete]"]
-etc = ["sparse"]
+accel = ["bottleneck", "flox", "numbagg", "opt-einsum", "scipy"]
+complete = ["xarray[accel,dev,io,parallel,viz]"]
+dev = ["hypothesis", "mypy", "pre-commit", "pytest", "pytest-cov", "pytest-env", "pytest-timeout", "pytest-xdist", "ruff", "xarray[complete]"]
 io = ["cftime", "fsspec", "h5netcdf", "netCDF4", "pooch", "pydap", "scipy", "zarr"]
 parallel = ["dask[complete]"]
-viz = ["cartopy", "matplotlib", "nc-time-axis", "seaborn"]
+viz = ["matplotlib", "nc-time-axis", "seaborn"]
+
+[[package]]
+name = "xarray-datatree"
+version = "0.0.15"
+description = "Hierarchical tree-like data structures for xarray"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "xarray_datatree-0.0.15-py3-none-any.whl", hash = "sha256:190d8262061522eeaaa0dc7058b50df7228a615e6d62761150f093518bdad62c"},
+    {file = "xarray_datatree-0.0.15.tar.gz", hash = "sha256:4e828086d858742e4dec7ed7e9187865d5215302919d0e02a613dce0ff0db003"},
+]
+
+[package.dependencies]
+packaging = "*"
+xarray = ">=2023.12.0,<=2024.07.0"
 
 [[package]]
 name = "xattr"
@@ -5026,4 +5040,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "096a12b248e3dde0e2bb8b674aa429875a7f23515b1bdb5514901445ac6e3404"
+content-hash = "6b67fcf9b51f80ab66a3b3a59259fbda3a52127931b8f435e709f6c8533c42b6"
