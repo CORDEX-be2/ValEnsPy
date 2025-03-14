@@ -5,13 +5,15 @@ on:
       - dev
   pull_request:
     types: [labeled]
+  issue_comment:
+    types: [created]
 
 jobs:
   #--- Build the package and save as artifacts----
   packageing:
     name: Build the package
     if: >
-      (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push')
+      (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push') || (github.event.issue.pull_request && contains(github.event.comment.body, 'build test'))
     runs-on: ubuntu-latest
     outputs:
       pkg_file: ${{ steps.base_def.outputs.filename }}
@@ -23,11 +25,10 @@ jobs:
           python-version: '3.11'
           activate-environment: valenspy_env
           auto-update-conda: true
-          miniconda-version: "latest"
       - name: Create and activate conda environment
         shell: bash -el {0}
         run: |
-          conda create -n valenspy_env python=3.11 esmpy poetry=2.1.1 -c conda-forge -y
+          conda create -n valenspy_env python=3.11 esmpy poetry=1.8 -c conda-forge -y
           conda activate valenspy_env
       - name: remove previous builds
         run: |
@@ -37,7 +38,6 @@ jobs:
         shell: bash -el {0}
         run: |
           conda activate valenspy_env
-          poetry update
           poetry install
           poetry build
       - name: get distribution file name
@@ -64,11 +64,10 @@ jobs:
           python-version: '3.11'
           activate-environment: valenspy_env
           auto-update-conda: true
-      - name: Create and activate conda environment
+      - name: Create conda environment
         shell: bash -el {0}
         run: |
-          conda create -n valenspy_env python=3.11 esmpy poetry=2.1.1 pytest -c conda-forge -y
-          conda activate valenspy_env
+          conda create -n valenspy_env python=3.11 esmpy poetry=1.8 pip -c conda-forge -y
       - name: Download the package build
         uses: actions/download-artifact@v4
         with:
@@ -77,7 +76,6 @@ jobs:
         shell: bash -el {0}
         run: |
           conda activate valenspy_env
-          conda install pip -y
           python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
       - name: Run tests
         shell: bash -el {0}
@@ -101,8 +99,7 @@ jobs:
           auto-update-conda: true
       - name: Create and activate conda environment
         run: |
-          conda create -n valenspy_env python=3.11 esmpy poetry=2.1.1 -c conda-forge -y
-          conda activate valenspy_env
+          conda create -n valenspy_env python=3.11 esmpy poetry=1.8 pip -c conda-forge -y
       - name: Download the package build
         uses: actions/download-artifact@v4
         with:
@@ -130,8 +127,7 @@ jobs:
           auto-update-conda: true
       - name: Create and activate conda environment
         run: |
-          conda create -n valenspy_env python=3.11 esmpy poetry=2.1.1 -c conda-forge -y
-          conda activate valenspy_env
+          conda create -n valenspy_env python=3.11 esmpy poetry=1.8 pip -c conda-forge -y
       - name: Download the package build
         uses: actions/download-artifact@v4
         with:
