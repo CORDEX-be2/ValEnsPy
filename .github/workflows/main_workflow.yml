@@ -87,12 +87,13 @@ jobs:
   mac_install_testing:
     name: Installation on Mac latest
     needs: packageing
-    runs-on: macos-13
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up Conda
         uses: conda-incubator/setup-miniconda@v2
         with:
+          miniconda-version: "latest"
           python-version: '3.11'
           activate-environment: valenspy_env
           auto-update-conda: true
