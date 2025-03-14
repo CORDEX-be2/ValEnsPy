@@ -1,7 +1,7 @@
 import xarray as xr
 import numpy as np
 from scipy.stats import spearmanr
-from datatree import DataTree
+from xarray import DataTree
 import pandas as pd
 from functools import partial
 
@@ -33,6 +33,23 @@ def diurnal_cycle(ds: xr.Dataset):
 
     return ds.groupby("time.hour").mean("time")
 
+def annual_cycle(ds: xr.Dataset):
+    """Calculate the annual cycle of the data. If lat and lon are present, the data is averaged over the spatial dimensions lat and lon.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The data to calculate the annual cycle of.
+
+    Returns
+    -------
+    xr.Dataset
+        The annual cycle of the data.
+    """
+    ds = _average_over_dims(ds, ["lat", "lon"])
+
+    return ds.groupby("time.month").mean("time")
+
 
 def time_series_spatial_mean(ds: xr.Dataset):
     """Calculate the time series of the data. If lat and lon are present, the data is averaged over the spatial dimensions lat and lon.
@@ -48,6 +65,42 @@ def time_series_spatial_mean(ds: xr.Dataset):
         The time series of the spatial mean of the data.
     """
     return _average_over_dims(ds, ["lat", "lon"])
+
+def time_series_trend(ds: xr.Dataset, window_size, min_periods: int = None, center: bool = True, **window_kwargs):
+    """Calculate the trend of the time series data. If lat and lon are present, the data is averaged over the spatial dimensions lat and lon.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The data to calculate the trend of.
+    window_size : int
+        The size - in number of time steps - of the window to use for the rolling average.
+    min_periods : int, optional
+        The minimum number of periods required for a value to be considered valid, by default None
+    center : bool, optional
+        If True, the value is placed in the center of the window, by default True
+
+    Returns
+    -------
+    xr.Dataset
+        The trend of the data.
+    """
+    return _average_over_dims(ds, ["lat", "lon"]).rolling(time=window_size, min_periods=min_periods, center=center, **window_kwargs).mean()
+
+def spatial_time_mean(ds: xr.Dataset):
+    """Calculate the spatial mean of the data. If the time dimension is present, the data is averaged over the time dimension.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The data to calculate the spatial mean of.
+
+    Returns
+    -------
+    xr.Dataset
+        The spatial mean of the data.
+    """
+    return _average_over_dims(ds, "time")
 
 @acceptable_variables(["tas", "tasmax", "tasmin"])
 def urban_heat_island(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple, projection=None):

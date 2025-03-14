@@ -5,6 +5,7 @@ import cartopy.feature as cfeature
 import warnings
 from valenspy._utilities._regions import region_bounds
 from valenspy.diagnostic.functions import perkins_skill_score
+from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs
 
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
@@ -20,76 +21,94 @@ xr.set_options(keep_attrs=True)
 ###################################
 
 
-def plot_diurnal_cycle(data: xr.DataArray, ax=None, **kwargs):
-    """Plot the daily cycle of the data."""
-    if ax is None:
-        fig, ax = plt.subplots()
-        
-    if "title" not in kwargs:
-        ax.set_title("Diurnal Cycle")
-    else:
-        ax.set_title(kwargs.pop("title"))
+def plot_diurnal_cycle(da: xr.DataArray, **kwargs):
+    """Plot the daily cycle of the data.
     
-    data.plot(ax=ax, **kwargs)
-    return ax
-
-
-def plot_time_series(da: xr.DataArray, ax=None, **kwargs):
-    """
-    Plot a time series from an xarray DataArray.
-
     Parameters
     ----------
-    da : xarray.DataArray
-        The DataArray containing the time series data to plot.
-    ax : matplotlib.axes.Axes, optional
-        The axes on which to plot the time series. If None, a new figure and axes are created.
+    da : xr.DataArray
+        The data array to plot the daily cycle of.
     **kwargs : dict
-        Additional keyword arguments passed to `xarray.DataArray.plot`.
+        Additional keyword arguments to pass to the xarray DataArray plot method.
 
     Returns
     -------
-    matplotlib.axes.Axes
-        The axes with the plotted time series.
+    ax : matplotlib.axes.Axes
+        The axes with the plotted daily cycle.
     """
-    if ax is None:
-        fig, ax = plt.subplots()
+    da.plot(**kwargs)
 
-    if "title" not in kwargs:
-        ax.set_title(da.attrs.get("long_name", ""), loc="left")
-        ax.set_title(" ", loc="center")
-    else:
-        ax.set_title(kwargs.pop("title"))
+    ax = _get_gca(**kwargs)
+    
+    ax.set_xlabel('Hour of day')
+    ax.set_xticks(range(0, 24, 3))
+    ax.xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: '{:02d}:00'.format(int(x))))
 
-    # Plot the data array on the provided or newly created axes
-    da.plot(ax=ax, **kwargs)
+    return ax
 
-    # Set the title based on the 'long_name' attribute
+def plot_annual_cycle(da: xr.DataArray, **kwargs):
+    """Plot the annual cycle of the data.
 
+    Parameters
+    ----------
+    da : xr.DataArray
+        The data array to plot the annual cycle of.
+    **kwargs : dict
+        Additional keyword arguments to pass to the xarray DataArray plot method.
+
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+        The axes with the plotted annual cycle.
+    """
+    da.plot(**kwargs)
+
+    ax = _get_gca(**kwargs)
+
+    ax.set_xlabel('Month')
 
     return ax
 
 
-def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
+def plot_time_series(da: xr.DataArray, **kwargs):
+    """Plot a time series of the data.
+    
+    Parameters
+    ----------
+    da : xr.DataArray
+        The data array to plot the time series of.
+    **kwargs : dict
+        Additional keyword arguments to pass to the xarray DataArray plot method.
+    
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+        The axes with the plotted time series.
+    """
+    da.plot(**kwargs)
+
+    ax = _get_gca(**kwargs)
+
+    return ax
+
+@default_plot_kwargs({
+    'subplot_kws': {'projection': ccrs.PlateCarree()}
+    })
+def plot_map(da: xr.DataArray, **kwargs):
     """
     Plots a simple map of a 2D xarray DataArray.
 
-    This function creates a map plot for a given 2D xarray DataArray, optionally using
-    a provided matplotlib Axes, which needs to have a projection. It automatically sets the colorbar label based on the
-    DataArray's attributes and adds features like coastlines and country borders.
+    Default plot settings:
+    - subplot_kws: {'projection': ccrs.PlateCarree()}
+    - cbar_kwargs: {'label': f"{da.attrs.get('long_name', 'Data')} ({da.name})"}
 
     Parameters:
     -----------
     da : xr.DataArray
         The 2D xarray DataArray to plot. It should have latitude and longitude dimensions.
-    ax : matplotlib.axes.Axes, optional
-        The matplotlib Axes on which to plot the map. If not provided, a new Axes with a
-        PlateCarree projection will be created.
     title : str, optional
         The title for the plot. If not provided, a default title based on the DataArray's
         long_name attribute will be set.
-    region : str, optional
-      string of the region to determine the plotting extent, as defined in the regions.py file.
     **kwargs :
         Additional keyword arguments to pass to the xarray DataArray plot method.
 
@@ -97,41 +116,12 @@ def plot_map(da: xr.DataArray, ax=None, title=None, region=None, **kwargs):
     --------
     ax : matplotlib.axes.Axes
         The matplotlib Axes with the plot.
-
-    Example:
-    --------
-    >>> import xarray as xr
-    >>> import matplotlib.pyplot as plt
-    >>> import cartopy.crs as ccrs
-    >>> fig, ax = plt.subplots(subplot_kw={'projection': ccrs.PlateCarree()})
-    >>> ax = plot_map(da, ax=ax)
     """
+    kwargs = _augment_kwargs({"cbar_kwargs": {"label": f"{da.attrs.get('long_name', 'Data')} ({da.name})"}}, **kwargs)
 
-    # If ax is not provided, create a new one
-    if ax is None:
-        fig, ax = plt.subplots(subplot_kw={"projection": ccrs.PlateCarree()})
+    da.plot(**kwargs)
 
-    # Set colorbar label
-    if "cbar_kwargs" in kwargs:
-        cbar_kwargs = kwargs.pop("cbar_kwargs")
-        if "label" not in cbar_kwargs:
-            cbar_kwargs["label"] = (
-                f"{da.attrs.get('long_name', 'Data')} ({da.attrs.get('units', '')})"
-            )
-    else:
-        cbar_kwargs = {
-            "label": f"{da.attrs.get('long_name', 'Data')} ({da.attrs.get('units', '')})"
-        }
-
-    # Plot the data array with the specified colorbar axis
-    da.plot(ax=ax, cbar_kwargs=cbar_kwargs, **kwargs)
-
-    if title is None:
-        # Set the title
-        ax.set_title(f"{da.attrs.get('long_name', 'Data')} ({da.name})")
-
-    # Add coastline and country borders and region selection if region is provided
-    _add_features(ax, region=region)
+    ax = _get_gca(**kwargs)
 
     return ax
 
@@ -176,53 +166,6 @@ def create_custom_cmap(hex_color1: str, hex_color2: str, num_colors: int):
 
 
     return cmap
-
-
-
-def plot_spatial_bias(da: xr.DataArray, ax=None, region=None, **kwargs):
-    """
-    Plot the spatial bias of a given data array on a map.
-
-    Parameters
-    ----------
-    da : xarray.DataArray
-        The DataArray containing the bias data to be plotted. It is assumed that the data represents some
-        form of spatial bias, and the plot will visualize this bias on a map.
-    ax : matplotlib.axes.Axes, optional
-        The axes on which to plot the spatial bias. If None, a new figure and axes with a PlateCarree
-        projection are created.
-    region : str or None, optional
-        The region to highlight on the map. This could be a predefined region name (e.g., 'belgium')
-        or None if no specific region is needed.
-    **kwargs : dict
-        Additional keyword arguments passed to the underlying plotting function `plot_map`.
-
-    Returns
-    -------
-    matplotlib.axes.Axes
-        The axes with the plotted spatial bias and map features.
-
-    """
-    # if no ax element is passed, create one
-    if ax is None:
-        fig, ax = plt.subplots(subplot_kw={"projection": ccrs.PlateCarree()})
-
-    if "title" not in kwargs:
-        title = f"Mean bias of {da.long_name}"
-    else:
-        title = kwargs.pop("title")
-
-    if "cmap" not in kwargs:
-        cmap = "coolwarm"
-    else:
-        cmap = kwargs.pop("cmap")
-
-    plot_map(da, ax=ax, title=title, cmap=cmap, **kwargs)
-    ax.set_title(title)
-    # Add coastline and country borders and region selection if region is provided
-    _add_features(ax, region=region)
-
-    return ax
 
 
 def plot_maps_mod_ref_diff(
@@ -557,6 +500,14 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
 # Helper functions               #
 ##################################
 
+def _get_gca(**kwargs):
+    """
+    Get the current axes as the axis passed in the keyword arguments or the current axis.
+    """
+    if "ax" in kwargs:
+        return kwargs["ax"]
+    else:
+        return plt.gca()
 
 # Define a function to add borders, coastlines to the axes
 def _add_features(ax, region=None):
