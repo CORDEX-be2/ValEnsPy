@@ -34,10 +34,11 @@ poetry add pooch
 poetry add regionmask
 poetry add scipy
 poetry add shapely
-poetry add xarray
-poetry add xarray-datatree
+poetry add "xarray>=v2024.10.0"
 poetry add cartopy
 poetry add seaborn
+poetry add xesmf
+poetry add xclim
 
 #add to dev (= development) group
 poetry add --group dev 'pre-commit'

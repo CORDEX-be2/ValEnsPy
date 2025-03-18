@@ -469,6 +469,19 @@ SpatialTimeMean = Model2Self(
     "Spatial Mean",
     "The spatial representation of the time mean of the data."
 )
+UrbanHeatIsland = Model2Self(
+    urban_heat_island,
+    plot_time_series,
+    "Urban Heat Island",
+    "The urban heat island as the difference in temperature between urban and rural areas.",
+)
+UrbanHeatIslandDiurnalCycle = Model2Self(
+    urban_heat_island_diurnal_cycle,
+    plot_diurnal_cycle,
+    "Urban Heat Island Diurnal Cycle",
+    "The diurnal cycle of the urban heat island.",
+)
+
 # Model2Ref diagnostics
 SpatialBias = Model2Ref(
     spatial_bias,

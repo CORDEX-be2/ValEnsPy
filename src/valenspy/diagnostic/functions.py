@@ -5,6 +5,9 @@ from datatree import DataTree
 import pandas as pd
 from functools import partial
 
+from valenspy.processing import select_point
+from valenspy.diagnostic.wrappers import acceptable_variables, required_variables
+
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
 
@@ -99,6 +102,56 @@ def spatial_time_mean(ds: xr.Dataset):
     """
     return _average_over_dims(ds, "time")
 
+@acceptable_variables(["tas", "tasmax", "tasmin"])
+def urban_heat_island(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple, projection=None):
+    """
+    Calculate the urban heat island effect as the difference in temperature between an urban and rural area. 
+    The grid-boxes closest to the urban and rural coordinates are selected and a difference is calculated between the two.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The data to calculate the urban heat island effect of.
+    urban_coord : tuple
+        The coordinates of the urban area in the format (lat, lon).
+    rural_coord : tuple
+        The coordinates of the rural area in the format (lat, lon).
+    projection : str, optional
+        The projection used to convert the urban and rural coordinates to the dataset's projection.
+    
+    Returns
+    -------
+    xr.Dataset
+        The urban heat island effect as the difference in temperature between the urban and rural area.
+    """
+    urban = select_point(ds, lat_point=urban_coord[0], lon_point=urban_coord[1], projection=projection)
+    rural = select_point(ds, lat_point=rural_coord[0], lon_point=rural_coord[1], projection=projection)
+
+    return urban - rural
+
+@acceptable_variables(["tas", "tasmax", "tasmin"])
+def urban_heat_island_diurnal_cycle(ds: xr.Dataset, urban_coord: tuple, rural_coord: tuple, projection=None):
+    """
+    Calculate the diurnal cycle of the urban heat island effect as the difference in temperature between an urban and rural area.
+    The grid-boxes closest to the urban and rural coordinates are selected and a difference is calculated between the two.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The data to calculate the urban heat island effect of.
+    urban_coord : tuple
+        The coordinates of the urban area in the format (lat, lon).
+    rural_coord : tuple
+        The coordinates of the rural area in the format (lat, lon).
+    projection : str, optional
+        The projection used to convert the urban and rural coordinates to the dataset's projection.
+
+    Returns
+    -------
+    xr.Dataset
+        The diurnal cycle of the urban heat island effect as the difference in temperature between the urban and rural area.
+    """
+    return diurnal_cycle(urban_heat_island(ds, urban_coord, rural_coord, projection=projection))
 
 ##################################
 # Model2Ref diagnostic functions #
@@ -567,55 +620,3 @@ def perkins_skill_score(da: xr.DataArray, ref: xr.DataArray, binwidth: float = N
 def perkins_skill_score_value(da: xr.DataArray, ref: xr.DataArray, binwidth: float = None):
     return perkins_skill_score(da, ref, binwidth)[0]
 
-
-######################################
-############## Wrappers ##############
-######################################
-
-
-def requires_variables(variables):
-    """
-    A decorator that checks if the required variables are present in the dataset (and reference dataset if applicable) before applying the diagnostic.
-    The required variables are specified as a list of strings. Only if all the required variables are present the diagnostic is applied.
-    Note that this is a minimum requirement, the ds may contain other variables than the required ones.
-
-    Parameters
-    ----------
-    variables : str or list of str
-        The variable(s) required to apply the diagnostic.
-
-    Examples
-    -----
-    #The diagnostic function requires the variables 'tas' and 'pr' to be present in the dataset.
-    @requires_variables(["tas", "pr"])
-    def my_diagnostic(ds: xr.Dataset):
-        return ds.tas + ds.pr
-
-    #This also checks if the variables are present in both the data and the reference.
-    #An error is raised if the required variables are not present in the data or the reference.
-    @requires_variables(["tas", "pr"])
-    def my_diagnostic(ds: xr.Dataset, ref: xr.Dataset):
-        return ds.tas + ref.pr
-    """
-
-    def decorator(diagnostic_function):
-        @wraps(diagnostic_function)
-        def wrapper(ds, *args, **kwargs):
-            required_vars = [variables] if isinstance(variables, str) else variables
-            # Do the check for the ds
-            if not all(var in ds.variables for var in required_vars):
-                raise ValueError(
-                    f"Variables {required_vars} are required to apply the diagnostic."
-                )
-            # Do the check for the reference if it is present, the reference is the second argument after the ds argument and should be a xr.Dataset.
-            if len(args) > 0 and isinstance(args[0], xr.Dataset):
-                ref = args[0]
-                if not all(var in ref.variables for var in required_vars):
-                    raise ValueError(
-                        f"Variables {required_vars} are required to apply the diagnostic."
-                    )
-            return diagnostic_function(*args, **kwargs)
-
-        return wrapper
-
-    return decorator
