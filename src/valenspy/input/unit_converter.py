@@ -68,6 +68,9 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
             #units attribute is automatically updated
             ds[var] = xclim.units.convert_units_to(ds[var], units, context="infer")
 
+            #Overwrite the xclim standard name with the CORDEX standard name
+            ds[var].attrs["standard_name"] = standard_name
+
             # Add metadata
             ds[var].attrs["long_name"] = long_name
             ds[var].attrs["original_name"] = raw_var
