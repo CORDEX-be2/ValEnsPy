@@ -57,8 +57,6 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
                 ds[var].attrs["ds_original_units"] = ds[var].attrs["units"]
                 ds[var].attrs["units"] = raw_units
 
-            ds[var].attrs["original_units"] = raw_units
-
             #TODO: Check if this is necessary and correct
             #Guess the frequency of the data and assume the mm values are averaged over that time period
             if ds[var].attrs["units"] in ["mm", "m"]:
@@ -67,7 +65,7 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
             
             #Use xclim to handle all unit conversions from the raw units (ds[var].attrs["units"]) to the target units 
             #units attribute is automatically updated
-            ds[var] = xclim.units.convert_units_to(ds[var], CORDEX_VARIABLES[var].get("units"), context="infer")
+            ds[var] = xclim.units.convert_units_to(ds[var], units, context="infer")
 
             # Add metadata
             ds[var].attrs["long_name"] = long_name
