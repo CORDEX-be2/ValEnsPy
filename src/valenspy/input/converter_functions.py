@@ -236,6 +236,8 @@ def CCLM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
             )
             if var: 
                 ds = ds.rename_vars({raw_var: raw_var_pressure})
+    
+    ds = ds.assign_coords(time=ds.time.astype('datetime64[D]') + np.timedelta64(12, 'h'))
 
     ds = convert_all_units_to_CF(ds, raw_LOOKUP, metadata_info)
 
