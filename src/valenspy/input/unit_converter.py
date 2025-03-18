@@ -47,7 +47,6 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
 
             #Rename the variable
             ds = ds.rename_vars({raw_var: var})
-            ds[var].attrs["standard_name"] = standard_name #This is used by xclim for hydro context (conversions)
 
             #Add units 
             if "units" not in ds[var].attrs:
@@ -60,6 +59,10 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
             #Add the standard name for help with CF unit conversions see https://xclim.readthedocs.io/en/stable/notebooks/units.html#Smart-conversions:-Precipitation
             if "standard_name" not in ds[var].attrs and "raw_standard_name" in var_lookup:
                 ds[var].attrs["standard_name"] = var_lookup.get("raw_standard_name")
+            elif "standard_name" in ds[var].attrs:
+                if "raw_standard_name" in var_lookup:
+                    ds[var].attrs["ds_original_standard_name"] = ds[var].attrs["standard_name"]
+                    ds[var].attrs["standard_name"] = var_lookup.get("raw_standard_name")
             
             #Use xclim to handle all unit conversions from the raw units (ds[var].attrs["units"]) to the target units 
             #units attribute is automatically updated
