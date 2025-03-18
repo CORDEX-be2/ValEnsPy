@@ -26,6 +26,7 @@ tasmin:
 
 pr:
   raw_name: rr
+  raw_standard_name: lwe_thickness_of_precipitation_amount 
   raw_long_name: daily precipitation sum
   raw_units: mm
 

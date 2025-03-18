@@ -40,6 +40,7 @@ zmla:
 
 pr:
   raw_name: TOT_PREC
+  raw_standard_name: lwe_thickness_of_precipitation_amount
   raw_long_name: total precipitation amount
   raw_units: kg m-2
   raw_grid_mapping: rotated_pole
@@ -48,35 +49,35 @@ pr:
 clt:
   raw_name: CLCT
   raw_long_name: total cloud cover
-  raw_units: '(0 - 1)'
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 huss:
   raw_name: QV
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 cll:
   raw_name: CLCL
   raw_long_name: low cloud cover
-  raw_units: '(0 - 1)'
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 clm:
   raw_name: CLCM
   raw_long_name: medium cloud cover
-  raw_units: '(0 - 1)'
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 clh:
   raw_name: CLCH
   raw_long_name: low cloud cover
-  raw_units: '(0 - 1)'
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
@@ -193,69 +194,69 @@ ta200:
 hus1000:
   raw_name: QV1000p
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 hus925:
   raw_name: QV925p
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 hus850:
   raw_name: QV850p
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 hus700:
   raw_name: QV700p
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 hus600:
   raw_name: QV600p
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 hus500:
   raw_name: QV500p
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 hus400:
   raw_name: QV400p
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 hus300:
   raw_name: QV300p
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 hus250:
   raw_name: QV250p
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
 hus200:
   raw_name: QV200p
   raw_long_name: specific humidity
-  raw_units: kg kg-1
+  raw_units: ""
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'

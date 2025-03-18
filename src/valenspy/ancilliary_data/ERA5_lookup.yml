@@ -19,36 +19,45 @@
 
 pr:
     raw_name: tp
+    raw_standard_name: lwe_thickness_of_precipitation_amount
     raw_long_name: total_precipitation
     raw_units: m
 
-prsn:
-    raw_name: sf
-    raw_long_name: snowfall
-    raw_units: m
+# NOT convertable to prsn using xclim
+# prsn:
+#     raw_name: sf
+#     raw_long_name: snowfall
+#     raw_units: m
 
 prw:
     raw_name: tcwv
+    raw_standard_name: lwe_thickness_of_precipitation_amount
     raw_long_name: total_column_water_vapour
     raw_units: mm
 
+#TODO: check if this is correct
 snw:
     raw_name: sde
+    raw_standard_name: lwe_thickness_of_surface_snow_amount
     raw_long_name: snow_depth
     raw_units: m
 
+#TODO: check if this is correct - seems to be the same as snw?
 snd:
     raw_name: sd
+    raw_standard_name: lwe_thickness_of_surface_snow_amount
     raw_long_name: snow_depth_water_equivalent
     raw_units: m
 
 mrros:
     raw_name: sro
+    raw_standard_name: lwe_thickness_of_precipitation_amount
     raw_long_name: surface_runoff
     raw_units: m
 
 mrro:
     raw_name: ro
+    raw_standard_name: lwe_thickness_of_precipitation_amount
     raw_long_name: runoff
     raw_units: m
 
@@ -62,15 +71,18 @@ ts:
     raw_long_name: skin_temperature
     raw_units: K
 
-evspsbl:
-    raw_name: e
-    raw_long_name: evaporation
-    raw_units: m
+# Check if lwe_thickness_of_precipitation_amount is can be used here
+# evspsbl:
+#     raw_name: e
+#     raw_long_name: ?
+#     raw_long_name: evaporation
+#     raw_units: m
 
-evspsblpot:
-    raw_name: pev
-    raw_long_name: potential_evaporation
-    raw_units: m
+# evspsblpot:
+#     raw_name: pev
+#     raw_long_name: ?
+#     raw_long_name: potential_evaporation
+#     raw_units: m
 
 uas:
     raw_name: 10u
@@ -82,25 +94,26 @@ sfcWind:
     raw_long_name: 10m_v_component_of_wind
     raw_units: m/s
 
-hfls:
-    raw_name: slhf
-    raw_long_name: surface_latent_heat_flux
-    raw_units: J/m^2
+# Unconvertable with xclim J/m^2 -> W m-2
+# hfls:
+#     raw_name: slhf
+#     raw_long_name: surface_latent_heat_flux
+#     raw_units: J/m^2
 
-hfss:
-    raw_name: sshf
-    raw_long_name: surface_sensible_heat_flux
-    raw_units: J/m^2
+# hfss:
+#     raw_name: sshf
+#     raw_long_name: surface_sensible_heat_flux
+#     raw_units: J/m^2
 
-rsds:
-    raw_name: ssrd
-    raw_long_name: surface_solar_radiation_downwards
-    raw_units: J/m^2
+# rsds:
+#     raw_name: ssrd
+#     raw_long_name: surface_solar_radiation_downwards
+#     raw_units: J/m^2
 
-rlds:
-    raw_name: strd
-    raw_long_name: surface_thermal_radiation_downwards
-    raw_units: J/m^2
+# rlds:
+#     raw_name: strd
+#     raw_long_name: surface_thermal_radiation_downwards
+#     raw_units: J/m^2
 
 ps:
     raw_name: sp
@@ -120,26 +133,26 @@ zmla:
 clt:
     raw_name: tcc
     raw_long_name: total_cloud_cover
-    raw_units: (0 - 1)
+    raw_units: ""
 
 cll:
     raw_name: lcc
     raw_long_name: low_cloud_cover
-    raw_units: (0 - 1)
+    raw_units: ""
 clm:
     raw_name: mcc
     raw_long_name: medium_cloud_cover
-    raw_units: (0 - 1)
+    raw_units: ""
 
 clh:
     raw_name: hcc
     raw_long_name: high_cloud_cover
-    raw_units: (0 - 1)
+    raw_units: ""
 
-rsdt:
-    raw_name: tisr
-    raw_long_name: toa_incident_solar_radiation
-    raw_units: J/m^2
+# rsdt:
+#     raw_name: tisr
+#     raw_long_name: toa_incident_solar_radiation
+#     raw_units: J/m^2
 
 hurs:
     raw_name: r
@@ -160,10 +173,10 @@ hurs:
 #     raw_long_name: 2m_temperature_max
 #     raw_units: K
 
-tasmin:
-    raw_name:
-    raw_long_name: 2m_temperature_min
-    raw_units: K
+# tasmin:
+#     raw_name:
+#     raw_long_name: 2m_temperature_min
+#     raw_units: K
 
 # sfcWindmax:
 #     raw_name:

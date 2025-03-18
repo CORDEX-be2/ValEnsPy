@@ -58,7 +58,7 @@ huss:
   long_name: Near-Surface Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: ""
 
 hurs:
   aggregation: i

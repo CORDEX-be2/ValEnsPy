@@ -54,4 +54,4 @@ def test_lookup_unit_conversion(lookup_name):
             try:
                 xclim.core.units.convert_units_to(raw_units, units)
             except Exception as e:
-                pytest.fail(f"For {var}: Units {raw_units} in {lookup_name}.yml for variable {var} cannot be converted to {units}. Error: {e}")
+                pytest.fail(f"{var} - Units {raw_units} in {lookup_name}.yml cannot be converted to {units}. Error: {e}")
