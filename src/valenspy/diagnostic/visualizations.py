@@ -46,6 +46,27 @@ def plot_diurnal_cycle(da: xr.DataArray, **kwargs):
 
     return ax
 
+def plot_histogram(da: xr.DataArray, **kwargs):
+    """Plot a histogram of the data.
+    
+    Parameters
+    ----------
+    da : xr.DataArray
+        The data array to plot the histogram of.
+    **kwargs : dict
+        Additional keyword arguments to pass to the xarray DataArray plot method.
+    
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+        The axes with the plotted histogram.
+    """
+    da.plot.hist(**kwargs)
+
+    ax = _get_gca(**kwargs)
+
+    return ax
+
 def plot_annual_cycle(da: xr.DataArray, **kwargs):
     """Plot the annual cycle of the data.
 

@@ -435,6 +435,14 @@ from valenspy.diagnostic.functions import *
 from valenspy.diagnostic.visualizations import *
 
 # Model2Self diagnostics
+Histogram = Model2Self(
+    lambda ds: ds,
+    plot_histogram,
+    "Histogram",
+    "The histogram of the data.",
+    plot_type="single"
+)
+
 DiurnalCycle = Model2Self(
     diurnal_cycle, 
     plot_diurnal_cycle, 
