@@ -1,6 +1,7 @@
 import os
 import sys
 from pathlib import Path
+#Input
 from valenspy.input import InputConverter, INPUT_CONVERTORS
 from valenspy.input import InputManager
 #Processing
@@ -10,12 +11,9 @@ from valenspy.diagnostic import Diagnostic, Model2Ref, Ensemble2Ref, Ensemble2Se
 from valenspy.diagnostic.visualizations import *
 #Utility
 from valenspy._utilities import is_cf_compliant, cf_status
-from valenspy._utilities.unit_conversion_functions import *
 
 # =============================================================================
 # Version
 # =============================================================================
 
-# DO not change this manually!
-
-__version__ = "0.1.0"
+__version__ = "0.2.0a0"
