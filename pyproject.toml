@@ -61,6 +61,7 @@ xesmf = "^0.8.8"
 xclim = "^0.54.0"
 xarray-datatree = "^0.0.15"
 flox = "^0.10.0"
+xhistogram = "^0.3.2"
 
 [tool.poetry.group.dev]
 # Development group
