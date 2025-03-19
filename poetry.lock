@@ -1128,6 +1128,29 @@ typing-extensions = "*"
 test = ["pytest", "pytest-cov", "pytest-mpl", "pytest-subtests"]
 
 [[package]]
+name = "flox"
+version = "0.10.0"
+description = "GroupBy operations for dask.array"
+optional = false
+python-versions = ">=3.10"
+files = [
+    {file = "flox-0.10.0-py3-none-any.whl", hash = "sha256:895e4806a93d544e6a52602828ffeae4e6814d3adcbd98d19bdf2ca8f29559c7"},
+    {file = "flox-0.10.0.tar.gz", hash = "sha256:4d326f13597c99ea0ce260b54f4c88d071445816efc83e42e3f8d4030e835654"},
+]
+
+[package.dependencies]
+numpy = ">=1.22"
+numpy_groupies = ">=0.9.19"
+packaging = ">=21.3"
+pandas = ">=1.5"
+scipy = ">=1.9"
+toolz = "*"
+
+[package.extras]
+all = ["cachey", "dask", "numba", "numbagg", "xarray"]
+test = ["netCDF4"]
+
+[[package]]
 name = "fonttools"
 version = "4.56.0"
 description = "Tools to manipulate font files"
@@ -2360,6 +2383,24 @@ files = [
     {file = "numpy-2.1.3-pp310-pypy310_pp73-win_amd64.whl", hash = "sha256:e14e26956e6f1696070788252dcdff11b4aca4c3e8bd166e0df1bb8f315a67cb"},
     {file = "numpy-2.1.3.tar.gz", hash = "sha256:aa08e04e08aaf974d4458def539dece0d28146d866a39da5639596f4921fd761"},
 ]
+
+[[package]]
+name = "numpy-groupies"
+version = "0.11.2"
+description = "Optimised tools for group-indexing operations: aggregated sum and more."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "numpy_groupies-0.11.2-py3-none-any.whl", hash = "sha256:8d0d686160f860c12d97f12f457116f8b8bebfa33a68b8efcd24dcfedc2837f1"},
+    {file = "numpy_groupies-0.11.2.tar.gz", hash = "sha256:2fda978c4d28d2f1633a63972f425d0a7f2f12a75505d215b41b6de712e2ec4b"},
+]
+
+[package.dependencies]
+numpy = "*"
+
+[package.extras]
+dev = ["numba", "pandas", "pytest"]
+fast = ["numba"]
 
 [[package]]
 name = "packaging"
@@ -4655,4 +4696,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "6b67fcf9b51f80ab66a3b3a59259fbda3a52127931b8f435e709f6c8533c42b6"
+content-hash = "76b4278febf3c0484f9e7ea8f4bf6793742cd5f92636898bfaa38c75122447b0"
