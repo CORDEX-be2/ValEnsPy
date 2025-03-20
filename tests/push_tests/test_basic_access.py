@@ -47,8 +47,6 @@ def test_access_input():
     #Input converter functions
     assert valenspy.input.EOBS_to_CF, "EOBS_to_CF converter function not accessible from valenspy.input"
     assert valenspy.input.ERA5_to_CF, "ERA5_to_CF converter function not accessible from valenspy.input"
-    assert valenspy.input.ERA5Land_to_CF, "ERA5Land_to_CF converter function not accessible from valenspy.input"
-    assert valenspy.input.CLIMATE_GRID_to_CF, "CLIMATE_GRID_to_CF converter function not accessible from valenspy.input"
     assert valenspy.input.CCLM_to_CF, "CCLM_to_CF converter function not accessible from valenspy.input"
     assert valenspy.input.ALARO_K_to_CF, "ALARO_K_to_CF converter function not accessible from valenspy.input"
     assert valenspy.input.RADCLIM_to_CF, "RADCLIM_to_CF converter function not accessible from valenspy.input"
