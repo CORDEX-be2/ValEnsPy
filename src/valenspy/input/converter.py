@@ -6,7 +6,6 @@ from valenspy.input.unit_converter import convert_all_units_to_CF
 from valenspy.input.converter_functions import (
     EOBS_to_CF,
     ERA5_to_CF,
-    ERA5Land_to_CF,
     CCLM_to_CF,
     ALARO_K_to_CF,
     RADCLIM_to_CF,
@@ -51,10 +50,10 @@ class InputConverter:
         xarray.Dataset
             An xarray dataset in CF convention.
         """
+        ds = load_xarray_from_data_sources(data_sources)
+
         if self.converter:
             ds = self.converter(ds)
-
-        ds = load_xarray_from_data_sources(data_sources)
         
         metadata_info = {**self.metadata_info, **metadata_info}
 
@@ -72,11 +71,11 @@ def _set_global_attributes(ds: xr.Dataset, metadata_info):
 
 INPUT_CONVERTORS = {
     "ERA5": InputConverter("ERA5_lookup", ERA5_to_CF, metadata_info={"dataset": "ERA5"}),
-    "ERA5-Land": InputConverter("ERA5-Land_lookup", ERA5Land_to_CF, metadata_info={"dataset": "ERA5-Land"}),
+    "ERA5-Land": InputConverter("ERA5_lookup", ERA5_to_CF, metadata_info={"dataset": "ERA5-Land"}),
     "EOBS": InputConverter("EOBS_lookup", EOBS_to_CF, metadata_info={"freq": "day", "spatial_resolution": "0.1deg", "region": "Europe", "dataset": "EOBS"}),
     "CLIMATE_GRID": InputConverter("CLIMATE_GRID_lookup", metadata_info={"freq": "day", "spatial_resolution": "0.07° x 0.045° (~5km)", "region": "Belgium", "dataset": "CLIMATE_GRID"}),
     "CCLM": InputConverter("CCLM_lookup", CCLM_to_CF, metadata_info={"dataset": "CCLM"}),
-    "ALARO_K": InputConverter(ALARO_K_to_CF),
+    "ALARO_K": InputConverter("ALARO-SFX_K_lookup", ALARO_K_to_CF, metadata_info={"dataset": "ALARO_K"}),
     "RADCLIM": InputConverter("RADCLIM_lookup", RADCLIM_to_CF, metadata_info={"freq": "hour", "region": "Belgium", "dataset": "RADCLIM"}),
 }
 
