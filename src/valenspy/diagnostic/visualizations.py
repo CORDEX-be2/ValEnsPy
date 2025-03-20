@@ -11,6 +11,7 @@ import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.colors as mcolors
 import matplotlib.cm as cm
+import textwrap
 import numpy as np
 
 # make sure xarray passes the attributes when doing operations - change default for this
@@ -94,7 +95,7 @@ def plot_time_series(da: xr.DataArray, **kwargs):
 @default_plot_kwargs({
     'subplot_kws': {'projection': ccrs.PlateCarree()}
     })
-def plot_map(da: xr.DataArray, **kwargs):
+def plot_map(da: xr.DataArray, max_chars=25, **kwargs):
     """
     Plots a simple map of a 2D xarray DataArray.
 
@@ -109,6 +110,7 @@ def plot_map(da: xr.DataArray, **kwargs):
     title : str, optional
         The title for the plot. If not provided, a default title based on the DataArray's
         long_name attribute will be set.
+    max_chars : int, optional, maximum number of characters in the title
     **kwargs :
         Additional keyword arguments to pass to the xarray DataArray plot method.
 
@@ -117,7 +119,11 @@ def plot_map(da: xr.DataArray, **kwargs):
     ax : matplotlib.axes.Axes
         The matplotlib Axes with the plot.
     """
-    kwargs = _augment_kwargs({"cbar_kwargs": {"label": f"{da.attrs.get('long_name', 'Data')} ({da.units})"}}, **kwargs)
+
+    label =  f"{da.attrs.get('long_name', 'Data')} ({da.units})"
+
+    label_wrapped = "\n".join(textwrap.wrap(label, width=max_chars))
+    kwargs = _augment_kwargs({"cbar_kwargs": {"label":label_wrapped}}, **kwargs)
 
     da.plot(**kwargs)
 
