@@ -9,7 +9,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: valenspy_xesmf
+#     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
@@ -57,25 +57,7 @@ unit_dict = {
     "pr": "mm/day"
 }
 
-# Plotting options - to be moved to a seperate "config" file
-## Use the seaborn-v0_8-deep style?
-
-mpl.rc('axes',edgecolor='grey')
-mpl.rc('axes',labelcolor='dimgrey')
-mpl.rc('axes',titlesize=14)
-mpl.rc('axes',labelsize=10)
-mpl.rc('axes', titlelocation="right")
-mpl.rc('axes', xmargin=0)
-mpl.rc('xtick',color='dimgrey')
-mpl.rc('xtick',labelsize=10)
-mpl.rc('ytick',color='dimgrey')
-mpl.rc('ytick',labelsize=10)
-mpl.rc('legend',fontsize='large')
-mpl.rc('legend',frameon=False)
-mpl.rc('text',color='dimgrey')
-mpl.rc('figure', titlesize=16)
-
-
+# Plotting options - see matplotlibrc file
 
 ## Specify colors for the specific models
 color_dict = {
@@ -313,7 +295,7 @@ do_TimeSeries["periods"]
 
 if do_TimeSeriesUkkel["compute"]:
     Ukkel = (4.37, 50.79)
-    dt_ukkel_hw = dt.map_over_subtree(vp.select_point, Ukkel[0], Ukkel[1])
+    dt_ukkel_hw = dt.map_over_subtree(vp.select_point, lat_point=Ukkel[1], lon_point=Ukkel[0])
     for period in do_TimeSeries["periods"]:
         if period == "All":
             dt_time_series = dt_ukkel_hw
