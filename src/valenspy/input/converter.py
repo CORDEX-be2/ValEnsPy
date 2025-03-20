@@ -78,10 +78,3 @@ INPUT_CONVERTORS = {
     "ALARO_K": InputConverter("ALARO-SFX_K_lookup", ALARO_K_to_CF, metadata_info={"dataset": "ALARO_K"}),
     "RADCLIM": InputConverter("RADCLIM_lookup", RADCLIM_to_CF, metadata_info={"freq": "hour", "region": "Belgium", "dataset": "RADCLIM"}),
 }
-
-# Idea is to extend the shared functionality here (with subclasses if required) while the inputconvertor_functions are model specific.
-
-# Needed:
-#  - Some helper functions to extend input to glob arguments, str arguments etc.
-#  - Extend input so that already loaded datasets can also be input
-#  - CF Checker functionality
