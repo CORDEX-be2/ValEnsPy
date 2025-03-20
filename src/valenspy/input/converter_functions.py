@@ -98,7 +98,14 @@ def CCLM_to_CF(ds: xr.Dataset) -> xr.Dataset:
                     ds[new_var] = ds[var].sel(pressure=pressure)
                 ds = ds.drop_vars(var)
         ds = ds.drop_dims("pressure")
-    
+
+    # Seems to be failing because the last time step of the dataset is at 11:00:00, while all others are at 11:30:00.
+    # One option: 
+    ds = ds.isel(time=slice(0,-1))
+    # Other options:
+    # ds = ds.assign_coords(time=(ds.time.dt.floor('H'))) Note ciel does not work as the last time step is at 11:00:00 and the ceil function will round it to 12:00:00
+    # Original option (only for hourly data)
+    # new_time = ds_cclm.tas.time.astype('datetime64[D]') + np.timedelta64(12, 'h')
     return ds
 
 
