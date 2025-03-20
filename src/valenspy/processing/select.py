@@ -118,7 +118,7 @@ def convert_geo_to_LCC(coord: tuple, ds: xr.Dataset):
 
 #TODO: fix this function to work using the ds.crs attribute so that not each crs has to be handled separately
 #This adds the responsibility to the user to have a wel defined crs attribute (maybe some functionality to check this or help add this in input converter would be nice!)
-def select_point(ds: xr.Dataset, lon_point: float, lat_point: float, projection: str = None):
+def select_point(ds: xr.Dataset, lat_point: float, lon_point: float, projection: str = None):
     """
     Select a point from the dataset based on the provided geographic coordinates.
 
