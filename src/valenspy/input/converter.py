@@ -9,6 +9,7 @@ from valenspy.input.converter_functions import (
     CCLM_to_CF,
     ALARO_K_to_CF,
     RADCLIM_to_CF,
+    MAR_to_CF
 )
 
 
@@ -35,7 +36,7 @@ class InputConverter:
         self.lookup = lookup if isinstance(lookup, dict) else load_yml(lookup)
         self.metadata_info = metadata_info
 
-    def convert_input(self, data_sources, metadata_info=None):
+    def convert_input(self, data_sources, metadata_info={}):
         """Convert the input file(s)/xarray dataset to CF convention.
 
         Parameters
@@ -77,4 +78,5 @@ INPUT_CONVERTORS = {
     "CCLM": InputConverter("CCLM_lookup", CCLM_to_CF, metadata_info={"dataset": "CCLM"}),
     "ALARO_K": InputConverter("ALARO-SFX_K_lookup", ALARO_K_to_CF, metadata_info={"dataset": "ALARO_K"}),
     "RADCLIM": InputConverter("RADCLIM_lookup", RADCLIM_to_CF, metadata_info={"freq": "hour", "region": "Belgium", "dataset": "RADCLIM"}),
+    "MAR": InputConverter("MAR_lookup", MAR_to_CF, metadata_info={"dataset": "MAR", "freq": "day", "region": "Belgium"}),
 }
