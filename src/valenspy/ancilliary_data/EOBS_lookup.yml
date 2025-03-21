@@ -12,20 +12,21 @@
 tas:
   raw_name: tg
   raw_long_name: daily mean temperature
-  raw_units: Celcius
+  raw_units: Celsius
 
 tasmax:
   raw_name: tn
   raw_long_name: daily minimum temperature
-  raw_units: Celcius
+  raw_units: Celsius
 
 tasmin:
     raw_name: tx
     raw_long_name: daily maximum temperature
-    raw_units: Celcius
+    raw_units: Celsius
 
 pr:
   raw_name: rr
+  raw_standard_name: lwe_thickness_of_precipitation_amount 
   raw_long_name: daily precipitation sum
   raw_units: mm
 

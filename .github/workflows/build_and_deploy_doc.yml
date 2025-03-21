@@ -24,8 +24,9 @@ jobs:
           auto-update-conda: true
           auto-activate-base: false
       - name: Create and activate conda environment
+        shell: bash -el {0}
         run: |
-            conda create -n valenspy_env python=3.11 esmpy poetry=1.8 pytest -c conda-forge -y
+            conda create -n valenspy_env python=3.11 esmpy poetry=1.8 -c conda-forge -y
             conda activate valenspy_env
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
@@ -37,7 +38,9 @@ jobs:
           rm -f dist/metobs_toolkit-*.whl
           rm -f dist/metobs_toolkit-*.tar.gz
       - name: Install dependencies and build
+        shell: bash -el {0}
         run: |
+          conda activate valenspy_env
           poetry install --with dev --with docs
           poetry run sphinx-build -a -E docs _build
       - name: deploy documentation
