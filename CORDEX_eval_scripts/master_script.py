@@ -9,7 +9,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: Python 3
+#     display_name: valenspy_xesmf
 #     language: python
 #     name: python3
 # ---
@@ -47,7 +47,7 @@ git_dir = Path(os.popen("git rev-parse --show-toplevel").read().strip())
 # %%
 # Load data options
 variables = ["tas", "pr", "tasmin", "tasmax"]
-period = [1980, 2019]
+period = [1985, 2019]
 
 #Unit handeling - choose the units for the output
 unit_dict = {
@@ -138,7 +138,6 @@ new_time = ds_cclm.tas.time.astype('datetime64[D]') + np.timedelta64(12, 'h')
 ds_cclm = ds_cclm.assign_coords(time=new_time)
 
 del ds_cclm_tas , ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
-# ds_cclm = ds_cclm_tas
 
 ## (Requires user adjustment)
 # MAR (Placeholder for MAR data - for plotting purposes)
@@ -244,7 +243,7 @@ if do_AnnualCycle["compute"]:
         AnnualCycle.plot_dt(dt_annual_cycle, var=var, ax=ax, label="name", colors=color_dict)
         plt.title(f"Annual cycle of {CORDEX_VARIABLES[var]['long_name']}")
         plt.legend()
-        plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_bel_mean_annual_cycle.png")
+        plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_bel_mean_annual_cycle.png",bbox_inches='tight')
         plt.close(fig)
 
 # %% [markdown]
@@ -263,10 +262,11 @@ if do_TimeSeries["compute"]:
 
         for var in do_TimeSeries["variables"]:
             fig, ax = plt.subplots(figsize=(15, 5))
-            TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict, alpha=0.5)
+            TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict)
             plt.title(f"Time series of {CORDEX_VARIABLES[var]['long_name']}")
             plt.legend()
-            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean_{period}.png")
+            period_filename = "_".join(period)
+            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean_{period_filename}.png",bbox_inches='tight')
             plt.close(fig)
 
 # %% [markdown]
@@ -282,14 +282,11 @@ for var, dt_xclim in xclim_dt_dict.items():
      TimeSeriesSpatialMean.plot_dt(dt_time_series, var=var, ax=ax, label="name", colors=color_dict)
      plt.title(f"Time series of {var}")
      plt.legend()
-     plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean.png")
+     plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_bel_mean.png",bbox_inches='tight')
      plt.close(fig)
 
 # %% [markdown]
 # #### TimeSeries (Ukkel)
-
-# %%
-do_TimeSeries["periods"]
 
 # %%
 
@@ -308,11 +305,12 @@ if do_TimeSeriesUkkel["compute"]:
 
         for var in do_TimeSeries["variables"]:
             fig, ax = plt.subplots(figsize=(15, 5))
-            TimeSeriesSpatialMean.plot_dt(dt_time_series_uccle, var=var, ax=ax, label="name", colors=color_dict, alpha=0.5)
+            TimeSeriesSpatialMean.plot_dt(dt_time_series_uccle, var=var, ax=ax, label="name", colors=color_dict)
             plt.title(f"Time series of {CORDEX_VARIABLES[var]['long_name']} in Ukkel")
             plt.legend()
             plt.tight_layout()
-            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_ukkel_{period}.png")
+            period_filename = "_".join(period)
+            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_time_series_ukkel_{period_filename}.png",bbox_inches='tight')
             plt.close(fig)
 
 # %% [markdown]
@@ -333,7 +331,7 @@ if do_Trends["compute"]:
         TimeSeriesTrendSpatialMean.plot_dt(dt_trends, var=var, ax=ax, label="name", colors=color_dict)
         plt.legend()
         plt.title(f"Trend of {CORDEX_VARIABLES[var]['long_name']} in Ukkel")
-        plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_trend_ukkel_window_{years}y.png")
+        plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_trend_ukkel_window_{years}y.png",bbox_inches='tight')
         plt.close(fig)
 
 # %% [markdown]
@@ -353,7 +351,7 @@ for var, dt_xclim in xclim_dt_dict.items():
     TimeSeriesTrendSpatialMean.plot_dt(dt_trends, var=var, ax=ax, label="name", colors=color_dict)
     plt.legend()
     plt.title(f"Trend of {var} in Ukkel")
-    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_trend_ukkel_window_{years}y.png")
+    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_trend_ukkel_window_{years}y.png",bbox_inches='tight')
     plt.close(fig)
 
 # %% [markdown]
@@ -387,7 +385,7 @@ if do_SpatialMean["compute"]:
             
             fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} spatial mean (Season: {season})',  y=1.01)
             fig.tight_layout()
-            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatial_mean_{season}.png")
+            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatial_mean_{season}.png",bbox_inches='tight')
             plt.close(fig)
 
 # %% [markdown]
@@ -411,7 +409,7 @@ for var, dt_xclim in xclim_dt_dict.items():
 
     fig.suptitle(f'{var} spatial mean',  y=1.01)
     fig.tight_layout()
-    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatial_mean_{season}.png")
+    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatial_mean_{season}.png",bbox_inches='tight')
 
 
 # %% [markdown]
@@ -447,7 +445,7 @@ if do_SpatialBias["compute"]:
 
             fig.suptitle(f'{CORDEX_VARIABLES[var]["long_name"]} bias compared to CLIMATE_GRID (Season: {season})', y=0.8)
             fig.tight_layout()
-            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatialbias_{season}.png")
+            plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatialbias_{season}.png",bbox_inches='tight')
             plt.close(fig)
 
 
@@ -472,5 +470,5 @@ for var, dt_xclim in xclim_dt_dict.items():
 
     fig.suptitle(f'{var} bias compared to CLIMATE_GRID', y=0.8)
     fig.tight_layout()
-    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatialbias.png")
+    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatialbias.png",bbox_inches='tight')
     plt.close(fig)
