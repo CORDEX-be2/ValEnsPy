@@ -9,7 +9,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.16.7
 #   kernelspec:
-#     display_name: valenspy_xesmf
+#     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
@@ -139,14 +139,23 @@ ds_cclm = ds_cclm.assign_coords(time=new_time)
 
 del ds_cclm_tas , ds_cclm_pr, ds_cclm_tasmax, ds_cclm_tasmin
 
+
 ## (Requires user adjustment)
 # MAR (Placeholder for MAR data - for plotting purposes)
-ds_mar = ds_alaro
+
+ds_mar = xr.open_mfdataset("/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc44757_Nicolas/remap_mar/MAR-ERA5/*.nc")
+from valenspy.input import INPUT_CONVERTORS
+ds_mar = INPUT_CONVERTORS["MAR"].convert_input(ds_mar)
+#Keep only the variables of interest
+ds_mar = ds_mar[variables]
 
 # Observational data
 ## CLIMATE_GRID (Regridded data)
 
 ds_ref = manager.load_data("CLIMATE_GRID", variables, path_identifiers=["regridded"])
+
+
+# %%
 
 # %% [markdown]
 # ### Create a DataTree object
@@ -202,6 +211,8 @@ dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
 #Unit conversion to the desired units
 for var, unit in unit_dict.items():
     dt = convert_units_to(dt, var, unit)
+
+dt = dt.compute()
 
 # %%
 #Working but requries CCLM data fix
