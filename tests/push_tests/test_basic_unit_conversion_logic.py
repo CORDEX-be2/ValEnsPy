@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import pytest
 
-lookup_tables = ["EOBS_lookup", "CCLM_lookup", "ALARO-SFX_K_lookup","ERA5_lookup","CLIMATE_GRID_lookup", "RADCLIM_lookup"]
+lookup_tables = ["EOBS_lookup", "CCLM_lookup", "ALARO-SFX_K_lookup","ERA5_lookup","CLIMATE_GRID_lookup", "RADCLIM_lookup", "MAR_lookup"]
 
 @pytest.mark.parametrize("lookup_name", lookup_tables)
 def test_lookup_unit_conversion(lookup_name):

@@ -174,3 +174,23 @@ def RADCLIM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
         ds = ds.rename({"nlat": "lat"})
 
     return ds
+
+def MAR_to_CF(ds: xr.Dataset) -> xr.Dataset:
+    """
+    Convert the MAR xarray netCDF to a CF compliant xarray Dataset
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The xarray Dataset of MAR simulation to convert
+    
+    Returns
+    -------
+    Dataset
+        xarray dataset ready for unit conversion
+
+    """
+    ds = ds.rename({'TIME':'time'})
+    ds = ds.isel(ZTQLEV=0,ZUVLEV=0)
+    
+    return ds

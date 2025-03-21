@@ -1,0 +1,66 @@
+# MAR variable name conversion table based on CORDEX variables
+
+# Format
+
+# CORDEX VariableName:
+#    raw_name:
+#    raw_standard_name:
+#    raw_long_name:
+#    raw_units:
+
+tas:
+  raw_name: TTZ
+  raw_long_name: Temperature
+  raw_units: C
+
+huss:
+  raw_name: QQZ
+  raw_long_name: Specific humidity
+  raw_units: g/kg
+
+hurs:
+  raw_name: RHZ
+  raw_long_name: Relative humidity
+  raw_units: "%"
+
+uas:
+  raw_name: U2Z
+  raw_long_name: x-reg-Wind Speed component
+  raw_units: m/s
+
+vas:
+  raw_name: V2Z
+  raw_long_name: y-reg-Wind Speed component
+  raw_units: m/s
+
+rsds:
+  raw_name: SWD
+  raw_long_name: Shortwave Wave Downward
+  raw_units: W/m^2
+
+clt:
+  raw_name: CC
+  raw_long_name: Cloud cover
+  raw_units: "1"
+
+tasmax:
+  raw_name: TTZmax
+  raw_long_name: Temperature
+  raw_units: C
+
+tasmin:
+  raw_name: TTZmin
+  raw_long_name: Temperature
+  raw_units: C
+
+pr:
+  raw_name: MBRR
+  raw_standard_name: lwe_thickness_of_precipitation_amount
+  raw_long_name: Rain
+  raw_units: mm
+
+prsn:
+  raw_name: MBSF
+  raw_standard_name: lwe_thickness_of_snowfall_amount
+  raw_long_name: Snow
+  raw_units: mm
