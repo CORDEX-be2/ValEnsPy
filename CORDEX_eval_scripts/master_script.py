@@ -208,11 +208,15 @@ dt["RCM"] = dt["RCM"].map_over_subtree(vp.remap_xesmf, dt.obs.CLIMATE_GRID.to_da
 #Select the time period from period[0] to period[1] (inclusive)
 dt = dt.sel(time=slice(f"{period[0]}-01-01", f"{period[1]}-12-31"))
 
+#Select the region of interest - Belgium
+dt = dt.sel(lat=slice(48, 53), lon=slice(1, 8))
+
 #Unit conversion to the desired units
 for var, unit in unit_dict.items():
     dt = convert_units_to(dt, var, unit)
 
-dt = dt.compute()
+with ProgressBar():
+    dt = dt.compute()
 
 # %%
 #Working but requries CCLM data fix
@@ -333,7 +337,7 @@ if do_Trends["compute"]:
     window_size = 366*years # 5 years
     Ukkel = (4.37, 50.79)
     dt_Ukkel = dt.map_over_subtree(vp.select_point, Ukkel[0], Ukkel[1])
-    dt_Ukkel = dt_Ukkel - dt_Ukkel.sel(time=slice("1980-01-01", "1985-12-31")).mean("time")
+    dt_Ukkel = dt_Ukkel - dt_Ukkel.sel(time=slice("1985-01-01", "1990-12-31")).mean("time")
     with ProgressBar():
         dt_trends = TimeSeriesTrendSpatialMean(dt_Ukkel, window_size=window_size).compute()
 
