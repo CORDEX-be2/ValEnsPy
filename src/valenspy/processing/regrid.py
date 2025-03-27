@@ -31,7 +31,7 @@ def remap_xesmf(ds, ds_out, method="bilinear", regridder_kwargs={}, regridding_k
     ds_reg = regridder(ds, **regridding_kwargs)
     return ds_reg
 
-def remap_cdo(target_grid, ds, remap_method="bil", tempdir=None, output_path=None):
+def remap_cdo(ds, target_grid, remap_method="bil", tempdir=None, output_path=None):
     """Remap the input dataset to the target grid using CDO.
 
     Parameters

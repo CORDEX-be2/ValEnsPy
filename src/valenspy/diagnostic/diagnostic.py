@@ -467,7 +467,8 @@ SpatialTimeMean = Model2Self(
     spatial_time_mean,
     plot_map,
     "Spatial Mean",
-    "The spatial representation of the time mean of the data."
+    "The spatial representation of the time mean of the data.",
+    plot_type="facetted"
 )
 UrbanHeatIsland = Model2Self(
     urban_heat_island,
