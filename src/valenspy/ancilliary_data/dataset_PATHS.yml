@@ -14,6 +14,7 @@ hortense:
   shapefiles:   /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/shapefiles/
   CCLM:         /dodrio/scratch/projects/2022_200/project_output/rcs/CORDEXBE2/postprocessing/
   RADCLIM:      /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/data/RADCLIM
+  MAR:          /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc44757_Nicolas/remap_mar/MAR-ERA5/
 
 
 kili:

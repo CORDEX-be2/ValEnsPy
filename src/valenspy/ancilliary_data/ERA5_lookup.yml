@@ -133,21 +133,21 @@ zmla:
 clt:
     raw_name: tcc
     raw_long_name: total_cloud_cover
-    raw_units: ""
+    raw_units: "1"
 
 cll:
     raw_name: lcc
     raw_long_name: low_cloud_cover
-    raw_units: ""
+    raw_units: "1"
 clm:
     raw_name: mcc
     raw_long_name: medium_cloud_cover
-    raw_units: ""
+    raw_units: "1"
 
 clh:
     raw_name: hcc
     raw_long_name: high_cloud_cover
-    raw_units: ""
+    raw_units: "1"
 
 # rsdt:
 #     raw_name: tisr
