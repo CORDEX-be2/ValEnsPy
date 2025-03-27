@@ -42,6 +42,7 @@ jobs:
         run: |
           conda activate valenspy_env
           poetry install --with dev --with docs
+          pip install sphinx-design
           poetry run sphinx-build -a -E docs _build
       - name: deploy documentation
         uses: peaceiris/actions-gh-pages@v3
