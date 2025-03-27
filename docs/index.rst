@@ -4,24 +4,12 @@
 ValEnsPy
 ============================
 
-ValEnsPy makes working with gridded climate and weather data easier, reproducible and collaborative. 
-Valenspy covers the entire workflow from data processing to diagnostics and from single model evaluations up to multiple ensemble comparisons. 
+ValEnsPy makes working with gridded climate and weather data easier, reproducible and collaborativeby covering the entire workflow from data processing to diagnostics and from single model evaluations up to multiple ensemble comparisons. 
 
 **Useful links**:
 `Code Repository <https://github.com/CORDEX-be2/ValEnsPy>`__ |
 `Issues <https://github.com/CORDEX-be2/ValEnsPy/issues>`__ |
 `Releases <https://github.com/CORDEX-be2/ValEnsPy/releases>`__
-
-
-.. toctree::
-   :hidden:
-   :maxdepth: 7
-
-   Home <self>
-   Getting started <getting_started>
-   Examples <doc_examples/index>
-   API <API_doc>
-   Contributing <contribution_pages/index>
 
 .. grid:: 1 2 2 2
     :gutter: 4
@@ -100,6 +88,16 @@ Valenspy covers the entire workflow from data processing to diagnostics and from
             :expand:
 
             To the development guide
+
+.. toctree::
+   :hidden:
+   :maxdepth: 7
+
+   Home <self>
+   Getting started <getting_started>
+   Examples <doc_examples/index>
+   API <API_doc>
+   Contributing <contribution_pages/index>
 
 .. Description
 .. -----------
