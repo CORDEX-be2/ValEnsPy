@@ -80,6 +80,7 @@ nbsphinx = "^0.9.3"
 pydata-sphinx-theme = "^0.15.2"
 sphinx-copybutton = "^0.5.2"
 sphinx-rtd-theme = "^2.0.0"
+sphinx-design = "^0.6.1"
 
 [tool.poetry.group.examples]
 # Examples group

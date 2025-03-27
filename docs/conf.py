@@ -65,6 +65,7 @@ extensions = [
     "myst_parser",  # for including md files (readme)
     "sphinx.ext.autosectionlabel",  # for cross linking
     "nbsphinx",  # to render the notebook examples in the doc
+    "sphinx_design",  # for the design of the doc
 ]
 
 # =============================================================================
