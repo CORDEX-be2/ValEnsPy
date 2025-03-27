@@ -424,7 +424,7 @@ for var, dt_xclim in xclim_dt_dict.items():
 
     fig.suptitle(f'{var} spatial mean',  y=1.01)
     fig.tight_layout()
-    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatial_mean_{season}.png",bbox_inches='tight')
+    plt.savefig(git_dir / f"CORDEX_eval_scripts/plots/{var}_spatial_mean.png",bbox_inches='tight')
 
 
 # %% [markdown]
