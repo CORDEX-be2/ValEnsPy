@@ -25,7 +25,7 @@ ValEnsPy makes working with gridded climate and weather data easier, reproducibl
 
         +++
 
-        .. button-ref:: <getting_started>
+        .. button-ref:: getting_started
             :ref-type: ref
             :click-parent:
             :color: secondary
@@ -42,7 +42,7 @@ ValEnsPy makes working with gridded climate and weather data easier, reproducibl
 
         +++
 
-        .. button-ref:: <getting_started>
+        .. button-ref:: getting_started
             :ref-type: ref
             :click-parent:
             :color: secondary
@@ -59,7 +59,7 @@ ValEnsPy makes working with gridded climate and weather data easier, reproducibl
 
         +++
 
-        .. button-ref:: <API_doc>
+        .. button-ref:: API_doc
             :ref-type: ref
             :click-parent:
             :color: secondary
@@ -76,7 +76,7 @@ ValEnsPy makes working with gridded climate and weather data easier, reproducibl
 
         +++
 
-        .. button-ref:: <contribution_pages/index>
+        .. button-ref:: contribution_pages/index
             :ref-type: ref
             :click-parent:
             :color: secondary

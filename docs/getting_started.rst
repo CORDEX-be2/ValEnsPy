@@ -18,20 +18,20 @@ Installation
 
         .. code-block:: bash
 
-            conda install -c conda-forge pandas
+            #TODO: Add conda install command for non developers
 
     .. grid-item-card:: Prefer pip?
         :class-card: install-card
         :columns: 12 12 6 6
         :padding: 3
 
-        pandas can be installed via pip from `PyPI <https://pypi.org/project/pandas>`__.
+        Using pip
 
         ++++
 
         .. code-block:: bash
 
-            pip install pandas
+            #TODO: Add pip install command for non developers
 
     .. grid-item-card:: In-depth instructions?
         :class-card: install-card
@@ -43,7 +43,7 @@ Installation
 
         +++
 
-        .. button-ref:: install
+        .. button-ref:: getting_started
             :ref-type: ref
             :click-parent:
             :color: secondary
