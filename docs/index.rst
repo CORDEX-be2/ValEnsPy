@@ -21,11 +21,11 @@ ValEnsPy makes working with gridded climate and weather data easier, reproducibl
         :class-card: intro-card
         :shadow: md
 
-        Eager to use ValEnsPy? Check out the getting started guides.
+        Eager to start using ValEnsPy?
 
         +++
 
-        .. button-ref:: getting_started
+        .. button-ref:: <getting_started>
             :ref-type: ref
             :click-parent:
             :color: secondary
@@ -38,12 +38,11 @@ ValEnsPy makes working with gridded climate and weather data easier, reproducibl
         :class-card: intro-card
         :shadow: md
 
-        The user guide provides in-depth information on the
-        key concepts of pandas with useful background information and explanation.
+        In-depth information on the key concepts of Valenspy.
 
         +++
 
-        .. button-ref:: getting_started
+        .. button-ref:: <getting_started>
             :ref-type: ref
             :click-parent:
             :color: secondary
@@ -56,13 +55,11 @@ ValEnsPy makes working with gridded climate and weather data easier, reproducibl
         :class-card: intro-card
         :shadow: md
 
-        The reference guide contains a detailed description of
-        the pandas API. The reference describes how the methods work and which parameters can
-        be used. It assumes that you have an understanding of the key concepts.
+        A detailed description of the ValEnsPy API.
 
         +++
 
-        .. button-ref:: API_doc
+        .. button-ref:: <API_doc>
             :ref-type: ref
             :click-parent:
             :color: secondary
@@ -75,13 +72,11 @@ ValEnsPy makes working with gridded climate and weather data easier, reproducibl
         :class-card: intro-card
         :shadow: md
 
-        Saw a typo in the documentation? Want to improve
-        existing functionalities? The contributing guidelines will guide
-        you through the process of improving pandas.
+        Interested in contributing to ValEnsPy?
 
         +++
 
-        .. button-ref:: contribution_pages/index
+        .. button-ref:: <contribution_pages/index>
             :ref-type: ref
             :click-parent:
             :color: secondary
