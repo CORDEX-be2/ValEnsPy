@@ -99,6 +99,7 @@ The documentation is a combination of
 and if you do not change them, the documentation will not change as well (trivial).
 
 * Dynamic part: When you make a code contribution, your contribution must be represented in the API page of the documentation.
+
 So this means that each time you make a code contribution, the documentation (only the API part), must be upated as well. This is the
 reason that every developer must know how to build the documentation form there working branch.
 

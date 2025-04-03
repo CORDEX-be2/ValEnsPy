@@ -1,8 +1,8 @@
+.. _api_docs:
+
 ===========================
 API documentation
-============================
-
-This page contains the documentation of the ValEnsPy API.
+===========================
 
 Input processing
 ----------------
@@ -10,10 +10,8 @@ Input processing
 .. autosummary::
    :toctree: _autosummary
    :template: custom-module-template.rst
-   :recursive:
-   :imported-members:
 
-   input
+   input.InputManager
 
 Processing
 ----------
@@ -22,19 +20,20 @@ Processing
    :toctree: _autosummary
    :template: custom-module-template.rst
    :recursive:
-   :imported-members:
 
-   processing
+   processing.units.convert_units_to
 
 Diagnostics
-----------
+-----------
 
 .. autosummary::
    :toctree: _autosummary
    :template: custom-module-template.rst
    :recursive:
-   :imported-members:
 
-   diagnostic
+   .. automodule:: vp.diagnostic
+      :members:
+      :undoc-members:
+      :show-inheritance:
 
 
