@@ -1,4 +1,4 @@
-from .diagnostic import Diagnostic, Model2Ref, Ensemble2Ref, Ensemble2Self
+from .diagnostic import Diagnostic, Model2Self, Model2Ref, Ensemble2Ref, Ensemble2Self
 
 # =============================================================================
 # Pre-made diagnostics
