@@ -145,7 +145,7 @@ Dev-checklist
 
 * Adding a new module (adding new files to automatically document).
 
-  #. Add the module in the toctree of `docs/API_doc`
+  #. Add the module in the toctree of `docs/api.rst` file.
 
 * Pre-commit
 

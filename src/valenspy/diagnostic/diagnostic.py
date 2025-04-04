@@ -3,6 +3,7 @@ import xarray as xr
 import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions
 from valenspy.diagnostic.plot_utils import _augment_kwargs
+import numpy as np
 
 #Import get_axis from xarray
 from xarray.plot.utils import get_axis
@@ -426,89 +427,3 @@ def _initialize_multiaxis_plot(n, subplot_kws={}):
             nrows=n//2+1, ncols=2, figsize=(10, 5 * n), subplot_kw=subplot_kws
         )
     return fig, axes
-
-# =============================================================================
-# Pre-made diagnostics
-# =============================================================================
-
-from valenspy.diagnostic.functions import *
-from valenspy.diagnostic.visualizations import *
-
-# Model2Self diagnostics
-DiurnalCycle = Model2Self(
-    diurnal_cycle, 
-    plot_diurnal_cycle, 
-    "Diurnal Cycle", 
-    "The diurnal cycle of the data.",
-    plot_type="single"
-)
-AnnualCycle = Model2Self(
-    annual_cycle,
-    plot_annual_cycle,
-    "Annual Cycle",
-    "The annual cycle of the data.",
-    plot_type="single"
-)
-TimeSeriesSpatialMean = Model2Self(
-    time_series_spatial_mean,
-    plot_time_series,
-    "Time Series",
-    "The time series of the data - if the data is spatial, the spatial mean is taken.",
-    plot_type="single"
-)
-TimeSeriesTrendSpatialMean = Model2Self(
-    time_series_trend,
-    plot_time_series,
-    "Time Series Trend",
-    "The time series trend of the data - if the data is spatial, the spatial mean is taken.",
-    plot_type="single"
-)
-SpatialTimeMean = Model2Self(
-    spatial_time_mean,
-    plot_map,
-    "Spatial Mean",
-    "The spatial representation of the time mean of the data."
-)
-UrbanHeatIsland = Model2Self(
-    urban_heat_island,
-    plot_time_series,
-    "Urban Heat Island",
-    "The urban heat island as the difference in temperature between urban and rural areas.",
-)
-UrbanHeatIslandDiurnalCycle = Model2Self(
-    urban_heat_island_diurnal_cycle,
-    plot_diurnal_cycle,
-    "Urban Heat Island Diurnal Cycle",
-    "The diurnal cycle of the urban heat island.",
-)
-
-# Model2Ref diagnostics
-SpatialBias = Model2Ref(
-    spatial_bias,
-    plot_map,
-    "Spatial Bias",
-    "The spatial bias of the data compared to the reference.",
-    plot_type="facetted"
-)
-TemporalBias = Model2Ref(
-    temporal_bias,
-    plot_time_series,
-    "Temporal Bias",
-    "The temporal bias of the data compared to the reference.",
-    plot_type="single"
-)
-DiurnalCycleBias = Model2Ref(
-    diurnal_cycle_bias,
-    plot_diurnal_cycle,
-    "Diurnal Cycle Bias",
-    "The diurnal cycle bias of the data compared to the reference.",
-    plot_type="single"
-)
-
-# Ensemble2Ref diagnostics
-MetricsRankings = Ensemble2Ref(
-    calc_metrics_dt,
-    plot_metric_ranking,
-    "Metrics Rankings",
-    "The rankings of ensemble members with respect to several metrics when compared to the reference."
-)

@@ -91,7 +91,7 @@ ValEnsPy makes working with gridded climate and weather data easier, reproducibl
    Home <self>
    Getting started <getting_started/index>
    Examples <doc_examples/index>
-   API <API_doc>
+   API <api>
    Contributing <contribution_pages/index>
 
 .. Description
