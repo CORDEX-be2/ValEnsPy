@@ -3,7 +3,10 @@ import xarray as xr
 import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions
 from valenspy.diagnostic.plot_utils import _augment_kwargs
+from valenspy._utilities import generate_parameters_doc
 import numpy as np
+import inspect
+import textwrap
 
 #Import get_axis from xarray
 from xarray.plot.utils import get_axis
@@ -11,8 +14,7 @@ from xarray.plot.utils import get_axis
 from abc import abstractmethod
 import warnings
 
-
-class Diagnostic:
+class Diagnostic():
     """An abstract class representing a diagnostic."""
 
     def __init__(
@@ -35,6 +37,9 @@ class Diagnostic:
         self._description = description
         self.diagnostic_function = diagnostic_function
         self.plotting_function = plotting_function
+
+        self.__signature__ = inspect.signature(self.diagnostic_function)
+        self.__doc__ = self.description
 
     def __call__(self, data, *args, **kwargs):
         return self.apply(data, *args, **kwargs)
@@ -77,8 +82,15 @@ class Diagnostic:
 
     @property
     def description(self):
-        """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
-        return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_function.__name__}\n {self.plotting_function.__doc__}"
+        """Generate the docstring for the diagnostic."""
+        name_no_spaces = self.name.replace(" ", "")
+        title = f"{self.name} - {self.__class__.__name__}\n\n"
+        description = f"{self._description}\n\n"
+        params = generate_parameters_doc(self.diagnostic_function)
+        see_also = f"See also\n--------\n:class:`{self.__class__.__name__}` : Class functionality \n:func:`~{self.diagnostic_function.__module__}.{self.diagnostic_function.__name__}` : Diagnostic function\n:func:`~{self.plotting_function.__module__}.{self.plotting_function.__name__}` : Plotting function\n\n"
+        examples = f"Examples\n--------\n>>> from valenspy.diagnostic import {name_no_spaces}\n>>> result = {name_no_spaces}(ds)\n>>> {name_no_spaces}.plot(result)\n\n"
+        docstring = f"{title}{description}{params}{see_also}{examples}"
+        return textwrap.dedent(docstring)
 
 class DataSetDiagnostic(Diagnostic):
     """A class representing a diagnostic that operates on the level of single datasets."""

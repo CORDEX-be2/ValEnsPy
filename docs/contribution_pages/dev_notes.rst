@@ -95,8 +95,7 @@ documentation, go to `docs/_build` and open the `index.html` file in your browse
 
 The documentation is a combination of
 
-* Static file: These are standard files, that are converted to HTML. Most of them are RST and MD files,
-and if you do not change them, the documentation will not change as well (trivial).
+* Static file: These are standard files, that are converted to HTML. Most of them are RST and MD files, and if you do not change them, the documentation will not change as well (trivial).
 
 * Dynamic part: When you make a code contribution, your contribution must be represented in the API page of the documentation.
 
