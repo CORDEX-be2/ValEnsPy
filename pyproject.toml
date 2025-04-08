@@ -60,6 +60,7 @@ seaborn = "^0.13.2"
 xesmf = "^0.8.8"
 xclim = "^0.54.0"
 xarray-datatree = "^0.0.15"
+docstring-parser = "^0.16"
 
 [tool.poetry.group.dev]
 # Development group
