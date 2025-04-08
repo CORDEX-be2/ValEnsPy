@@ -1,5 +1,7 @@
 .. _api_docs:
 
+.. TODO - add the pre-made diagnostics to the toctree
+
 =============
 API reference
 =============
