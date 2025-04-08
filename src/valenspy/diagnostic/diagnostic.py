@@ -87,7 +87,7 @@ class Diagnostic():
         title = f"{self.name} - {self.__class__.__name__}\n\n"
         description = f"{self._description}\n\n"
         params = generate_parameters_doc(self.diagnostic_function)
-        see_also = f"See also\n--------\n:class:`{self.__class__.__name__}` : Class functionality \n:func:`~{self.diagnostic_function.__module__}.{self.diagnostic_function.__name__}` : Diagnostic function\n:func:`~{self.plotting_function.__module__}.{self.plotting_function.__name__}` : Plotting function\n\n"
+        see_also = f"See also\n--------\n:py:class:`{self.__class__.__name__}`, :func:`{self.diagnostic_function.__module__}.{self.diagnostic_function.__name__}`,:func:`{self.plotting_function.__module__}.{self.plotting_function.__name__}` : Plotting function\n\n"
         examples = f"Examples\n--------\n>>> from valenspy.diagnostic import {name_no_spaces}\n>>> result = {name_no_spaces}(ds)\n>>> {name_no_spaces}.plot(result)\n\n"
         docstring = f"{title}{description}{params}{see_also}{examples}"
         return textwrap.dedent(docstring)

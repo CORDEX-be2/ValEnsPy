@@ -73,7 +73,8 @@ extensions = [
 # Configuration for intersphinx to enable cross-referencing
 intersphinx_mapping = {
     "xclim": ("https://xclim.readthedocs.io/en/stable/", None),
-    "xarray": ("https://docs.xarray.dev/en/stable/", None)
+    "xarray": ("https://docs.xarray.dev/en/stable/", None),
+    "datatree": ("https://xarray-datatree.readthedocs.io/en/latest/", None),
 }
 
 # =============================================================================

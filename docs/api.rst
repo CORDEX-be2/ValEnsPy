@@ -19,23 +19,23 @@ Modules
    diagnostic
 
 Pre-made Diagnostic
-===================
+-------------------
 Most users will use pre-made diagnostics. They are organized into four categories and listed below. 
 For more information see :ref:`Pre-made diagnostics`.
 
 Model2Self
-----------
+==========
 
-See :py:class:`Model2Self` for all shared functionality.
+See :py:class:`~diagnostic.Model2Self` for all shared functionality.
 
 .. automodule:: diagnostic._model2self
    :members:
    :undoc-members:
 
 Model2Ref
----------
+=========
 
-See :py:class:`Model2Ref` for all shared functionality.
+See :py:class:`~diagnostic.Model2Ref` for all shared functionality.
 
 .. automodule:: diagnostic._model2ref
    :members:
@@ -43,18 +43,18 @@ See :py:class:`Model2Ref` for all shared functionality.
    :imported-members:
 
 Ensemble2Self
--------------
+=============
 
-See :py:class:`Ensemble2Self` for all shared functionality.
+See :py:class:`~diagnostic.Ensemble2Self` for all shared functionality.
 
 .. automodule:: diagnostic._ensemble2self
    :members:
    :undoc-members:
 
 Ensemble2Ref
-------------
+============
 
-See :py:class:`Ensemble2Self` for all shared functionality.
+See :py:class:`~diagnostic.Ensemble2Self` for all shared functionality.
 
 .. automodule:: diagnostic._ensemble2ref
    :members:
