@@ -4,7 +4,7 @@
 API reference
 =============
 
-This page gives an overview of all ValEnsPy objects, functions, and methods. All classes and functions exposed in :ref:`ValEnsPy`.* are public. As the package is still in its infancy, the API may change in the future.
+This page gives an overview of all ValEnsPy objects, functions, and methods. All classes and functions exposed in :ref:`valenspy`.* are public API.
 
 Modules
 -----------
@@ -20,8 +20,7 @@ Modules
 
 Pre-made Diagnostic
 -------------------
-Most users will use pre-made diagnostics. They are organized into four categories and listed below. 
-For more information see :ref:`Pre-made diagnostics`.
+Most users will use pre-made diagnostics. They are organized into four categories and listed below.
 
 Model2Self
 ==========

@@ -29,6 +29,21 @@ def load_xarray_from_data_sources(data_sources):
         )
     return ds
 
+def _set_global_attributes(ds: xr.Dataset, metadata_info):
+    for key, value in metadata_info.items():
+        ds.attrs[key] = value
+    return ds
+
+def _fix_lat_lon(ds: xr.Dataset):
+    # rename dimensions if not yet renamed
+    if "lon" not in ds.coords:
+        ds = ds.rename({"longitude": "lon"})
+    if "lat" not in ds.coords:
+        ds = ds.rename({"latitude": "lat"})
+
+    # make sure lat and lon are sorted ascending
+    ds = ds.sortby("lat").sortby("lon")
+    return ds
 
 def load_yml(yml_name):
     """Load a yaml file into a dictionary from the ancilliary_data folder. The yaml file should be in the ancilliary_data folder.

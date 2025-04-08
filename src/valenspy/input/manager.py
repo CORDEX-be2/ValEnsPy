@@ -1,3 +1,4 @@
+"""Defines the InputManager class for loading and managing input data for ValEnsPy."""
 from pathlib import Path
 import xarray as xr
 from datatree import DataTree
@@ -10,6 +11,7 @@ from valenspy._utilities import load_yml
 DATASET_PATHS = load_yml("dataset_PATHS")
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
+#TODO - update documentation once re-implemented including type hints
 
 class InputManager:
     def __init__(self, machine):

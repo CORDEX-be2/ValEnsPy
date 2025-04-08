@@ -1,5 +1,3 @@
-# Collection of preprocessing functions to perfrom a selection
-
 import xarray as xr
 import numpy as np
 import regionmask
@@ -13,6 +11,7 @@ import cartopy.crs as ccrs
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
 
+#TODO: add docstring once reworked (using crs to select_points)
 
 def select_region(ds: xr.Dataset, region: str):
     """

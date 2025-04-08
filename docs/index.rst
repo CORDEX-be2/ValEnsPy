@@ -1,5 +1,5 @@
 :html_theme.sidebar_secondary.remove:
-.. _ValEnsPy:
+.. _valenspy:
 
 
 ValEnsPy

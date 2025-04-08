@@ -75,6 +75,7 @@ intersphinx_mapping = {
     "xclim": ("https://xclim.readthedocs.io/en/stable/", None),
     "xarray": ("https://docs.xarray.dev/en/stable/", None),
     "datatree": ("https://xarray-datatree.readthedocs.io/en/latest/", None),
+    "xesmf": ("https://xesmf.readthedocs.io/en/stable/", None),
 }
 
 # =============================================================================
@@ -89,6 +90,11 @@ autosummary_generate = True
 autosummary_ignore_module_all = True
 autosummary_undoc_members = True
 numpydoc_class_members_toctree = False
+autodoc_default_options = {
+    "members": True,
+    "undoc-members": False,
+    "private-members": True,
+}
 
 
 # Specify which file formats to render:

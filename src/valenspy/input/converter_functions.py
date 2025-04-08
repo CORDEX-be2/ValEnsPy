@@ -1,40 +1,21 @@
-from pathlib import Path
-from valenspy._utilities import load_yml, is_cf_compliant, cf_status
-from valenspy.input.unit_converter import convert_all_units_to_CF, _determine_time_interval
+"""A collection of functions unique to an input dataset required for conversion to valenspy compliant xarray datasets."""
+
+from valenspy._utilities import load_yml, _fix_lat_lon
 import xarray as xr
-import pandas as pd
-import numpy as np
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
-
-def _set_global_attributes(ds: xr.Dataset, metadata_info):
-    for key, value in metadata_info.items():
-        ds.attrs[key] = value
-
-    return ds
-
-def _fix_lat_lon(ds: xr.Dataset):
-    # rename dimensions if not yet renamed
-    if "lon" not in ds.coords:
-        ds = ds.rename({"longitude": "lon"})
-    if "lat" not in ds.coords:
-        ds = ds.rename({"latitude": "lat"})
-
-    # make sure lat and lon are sorted ascending
-    ds = ds.sortby("lat").sortby("lon")
-    return ds
 
 
 def EOBS_to_CF(ds: xr.Dataset) -> xr.Dataset:
     """
-    Convert the EOBS xarray netCDF to a CF compliant xarray Dataset
+    Convert a xarray with raw EOBS data to a ValensPy compliant xarray Dataset.
+
+    Rename latitude and longitude coordinates to lat and lon, respectively.
 
     Parameters
     ----------
     ds : xr.Dataset
         The xarray Dataset of EOBS observations to convert
-    metadata_info : dict, optional
-        A dictionary containing additional metadata information to add to the dataset
 
     Returns
     -------
@@ -46,16 +27,16 @@ def EOBS_to_CF(ds: xr.Dataset) -> xr.Dataset:
     return ds
 
 
-def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
+def ERA5_to_CF(ds: xr.Dataset) -> xr.Dataset:
     """
-    Convert the ERA5 xarray dataset to a xarray Dataset in CF convention
+    Convert a xarray with raw ERA5 data to a ValensPy compliant xarray Dataset.
+
+    Rename latitude and longitude coordinates to lat and lon, respectively. Rename valid_time to time for certain variables.
 
     Parameters
     ----------
     ds : xr.Dataset
         The xarray Dataset of ERA5 observations to convert
-    metadata_info : dict, optional
-        A dictionary containing additional metadata information to add to the dataset
 
     Returns
     -------
@@ -74,14 +55,15 @@ def ERA5_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
 def CCLM_to_CF(ds: xr.Dataset) -> xr.Dataset:
     """
-    Convert the CCLM xarray netCDF to a CF compliant xarray Dataset
+    Convert a xarray with raw CCLM data to a ValensPy compliant xarray Dataset.
+
+    Flatten the pressure dimension by renaming variables with the pressure level in the name and removing the pressure dimension.
+    Drop the last time step of the dataset.
 
     Parameters
     ----------
     ds : xr.Dataset
         The xarray Dataset of CCLM simulation to convert
-    metadata_info : dict, optional
-        A dictionary containing additional metadata information to add to the dataset
 
     Returns
     -------
@@ -109,16 +91,16 @@ def CCLM_to_CF(ds: xr.Dataset) -> xr.Dataset:
     return ds
 
 
-def ALARO_K_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
+def ALARO_K_to_CF(ds: xr.Dataset) -> xr.Dataset:
     """
-    Convert the ALARO_K (converted with Kwintens R scripts) from xarray netCDF to a CF compliant xarray Dataset
+    Convert a xarray with raw ALARO_K data to a ValensPy compliant xarray Dataset.
+
+    Does nothing, WIP
 
     Parameters
     ----------
     ds : xr.Dataset
         The xarray Dataset of ALARO_K simulation to convert
-    metadata_info : dict, optional
-        A dictionary containing additional metadata information to add to the dataset
 
     Returns
     -------
@@ -149,16 +131,16 @@ def ALARO_K_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
     return ds
 
-def RADCLIM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
+def RADCLIM_to_CF(ds: xr.Dataset) -> xr.Dataset:
     """
-    Convert the RADCLIM xarray netCDF to a CF compliant xarray Dataset
+    Convert a xarray with raw RADCLIM data to a ValensPy compliant xarray Dataset.
+
+    Rename nlon and nlat to lon and lat, respectively. Set the coordinates lat_bounds and lon_bounds as coordinates.
 
     Parameters
     ----------
     ds : xr.Dataset
         The xarray Dataset of CCLM simulation to convert
-    metadata_info : dict, optional
-        A dictionary containing additional metadata information to add to the dataset
 
     Returns
     -------
@@ -177,7 +159,9 @@ def RADCLIM_to_CF(ds: xr.Dataset, metadata_info=None) -> xr.Dataset:
 
 def MAR_to_CF(ds: xr.Dataset) -> xr.Dataset:
     """
-    Convert the MAR xarray netCDF to a CF compliant xarray Dataset
+    Convert a xarray with raw MAR data to a ValensPy compliant xarray Dataset.
+
+    Rename TIME to time and remove the ZTQLEV and ZUVLEV dimensions by selecting the first value of each dimension.
 
     Parameters
     ----------
