@@ -13,7 +13,7 @@ def test_access_main():
 
     #Preprocessing - directly accessible
     ##Functions
-    assert vp.remap_cdo, "remap_cdo not accessible from valenspy"
+    assert vp.remap_xesmf, "remap_xesmf not accessible from valenspy"
     assert vp.select_region, "select_region not accessible from valenspy"
     assert vp.select_point, "select_point not accessible from valenspy"
     assert vp.get_shapefile_mask, "get_shapefile_mask not accessible from valenspy"
@@ -29,7 +29,6 @@ def test_access_main():
     assert vp.plot_diurnal_cycle, "plot_diurnal_cycle not accessible from valenspy"
     assert vp.plot_time_series, "plot_time_series not accessible from valenspy"
     assert vp.plot_map, "plot_map not accessible from valenspy"
-    assert vp.plot_spatial_bias, "plot_spatial_bias not accessible from valenspy"
     assert vp.plot_maps_mod_ref_diff, "plot_maps_mod_ref_diff not accessible from valenspy"
     assert vp.plot_time_series_mod_ref, "plot_time_series_mod_ref not accessible from valenspy"
     assert vp.plot_points_on_map, "plot_points_on_map not accessible from valenspy"
@@ -38,20 +37,6 @@ def test_access_main():
     ##CF related functions
     assert vp.cf_status, "cf_status not accessible from valenspy"
     assert vp.is_cf_compliant, "is_cf_compliant not accessible from valenspy"
-
-    ##Conversion functions
-    assert vp.convert_Celcius_to_Kelvin, "convert_Celcius_to_Kelvin not accessible from valenspy"
-    assert vp.convert_hPa_to_Pa, "convert_hPa_to_Pa not accessible from valenspy"
-    assert vp.convert_Pa_to_hPa, "convert_Pa_to_hPa not accessible from valenspy"
-    assert vp.convert_mm_to_kg_m2s, "convert_mm_to_kg_m2s not accessible from valenspy"
-    assert vp.convert_mm_hr_to_kg_m2s, "convert_mm_hr_to_kg_m2s not accessible from valenspy"
-    assert vp.convert_kg_m2_to_kg_m2s, "convert_kg_m2_to_kg_m2s not accessible from valenspy"
-    assert vp.convert_m_to_kg_m2s, "convert_m_to_kg_m2s not accessible from valenspy"
-    assert vp.convert_m_hr_to_kg_m2s, "convert_m_hr_to_kg_m2s not accessible from valenspy"
-    assert vp.convert_J_m2_to_W_m2, "convert_J_m2_to_W_m2 not accessible from valenspy"
-    assert vp.convert_kWh_m2_day_to_W_m2, "convert_kWh_m2_day_to_W_m2 not accessible from valenspy"
-    assert vp.convert_fraction_to_percent, "convert_fraction_to_percent not accessible from valenspy"    
-
 
 def test_access_input():
     """
@@ -62,8 +47,6 @@ def test_access_input():
     #Input converter functions
     assert valenspy.input.EOBS_to_CF, "EOBS_to_CF converter function not accessible from valenspy.input"
     assert valenspy.input.ERA5_to_CF, "ERA5_to_CF converter function not accessible from valenspy.input"
-    assert valenspy.input.ERA5Land_to_CF, "ERA5Land_to_CF converter function not accessible from valenspy.input"
-    assert valenspy.input.CLIMATE_GRID_to_CF, "CLIMATE_GRID_to_CF converter function not accessible from valenspy.input"
     assert valenspy.input.CCLM_to_CF, "CCLM_to_CF converter function not accessible from valenspy.input"
     assert valenspy.input.ALARO_K_to_CF, "ALARO_K_to_CF converter function not accessible from valenspy.input"
     assert valenspy.input.RADCLIM_to_CF, "RADCLIM_to_CF converter function not accessible from valenspy.input"

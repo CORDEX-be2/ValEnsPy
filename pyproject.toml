@@ -1,6 +1,6 @@
 [build-system]
 build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core"]
+requires = ["poetry-core<2.0.0"]
 
 [project]
 
@@ -12,7 +12,7 @@ Changelog = "https://github.com/CORDEX-be2/ValEnsPy/releases"
 
 [tool.poetry]
 name = "ValEnsPy"
-version = "0.2.0a0"
+version = "0.3.0"
 authors = [
   "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
   "Inne Vanderkelen <inne.vanderkelen@kuleuven.be"
@@ -33,7 +33,6 @@ classifiers = [
   "Natural Language :: English",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -52,13 +51,16 @@ nc-time-axis = "^1.4.1"
 netCDF4 = "^1.6.5"
 pandas = "^2.2.1"
 pooch = "^1.8.1"
-python = "^3.9"
+python = "^3.10"
 regionmask = "^0.12.1"
 scipy = "^1.13.0"
 shapely = "^2.0.3"
-xarray = ">2024.2.0,<2024.10"
-xarray-datatree = "^0.0.14"
+xarray = ">=2023.12.0,<=2024.07.0"
 seaborn = "^0.13.2"
+xesmf = "^0.8.8"
+xclim = "^0.54.0"
+xarray-datatree = "^0.0.15"
+docstring-parser = "^0.16"
 
 [tool.poetry.group.dev]
 # Development group
@@ -79,6 +81,7 @@ nbsphinx = "^0.9.3"
 pydata-sphinx-theme = "^0.15.2"
 sphinx-copybutton = "^0.5.2"
 sphinx-rtd-theme = "^2.0.0"
+sphinx-design = "^0.6.1"
 
 [tool.poetry.group.examples]
 # Examples group

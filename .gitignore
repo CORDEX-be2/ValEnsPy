@@ -1,9 +1,9 @@
 
-# personal testing notebooks
-notebooks/
-
 # directory in which output (figures, tables) is written
 output/
+
+# Folder for local exploration
+notebooks/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -12,9 +12,6 @@ __pycache__/
 *.swp
 # C extensions
 *.so
-
-# Folder for local exploration
-notebooks/
 
 # Distribution / packaging
 .Python
@@ -45,6 +42,9 @@ MANIFEST
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+
+# Plot outputs from tests
+tests/plot_tests/plots/*
 
 # Unit test / coverage reports
 htmlcov/

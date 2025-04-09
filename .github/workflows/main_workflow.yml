@@ -1,146 +1,148 @@
-name: Automatic testing
-
 on:
-   push:
+  push:
     branches:
       - main
       - dev
-   pull_request:
-    types: [review_requested]
-   workflow_dispatch:
+  pull_request:
+    types: [labeled]
 
 jobs:
-#--- Build the package and save as artifacts----
-   packageing:
-      name: Build the package
-      runs-on: ubuntu-latest
-      outputs:
-        pkg_file: ${{ steps.base_def.outputs.filename }}
-      steps:
+  #--- Build the package and save as artifacts----
+  packageing:
+    name: Build the package
+    if: >
+      (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push')
+    runs-on: ubuntu-latest
+    outputs:
+      pkg_file: ${{ steps.base_def.outputs.filename }}
+    steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v2
         with:
-          python-version: '3.10'
-          #cache: 'poetry'
-
+          python-version: '3.11'
+          activate-environment: valenspy_env
+          auto-update-conda: true
+      - name: Create and activate conda environment
+        shell: bash -el {0}
+        run: |
+          conda create -n valenspy_env python=3.11 esmpy poetry=1.8 -c conda-forge -y
+          conda activate valenspy_env
       - name: remove previous builds
         run: |
-              rm -f dist/metobs_toolkit-*.whl
-              rm -f dist/metobs_toolkit-*.tar.gz
-
+          rm -f dist/metobs_toolkit-*.whl
+          rm -f dist/metobs_toolkit-*.tar.gz
       - name: Install dependencies and build
+        shell: bash -el {0}
         run: |
-              pip install poetry
-              poetry update
-              poetry install
-              poetry build
-
+          conda activate valenspy_env
+          poetry install
+          poetry build
       - name: get distribution file name
         id: base_def
         run: |
-              rel_path=$(find dist/ -name 'valenspy-*.tar.gz' -print -quit)
-              echo "filename=$(basename "$rel_path")" >> $GITHUB_OUTPUT
-
+          rel_path=$(find dist/ -name 'valenspy-*.tar.gz' -print -quit)
+          echo "filename=$(basename "$rel_path")" >> $GITHUB_OUTPUT
       - name: save package as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-            name: package_build
-            path: dist/*.tar.gz
+          name: package_build
+          path: dist/*.tar.gz
 
-#---- Testing the package ----#
-   pytests:
-      name: pytests
-      needs: packageing
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-        - name: Set up Python310
-          uses: actions/setup-python@v4
-          with:
-            python-version: "3.10"
-        - name: Download the package build
-          uses: actions/download-artifact@v3
-          with:
-            name: package_build
-        - name: Install the package
-          run: |
-              python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
-        - name: Install pytest
-          run: |
-              python3 -m pip install pytest
-        - name: Run tests
-          run: |
-              pytest tests/push_tests/test_*.py
+  #---- Testing the package ----#
+  pytests:
+    name: pytests
+    needs: packageing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          python-version: '3.11'
+          activate-environment: valenspy_env
+          auto-update-conda: true
+      - name: Create conda environment
+        shell: bash -el {0}
+        run: |
+          conda create -n valenspy_env python=3.11 esmpy poetry=1.8 pip -c conda-forge -y
+      - name: Download the package build
+        uses: actions/download-artifact@v4
+        with:
+          name: package_build
+      - name: Install the package
+        shell: bash -el {0}
+        run: |
+          conda activate valenspy_env
+          python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
+          conda install pytest -c conda-forge -y
+      - name: Run tests
+        shell: bash -el {0}
+        run: |
+          conda activate valenspy_env
+          pytest tests/push_tests/test_*.py
 
-# ---- Installing the package test ------#
-   #--- Package os installation ---
-   mac_install_testing:
-     name: Installation on Mac latest
-     needs: packageing
-     runs-on: macos-latest
-     steps:
-       - uses: actions/checkout@v3
-       - name: Set up Python310
-         uses: actions/setup-python@v4
-         with:
-           python-version: "3.10"
-       - name: Download the package build
-         uses: actions/download-artifact@v3
-         with:
-           name: package_build
-       - name: Install the package
-         run: |
-             python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
-       - name: Run tests
-         run: |
-             python tests/push_tests/test_import.py
-
-   windows_install_testing:
-     name: Installation on Windows latest
-     needs: packageing
-     runs-on: windows-latest
-     steps:
-       - uses: actions/checkout@v3
-       - name: Set up Python310
-         uses: actions/setup-python@v4
-         with:
-           python-version: "3.10"
-       - name: Download the package build
-         uses: actions/download-artifact@v3
-         with:
-           name: package_build
-
-       - name: Install the package
-         run: |
-             python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
-       - name: Run tests
-         run: |
-             python tests\push_tests\test_import.py
-
-
+  # ---- Installing the package test ------#
+  #--- Package os installation ---
+  install_testing:
+    name: Installation on ${{ matrix.os }}
+    needs: packageing
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["macos-latest", "windows-latest"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          python-version: '3.11'
+          activate-environment: valenspy_env
+          auto-update-conda: true
+      - name: Create and activate conda environment
+        run: |
+          conda create -n valenspy_env python=3.11 esmpy poetry=1.8 pip -c conda-forge -y
+      - name: Download the package build
+        uses: actions/download-artifact@v4
+        with:
+          name: package_build
+      - name: Install the package
+        shell: bash -el {0}
+        run: |
+          conda activate valenspy_env
+          python3 -m pip install ${{needs.packageing.outputs.pkg_file}}
+          conda install pytest -c conda-forge -y
+      - name: Run tests
+        shell: bash -el {0}
+        run: |
+          conda activate valenspy_env
+          pytest tests/push_tests/test_*.py
 
 
 #---- Version Control -----#
-   versiontest:
-     name: check if version is valid
-     runs-on: ubuntu-latest
-     steps:
-       - uses: actions/checkout@v3
-       - name: get version
-         id: 'version_info'
-         run: |
-           CURRENT_VERSION="$(grep -oP '__version__ = "\K\d+\.\d+\.\d+' src/valenspy/__init__.py)"
-           echo "current version (init) = ${CURRENT_VERSION}"
-           echo "::set-output name=current_version::$CURRENT_VERSION"
-           PYPROJECT_VERSION="$(grep -oP 'version = "\K\d+\.\d+\.\d+' pyproject.toml)"
-           echo "current version (pyproject) = ${PYPROJECT_VERSION}"
-           echo "::set-output name=pyproject_version::$PYPROJECT_VERSION"
-       - name: version-is-correct
-         if: ${{ steps.version_info.outputs.current_version != steps.version_info.outputs.pyproject_version }}
-         run: |
-           echo "version tags are not aligned!"
-           exit 1
+  versiontest:
+    name: check if version is valid
+    if: >
+      (github.event.label && github.event.label.name == 'Status: Ready For Review') || (github.event_name == 'push')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: get version
+        id: 'version_info'
+        run: |
+          CURRENT_VERSION="$(grep -oP '__version__ = "\K\d+\.\d+\.\d+' src/valenspy/__init__.py)"
+          echo "current version (init) = ${CURRENT_VERSION}"
+          echo "::set-output name=current_version::$CURRENT_VERSION"
+          PYPROJECT_VERSION="$(grep -oP 'version = "\K\d+\.\d+\.\d+' pyproject.toml)"
+          echo "current version (pyproject) = ${PYPROJECT_VERSION}"
+          echo "::set-output name=pyproject_version::$PYPROJECT_VERSION"
+      - name: version-is-correct
+        if: ${{ steps.version_info.outputs.current_version != steps.version_info.outputs.pyproject_version }}
+        run: |
+          echo "version tags are not aligned!"
+          exit 1
 
 
 

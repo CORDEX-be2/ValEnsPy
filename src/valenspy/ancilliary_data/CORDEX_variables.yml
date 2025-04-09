@@ -58,7 +58,7 @@ huss:
   long_name: Near-Surface Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hurs:
   aggregation: i
@@ -601,70 +601,70 @@ hus1000:
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus925:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus850:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus700:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus600:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus500:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus400:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus300:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus250:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus200:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 zg1000:
   aggregation: i
@@ -862,7 +862,7 @@ hus50m:
   long_name: Specific Humidity at 50m
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 
 #################################
@@ -998,7 +998,7 @@ od550aer:
   long_name: Ambient Aerosol Optical Thickness at 550nm
   realm: atmos
   standard_name: atmosphere_optical_thickness_due_to_ambient_aerosol_particles
-  units: 1
+  units: "1"
 
 ua150:
   aggregation: i
@@ -1151,49 +1151,49 @@ hus150:
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus100:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus70:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus50:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus30:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus20:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 hus10:
   aggregation: i
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 zg150:
   aggregation: i
@@ -1323,7 +1323,7 @@ hus750:
   long_name: Specific Humidity
   realm: atmos
   standard_name: specific_humidity
-  units: 1
+  units: "1"
 
 zg750:
   aggregation: i

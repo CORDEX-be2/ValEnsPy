@@ -95,10 +95,10 @@ documentation, go to `docs/_build` and open the `index.html` file in your browse
 
 The documentation is a combination of
 
-* Static file: These are standard files, that are converted to HTML. Most of them are RST and MD files,
-and if you do not change them, the documentation will not change as well (trivial).
+* Static file: These are standard files, that are converted to HTML. Most of them are RST and MD files, and if you do not change them, the documentation will not change as well (trivial).
 
 * Dynamic part: When you make a code contribution, your contribution must be represented in the API page of the documentation.
+
 So this means that each time you make a code contribution, the documentation (only the API part), must be upated as well. This is the
 reason that every developer must know how to build the documentation form there working branch.
 
@@ -144,7 +144,7 @@ Dev-checklist
 
 * Adding a new module (adding new files to automatically document).
 
-  #. Add the module in the toctree of `docs/API_doc`
+  #. Add the module in the toctree of `docs/api.rst` file.
 
 * Pre-commit
 
