@@ -41,7 +41,6 @@ See :py:class:`~diagnostic.Model2Ref` for all shared functionality.
 .. automodule:: diagnostic._model2ref
    :members:
    :undoc-members:
-   :imported-members:
 
 Ensemble2Self
 =============
