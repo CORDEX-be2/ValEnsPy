@@ -99,8 +99,10 @@ def plot_map(da: xr.DataArray, **kwargs):
     Plots a simple map of a 2D xarray DataArray.
 
     Default plot settings:
+
     - subplot_kws: {'projection': ccrs.PlateCarree()}
-    - cbar_kwargs: {'label': f"{da.attrs.get('long_name', 'Data')} ({da.name})"}
+    - cbar_kwargs: {'label': "{{da.attrs.get('long_name', 'Data')}} ({{da.name}})"}
+    
 
     Parameters:
     -----------
@@ -176,25 +178,45 @@ def plot_maps_mod_ref_diff(
     **kwargs,
 ):
     """
-    Plots comparison maps for model data, reference data, and their difference.
+    Plots side-by-side comparison maps for model data, reference data, and their difference.
 
-    Parameters:
-    da_mod (xarray.DataArray): The model data to be plotted: 2D lat
-    da_ref (xarray.DataArray): The reference data to be plotted.
-    da_diff (xarray.DataArray): The difference (model - reference) to be plotted.
-    region (str)              : string of the region to determine the plotting extend.
+    Parameters
+    ----------
+    da_mod : xarray.DataArray
+        The model data to be plotted. Expected to be a 2D array with latitude and longitude dimensions.
+    da_ref : xarray.DataArray
+        The reference data to be plotted. Expected to be a 2D array with latitude and longitude dimensions.
+    da_diff : xarray.DataArray
+        The difference between model and reference data (model - reference) to be plotted.
+    region : str, optional
+        A string specifying the region for determining the plotting extent. Defaults to None.
+    **kwargs : dict, optional
+        Additional keyword arguments for customizing the plots:
 
-    Returns (optionally):
-      list of axis of the three plots
-    Notes:
-    - This function suppresses all warnings.
-    - Each subplot is created with the PlateCarree projection and includes borders and coastlines.
-    - The color scale for the model and reference plots is determined by the minimum and maximum values
-      across both datasets.
-    - The bias plot uses a diverging color map ('coolwarm') centered around zero.
-    - The color bar label is derived from the 'long_name' and 'units' attributes of the reference data.
-    - The titles of the subplots are positioned to the right.
-    - The figure title is set to the 'long_name' attribute of the reference data.
+            - `vmin` (float): Minimum value for the color scale of the model and reference plots.
+            - `vmax` (float): Maximum value for the color scale of the model and reference plots.
+            - `vmin_bias` (float): Minimum value for the color scale of the bias plot.
+            - `vmax_bias` (float): Maximum value for the color scale of the bias plot.
+
+            
+    Returns
+    -------
+    list of matplotlib.axes._subplots.AxesSubplot
+        A list containing the three axes objects for the model, reference, and bias plots.
+
+    Notes
+    -----
+
+    - All warnings are suppressed during the execution of this function.
+    - Each subplot uses the PlateCarree projection and includes borders and coastlines.
+    - The color scale for the model and reference plots is determined by the combined minimum and maximum values
+    across both datasets unless explicitly specified via `vmin` and `vmax`.
+    - The bias plot uses a diverging color map ('coolwarm') centered around zero, with its range determined
+    by the maximum absolute value of the difference unless overridden by `vmin_bias` and `vmax_bias`.
+    - Titles for the subplots are positioned to the right and are derived from the 'dataset' attribute of the
+    respective data arrays, if available. Otherwise, default titles ("Model", "Reference", "Model - Reference")
+    are used.
+    - The figure title is set to the 'long_name' attribute of the reference data, followed by its variable name.
 
     """
 
@@ -429,11 +451,11 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
     for each model member, and creates a heatmap representing the ranks. The plot can 
     optionally include a colorbar to represent the ranking levels. If no axis is provided, 
     a new figure and axis are created for the plot.
+
     Parameters:
     -----------
     df_metric : pd.DataFrame
-        A DataFrame containing the calculated metrics for different model members. Each column 
-        represents a model member, and each row represents a metric.
+        A DataFrame containing the calculated metrics for different model members. Each column represents a model member, and each row represents a metric.
     ax : matplotlib.axes.Axes, optional
         A pre-existing axis to plot the heatmap. If None (default), a new figure and axis 
         are created.
@@ -457,11 +479,6 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
     - Rankings are normalized based on the number of model members.
     - The function supports colorbar ticks to represent custom rank labels, which are added 
       only if `plot_colorbar=True`.
-    
-    Example:
-    --------
-    plot_metric_ranking(df_metric, ax=None, plot_colorbar=True)
-    -> Generates a heatmap of metric rankings for each model member, with an optional colorbar.
     """
 
     df_p = df_metric.pivot(index=["metric"], columns="member", values="rank")

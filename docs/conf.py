@@ -26,7 +26,7 @@ else:
     # when executing in basefolder
     basefolder = curfolder
 
-
+sys.path.insert(0, os.path.join(str(basefolder), "docs"))
 sys.path.insert(0, str(basefolder))
 sys.path.insert(0, os.path.join(str(basefolder), "src", "valenspy"))
 
@@ -65,7 +65,18 @@ extensions = [
     "myst_parser",  # for including md files (readme)
     "sphinx.ext.autosectionlabel",  # for cross linking
     "nbsphinx",  # to render the notebook examples in the doc
+    "sphinx_design",  # for the design of the doc
+    "autodoc_diagnostic",  # custom autodoc for the Diagnostic class
+    "sphinx.ext.intersphinx",  # Cross-referencing other projects
 ]
+
+# Configuration for intersphinx to enable cross-referencing
+intersphinx_mapping = {
+    "xclim": ("https://xclim.readthedocs.io/en/stable/", None),
+    "xarray": ("https://docs.xarray.dev/en/stable/", None),
+    "datatree": ("https://xarray-datatree.readthedocs.io/en/latest/", None),
+    "xesmf": ("https://xesmf.readthedocs.io/en/stable/", None),
+}
 
 # =============================================================================
 # General configuration
@@ -76,7 +87,14 @@ templates_path = ["_templates"]
 
 # Turn on sphinx.ext.autosummary
 autosummary_generate = True
+autosummary_ignore_module_all = True
+autosummary_undoc_members = True
 numpydoc_class_members_toctree = False
+autodoc_default_options = {
+    "members": True,
+    "undoc-members": False,
+    "private-members": True,
+}
 
 
 # Specify which file formats to render:
