@@ -6,7 +6,7 @@ requires = ["poetry-core<2.0.0"]
 
 [tool.poetry]
 name = "ValEnsPy"
-version = "0.2.0a0"
+version = "0.3.0"
 authors = [
   "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
   "Inne Vanderkelen <inne.vanderkelen@kuleuven.be>"

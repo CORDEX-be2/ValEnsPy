@@ -4489,18 +4489,18 @@ viz = ["matplotlib", "nc-time-axis", "seaborn"]
 
 [[package]]
 name = "xarray-datatree"
-version = "0.0.14"
+version = "0.0.15"
 description = "Hierarchical tree-like data structures for xarray"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "xarray-datatree-0.0.14.tar.gz", hash = "sha256:26169af35b0df0d17652e229cef210decf0711dd88e33419142edc6674113af4"},
-    {file = "xarray_datatree-0.0.14-py3-none-any.whl", hash = "sha256:07f5d0d9a03a3220d732e1c764ee60f2c5110f884a290b2af371f92952379166"},
+    {file = "xarray_datatree-0.0.15-py3-none-any.whl", hash = "sha256:190d8262061522eeaaa0dc7058b50df7228a615e6d62761150f093518bdad62c"},
+    {file = "xarray_datatree-0.0.15.tar.gz", hash = "sha256:4e828086d858742e4dec7ed7e9187865d5215302919d0e02a613dce0ff0db003"},
 ]
 
 [package.dependencies]
 packaging = "*"
-xarray = ">=2023.12.0"
+xarray = ">=2023.12.0,<=2024.07.0"
 
 [[package]]
 name = "xattr"
