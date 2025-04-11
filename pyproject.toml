@@ -39,7 +39,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 cartopy = "^0.23.0"
-cf-xarray = "^0.9.4"
+cf-xarray = ">=0.9.4"
 dask = "^2024.3.1"
 geopandas = "^1.0.1"
 matplotlib = "^3.8.3"
