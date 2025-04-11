@@ -17,4 +17,4 @@ from valenspy._utilities import is_cf_compliant, cf_status
 # Version
 # =============================================================================
 
-__version__ = "0.3.1"
+__version__ = "0.3.2"
