@@ -1,0 +1,1168 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>diagnostic.functions &#8212; ValEnsPy documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=7732bc7b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/diagnostic/functions';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ValEnsPy documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../doc_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribution_pages/index.html">
+    Contributing
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../doc_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribution_pages/index.html">
+    Contributing
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">diagnostic.functions</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for diagnostic.functions</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">spearmanr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datatree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataTree</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.processing</span><span class="w"> </span><span class="kn">import</span> <span class="n">select_point</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic.wrappers</span><span class="w"> </span><span class="kn">import</span> <span class="n">acceptable_variables</span><span class="p">,</span> <span class="n">required_variables</span>
+
+<span class="c1"># make sure attributes are passed through</span>
+<span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">keep_attrs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">###################################</span>
+<span class="c1"># Model2Self diagnostic functions #</span>
+<span class="c1">###################################</span>
+
+
+<div class="viewcode-block" id="diurnal_cycle">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.diurnal_cycle.html#diagnostic.functions.diurnal_cycle">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">diurnal_cycle</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the diurnal cycle of the data. If lat and lon are present, the data is averaged over the spatial dimensions lat and lon.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the diurnal cycle of.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The diurnal cycle of the data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">ds</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;time.hour&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="annual_cycle">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.annual_cycle.html#diagnostic.functions.annual_cycle">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">annual_cycle</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the annual cycle of the data. If lat and lon are present, the data is averaged over the spatial dimensions lat and lon.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the annual cycle of.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The annual cycle of the data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">ds</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;time.month&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="time_series_spatial_mean">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.time_series_spatial_mean.html#diagnostic.functions.time_series_spatial_mean">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">time_series_spatial_mean</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the time series of the data. If lat and lon are present, the data is averaged over the spatial dimensions lat and lon.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the time series of the spatial mean of.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The time series of the spatial mean of the data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="time_series_trend">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.time_series_trend.html#diagnostic.functions.time_series_trend">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">time_series_trend</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">min_periods</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">center</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">window_kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the trend of the time series data. If lat and lon are present, the data is averaged over the spatial dimensions lat and lon.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the trend of.</span>
+<span class="sd">    window_size : int</span>
+<span class="sd">        The size - in number of time steps - of the window to use for the rolling average.</span>
+<span class="sd">    min_periods : int, optional</span>
+<span class="sd">        The minimum number of periods required for a value to be considered valid, by default None</span>
+<span class="sd">    center : bool, optional</span>
+<span class="sd">        If True, the value is placed in the center of the window, by default True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The trend of the data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">window_size</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="n">min_periods</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="n">center</span><span class="p">,</span> <span class="o">**</span><span class="n">window_kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="spatial_time_mean">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.spatial_time_mean.html#diagnostic.functions.spatial_time_mean">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spatial_time_mean</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the spatial mean of the data. If the time dimension is present, the data is averaged over the time dimension.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the spatial mean of.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The spatial mean of the data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="urban_heat_island">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.urban_heat_island.html#diagnostic.functions.urban_heat_island">[docs]</a>
+<span class="nd">@acceptable_variables</span><span class="p">([</span><span class="s2">&quot;tas&quot;</span><span class="p">,</span> <span class="s2">&quot;tasmax&quot;</span><span class="p">,</span> <span class="s2">&quot;tasmin&quot;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">urban_heat_island</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">urban_coord</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">rural_coord</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the urban heat island effect as the difference in temperature between an urban and rural area. </span>
+<span class="sd">    The grid-boxes closest to the urban and rural coordinates are selected and a difference is calculated between the two.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the urban heat island effect of.</span>
+<span class="sd">    urban_coord : tuple</span>
+<span class="sd">        The coordinates of the urban area in the format (lat, lon).</span>
+<span class="sd">    rural_coord : tuple</span>
+<span class="sd">        The coordinates of the rural area in the format (lat, lon).</span>
+<span class="sd">    projection : str, optional</span>
+<span class="sd">        The projection used to convert the urban and rural coordinates to the dataset&#39;s projection.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The urban heat island effect as the difference in temperature between the urban and rural area.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">urban</span> <span class="o">=</span> <span class="n">select_point</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat_point</span><span class="o">=</span><span class="n">urban_coord</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lon_point</span><span class="o">=</span><span class="n">urban_coord</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
+    <span class="n">rural</span> <span class="o">=</span> <span class="n">select_point</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">lat_point</span><span class="o">=</span><span class="n">rural_coord</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lon_point</span><span class="o">=</span><span class="n">rural_coord</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">urban</span> <span class="o">-</span> <span class="n">rural</span></div>
+
+
+<div class="viewcode-block" id="urban_heat_island_diurnal_cycle">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.urban_heat_island_diurnal_cycle.html#diagnostic.functions.urban_heat_island_diurnal_cycle">[docs]</a>
+<span class="nd">@acceptable_variables</span><span class="p">([</span><span class="s2">&quot;tas&quot;</span><span class="p">,</span> <span class="s2">&quot;tasmax&quot;</span><span class="p">,</span> <span class="s2">&quot;tasmin&quot;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">urban_heat_island_diurnal_cycle</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">urban_coord</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">rural_coord</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the diurnal cycle of the urban heat island effect as the difference in temperature between an urban and rural area.</span>
+<span class="sd">    The grid-boxes closest to the urban and rural coordinates are selected and a difference is calculated between the two.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the urban heat island effect of.</span>
+<span class="sd">    urban_coord : tuple</span>
+<span class="sd">        The coordinates of the urban area in the format (lat, lon).</span>
+<span class="sd">    rural_coord : tuple</span>
+<span class="sd">        The coordinates of the rural area in the format (lat, lon).</span>
+<span class="sd">    projection : str, optional</span>
+<span class="sd">        The projection used to convert the urban and rural coordinates to the dataset&#39;s projection.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The diurnal cycle of the urban heat island effect as the difference in temperature between the urban and rural area.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">diurnal_cycle</span><span class="p">(</span><span class="n">urban_heat_island</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">urban_coord</span><span class="p">,</span> <span class="n">rural_coord</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">))</span></div>
+
+
+<span class="c1">##################################</span>
+<span class="c1"># Model2Ref diagnostic functions #</span>
+<span class="c1">##################################</span>
+
+
+<div class="viewcode-block" id="spatial_bias">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.spatial_bias.html#diagnostic.functions.spatial_bias">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spatial_bias</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">calc_relative</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the spatial bias of the data compared to the reference. The time dimensions are averaged over if present.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the spatial bias of.</span>
+<span class="sd">    ref : xr.Dataset or xr.DataArray</span>
+<span class="sd">        The reference data to compare the data to.</span>
+<span class="sd">    calc_relative : bool, optional</span>
+<span class="sd">        If True, return the relative bias, if False return the absolute bias, by default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset or xr.DataArray</span>
+<span class="sd">        The spatial bias of the data compared to the reference.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">bias</span><span class="p">(</span>
+        <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">),</span>
+        <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">),</span>
+        <span class="n">calc_relative</span><span class="o">=</span><span class="n">calc_relative</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="temporal_bias">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.temporal_bias.html#diagnostic.functions.temporal_bias">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">temporal_bias</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">calc_relative</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the temporal bias of the data compared to the reference. If lat and lon are present, ds and ref is averaged over the spatial dimensions lat and lon.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the temporal bias of.</span>
+<span class="sd">    ref : xr.Dataset</span>
+<span class="sd">        The reference data to compare the data to.</span>
+<span class="sd">    calc_relative : bool, optional</span>
+<span class="sd">        If True, return the relative bias, if False return the absolute bias, by default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The temporal bias of the data compared to the reference.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">bias</span><span class="p">(</span>
+        <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">]),</span>
+        <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">]),</span>
+        <span class="n">calc_relative</span><span class="o">=</span><span class="n">calc_relative</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="diurnal_cycle_bias">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.diurnal_cycle_bias.html#diagnostic.functions.diurnal_cycle_bias">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">diurnal_cycle_bias</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">calc_relative</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the diurnal cycle bias of the data compared to the reference. If lat and lon are present,  ds and ref is averaged over the spatial dimensions lat and lon.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the diurnal cycle bias of.</span>
+<span class="sd">    ref : xr.Dataset</span>
+<span class="sd">        The reference data to compare the data to.</span>
+<span class="sd">    calc_relative : bool, optional</span>
+<span class="sd">        If True, return the calc_relative bias, by default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The diurnal cycle bias of the data compared to the reference.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="n">_average_over_dims</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">bias</span><span class="p">(</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;time.hour&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">),</span>
+        <span class="n">ref</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;time.hour&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">),</span>
+        <span class="n">calc_relative</span><span class="o">=</span><span class="n">calc_relative</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="calc_metrics_da">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.calc_metrics_da.html#diagnostic.functions.calc_metrics_da">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_metrics_da</span><span class="p">(</span><span class="n">da_mod</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">da_obs</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pss_binwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate statistical performance metrics for model data against observed data for a single variable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">metrics</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pss_binwidth</span><span class="p">:</span>
+            <span class="n">binwidth</span> <span class="o">=</span> <span class="n">get_userdefined_binwidth</span><span class="p">(</span><span class="n">da_mod</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">binwidth</span> <span class="o">=</span> <span class="n">pss_binwidth</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;mean_bias&quot;</span><span class="p">:</span> <span class="n">mean_bias</span><span class="p">,</span>
+            <span class="s2">&quot;mean_absolute_error&quot;</span><span class="p">:</span> <span class="n">mean_absolute_error</span><span class="p">,</span>
+            <span class="s2">&quot;mae_90pctl&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="mf">0.9</span><span class="p">),</span>
+            <span class="s2">&quot;mae_99pctl&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="mf">0.99</span><span class="p">),</span>
+            <span class="s2">&quot;mae_10pctl&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>
+            <span class="s2">&quot;mae_1pctl&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">mean_absolute_error</span><span class="p">,</span> <span class="n">percentile</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span>
+            <span class="s2">&quot;rmse&quot;</span><span class="p">:</span> <span class="n">root_mean_square_error</span><span class="p">,</span>
+            <span class="s2">&quot;spearman_correlation&quot;</span><span class="p">:</span> <span class="n">spearman_correlation</span><span class="p">,</span>
+            <span class="s2">&quot;PSS&quot;</span><span class="p">:</span> <span class="n">partial</span><span class="p">(</span><span class="n">perkins_skill_score_value</span><span class="p">,</span> <span class="n">binwidth</span><span class="o">=</span><span class="n">binwidth</span><span class="p">)</span>
+        <span class="p">}</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="n">metric</span><span class="p">:</span> <span class="n">metrics</span><span class="p">[</span><span class="n">metric</span><span class="p">](</span><span class="n">da_mod</span><span class="p">,</span> <span class="n">da_obs</span><span class="p">)</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">}</span>  </div>
+
+ 
+<div class="viewcode-block" id="calc_metrics_ds">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.calc_metrics_ds.html#diagnostic.functions.calc_metrics_ds">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_metrics_ds</span><span class="p">(</span><span class="n">ds_mod</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">ds_obs</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pss_binwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate statistical performance metrics for model data against observed data for a dataset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">variable</span><span class="p">:</span> <span class="n">calc_metrics_da</span><span class="p">(</span><span class="n">ds_mod</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span> <span class="n">ds_obs</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">pss_binwidth</span><span class="o">=</span><span class="n">pss_binwidth</span><span class="p">)</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">ds_mod</span><span class="o">.</span><span class="n">data_vars</span><span class="p">}</span></div>
+
+
+<span class="c1">#####################################</span>
+<span class="c1"># Ensemble2Ref diagnostic functions #</span>
+<span class="c1">#####################################</span>
+
+<div class="viewcode-block" id="calc_metrics_dt">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.calc_metrics_dt.html#diagnostic.functions.calc_metrics_dt">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_metrics_dt</span><span class="p">(</span><span class="n">dt_mod</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="n">da_obs</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pss_binwidth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate statistical performance metrics for model data against observed data.</span>
+
+<span class="sd">    This function computes various metrics between the model data stored in the DataTree </span>
+<span class="sd">    object `dt_mod` and the observed data `da_obs`.</span>
+<span class="sd">    Default metrics include Mean Bias, Mean Absolute Error (MAE) at different percentiles,</span>
+<span class="sd">    Root Mean Square Error (RMSE), Spearman Correlation, and Perkins Skill Score (PSS).</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    dt_mod : DataTree</span>
+<span class="sd">        A DataTree containing the model data for different members. The function loops </span>
+<span class="sd">        through each member to calculate the metrics.</span>
+<span class="sd">    da_obs : xr.DataSet</span>
+<span class="sd">        The observed data to compare against the model data.</span>
+<span class="sd">    metrics : dict, optional</span>
+<span class="sd">        A dictionary containing the names of the metrics to calculate and the corresponding functions. Default is the below specified metrics.</span>
+<span class="sd">    pss_binwidth : float, optional</span>
+<span class="sd">        The bin width to use for the Perkins Skill Score (PSS) calculation. If not provided, the optimal bin width is calculated.a</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    df_metric : pd.DataFrame</span>
+<span class="sd">        A DataFrame containing the calculated metrics and corresponding rank per metric for each member and variable in the data tree.</span>
+
+<span class="sd">    Metrics:</span>
+<span class="sd">    --------</span>
+<span class="sd">    - Mean Bias</span>
+<span class="sd">    - Mean Absolute Error</span>
+<span class="sd">    - MAE at 90th Percentile</span>
+<span class="sd">    - MAE at 99th Percentile</span>
+<span class="sd">    - MAE at 10th Percentile</span>
+<span class="sd">    - MAE at 1st Percentile</span>
+<span class="sd">    - Root Mean Square Error</span>
+<span class="sd">    - Spearman Correlation</span>
+<span class="sd">    - Perkins Skill Score</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">member</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">calc_metrics_ds</span><span class="p">(</span><span class="n">member</span><span class="o">.</span><span class="n">ds</span><span class="p">,</span> <span class="n">da_obs</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span><span class="p">,</span> <span class="n">pss_binwidth</span><span class="o">=</span><span class="n">pss_binwidth</span><span class="p">)</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">dt_mod</span><span class="o">.</span><span class="n">leaves</span><span class="p">}</span>
+    <span class="c1">#Create a pandas dataframe from a dictionary of dictionaries - each unique value of the most inner dictionary is a row</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">):</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()},</span>
+                            <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;level_0&#39;</span><span class="p">:</span> <span class="s1">&#39;member&#39;</span><span class="p">,</span> <span class="s1">&#39;level_1&#39;</span><span class="p">:</span> <span class="s1">&#39;variable&#39;</span><span class="p">})</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;member&quot;</span><span class="p">,</span> <span class="s2">&quot;variable&quot;</span><span class="p">],</span> <span class="n">var_name</span><span class="o">=</span><span class="s2">&quot;metric&quot;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">_add_ranks_metrics</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<span class="c1">##################################</span>
+<span class="c1">####### Helper functions #########</span>
+<span class="c1">##################################</span>
+
+
+<div class="viewcode-block" id="_average_over_dims">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.html#diagnostic.functions._average_over_dims">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_average_over_dims</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">dims</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the average over the specified dimensions if they are present in the data. Otherwise, return the data as is.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The data to calculate the spatial average of.</span>
+<span class="sd">    dims : list or str</span>
+<span class="sd">        The dimension(s) to average over.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        The data with the specified dimensions averaged over.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="n">dims</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">dims</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ds</span>
+    <span class="k">return</span> <span class="n">ds</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">dim</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">dims</span> <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">dims</span><span class="p">],</span> <span class="n">keep_attrs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="_add_ranks_metrics">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.html#diagnostic.functions._add_ranks_metrics">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_ranks_metrics</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ranks the performance of different models across various metrics based on predefined ranking criteria.</span>
+
+<span class="sd">    This function applies custom ranking rules to evaluate the performance of models across different metrics.</span>
+<span class="sd">    The ranking is based on the following criteria:</span>
+<span class="sd">    </span>
+<span class="sd">    - &#39;Mean Bias&#39; is ranked by its absolute value, with smaller values (closer to zero) ranked higher.</span>
+<span class="sd">    - &#39;Spearman Correlation&#39; and &#39;Perkins Skill Score&#39; are ranked in descending order, meaning higher values (closer to 1) are better.</span>
+<span class="sd">    - All other metrics are ranked in ascending order, where lower values are better.</span>
+<span class="sd">    </span>
+<span class="sd">    The input DataFrame `df` is expected to have the following structure:</span>
+<span class="sd">    - The first column contains the metric names.</span>
+<span class="sd">    - Each subsequent column contains the performance values of different models for each metric.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        A DataFrame where each row corresponds to a metric, the first column is the metric name, </span>
+<span class="sd">        and the subsequent columns contain performance values for different models.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        A DataFrame where each value is replaced by its rank based on the ranking criteria for the corresponding metric.</span>
+<span class="sd">        The rows are indexed by the metric names.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">rank_per_metric</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;metric&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;mean_bias&quot;</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rank&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;metric&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;spearman_correlation&#39;</span><span class="p">,</span> <span class="s1">&#39;PSS&#39;</span><span class="p">]:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rank&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rank&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;variable&quot;</span><span class="p">,</span> <span class="s2">&quot;metric&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">rank_per_metric</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<span class="c1">################################################</span>
+<span class="c1">########### Metrics &amp; skill scores #############</span>
+<span class="c1">################################################</span>
+
+
+<div class="viewcode-block" id="bias">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.bias.html#diagnostic.functions.bias">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">bias</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">calc_relative</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the bias of the data compared to a reference.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray or xr.Dataset</span>
+<span class="sd">        The data to calculate the bias of.</span>
+<span class="sd">    ref : xr.DataArray or xr.Dataset</span>
+<span class="sd">        The reference to compare the data to.</span>
+<span class="sd">    calc_relative : bool, optional</span>
+<span class="sd">        If True, calculate the relative bias, if False calculate the absolute bias, by default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Datasets</span>
+<span class="sd">        The bias of the data compared to there reference.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">calc_relative</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">da</span> <span class="o">-</span> <span class="n">ref</span><span class="p">)</span> <span class="o">/</span> <span class="n">ref</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">da</span> <span class="o">-</span> <span class="n">ref</span></div>
+
+
+<div class="viewcode-block" id="mean_bias">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.mean_bias.html#diagnostic.functions.mean_bias">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mean_bias</span><span class="p">(</span><span class="n">da_mod</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">da_ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the bias of the means of modeled and reference data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray or xr.Dataset</span>
+<span class="sd">        The data to calculate the bias of.</span>
+<span class="sd">    ref : xr.DataArray or xr.Dataset</span>
+<span class="sd">        The reference to compare the data to.</span>
+<span class="sd">    calc_relative : bool, optional</span>
+<span class="sd">        If True, calculate the relative bias, if False calculate the absolute bias, by default False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Datasets</span>
+<span class="sd">        The bias of the data compared to there reference.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">da_mod</span> <span class="o">-</span> <span class="n">da_ref</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span></div>
+
+
+<div class="viewcode-block" id="mean_absolute_error">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.mean_absolute_error.html#diagnostic.functions.mean_absolute_error">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">mean_absolute_error</span><span class="p">(</span><span class="n">da_mod</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">da_ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">percentile</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Mean Absolute Error (MAE) between model forecasts and reference data.</span>
+<span class="sd">    Optionally, calculate the MAE based on a specified percentile.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da_mod : xr.DataArray</span>
+<span class="sd">        The model forecast data to compare.</span>
+<span class="sd">    da_ref : xr.DataArray</span>
+<span class="sd">        The reference data to compare against.</span>
+<span class="sd">    percentile : float, optional</span>
+<span class="sd">        The percentile (0 to 1) to calculate the MAE for, using the quantile values of the data arrays.</span>
+<span class="sd">        If None, calculates the MAE for the entire data without considering percentiles.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The Mean Absolute Error (MAE) between the model and reference data, or at the specified percentile.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Ensure the DataArrays have the same shape</span>
+    <span class="k">if</span> <span class="n">da_mod</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">da_ref</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model and reference data must have the same shape.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">percentile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Calculate the MAE for the entire data</span>
+        <span class="n">mae</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">da_mod</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">da_ref</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Calculate the MAE for the specified percentile</span>
+        <span class="n">mod_percentile</span> <span class="o">=</span> <span class="n">da_mod</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span>
+        <span class="n">ref_percentile</span> <span class="o">=</span> <span class="n">da_ref</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">percentile</span><span class="p">)</span>
+        <span class="n">mae</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mod_percentile</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">ref_percentile</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">mae</span></div>
+
+
+<div class="viewcode-block" id="root_mean_square_error">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.root_mean_square_error.html#diagnostic.functions.root_mean_square_error">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">root_mean_square_error</span><span class="p">(</span><span class="n">da_mod</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">da_ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Root Mean Square Error (RMSE) between model data and reference data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da_mod : xr.DataArray</span>
+<span class="sd">        The model data to compare (should match the shape of da_ref).</span>
+<span class="sd">    da_ref : xr.DataArray</span>
+<span class="sd">        The reference data to compare against (should match the shape of da_mod).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The Root Mean Square Error (RMSE) between the model and reference data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Ensure the DataArrays have the same shape</span>
+    <span class="k">if</span> <span class="n">da_mod</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">da_ref</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model and reference data must have the same shape.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the squared differences</span>
+    <span class="n">squared_diff</span> <span class="o">=</span> <span class="p">(</span><span class="n">da_mod</span> <span class="o">-</span> <span class="n">da_ref</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+    
+    <span class="c1"># Calculate the mean of squared differences</span>
+    <span class="n">mean_squared_diff</span> <span class="o">=</span> <span class="n">squared_diff</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="c1"># Calculate and return the RMSE</span>
+    <span class="n">rmse</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_diff</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">rmse</span></div>
+
+
+
+<div class="viewcode-block" id="spearman_correlation">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.spearman_correlation.html#diagnostic.functions.spearman_correlation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">spearman_correlation</span><span class="p">(</span><span class="n">da_mod</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">da_ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate Spearman&#39;s rank correlation coefficient between model data and reference data.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da_mod : xr.DataArray</span>
+<span class="sd">        The model data to compare (2D array where rows are observations and columns are variables).</span>
+<span class="sd">    da_ref : xr.DataArray</span>
+<span class="sd">        The reference data to compare (2D array where rows are observations and columns are variables).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        Spearman&#39;s rank correlation coefficient between the flattened model and reference data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Flatten the DataArrays to 1D arrays for correlation calculation</span>
+    <span class="n">mod_data</span> <span class="o">=</span> <span class="n">da_mod</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">ref_data</span> <span class="o">=</span> <span class="n">da_ref</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    
+    <span class="c1"># Ensure that the flattened arrays have the same length</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mod_data</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ref_data</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Model and reference data must have the same length after flattening.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Calculate Spearman&#39;s rank correlation</span>
+    <span class="n">correlation</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">spearmanr</span><span class="p">(</span><span class="n">mod_data</span><span class="p">,</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">nan_policy</span><span class="o">=</span><span class="s1">&#39;omit&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">correlation</span></div>
+
+
+
+<div class="viewcode-block" id="optimal_bin_width">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.optimal_bin_width.html#diagnostic.functions.optimal_bin_width">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">optimal_bin_width</span><span class="p">(</span><span class="n">da_mod</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">da_ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the optimal bin width for both forecast (da_mod) and observed (da_ref) data.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    da_mod (xr.DataArray): Forecasted temperatures (continuous).</span>
+<span class="sd">    da_ref (xr.DataArray): Observed temperatures (continuous).</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    float: Optimal bin width for both datasets.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Combine both datasets</span>
+    <span class="n">combined_data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">da_mod</span><span class="p">,</span> <span class="n">da_ref</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+    <span class="c1"># Freedman-Diaconis rule: Bin width = 2 * (IQR / n^(1/3))</span>
+    <span class="n">q25</span> <span class="o">=</span> <span class="n">combined_data</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">q75</span> <span class="o">=</span> <span class="n">combined_data</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="n">iqr</span> <span class="o">=</span> <span class="n">q75</span> <span class="o">-</span> <span class="n">q25</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">combined_data</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">bin_width</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">iqr</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">cbrt</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+    <span class="n">std_dev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">combined_data</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">combined_data</span><span class="p">)</span>
+    <span class="n">binwdth</span> <span class="o">=</span> <span class="mf">3.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">std_dev</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">cbrt</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">bin_width</span></div>
+
+    
+<div class="viewcode-block" id="get_userdefined_binwidth">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.get_userdefined_binwidth.html#diagnostic.functions.get_userdefined_binwidth">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_userdefined_binwidth</span><span class="p">(</span><span class="n">variable</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get user defined, hard coded binwidths for Perkins Skill score calculation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># define bin width lookup table</span>
+    <span class="n">d_binwidth</span> <span class="o">=</span> <span class="p">{</span> 
+    <span class="s1">&#39;tas&#39;</span>    <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;tasmax&#39;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;tasmin&#39;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s1">&#39;ps&#39;</span>     <span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="s1">&#39;psl&#39;</span>    <span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="s1">&#39;clt&#39;</span>    <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s1">&#39;clh&#39;</span>    <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s1">&#39;clm&#39;</span>    <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s1">&#39;cll&#39;</span>    <span class="p">:</span> <span class="mi">10</span> <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">d_binwidth</span><span class="p">:</span> 
+        <span class="k">return</span> <span class="n">d_binwidth</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2"> has no defined binwidths&quot;</span><span class="p">)</span></div>
+
+
+
+
+<div class="viewcode-block" id="perkins_skill_score">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.perkins_skill_score.html#diagnostic.functions.perkins_skill_score">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">perkins_skill_score</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">binwidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the Perkins Skill Score (PSS).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    da : xr.DataArray</span>
+<span class="sd">        The model data to compare.</span>
+<span class="sd">    ref : xr.DataArray</span>
+<span class="sd">        The reference data to compare against.</span>
+<span class="sd">    binwidth : float</span>
+<span class="sd">     The width of each bin for the histogram. If not provided, it is calculated.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        The Perkins Skill Score (PSS).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">binwidth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+       <span class="n">binwidth</span>  <span class="o">=</span> <span class="n">optimal_bin_width</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+
+    <span class="c1"># Flatten the DataArrays to 1D for comparison</span>
+    <span class="n">mod_data</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="n">ref_data</span> <span class="o">=</span> <span class="n">ref</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c1"># Define the edges of the bins based on the data range</span>
+    <span class="n">lower_edge</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">mod_data</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">ref_data</span><span class="p">))</span>
+    <span class="n">upper_edge</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">mod_data</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">ref_data</span><span class="p">))</span>
+
+    <span class="c1"># Calculate the histograms</span>
+    <span class="n">freq_m</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">mod_data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lower_edge</span><span class="p">,</span> <span class="n">upper_edge</span> <span class="o">+</span> <span class="n">binwidth</span><span class="p">,</span> <span class="n">binwidth</span><span class="p">))</span>
+    <span class="n">freq_r</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">ref_data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">lower_edge</span><span class="p">,</span> <span class="n">upper_edge</span> <span class="o">+</span> <span class="n">binwidth</span><span class="p">,</span> <span class="n">binwidth</span><span class="p">))</span>
+
+    <span class="c1"># Normalize the histograms by the total number of data points to compare probabilities</span>
+    <span class="n">freq_m</span> <span class="o">=</span> <span class="n">freq_m</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">freq_m</span><span class="p">)</span>
+    <span class="n">freq_r</span> <span class="o">=</span> <span class="n">freq_r</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">freq_r</span><span class="p">)</span>
+    <span class="c1"># Calculate and return the PSS</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">freq_m</span><span class="p">,</span> <span class="n">freq_r</span><span class="p">)),</span> <span class="n">freq_m</span><span class="p">,</span> <span class="n">freq_r</span><span class="p">,</span> <span class="n">binwidth</span></div>
+
+
+<div class="viewcode-block" id="perkins_skill_score_value">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.functions.perkins_skill_score_value.html#diagnostic.functions.perkins_skill_score_value">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">perkins_skill_score_value</span><span class="p">(</span><span class="n">da</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">,</span> <span class="n">binwidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">perkins_skill_score</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">binwidth</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Cordex-BE team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+diagnostic.functions.urban\_heat\_island
+========================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: urban_heat_island

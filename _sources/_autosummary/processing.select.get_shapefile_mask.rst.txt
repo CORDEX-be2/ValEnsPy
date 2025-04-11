@@ -1,0 +1,6 @@
+processing.select.get\_shapefile\_mask
+======================================
+
+.. currentmodule:: processing.select
+
+.. autofunction:: get_shapefile_mask

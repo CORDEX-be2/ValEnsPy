@@ -1,0 +1,6 @@
+processing.indicators.xclim\_indicator
+======================================
+
+.. currentmodule:: processing.indicators
+
+.. autofunction:: xclim_indicator

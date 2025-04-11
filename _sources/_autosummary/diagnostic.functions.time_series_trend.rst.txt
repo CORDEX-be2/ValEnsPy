@@ -1,0 +1,6 @@
+diagnostic.functions.time\_series\_trend
+========================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: time_series_trend

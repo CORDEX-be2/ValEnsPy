@@ -1,0 +1,6 @@
+input.converter\_functions.RADCLIM\_to\_CF
+==========================================
+
+.. currentmodule:: input.converter_functions
+
+.. autofunction:: RADCLIM_to_CF

@@ -1,0 +1,30 @@
+processing.mask
+===============
+
+.. automodule:: processing.mask
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      add_prudence_regions
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,37 @@
+diagnostic.diagnostic.DataSetDiagnostic
+=======================================
+
+.. currentmodule:: diagnostic.diagnostic
+
+.. autoclass:: DataSetDiagnostic
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~DataSetDiagnostic.__init__
+      ~DataSetDiagnostic.apply
+      ~DataSetDiagnostic.apply_dt
+      ~DataSetDiagnostic.plot
+      ~DataSetDiagnostic.plot_dt
+      ~DataSetDiagnostic.plot_dt_facetted
+      ~DataSetDiagnostic.plot_dt_single
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DataSetDiagnostic.description
+   
+   

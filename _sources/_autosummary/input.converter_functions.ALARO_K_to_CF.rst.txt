@@ -1,0 +1,6 @@
+input.converter\_functions.ALARO\_K\_to\_CF
+===========================================
+
+.. currentmodule:: input.converter_functions
+
+.. autofunction:: ALARO_K_to_CF

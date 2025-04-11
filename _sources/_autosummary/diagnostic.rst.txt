@@ -1,0 +1,36 @@
+diagnostic
+==========
+
+.. automodule:: diagnostic
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   diagnostic
+   functions
+   plot_utils
+   visualizations
+   wrappers
+

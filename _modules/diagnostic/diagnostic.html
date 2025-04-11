@@ -1,0 +1,1002 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>diagnostic.diagnostic &#8212; ValEnsPy documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=7732bc7b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/diagnostic/diagnostic';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ValEnsPy documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../doc_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribution_pages/index.html">
+    Contributing
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../doc_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribution_pages/index.html">
+    Contributing
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">diagnostic.d...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for diagnostic.diagnostic</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datatree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataTree</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.processing.mask</span><span class="w"> </span><span class="kn">import</span> <span class="n">add_prudence_regions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic.plot_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_augment_kwargs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">valenspy._utilities</span><span class="w"> </span><span class="kn">import</span> <span class="n">generate_parameters_doc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+
+<span class="c1">#Import get_axis from xarray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">xarray.plot.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_axis</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+
+<div class="viewcode-block" id="Diagnostic">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Diagnostic.html#diagnostic.diagnostic.Diagnostic">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Diagnostic</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An abstract class representing a diagnostic.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Diagnostic.__init__">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Diagnostic.html#diagnostic.diagnostic.Diagnostic.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Diagnostic.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        diagnostic_function</span>
+<span class="sd">            The function that applies a diagnostic to the data.</span>
+<span class="sd">        plotting_function</span>
+<span class="sd">            The function that visualizes the results of the diagnostic.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the diagnostic.</span>
+<span class="sd">        description : str</span>
+<span class="sd">            The description of the diagnostic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span> <span class="o">=</span> <span class="n">diagnostic_function</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span> <span class="o">=</span> <span class="n">plotting_function</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__signature__</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+
+<div class="viewcode-block" id="Diagnostic.apply">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Diagnostic.html#diagnostic.diagnostic.Diagnostic.apply">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to the data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        data</span>
+<span class="sd">            The data to apply the diagnostic to. Data can be an xarray DataTree, Dataset or DataArray.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Results</span>
+<span class="sd">            The data after applying the diagnostic either as a DataTree, Dataset, DataArray, Scalar, or a pandas DataFrame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Diagnostic.plot">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Diagnostic.html#diagnostic.diagnostic.Diagnostic.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the diagnostic. Single ax plots.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        result : xr.Dataset or xr.DataArray or DataTree</span>
+<span class="sd">            The output of the diagnostic function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ax : matplotlib.axis.Axis</span>
+<span class="sd">            The axis (singular) of the plot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the docstring for the diagnostic.&quot;&quot;&quot;</span>
+        <span class="n">name_no_spaces</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">generate_parameters_doc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">)</span>
+        <span class="n">see_also</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;See also</span><span class="se">\n</span><span class="s2">--------</span><span class="se">\n</span><span class="s2">:py:class:`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">`, :func:`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">`,:func:`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">` : Plotting function</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Examples</span><span class="se">\n</span><span class="s2">--------</span><span class="se">\n</span><span class="s2">&gt;&gt;&gt; from valenspy.diagnostic import </span><span class="si">{</span><span class="n">name_no_spaces</span><span class="si">}</span><span class="se">\n</span><span class="s2">&gt;&gt;&gt; result = </span><span class="si">{</span><span class="n">name_no_spaces</span><span class="si">}</span><span class="s2">(ds)</span><span class="se">\n</span><span class="s2">&gt;&gt;&gt; </span><span class="si">{</span><span class="n">name_no_spaces</span><span class="si">}</span><span class="s2">.plot(result)</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="n">docstring</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">title</span><span class="si">}{</span><span class="n">description</span><span class="si">}{</span><span class="n">params</span><span class="si">}{</span><span class="n">see_also</span><span class="si">}{</span><span class="n">examples</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataSetDiagnostic">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.DataSetDiagnostic.html#diagnostic.diagnostic.DataSetDiagnostic">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DataSetDiagnostic</span><span class="p">(</span><span class="n">Diagnostic</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a diagnostic that operates on the level of single datasets.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DataSetDiagnostic.__init__">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.DataSetDiagnostic.html#diagnostic.diagnostic.DataSetDiagnostic.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;single&quot;</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the DataSetDiagnostic.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        plot_type : str</span>
+<span class="sd">            The type of plot to create. Options are &quot;single&quot; or &quot;facetted&quot;.</span>
+<span class="sd">            If &quot;single&quot;, plot_dt will plot all the leaves of the DataTree on the same axis.</span>
+<span class="sd">            If &quot;facetted&quot;, plot_dt will plot all the leaves of the DataTree on different axes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_type</span> <span class="o">=</span> <span class="n">plot_type</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">DataTree</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_dt</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="DataSetDiagnostic.apply_dt">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.DataSetDiagnostic.html#diagnostic.diagnostic.DataSetDiagnostic.apply_dt">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_dt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to a DataTree by iterating over the each dataset in the tree.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dt : DataTree</span>
+<span class="sd">            The data to apply the diagnostic to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataTree</span>
+<span class="sd">            The data after applying the diagnostic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">map_over_subtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">apply</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataSetDiagnostic.plot_dt">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.DataSetDiagnostic.html#diagnostic.diagnostic.DataSetDiagnostic.plot_dt">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_dt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_type</span> <span class="o">==</span> <span class="s2">&quot;single&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_dt_single</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_type</span> <span class="o">==</span> <span class="s2">&quot;facetted&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_dt_facetted</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DataSetDiagnostic.plot_dt_single">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.DataSetDiagnostic.html#diagnostic.diagnostic.DataSetDiagnostic.plot_dt_single">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_dt_single</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot the diagnostic by iterating over the leaves of a DataTree.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dt : DataTree</span>
+<span class="sd">            The DataTree to plot.</span>
+<span class="sd">        var : str</span>
+<span class="sd">            The variable to plot.</span>
+<span class="sd">        ax : matplotlib.axis.Axis</span>
+<span class="sd">            The axis to plot on.</span>
+<span class="sd">        label : str</span>
+<span class="sd">            The attribute of the DataTree nodes to use as a title for the plots.</span>
+<span class="sd">        colors : dict or list</span>
+<span class="sd">            The colors to use for the different leaves of the DataTree.</span>
+<span class="sd">            Either a dictionary with the colors as values and the DataTree paths as keys or a list of colors.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Keyword arguments to pass to the plotting function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ax : matplotlib.axis.Axis</span>
+<span class="sd">            The axis of the plot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">colors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">colors</span> <span class="o">=</span> <span class="p">{</span><span class="n">dt_leave</span><span class="o">.</span><span class="n">path</span><span class="p">:</span> <span class="n">color</span> <span class="k">for</span> <span class="n">dt_leave</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dt</span><span class="o">.</span><span class="n">leaves</span><span class="p">,</span> <span class="n">colors</span><span class="p">)}</span>
+
+        <span class="k">for</span> <span class="n">dt_leave</span> <span class="ow">in</span> <span class="n">dt</span><span class="o">.</span><span class="n">leaves</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;label&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dt_leave</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">colors</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">dt_leave</span><span class="o">.</span><span class="n">path</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dt_leave</span><span class="p">[</span><span class="n">var</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+        
+<div class="viewcode-block" id="DataSetDiagnostic.plot_dt_facetted">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.DataSetDiagnostic.html#diagnostic.diagnostic.DataSetDiagnostic.plot_dt_facetted">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_dt_facetted</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="n">shared_cbar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot the diagnostic by iterating over the leaves of a DataTree.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dt : DataTree</span>
+<span class="sd">            The DataTree to plot.</span>
+<span class="sd">        var : str</span>
+<span class="sd">            The variable to plot.</span>
+<span class="sd">        axes : np.ndarray</span>
+<span class="sd">            The axes to plot on.</span>
+<span class="sd">        label : str</span>
+<span class="sd">            The attribute of the DataTree nodes to use as a title for the plots.</span>
+<span class="sd">        shared_cbar : str</span>
+<span class="sd">            How to handle the vmin and vmax of the plot. Options are None, &quot;min_max&quot;, &quot;abs&quot;.</span>
+<span class="sd">            If None, the vmin and vmax are not automatically set. Passing the vmin and vmax as kwargs will still result in shared colorbars. </span>
+<span class="sd">            If &quot;min_max&quot;, the vmin and vmax are set respectively to the minimum and maximum over all the leaves of the DataTree. </span>
+<span class="sd">            If &quot;abs&quot;, the vmin and vmax are set to the maximum of the absolute value of the minimum and maximum over all the leaves of the DataTree.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Keyword arguments to pass to the plotting function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        axes : np.ndarray</span>
+<span class="sd">            The axes of the plot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#Flatten the axes if needed</span>
+        <span class="c1">#Add option if axes is not provided to create new axes</span>
+
+        <span class="k">if</span> <span class="n">shared_cbar</span><span class="p">:</span>
+            <span class="nb">max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">dt</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">leaves</span><span class="p">])</span>
+            <span class="nb">min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">dt</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">leaves</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">shared_cbar</span> <span class="o">==</span> <span class="s2">&quot;min_max&quot;</span><span class="p">:</span>
+                <span class="n">kwargs</span> <span class="o">=</span> <span class="n">_augment_kwargs</span><span class="p">({</span><span class="s2">&quot;vmin&quot;</span><span class="p">:</span> <span class="nb">min</span><span class="p">,</span> <span class="s2">&quot;vmax&quot;</span><span class="p">:</span> <span class="nb">max</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">shared_cbar</span> <span class="o">==</span> <span class="s2">&quot;abs&quot;</span><span class="p">:</span>
+                <span class="n">abs_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="nb">min</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="nb">max</span><span class="p">)])</span>
+                <span class="n">kwargs</span> <span class="o">=</span> <span class="n">_augment_kwargs</span><span class="p">({</span><span class="s2">&quot;vmin&quot;</span><span class="p">:</span> <span class="o">-</span><span class="n">abs_max</span><span class="p">,</span> <span class="s2">&quot;vmax&quot;</span><span class="p">:</span> <span class="n">abs_max</span><span class="p">},</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">dt_leave</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">dt</span><span class="o">.</span><span class="n">leaves</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">label</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dt_leave</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dt_leave</span><span class="p">[</span><span class="n">var</span><span class="p">],</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">axes</span></div>
+</div>
+
+
+<div class="viewcode-block" id="Model2Self">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Model2Self.html#diagnostic.diagnostic.Model2Self">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Model2Self</span><span class="p">(</span><span class="n">DataSetDiagnostic</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a diagnostic that compares a model to itself.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Model2Self.__init__">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Model2Self.html#diagnostic.diagnostic.Model2Self.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;single&quot;</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Model2Self diagnostic.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">plot_type</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Model2Self.apply">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Model2Self.html#diagnostic.diagnostic.Model2Self.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to the data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ds : xr.Dataset</span>
+<span class="sd">            The data to apply the diagnostic to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xr.Dataset</span>
+<span class="sd">            The data after applying the diagnostic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mask</span> <span class="o">==</span> <span class="s2">&quot;prudence&quot;</span><span class="p">:</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">add_prudence_regions</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Model2Self.apply_dt">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Model2Self.html#diagnostic.diagnostic.Model2Self.apply_dt">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_dt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply the diagnostic to a DataTree.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dt : DataTree</span>
+<span class="sd">            The DataTree to apply the diagnostic to.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataTree</span>
+<span class="sd">            The DataTree after applying the diagnostic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mask</span> <span class="o">==</span> <span class="s2">&quot;prudence&quot;</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">map_over_subtree</span><span class="p">(</span><span class="n">add_prudence_regions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">map_over_subtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Model2Ref">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Model2Ref.html#diagnostic.diagnostic.Model2Ref">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Model2Ref</span><span class="p">(</span><span class="n">DataSetDiagnostic</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a diagnostic that compares a model to a reference.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Model2Ref.__init__">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Model2Ref.html#diagnostic.diagnostic.Model2Ref.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;facetted&quot;</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Model2Ref diagnostic.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">plot_type</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Model2Ref.apply">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Model2Ref.html#diagnostic.diagnostic.Model2Ref.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to the data. Only the common variables between the data and the reference are used.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ds : xr.Dataset</span>
+<span class="sd">            The data to apply the diagnostic to.</span>
+<span class="sd">        ref : xr.Dataset</span>
+<span class="sd">            The reference data to compare the data to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        xr.Dataset</span>
+<span class="sd">            The data after applying the diagnostic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mask</span> <span class="o">==</span> <span class="s2">&quot;prudence&quot;</span><span class="p">:</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="n">add_prudence_regions</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">add_prudence_regions</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+
+        <span class="n">ds</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">_select_common_vars</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ref</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Model2Ref.apply_dt">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Model2Ref.html#diagnostic.diagnostic.Model2Ref.apply_dt">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_dt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply the diagnostic to a DataTree.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dt : DataTree</span>
+<span class="sd">            The DataTree to apply the diagnostic to.</span>
+<span class="sd">        ref : xr.Dataset</span>
+<span class="sd">            The reference data to compare the data to.</span>
+<span class="sd">            </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataTree</span>
+<span class="sd">            The DataTree after applying the diagnostic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mask</span> <span class="o">==</span> <span class="s2">&quot;prudence&quot;</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">map_over_subtree</span><span class="p">(</span><span class="n">add_prudence_regions</span><span class="p">)</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">add_prudence_regions</span><span class="p">(</span><span class="n">ref</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dt</span><span class="o">.</span><span class="n">map_over_subtree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="Ensemble2Self">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Ensemble2Self.html#diagnostic.diagnostic.Ensemble2Self">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Ensemble2Self</span><span class="p">(</span><span class="n">Diagnostic</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a diagnostic that compares an ensemble to itself.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Ensemble2Self.__init__">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Ensemble2Self.html#diagnostic.diagnostic.Ensemble2Self.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">iterative_plotting</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Ensemble2Self diagnostic.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterative_plotting</span> <span class="o">=</span> <span class="n">iterative_plotting</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span></div>
+
+        
+
+<div class="viewcode-block" id="Ensemble2Self.apply">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Ensemble2Self.html#diagnostic.diagnostic.Ensemble2Self.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to the data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dt : DataTree</span>
+<span class="sd">            The data to apply the diagnostic to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataTree or dict</span>
+<span class="sd">            The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">mask</span> <span class="o">==</span> <span class="s2">&quot;prudence&quot;</span><span class="p">:</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">map_over_subtree</span><span class="p">(</span><span class="n">add_prudence_regions</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Ensemble2Self.plot">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Ensemble2Self.html#diagnostic.diagnostic.Ensemble2Self.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the diagnostic.</span>
+
+<span class="sd">        If facetted multiple plots on different axes are created. If not facetted, the plots are created on the same axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        result : DataTree</span>
+<span class="sd">            The result of applying the ensemble diagnostic to a DataTree.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Figure</span>
+<span class="sd">            The figure representing the diagnostic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterative_plotting</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">facetted</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;facetted is ignored when using a non-iterative plotting function.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_non_iterative</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">variables</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variables must be provided when using an iterative plotting function. The variables can be a list of variables to plot or a single variable to plot.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plot_iterative</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="n">variables</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="n">facetted</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="Ensemble2Ref">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Ensemble2Ref.html#diagnostic.diagnostic.Ensemble2Ref">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Ensemble2Ref</span><span class="p">(</span><span class="n">Diagnostic</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class representing a diagnostic that compares an ensemble to a reference.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Ensemble2Ref.__init__">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Ensemble2Ref.html#diagnostic.diagnostic.Ensemble2Ref.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the Ensemble2Ref diagnostic.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">diagnostic_function</span><span class="p">,</span> <span class="n">plotting_function</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Ensemble2Ref.apply">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Ensemble2Ref.html#diagnostic.diagnostic.Ensemble2Ref.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="n">DataTree</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the diagnostic to the data.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dt : DataTree</span>
+<span class="sd">            The data to apply the diagnostic to.</span>
+<span class="sd">        ref : xr.DataSet or DataTree</span>
+<span class="sd">            The reference data to compare the data to.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DataTree or dict</span>
+<span class="sd">            The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_function</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Ensemble2Ref.plot">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.Ensemble2Ref.html#diagnostic.diagnostic.Ensemble2Ref.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">facetted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot the diagnostic.</span>
+
+<span class="sd">        If axes are provided, the diagnostic is plotted facetted. If ax is provided, the diagnostic is plotted non-facetted. </span>
+<span class="sd">        If neither axes nor ax are provided, the diagnostic is plotted on the current axis and no facetting is applied.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        result : DataTree</span>
+<span class="sd">            The result of applying the ensemble diagnostic to a DataTree.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Figure</span>
+<span class="sd">            The figure representing the diagnostic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;ax&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="s2">&quot;axes&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Either ax or axes can be provided, not both.&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;ax&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="s2">&quot;axes&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotting_function</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</div>
+
+
+<div class="viewcode-block" id="_common_vars">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.html#diagnostic.diagnostic._common_vars">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_common_vars</span><span class="p">(</span><span class="n">ds1</span><span class="p">,</span> <span class="n">ds2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the common variables in two datasets.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="n">ds1</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ds2</span><span class="o">.</span><span class="n">data_vars</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="_select_common_vars">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.html#diagnostic.diagnostic._select_common_vars">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_select_common_vars</span><span class="p">(</span><span class="n">ds1</span><span class="p">,</span> <span class="n">ds2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Select the common variables in two datasets.&quot;&quot;&quot;</span>
+    <span class="n">common_vars</span> <span class="o">=</span> <span class="n">_common_vars</span><span class="p">(</span><span class="n">ds1</span><span class="p">,</span> <span class="n">ds2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ds1</span><span class="p">[</span><span class="n">common_vars</span><span class="p">],</span> <span class="n">ds2</span><span class="p">[</span><span class="n">common_vars</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="_initialize_multiaxis_plot">
+<a class="viewcode-back" href="../../_autosummary/diagnostic.diagnostic.html#diagnostic.diagnostic._initialize_multiaxis_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">_initialize_multiaxis_plot</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">subplot_kws</span><span class="o">=</span><span class="p">{}):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize a multi-axis plot.&quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span>
+            <span class="n">nrows</span><span class="o">=</span><span class="n">n</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">n</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="n">subplot_kws</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Cordex-BE team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

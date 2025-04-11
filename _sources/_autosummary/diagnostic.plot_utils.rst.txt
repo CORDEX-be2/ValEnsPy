@@ -1,0 +1,30 @@
+diagnostic.plot\_utils
+======================
+
+.. automodule:: diagnostic.plot_utils
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      default_plot_kwargs
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

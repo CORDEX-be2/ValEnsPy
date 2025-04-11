@@ -1,0 +1,6 @@
+diagnostic.wrappers.required\_variables
+=======================================
+
+.. currentmodule:: diagnostic.wrappers
+
+.. autofunction:: required_variables

@@ -1,0 +1,34 @@
+processing.select
+=================
+
+.. automodule:: processing.select
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      convert_geo_to_LCC
+      convert_geo_to_rot
+      get_shapefile_mask
+      select_point
+      select_region
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

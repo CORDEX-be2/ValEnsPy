@@ -1,0 +1,976 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>API reference &#8212; ValEnsPy documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css?v=7732bc7b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/jquery.js?v=5d32c60e"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="input" href="_autosummary/input.html" />
+    <link rel="prev" title="Making a diagnostic" href="doc_examples/making_a_diagnostic.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ValEnsPy documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="doc_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contribution_pages/index.html">
+    Contributing
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="doc_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contribution_pages/index.html">
+    Contributing
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/input.html">input</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/input.converter.html">input.converter</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/input.converter.InputConverter.html">input.converter.InputConverter</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/input.converter_functions.html">input.converter_functions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/input.converter_functions.ALARO_K_to_CF.html">input.converter_functions.ALARO_K_to_CF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/input.converter_functions.CCLM_to_CF.html">input.converter_functions.CCLM_to_CF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/input.converter_functions.EOBS_to_CF.html">input.converter_functions.EOBS_to_CF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/input.converter_functions.ERA5_to_CF.html">input.converter_functions.ERA5_to_CF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/input.converter_functions.MAR_to_CF.html">input.converter_functions.MAR_to_CF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/input.converter_functions.RADCLIM_to_CF.html">input.converter_functions.RADCLIM_to_CF</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/input.manager.html">input.manager</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/input.manager.InputManager.html">input.manager.InputManager</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/processing.html">processing</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/processing.indicators.html">processing.indicators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/processing.indicators.xclim_indicator.html">processing.indicators.xclim_indicator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/processing.mask.html">processing.mask</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/processing.mask.add_prudence_regions.html">processing.mask.add_prudence_regions</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/processing.regrid.html">processing.regrid</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/processing.regrid.remap_xesmf.html">processing.regrid.remap_xesmf</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/processing.select.html">processing.select</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/processing.select.convert_geo_to_LCC.html">processing.select.convert_geo_to_LCC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/processing.select.convert_geo_to_rot.html">processing.select.convert_geo_to_rot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/processing.select.get_shapefile_mask.html">processing.select.get_shapefile_mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/processing.select.select_point.html">processing.select.select_point</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/processing.select.select_region.html">processing.select.select_region</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/processing.units.html">processing.units</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/processing.units.convert_units_to.html">processing.units.convert_units_to</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/diagnostic.html">diagnostic</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/diagnostic.diagnostic.html">diagnostic.diagnostic</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.diagnostic.DataSetDiagnostic.html">diagnostic.diagnostic.DataSetDiagnostic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.diagnostic.Diagnostic.html">diagnostic.diagnostic.Diagnostic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.diagnostic.Ensemble2Ref.html">diagnostic.diagnostic.Ensemble2Ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.diagnostic.Ensemble2Self.html">diagnostic.diagnostic.Ensemble2Self</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.diagnostic.Model2Ref.html">diagnostic.diagnostic.Model2Ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.diagnostic.Model2Self.html">diagnostic.diagnostic.Model2Self</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/diagnostic.functions.html">diagnostic.functions</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.annual_cycle.html">diagnostic.functions.annual_cycle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.bias.html">diagnostic.functions.bias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.calc_metrics_da.html">diagnostic.functions.calc_metrics_da</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.calc_metrics_ds.html">diagnostic.functions.calc_metrics_ds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.calc_metrics_dt.html">diagnostic.functions.calc_metrics_dt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.diurnal_cycle.html">diagnostic.functions.diurnal_cycle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.diurnal_cycle_bias.html">diagnostic.functions.diurnal_cycle_bias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.get_userdefined_binwidth.html">diagnostic.functions.get_userdefined_binwidth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.mean_absolute_error.html">diagnostic.functions.mean_absolute_error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.mean_bias.html">diagnostic.functions.mean_bias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.optimal_bin_width.html">diagnostic.functions.optimal_bin_width</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.perkins_skill_score.html">diagnostic.functions.perkins_skill_score</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.perkins_skill_score_value.html">diagnostic.functions.perkins_skill_score_value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.root_mean_square_error.html">diagnostic.functions.root_mean_square_error</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.spatial_bias.html">diagnostic.functions.spatial_bias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.spatial_time_mean.html">diagnostic.functions.spatial_time_mean</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.spearman_correlation.html">diagnostic.functions.spearman_correlation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.temporal_bias.html">diagnostic.functions.temporal_bias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.time_series_spatial_mean.html">diagnostic.functions.time_series_spatial_mean</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.time_series_trend.html">diagnostic.functions.time_series_trend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.urban_heat_island.html">diagnostic.functions.urban_heat_island</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.functions.urban_heat_island_diurnal_cycle.html">diagnostic.functions.urban_heat_island_diurnal_cycle</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/diagnostic.plot_utils.html">diagnostic.plot_utils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.plot_utils.default_plot_kwargs.html">diagnostic.plot_utils.default_plot_kwargs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/diagnostic.visualizations.html">diagnostic.visualizations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.visualizations.create_custom_cmap.html">diagnostic.visualizations.create_custom_cmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.visualizations.plot_annual_cycle.html">diagnostic.visualizations.plot_annual_cycle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.visualizations.plot_diurnal_cycle.html">diagnostic.visualizations.plot_diurnal_cycle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.visualizations.plot_map.html">diagnostic.visualizations.plot_map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.visualizations.plot_maps_mod_ref_diff.html">diagnostic.visualizations.plot_maps_mod_ref_diff</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.visualizations.plot_metric_ranking.html">diagnostic.visualizations.plot_metric_ranking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.visualizations.plot_points_on_map.html">diagnostic.visualizations.plot_points_on_map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.visualizations.plot_time_series.html">diagnostic.visualizations.plot_time_series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.visualizations.plot_time_series_mod_ref.html">diagnostic.visualizations.plot_time_series_mod_ref</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.visualizations.visualize_perkins_skill_score.html">diagnostic.visualizations.visualize_perkins_skill_score</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/diagnostic.wrappers.html">diagnostic.wrappers</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.wrappers.acceptable_variables.html">diagnostic.wrappers.acceptable_variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/diagnostic.wrappers.required_variables.html">diagnostic.wrappers.required_variables</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">API reference</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <span class="target" id="api-docs"></span><section id="api-reference">
+<h1>API reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h1>
+<p>This page gives an overview of all ValEnsPy objects, functions, and methods. All classes and functions exposed in <a class="reference internal" href="index.html#valenspy"><span class="std std-ref">ValEnsPy</span></a>.* are public API.</p>
+<section id="modules">
+<h2>Modules<a class="headerlink" href="#modules" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/input.html#module-input" title="input"><code class="xref py py-obj docutils literal notranslate"><span class="pre">input</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/processing.html#module-processing" title="processing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">processing</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/diagnostic.html#module-diagnostic" title="diagnostic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagnostic</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="pre-made-diagnostic">
+<h2>Pre-made Diagnostic<a class="headerlink" href="#pre-made-diagnostic" title="Link to this heading">#</a></h2>
+<p>Most users will use pre-made diagnostics. They are organized into four categories and listed below.</p>
+<section id="model2self">
+<h3>Model2Self<a class="headerlink" href="#model2self" title="Link to this heading">#</a></h3>
+<p>See <code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Self</span></code> for all shared functionality.</p>
+<dl class="py diagnostic" id="module-diagnostic._model2self">
+<dt class="sig sig-object py" id="diagnostic._model2self.AnnualCycle">
+<span class="sig-name descname"><span class="pre">AnnualCycle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._model2self.AnnualCycle" title="Link to this definition">#</a></dt>
+<dd><p>Annual Cycle - Model2Self</p>
+<p>The annual cycle of the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ds</strong> (<em>Dataset</em>) – The data to calculate the annual cycle of.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Self</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.annual_cycle</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_annual_cycle</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnnualCycle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">AnnualCycle</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AnnualCycle</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py diagnostic">
+<dt class="sig sig-object py" id="diagnostic._model2self.DiurnalCycle">
+<span class="sig-name descname"><span class="pre">DiurnalCycle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._model2self.DiurnalCycle" title="Link to this definition">#</a></dt>
+<dd><p>Diurnal Cycle - Model2Self</p>
+<p>The diurnal cycle of the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ds</strong> (<em>Dataset</em>) – The data to calculate the diurnal cycle of.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Self</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.diurnal_cycle</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_diurnal_cycle</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiurnalCycle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">DiurnalCycle</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DiurnalCycle</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py diagnostic">
+<dt class="sig sig-object py" id="diagnostic._model2self.SpatialTimeMean">
+<span class="sig-name descname"><span class="pre">SpatialTimeMean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._model2self.SpatialTimeMean" title="Link to this definition">#</a></dt>
+<dd><p>Spatial Mean - Model2Self</p>
+<p>The spatial representation of the time mean of the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ds</strong> (<em>Dataset</em>) – The data to calculate the spatial mean of.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Self</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.spatial_time_mean</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_map</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpatialMean</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">SpatialMean</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SpatialMean</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py diagnostic">
+<dt class="sig sig-object py" id="diagnostic._model2self.TimeSeriesSpatialMean">
+<span class="sig-name descname"><span class="pre">TimeSeriesSpatialMean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._model2self.TimeSeriesSpatialMean" title="Link to this definition">#</a></dt>
+<dd><p>Time Series - Model2Self</p>
+<p>The time series of the data - if the data is spatial, the spatial mean is taken.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ds</strong> (<em>Dataset</em>) – The data to calculate the time series of the spatial mean of.</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Self</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.time_series_spatial_mean</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_time_series</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeSeries</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TimeSeries</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py diagnostic">
+<dt class="sig sig-object py" id="diagnostic._model2self.TimeSeriesTrendSpatialMean">
+<span class="sig-name descname"><span class="pre">TimeSeriesTrendSpatialMean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_periods</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">window_kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._model2self.TimeSeriesTrendSpatialMean" title="Link to this definition">#</a></dt>
+<dd><p>Time Series Trend - Model2Self</p>
+<p>The time series trend of the data - if the data is spatial, the spatial mean is taken.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ds</strong> (<em>Dataset</em>) – The data to calculate the trend of.</p></li>
+<li><p><strong>window_size</strong> (<em>Any</em>) – The size - in number of time steps - of the window to use for the rolling average.</p></li>
+<li><p><strong>min_periods</strong> (<em>int</em><em>, </em><em>default=None</em>) – The minimum number of periods required for a value to be considered valid, by default None</p></li>
+<li><p><strong>center</strong> (<em>bool</em><em>, </em><em>default=True</em>) – If True, the value is placed in the center of the window, by default True</p></li>
+<li><p><strong>**window_kwargs</strong> (<em>Any</em>) – Description of window_kwargs.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Self</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.time_series_trend</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_time_series</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">TimeSeriesTrend</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">TimeSeriesTrend</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TimeSeriesTrend</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py diagnostic">
+<dt class="sig sig-object py" id="diagnostic._model2self.UrbanHeatIsland">
+<span class="sig-name descname"><span class="pre">UrbanHeatIsland</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">urban_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rural_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._model2self.UrbanHeatIsland" title="Link to this definition">#</a></dt>
+<dd><p>Urban Heat Island - Model2Self</p>
+<p>The urban heat island as the difference in temperature between urban and rural areas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ds</strong> (<em>Dataset</em>) – The data to calculate the urban heat island effect of.</p></li>
+<li><p><strong>urban_coord</strong> (<em>tuple</em>) – The coordinates of the urban area in the format (lat, lon).</p></li>
+<li><p><strong>rural_coord</strong> (<em>tuple</em>) – The coordinates of the rural area in the format (lat, lon).</p></li>
+<li><p><strong>projection</strong> (<em>Any</em><em>, </em><em>default=None</em>) – The projection used to convert the urban and rural coordinates to the dataset’s projection.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Self</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.urban_heat_island</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_time_series</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">UrbanHeatIsland</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">UrbanHeatIsland</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UrbanHeatIsland</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py diagnostic">
+<dt class="sig sig-object py" id="diagnostic._model2self.UrbanHeatIslandDiurnalCycle">
+<span class="sig-name descname"><span class="pre">UrbanHeatIslandDiurnalCycle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">urban_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rural_coord</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._model2self.UrbanHeatIslandDiurnalCycle" title="Link to this definition">#</a></dt>
+<dd><p>Urban Heat Island Diurnal Cycle - Model2Self</p>
+<p>The diurnal cycle of the urban heat island.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ds</strong> (<em>Dataset</em>) – The data to calculate the urban heat island effect of.</p></li>
+<li><p><strong>urban_coord</strong> (<em>tuple</em>) – The coordinates of the urban area in the format (lat, lon).</p></li>
+<li><p><strong>rural_coord</strong> (<em>tuple</em>) – The coordinates of the rural area in the format (lat, lon).</p></li>
+<li><p><strong>projection</strong> (<em>Any</em><em>, </em><em>default=None</em>) – The projection used to convert the urban and rural coordinates to the dataset’s projection.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Self</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.urban_heat_island_diurnal_cycle</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_diurnal_cycle</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">UrbanHeatIslandDiurnalCycle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">UrbanHeatIslandDiurnalCycle</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UrbanHeatIslandDiurnalCycle</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="model2ref">
+<h3>Model2Ref<a class="headerlink" href="#model2ref" title="Link to this heading">#</a></h3>
+<p>See <code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Ref</span></code> for all shared functionality.</p>
+<dl class="py diagnostic" id="module-diagnostic._model2ref">
+<dt class="sig sig-object py" id="diagnostic._model2ref.DiurnalCycleBias">
+<span class="sig-name descname"><span class="pre">DiurnalCycleBias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._model2ref.DiurnalCycleBias" title="Link to this definition">#</a></dt>
+<dd><p>Diurnal Cycle Bias - Model2Ref</p>
+<p>The diurnal cycle bias of the data compared to the reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ds</strong> (<em>Dataset</em>) – The data to calculate the diurnal cycle bias of.</p></li>
+<li><p><strong>ref</strong> (<em>Dataset</em>) – The reference data to compare the data to.</p></li>
+<li><p><strong>calc_relative</strong> (<em>Any</em><em>, </em><em>default=False</em>) – If True, return the calc_relative bias, by default False</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Ref</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.diurnal_cycle_bias</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_diurnal_cycle</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiurnalCycleBias</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">DiurnalCycleBias</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">DiurnalCycleBias</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py diagnostic">
+<dt class="sig sig-object py" id="diagnostic._model2ref.SpatialBias">
+<span class="sig-name descname"><span class="pre">SpatialBias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._model2ref.SpatialBias" title="Link to this definition">#</a></dt>
+<dd><p>Spatial Bias - Model2Ref</p>
+<p>The spatial bias of the data compared to the reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ds</strong> (<em>Dataset</em>) – The data to calculate the spatial bias of.</p></li>
+<li><p><strong>ref</strong> (<em>Dataset</em>) – The reference data to compare the data to.</p></li>
+<li><p><strong>calc_relative</strong> (<em>Any</em><em>, </em><em>default=False</em>) – If True, return the relative bias, if False return the absolute bias, by default False</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Ref</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.spatial_bias</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_map</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpatialBias</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">SpatialBias</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SpatialBias</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py diagnostic">
+<dt class="sig sig-object py" id="diagnostic._model2ref.TemporalBias">
+<span class="sig-name descname"><span class="pre">TemporalBias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._model2ref.TemporalBias" title="Link to this definition">#</a></dt>
+<dd><p>Temporal Bias - Model2Ref</p>
+<p>The temporal bias of the data compared to the reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ds</strong> (<em>Dataset</em>) – The data to calculate the temporal bias of.</p></li>
+<li><p><strong>ref</strong> (<em>Dataset</em>) – The reference data to compare the data to.</p></li>
+<li><p><strong>calc_relative</strong> (<em>Any</em><em>, </em><em>default=False</em>) – If True, return the relative bias, if False return the absolute bias, by default False</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Model2Ref</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.temporal_bias</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_time_series</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemporalBias</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">TemporalBias</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">TemporalBias</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="ensemble2self">
+<h3>Ensemble2Self<a class="headerlink" href="#ensemble2self" title="Link to this heading">#</a></h3>
+<p>See <code class="xref py py-class docutils literal notranslate"><span class="pre">Ensemble2Self</span></code> for all shared functionality.</p>
+</section>
+<section id="ensemble2ref">
+<span id="module-diagnostic._ensemble2self"></span><h3>Ensemble2Ref<a class="headerlink" href="#ensemble2ref" title="Link to this heading">#</a></h3>
+<p>See <code class="xref py py-class docutils literal notranslate"><span class="pre">Ensemble2Self</span></code> for all shared functionality.</p>
+<dl class="py diagnostic" id="module-diagnostic._ensemble2ref">
+<dt class="sig sig-object py" id="diagnostic._ensemble2ref.MetricsRankings">
+<span class="sig-name descname"><span class="pre">MetricsRankings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt_mod</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://xarray-datatree.readthedocs.io/en/latest/generated/datatree.DataTree.html#datatree.DataTree" title="(in Datatree v0.0.15.dev3+g5f3956f.d20241024)"><span class="pre">DataTree</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">da_obs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2025.3.2.dev0)"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pss_binwidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#diagnostic._ensemble2ref.MetricsRankings" title="Link to this definition">#</a></dt>
+<dd><p>Metrics Rankings - Ensemble2Ref</p>
+<p>The rankings of ensemble members with respect to several metrics when compared to the reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt_mod</strong> (<em>DataTree</em>) – Description of dt_mod.</p></li>
+<li><p><strong>da_obs</strong> (<em>Dataset</em>) – Description of da_obs.</p></li>
+<li><p><strong>metrics</strong> (<em>Any</em><em>, </em><em>default=None</em>) – Description of metrics.</p></li>
+<li><p><strong>pss_binwidth</strong> (<em>Any</em><em>, </em><em>default=None</em>) – Description of pss_binwidth.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">Ensemble2Ref</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.functions.calc_metrics_dt</span></code>, <code class="xref py py-func docutils literal notranslate"><span class="pre">valenspy.diagnostic.visualizations.plot_metric_ranking</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">valenspy.diagnostic</span><span class="w"> </span><span class="kn">import</span> <span class="n">MetricsRankings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">MetricsRankings</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MetricsRankings</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="doc_examples/making_a_diagnostic.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Making a diagnostic</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="_autosummary/input.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">input</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modules">Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-made-diagnostic">Pre-made Diagnostic</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model2self">Model2Self</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._model2self.AnnualCycle"><code class="docutils literal notranslate"><span class="pre">AnnualCycle</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._model2self.DiurnalCycle"><code class="docutils literal notranslate"><span class="pre">DiurnalCycle</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._model2self.SpatialTimeMean"><code class="docutils literal notranslate"><span class="pre">SpatialTimeMean</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._model2self.TimeSeriesSpatialMean"><code class="docutils literal notranslate"><span class="pre">TimeSeriesSpatialMean</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._model2self.TimeSeriesTrendSpatialMean"><code class="docutils literal notranslate"><span class="pre">TimeSeriesTrendSpatialMean</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._model2self.UrbanHeatIsland"><code class="docutils literal notranslate"><span class="pre">UrbanHeatIsland</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._model2self.UrbanHeatIslandDiurnalCycle"><code class="docutils literal notranslate"><span class="pre">UrbanHeatIslandDiurnalCycle</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model2ref">Model2Ref</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._model2ref.DiurnalCycleBias"><code class="docutils literal notranslate"><span class="pre">DiurnalCycleBias</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._model2ref.SpatialBias"><code class="docutils literal notranslate"><span class="pre">SpatialBias</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._model2ref.TemporalBias"><code class="docutils literal notranslate"><span class="pre">TemporalBias</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble2self">Ensemble2Self</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble2ref">Ensemble2Ref</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostic._ensemble2ref.MetricsRankings"><code class="docutils literal notranslate"><span class="pre">MetricsRankings</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/api.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Cordex-BE team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

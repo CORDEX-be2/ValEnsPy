@@ -1,0 +1,30 @@
+processing.indicators
+=====================
+
+.. automodule:: processing.indicators
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      xclim_indicator
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

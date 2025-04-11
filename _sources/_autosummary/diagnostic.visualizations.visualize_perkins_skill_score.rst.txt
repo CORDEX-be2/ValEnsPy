@@ -1,0 +1,6 @@
+diagnostic.visualizations.visualize\_perkins\_skill\_score
+==========================================================
+
+.. currentmodule:: diagnostic.visualizations
+
+.. autofunction:: visualize_perkins_skill_score

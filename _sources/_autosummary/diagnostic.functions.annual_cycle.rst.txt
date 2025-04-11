@@ -1,0 +1,6 @@
+diagnostic.functions.annual\_cycle
+==================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: annual_cycle
