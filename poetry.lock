@@ -306,17 +306,17 @@ files = [
 
 [[package]]
 name = "cf-xarray"
-version = "0.9.5"
+version = "0.10.4"
 description = "A convenience wrapper for using CF attributes on xarray objects"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "cf_xarray-0.9.5-py3-none-any.whl", hash = "sha256:b5d9839f8f49ad793a29a1aee725e4372fda4947a1007da123725585f2c3d08a"},
-    {file = "cf_xarray-0.9.5.tar.gz", hash = "sha256:4e8037c19100e8703b75a0f62ea1110182f676d6bbc05d17efeda0e003a5708d"},
+    {file = "cf_xarray-0.10.4-py3-none-any.whl", hash = "sha256:57032b9c78b002545b0dcac7e437ea119d27a7d906f61273188b56f2c3eb02c7"},
+    {file = "cf_xarray-0.10.4.tar.gz", hash = "sha256:047dd732cc7f154c7aa9d5c00b77c64e2c538258f0b6e7565a4b2c7715ee8aba"},
 ]
 
 [package.dependencies]
-xarray = "*"
+xarray = ">=2023.09.0"
 
 [package.extras]
 all = ["matplotlib", "pint (>=0.18,!=0.24.0)", "pooch", "regex", "rich", "shapely"]
@@ -4686,4 +4686,5 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "d6bb2a410bb356093a0244c399fba4745e7ea974d9ba90e0e2605bf3825fb034"
+content-hash = "2b57f68ca8cb55313ae3dcbf21db0bb4b6a0e5a3a74bcc2a9117bab0fb943854"
+
