@@ -294,24 +294,6 @@ srtm = ["beautifulsoup4"]
 test = ["coveralls", "pytest (>=5.1.2)", "pytest-cov", "pytest-mpl (>=0.11)", "pytest-xdist"]
 
 [[package]]
-name = "cdo"
-version = "1.6.1"
-description = "python bindings to CDO"
-optional = false
-python-versions = ">=2.7.0"
-files = [
-    {file = "cdo-1.6.1-py3-none-any.whl", hash = "sha256:772abda398b6a102ff55be19fa7154c65af0bf2132d133bdea651e57a5ba895f"},
-]
-
-[package.dependencies]
-packaging = "*"
-six = "*"
-
-[package.extras]
-numpy-output = ["netCDF4"]
-xarray-output = ["xarray"]
-
-[[package]]
 name = "certifi"
 version = "2025.1.31"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -4507,18 +4489,18 @@ viz = ["matplotlib", "nc-time-axis", "seaborn"]
 
 [[package]]
 name = "xarray-datatree"
-version = "0.0.15"
+version = "0.0.14"
 description = "Hierarchical tree-like data structures for xarray"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "xarray_datatree-0.0.15-py3-none-any.whl", hash = "sha256:190d8262061522eeaaa0dc7058b50df7228a615e6d62761150f093518bdad62c"},
-    {file = "xarray_datatree-0.0.15.tar.gz", hash = "sha256:4e828086d858742e4dec7ed7e9187865d5215302919d0e02a613dce0ff0db003"},
+    {file = "xarray-datatree-0.0.14.tar.gz", hash = "sha256:26169af35b0df0d17652e229cef210decf0711dd88e33419142edc6674113af4"},
+    {file = "xarray_datatree-0.0.14-py3-none-any.whl", hash = "sha256:07f5d0d9a03a3220d732e1c764ee60f2c5110f884a290b2af371f92952379166"},
 ]
 
 [package.dependencies]
 packaging = "*"
-xarray = ">=2023.12.0,<=2024.07.0"
+xarray = ">=2023.12.0"
 
 [[package]]
 name = "xattr"
@@ -4702,4 +4684,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "198e11712735c6d57eda894490f1d1d3d6f945f6bd4102b8d257a50264ad9779"
+content-hash = "d6bb2a410bb356093a0244c399fba4745e7ea974d9ba90e0e2605bf3825fb034"
