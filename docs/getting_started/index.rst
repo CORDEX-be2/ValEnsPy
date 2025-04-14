@@ -8,7 +8,12 @@ A guide to enable you to start productively using ValEnsPy as efficiently as pos
 Installation
 ------------
 
-Valenspy is a pure python package but it has some non-python dependencies (such as ESMpy). The easiest way to install ValEnsPy is to use the conda package manager. If you prefer using pip ensure that you have the required dependencies installed. For help with the install check out the :ref:`advanced installation <advanced_install>` page.
+.. warning::
+    ValEnsPy has ESMF as a non-python dependency. 
+    
+    To install ValEnsPy on Windows see the :ref:`advanced installation page <advanced_install>`.
+
+    When installing ValEnsPy with pip, ensure that ESMF (esmpy) is already installed.
 
 .. grid:: 1 2 2 2
     :gutter: 4
@@ -24,7 +29,8 @@ Valenspy is a pure python package but it has some non-python dependencies (such 
 
         .. code-block:: bash
 
-            #TODO: Add conda install command for non developers
+            #conda install command for non developers
+            #WIP
 
     .. grid-item-card:: Prefer pip?
         :class-card: install-card
@@ -37,7 +43,6 @@ Valenspy is a pure python package but it has some non-python dependencies (such 
 
         .. code-block:: bash
 
-            #Ensure non-python dependencies (ESMpy) are installed, e.g. using conda
             #conda install -c conda-forge esmpy
             pip install valenspy
 
@@ -46,7 +51,7 @@ Valenspy is a pure python package but it has some non-python dependencies (such 
         :columns: 12
         :padding: 3
 
-        Installing a specific version? Installing from source? Check the advanced
+        Installing on Windows? Installing from source or with pip? Check the advanced
         installation page.
 
         +++
@@ -57,7 +62,7 @@ Valenspy is a pure python package but it has some non-python dependencies (such 
             :color: secondary
             :expand:
 
-            Learn more
+            Advanced installation
 
 
 Why ValEnsPy?
