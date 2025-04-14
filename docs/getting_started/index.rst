@@ -8,6 +8,8 @@ A guide to enable you to start productively using ValEnsPy as efficiently as pos
 Installation
 ------------
 
+Valenspy is a pure python package but it has some non-python dependencies (such as ESMpy). The easiest way to install ValEnsPy is to use the conda package manager. If you prefer using pip ensure that you have the required dependencies installed. For help with the install check out the :ref:`advanced installation <advanced_install>` page.
+
 .. grid:: 1 2 2 2
     :gutter: 4
 
@@ -35,7 +37,9 @@ Installation
 
         .. code-block:: bash
 
-            #TODO: Add pip install command for non developers
+            #Ensure non-python dependencies (ESMpy) are installed, e.g. using conda
+            #conda install -c conda-forge esmpy
+            pip install valenspy
 
     .. grid-item-card:: In-depth instructions?
         :class-card: install-card

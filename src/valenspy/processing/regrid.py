@@ -1,4 +1,3 @@
-import cdo
 import xarray as xr
 import cf_xarray
 import xesmf as xe
