@@ -1,12 +1,14 @@
 """Defines the InputManager class for loading and managing input data for ValEnsPy."""
 from pathlib import Path
+import pandas as pd
 import xarray as xr
 from datatree import DataTree
 import re
+import os
 import glob
 
 from valenspy.input.converter import INPUT_CONVERTORS
-from valenspy._utilities import load_yml
+from valenspy._utilities import load_yml, create_named_regex
 
 DATASET_PATHS = load_yml("dataset_PATHS")
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
@@ -14,10 +16,140 @@ CORDEX_VARIABLES = load_yml("CORDEX_variables")
 #TODO - update documentation once re-implemented including type hints
 
 class InputManager:
-    def __init__(self, machine):
-        self.machine = machine
-        self.dataset_paths = DATASET_PATHS[machine]
+    COLS = [
+    #Required for unique identification of the dataset
+    "source_id", #The source_id is the name of the dataset (e.g. "ERA5", "CNRM-CM6-1")
+    "activity_id", #The activity_id is the name of the activity (e.g. "CORDEX", "CMIP6", "reanalysis", "etc")
+    "domain_id", #The domain_id is the name of the domain (e.g. "europe", "global", "etc")
+    "frequency", #The frequency is the frequency of the data (e.g. "hourly", "daily", "monthly", "yearly")
+    "resolution", #The resolution is the resolution of the data (e.g. "0.11", "0.44", "etc")
+    "version", #The version is the version of the dataset (e.g. "v1", "v2", "etc")
+    "experiment_id", #The experiment_id is the name of the experiment (e.g. "historical", "rcp85", "etc")
+    "driving_source_id", #The driving_source_id is the name of the driving dataset (e.g. "ERA5", "CNRM-CM6-1") including variant label CNRM-CM6-1_r1i1p1f1
+    "realization_id", #The realization_id is the realization of the dataset (e.g. "r1i1p1f1", "r2i1p1f1", "etc" or numbering)
+    #File specific metadata
+    "variable_id",
+    "time_range",
+    ]
 
+    def __init__(self, machine, catalog_name="catalog.csv", path_format="cmip6-cordex"):
+        """
+        Initialize the InputManager.
+
+        Parameters
+        ----------
+        machine : str
+            The name of the machine (used to identify dataset paths).
+        dataset_info : dict
+            A dictionary mapping machine names to dataset root paths.
+        catalog_name : str, optional
+            The name of the catalog file (default is "catalog.csv").
+        path_format : str, optional
+            The format of the file paths for parsing metadata (default is "cmip6-cordex").
+        """
+        self.machine = machine
+        self.datasets_yaml = DATASET_PATHS[machine]
+        # self.catalog_path = Path(self.dataset_info["root"]) / catalog_name
+        self.path_format = path_format
+
+        self.df = self.create_catalog()
+
+        # # Check if the catalog exists; if not, create it
+        # if not self.catalog_path.exists():
+        #     print(f"Catalog not found at {self.catalog_path}. Creating a new catalog...")
+            
+
+        # # If the catalog exists, report the date and time it was last modified
+        # else:
+        #     last_modified = self.catalog_path.stat().st_mtime
+        #     print(f"Catalog found at {self.catalog_path}. Last modified: {last_modified}")
+
+        # Load the catalog into a pandas DataFrame
+        # self.catalog = pd.read_csv(self.catalog_path)
+
+    def create_catalog(self):
+        """
+        Create a catalog by scanning dataset paths and extracting metadata.
+        """
+        files_with_metadata = []
+        for dataset_name, dataset_info in self.datasets_yaml.items():
+            dataset_root = Path(dataset_info.get("root"))
+            regex_pattern = create_named_regex(dataset_info.get("pattern", None))
+            regex = re.compile(dataset_root.as_posix() + r"/" + regex_pattern)
+            
+            grouped_files_with_metadata = []
+            for root, _, files in os.walk(dataset_root):
+                for file in files:
+                    if file.endswith(".nc"):
+                        file_path = os.path.join(root, file)
+                        if match := regex.match(file_path):
+                            metadata = match.groupdict()
+                        else:
+                            metadata = {}
+                        metadata["path"] = file_path
+                        grouped_files_with_metadata.append(metadata)
+
+            #Add some dataset level metadata not directly in the file name
+            for meta_data in dataset_info.get("metadata", {}):
+                for file_meta_dict in grouped_files_with_metadata:
+                    if meta_data not in file_meta_dict:
+                        file_meta_dict[meta_data] = dataset_info["metadata"][meta_data]
+                #Add the dataset name to the metadata
+
+            for file_meta_dict in grouped_files_with_metadata:
+                file_meta_dict["source_id"] = dataset_name
+
+            #Translate the variable_id to the CORDEX variable name (if possible)
+            if dataset_name in INPUT_CONVERTORS:
+                IC = INPUT_CONVERTORS[dataset_name]
+                #Get all the raw_variables in the lookup table
+                variable_set = IC.raw_variables
+                for file_meta_dict in grouped_files_with_metadata:
+                    variable_id = file_meta_dict.get("variable_id")
+                    if not variable_id:
+                        file_meta_dict["variable_id"] = list(variable_set)
+                    elif variable_id in variable_set:
+                        file_meta_dict["raw_variable_id"] = variable_id
+                        file_meta_dict["variable_id"] = IC.get_CORDEX_variable(variable_id)
+
+            #Translate start_year, end_year, year, yearmonthday
+            for file_meta_dict in grouped_files_with_metadata:
+                if "year" in file_meta_dict:
+                    start_year = file_meta_dict["year"]
+                    end_year = file_meta_dict["year"]
+                elif "start_year" in file_meta_dict and "end_year" in file_meta_dict:
+                    start_year = file_meta_dict["start_year"]
+                    end_year = file_meta_dict["end_year"]
+                elif "yearmonthday" in file_meta_dict:
+                    start_year = file_meta_dict["yearmonthday"][:4]
+                    end_year = file_meta_dict["yearmonthday"][:4]
+                else:
+                    start_year = dataset_info.get("start_year", None)
+                    end_year = dataset_info.get("end_year", None)
+
+                if start_year and end_year:
+                    file_meta_dict["start_year"] = start_year
+                    file_meta_dict["end_year"] = end_year
+                    try:
+                        file_meta_dict["time_range"] = pd.Interval(
+                            left=pd.Timestamp(f"{start_year}-01-01"),
+                            right=pd.Timestamp(f"{end_year}-12-31"),
+                            closed="both"
+                        )
+                    except Exception as e:
+                        print(f"Error creating time range for {file_meta_dict['path']}: {e}")
+                        file_meta_dict["time_range"] = None
+                else:
+                    file_meta_dict["start_year"] = None
+                    file_meta_dict["end_year"] = None
+                    file_meta_dict["time_range"] = None
+            
+            files_with_metadata.extend(grouped_files_with_metadata)
+            
+        # Create a DataFrame and save it as a CSV
+        df = pd.DataFrame(files_with_metadata)
+        return df
+    
     def load_m_data(
         self, datasets_dict, variables=["tas"], cf_convert=True, metadata_info={}
     ):
@@ -192,7 +324,7 @@ class InputManager:
 
         raw_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
 
-        dataset_path = Path(self.dataset_paths[dataset_name])
+        dataset_path = Path(self.dataset_info[dataset_name])
         file_paths = []
         variables = (
             [variables] if isinstance(variables, str) else variables
@@ -228,8 +360,8 @@ class InputManager:
 
     def _is_valid_dataset_name(self, dataset_name):
         """Check if the dataset name is valid for the machine."""
-        if not dataset_name in self.dataset_paths:
+        if not dataset_name in self.dataset_info:
             raise ValueError(
-                f"Dataset name {dataset_name} is not valid for machine {self.machine}. Valid dataset names are {list(self.dataset_paths.keys())}. See dataset_PATHS.yml."
+                f"Dataset name {dataset_name} is not valid for machine {self.machine}. Valid dataset names are {list(self.dataset_info.keys())}. See dataset_PATHS.yml."
             )
         return True

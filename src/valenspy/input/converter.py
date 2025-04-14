@@ -61,6 +61,44 @@ class InputConverter:
         """Convert the input file(s) or xarray dataset to CF convention."""
         return self.convert_input(data_sources, metadata_info)
 
+    @property
+    def raw_variables(self) -> set:
+        """Return all the raw variables in the lookup table."""
+        return {var["raw_name"] for var in self.var_lookup_table.values()}
+    
+    def get_CORDEX_variable(self, raw_variable: str) -> str:
+        """Get the CORDEX variable name from the raw variable name.
+
+        Parameters
+        ----------
+        raw_variable : str
+            The raw variable name.
+
+        Returns
+        -------
+        str
+            The CORDEX variable name.
+        """
+        for cordex_var, var_lookup in self.var_lookup_table.items():
+            if var_lookup.get("raw_name") == raw_variable:
+                return cordex_var
+        return None
+    
+    def get_raw_variable(self, cordex_variable: str) -> str:
+        """Get the raw variable name from the CORDEX variable name.
+
+        Parameters
+        ----------
+        cordex_variable : str
+            The CORDEX variable name.
+
+        Returns
+        -------
+        str
+            The raw variable name.
+        """
+        return self.var_lookup_table.get(cordex_variable, {}).get("raw_name")
+
     def convert_input(self, data_sources: Path | list[Path] | xr.Dataset, metadata_info: dict = {}) -> xr.Dataset:
         """Convert the input file(s) or xarray dataset to CF convention.
 

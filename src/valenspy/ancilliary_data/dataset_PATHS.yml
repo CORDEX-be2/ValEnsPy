@@ -1,21 +1,81 @@
-# Paths to datasets on different machines
-# For now, only for observational data, later to be added more
+# Dataset information for the ValEnsPy package
 
 # Format
 
 # machine:
-#    dataset_name : path
+#    dataset_name:
+#       root: <path_to_root>
+#       pattern: <path_to_pattern>
+#       meta_data: #Additional relevant metadata if not present in the filename which are required for unique identification
+#         source_id: <source_id> #Assumed to be the same as the dataset_name
+#         activity_id: <activity_id>
+#         domain_id: <domain_id>
+#         frequency: <frequency>
+#         resolution: <resolution>
+#         version: <version>
+#         experiment_id: <experiment_id>
+
+# Ideally, variable_id and time_range (or start_year, end_year, year, yearmonthday) should be in the filename.
+# If not please also fill in the presumably shared variables and time_range in each file in the meta_data section.
 
 hortense:
-  ERA5:         /dodrio/scratch/projects/2022_200/external/era5/
-  ERA5-Land:    /dodrio/scratch/projects/2022_200/external/era5-land/
-  EOBS:         /dodrio/scratch/projects/2022_200/external/0.1deg/
-  CLIMATE_GRID: /dodrio/scratch/projects/2022_200/external/climate_grid/
-  shapefiles:   /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/shapefiles/
-  CCLM:         /dodrio/scratch/projects/2022_200/project_output/rcs/CORDEXBE2/postprocessing/
-  RADCLIM:      /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/data/RADCLIM
-  MAR:          /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc44757_Nicolas/remap_mar/MAR-ERA5/
-
+  ERA5:         
+    root: /dodrio/scratch/projects/2022_200/external/era5/
+    pattern: <domain_id>/<variable_id>/<frequency>/<variable_id2>_era5_<domain_id_2>_<frequency_2>_<year>.nc
+    meta_data:
+      activity_id: "reanalysis"
+      resolution: "0.25°"
+      version: "v1"
+      experiment_id: "reanalysis"
+  ERA5-Land:
+    root: /dodrio/scratch/projects/2022_200/external/era5-land/
+    pattern: <domain_id>/<variable_id>/<frequency>/<variable_id2>_era5-land_<domain_id_2>_<frequency_2>_<year>.nc
+    meta_data:
+      activity_id: "reanalysis"
+      resolution: "0.1°"
+      version: "v1"
+      experiment_id: "reanalysis"
+  EOBS: 
+    root: /dodrio/scratch/projects/2022_200/external/eobs/
+    pattern: <resolution>/<variable_id>_ens_<aggregation>_<resolution2>_reg_v29.0e.nc
+    meta_data:
+      activity_id: "observations"
+      domain_id: "Europe"
+      frequency: "daily"
+      version: "v29.0e"
+      experiment_id: "observations"
+      start_year: "1950"
+      end_year: "2023"
+  CLIMATE_GRID:
+    root: /dodrio/scratch/projects/2022_200/external/climate_grid/regridded/
+    pattern: <domain_id>/<variable_id>_CLIMATE_GRID_<start_year>_<end_year>_<frequency>_<domain_id2>_<resolution>.nc
+    meta_data:
+      activity_id: "RMI_observations"
+      resolution: "~4km"
+      experiment_id: "RMI_observations"
+  CCLM:
+    root: /dodrio/scratch/projects/2022_200/project_output/rcs/CORDEXBE2/postprocessing/
+    pattern: <experiment_id>/<variable_id>/<frequency>/<variable_id2>_<frequency_2>_<yearmonthday>.nc
+  RADCLIM:
+    root: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/data/RADCLIM
+    pattern: <year>/RADCLIM_<variable_id>_<yearmonthday>_<frequency>.nc
+    meta_data:
+      activity_id: "RMI_observations"
+      domain_id: "Belgium"
+      resolution: "~1km"
+      experiment_id: "RMI_observations"
+  MAR:
+    root: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc44757_Nicolas/remap_mar/MAR-ERA5/
+    pattern: MARv3.14-ERA5<year>_BE_latlon_<regridding_method>.nc
+    meta_data:
+      activity_id: "RCM"
+      domain_id: "Belgium"
+      frequency: "daily"
+      resolution: "~5km"
+      version: "v3.14"
+      experiment_id: "evaluation"
+      driving_source_id: "ERA5"
+    # shapefiles:   /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/shapefiles/
 
 kili:
   ERA5:
