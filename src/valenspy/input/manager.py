@@ -49,319 +49,237 @@ class InputManager:
         """
         self.machine = machine
         self.datasets_yaml = DATASET_PATHS[machine]
-        # self.catalog_path = Path(self.dataset_info["root"]) / catalog_name
         self.path_format = path_format
-
         self.df = self.create_catalog()
 
-        # # Check if the catalog exists; if not, create it
-        # if not self.catalog_path.exists():
-        #     print(f"Catalog not found at {self.catalog_path}. Creating a new catalog...")
-            
+    def update_catalog(self, dataset_name, dataset_root_dir, dataset_pattern, metadata={}):
+        """
+        Add a new dataset to the catalog.
 
-        # # If the catalog exists, report the date and time it was last modified
-        # else:
-        #     last_modified = self.catalog_path.stat().st_mtime
-        #     print(f"Catalog found at {self.catalog_path}. Last modified: {last_modified}")
+        Parameters
+        ----------
+        dataset_name : str
+            The name of the dataset.
+        dataset_root_dir : str
+            The root directory of the dataset.
+        dataset_pattern : str
+            The regex pattern for matching files in the dataset.
+        metadata : dict, optional
+            Additional metadata to include in the catalog (default is empty dictionary).
+        """
+        self.datasets_yaml[dataset_name] = {
+            "root": dataset_root_dir,
+            "pattern": dataset_pattern,
+            "metadata": metadata,
+        }
+        data = self.process_dataset_for_catalog(dataset_name, self.datasets_yaml[dataset_name])
+        df = pd.DataFrame(data)
+        self.df = pd.concat([self.df, df], ignore_index=True)
 
-        # Load the catalog into a pandas DataFrame
-        # self.catalog = pd.read_csv(self.catalog_path)
+    def process_dataset_for_catalog(self, dataset_name, dataset_info):
+        """
+        Process all files in a dataset and extract metadata.
+        """
+        dataset_root = Path(dataset_info.get("root"))
+        regex_pattern = create_named_regex(dataset_info.get("pattern", None))
+        regex = re.compile(dataset_root.as_posix() + r"/" + regex_pattern)
 
+        dataset_meta_data = dataset_info.get("meta_data", {})
+
+        IC = INPUT_CONVERTORS.get(dataset_name, None)
+        if IC:
+            CORDEX_variable_set = IC.cordex_variables
+            variable_set = IC.raw_variables
+            long_name_set = IC.raw_variables_long_names
+
+        files_with_metadata = []
+        for root, _, files in os.walk(dataset_root):
+            for file in files:
+                if file.endswith(".nc"):
+                    file_path = os.path.join(root, file)
+                    if match := regex.match(file_path):
+                        file_metadata = match.groupdict()
+                    else:
+                        file_metadata = {}
+
+                    # Add the file path to the metadata
+                    file_metadata["path"] = Path(file_path)
+
+                    # Add dataset level metadata
+                    file_metadata = {**dataset_meta_data, **file_metadata}
+                    file_metadata["source_id"] = dataset_name
+
+                    # Translate the variable_id to the CORDEX variable name (if possible)
+                    if IC:
+                        variable_id = file_metadata.get("variable_id")
+                        if not variable_id:
+                            file_metadata["raw_variable_id"] = list(variable_set)
+                            file_metadata["variable_id"] = list(CORDEX_variable_set)
+                        elif variable_id in variable_set or variable_id in long_name_set:
+                            file_metadata["raw_variable_id"] = variable_id
+                            file_metadata["variable_id"] = IC.get_CORDEX_variable(variable_id)
+
+                    #Convert time data to a time range
+                    if "year" in file_metadata:
+                        start_year = file_metadata["year"]
+                        end_year = file_metadata["year"]
+                    elif "start_year" in file_metadata and "end_year" in file_metadata:
+                        start_year = file_metadata["start_year"]
+                        end_year = file_metadata["end_year"]
+                    elif "yearmonthday" in file_metadata:
+                        start_year = file_metadata["yearmonthday"][:4]
+                        end_year = file_metadata["yearmonthday"][:4]
+                    else:
+                        start_year = dataset_info.get("start_year", None)
+                        end_year = dataset_info.get("end_year", None)
+                    if start_year and end_year:
+                        file_metadata["start_year"] = start_year
+                        file_metadata["end_year"] = end_year
+                        try:
+                            file_metadata["time_range"] = pd.Interval(
+                                left=pd.Timestamp(f"{start_year}-01-01"),
+                                right=pd.Timestamp(f"{end_year}-12-31"),
+                                closed="both"
+                            )
+                        except Exception as e:
+                            file_metadata["time_range"] = None
+                    else:
+                        file_metadata["start_year"] = None
+                        file_metadata["end_year"] = None
+                        file_metadata["time_range"] = None
+                    
+                    files_with_metadata.append(file_metadata)
+
+        return files_with_metadata
+        
     def create_catalog(self):
         """
         Create a catalog by scanning dataset paths and extracting metadata.
         """
         files_with_metadata = []
         for dataset_name, dataset_info in self.datasets_yaml.items():
-            dataset_root = Path(dataset_info.get("root"))
-            regex_pattern = create_named_regex(dataset_info.get("pattern", None))
-            regex = re.compile(dataset_root.as_posix() + r"/" + regex_pattern)
-            
-            grouped_files_with_metadata = []
-            for root, _, files in os.walk(dataset_root):
-                for file in files:
-                    if file.endswith(".nc"):
-                        file_path = os.path.join(root, file)
-                        if match := regex.match(file_path):
-                            metadata = match.groupdict()
-                        else:
-                            metadata = {}
-                        metadata["path"] = file_path
-                        grouped_files_with_metadata.append(metadata)
-
-            #Add some dataset level metadata not directly in the file name
-            for meta_data in dataset_info.get("metadata", {}):
-                for file_meta_dict in grouped_files_with_metadata:
-                    if meta_data not in file_meta_dict:
-                        file_meta_dict[meta_data] = dataset_info["metadata"][meta_data]
-                #Add the dataset name to the metadata
-
-            for file_meta_dict in grouped_files_with_metadata:
-                file_meta_dict["source_id"] = dataset_name
-
-            #Translate the variable_id to the CORDEX variable name (if possible)
-            if dataset_name in INPUT_CONVERTORS:
-                IC = INPUT_CONVERTORS[dataset_name]
-                #Get all the raw_variables in the lookup table
-                variable_set = IC.raw_variables
-                for file_meta_dict in grouped_files_with_metadata:
-                    variable_id = file_meta_dict.get("variable_id")
-                    if not variable_id:
-                        file_meta_dict["variable_id"] = list(variable_set)
-                    elif variable_id in variable_set:
-                        file_meta_dict["raw_variable_id"] = variable_id
-                        file_meta_dict["variable_id"] = IC.get_CORDEX_variable(variable_id)
-
-            #Translate start_year, end_year, year, yearmonthday
-            for file_meta_dict in grouped_files_with_metadata:
-                if "year" in file_meta_dict:
-                    start_year = file_meta_dict["year"]
-                    end_year = file_meta_dict["year"]
-                elif "start_year" in file_meta_dict and "end_year" in file_meta_dict:
-                    start_year = file_meta_dict["start_year"]
-                    end_year = file_meta_dict["end_year"]
-                elif "yearmonthday" in file_meta_dict:
-                    start_year = file_meta_dict["yearmonthday"][:4]
-                    end_year = file_meta_dict["yearmonthday"][:4]
-                else:
-                    start_year = dataset_info.get("start_year", None)
-                    end_year = dataset_info.get("end_year", None)
-
-                if start_year and end_year:
-                    file_meta_dict["start_year"] = start_year
-                    file_meta_dict["end_year"] = end_year
-                    try:
-                        file_meta_dict["time_range"] = pd.Interval(
-                            left=pd.Timestamp(f"{start_year}-01-01"),
-                            right=pd.Timestamp(f"{end_year}-12-31"),
-                            closed="both"
-                        )
-                    except Exception as e:
-                        print(f"Error creating time range for {file_meta_dict['path']}: {e}")
-                        file_meta_dict["time_range"] = None
-                else:
-                    file_meta_dict["start_year"] = None
-                    file_meta_dict["end_year"] = None
-                    file_meta_dict["time_range"] = None
-            
+            # Process the dataset and extract metadata
+            grouped_files_with_metadata = self.process_dataset_for_catalog(dataset_name, dataset_info)
+            # Add the dataset name to the metadata
             files_with_metadata.extend(grouped_files_with_metadata)
             
         # Create a DataFrame and save it as a CSV
         df = pd.DataFrame(files_with_metadata)
         return df
-    
-    def load_m_data(
-        self, datasets_dict, variables=["tas"], cf_convert=True, metadata_info={}
-    ):
+
+    @property
+    def readable_catalog(self):
         """
-        Load multiple datasets and variables and return a DataTree object.
-
-        Each dataset is passed to the load_data method and the resulting datasets are combined into a DataTree object.
-
-        Parameters
-        ----------
-        datasets_dict : dict
-            A dictionary of datasets to load. The keys are the dataset names and the values are dictionaries containing the period, frequency,
-            region and path_identifiers as keys.
-        variables : list
-            The variables to load. The default is ["tas"]. These should be CORDEX variables defined in CORDEX_variables.yml.
-        cf_convert : bool, optional
-            Whether to convert the data to CF-Compliant format. The default is True.
-        metadata_info : dict, optional
-            Other metadata information to pass to the input converter. The default is {}.
-
-        Returns
-        -------
-        DataTree
-            A DataTree object containing the loaded datasets.
-
-        Examples
-        --------
-        >>> manager = InputManager(machine='hortense')
-        >>> # Get all ERA5 tas (temperature at 2m) at a daily frequency for the years 2000 and 2001. The paths must include "max".
-        >>> data_request_dict={
-            "EOBS":
-                {"path_identifiers":["mean"]},
-            "ERA5":
-                {"period":[2000,2001],
-                "freq":"daily",
-                "region":"europe",
-                "path_identifiers":["min"]}
-            }
-        >>> dt = manager.load_m_data(data_request_dict, variables=["tas","pr"])
+        Return a readable version of the catalog DataFrame.
         """
+        COLS = [
+        #Required for unique identification of the dataset
+        "source_id", #The source_id is the name of the dataset (e.g. "ERA5", "CNRM-CM6-1")
+        "frequency", #The frequency of the data (e.g. "daily", "monthly")
 
-        ds_dict = {}
-        for dataset_name, dataset_info in datasets_dict.items():
-            # pass all the dataset info as kwargs to the load_data method
-            print(f"Loading data for {dataset_name}...")
-            ds_dict[dataset_name] = self.load_data(
-                dataset_name,
-                variables=variables,
-                cf_convert=cf_convert,
-                metadata_info=metadata_info,
-                **dataset_info,
-            )
-        return DataTree.from_dict(ds_dict)
+        "variable_id",
+        "time_range",
+        ]
+        cols = [item for item in COLS if item not in ["variable_id", "time_range"]]
+        def count(x):
+            return len(x)
 
-    def load_data(
+        return self.df.groupby(cols)["variable_id"].apply(count).to_frame()
+
+    @property
+    def available_datasets(self):
+        """
+        Return a list of available datasets in the catalog.
+        """
+        return self.df["source_id"].unique().tolist()
+
+    def open_dataset(
         self,
         dataset_name,
         variables=["tas"],
         period=None,
         freq=None,
-        region=None,
+        other_filters={},
         cf_convert=True,
-        path_identifiers=[],
         metadata_info={},
     ):
         """
-        Load the data for the specified dataset, variables, period and frequency and transform it into ValEnsPy CF-Compliant format.
-
-        For files to be found and loaded they should be in a subdirectory of the dataset path and contain
-        the raw_long_name or raw_name or CORDEX variable name, the year (optional), frequency and path_identifiers (optional) in the file name.
-
-        A regex search is used to match any netcdf (.nc) file paths that start with the dataset_path from the dataset_PATHS.yml and contains:
-        1) The raw_long_name of the CORDEX variables given the dataset_name_lookup.yml
-        2) Any YYYY string within the period
-        3) The frequency of the data (daily, monthly, yearly)
-        4) Any additional path_identifiers
-
-        The order of these components is irrelevant. The dataset is then loaded using xarray.open_mfdataset and if cf_convert is True, the data is converted
-        to CF-Compliant format using the appropriate input converter. If no period is specified, all files matching the other components are loaded.
-
-        Parameters
-        ----------
-        dataset_name : str
-            The name of the dataset to load. This should be in the dataset_PATHS.yml file for the specified machine.
-        variables : list, optional
-            The variables to load. The default is ["tas"]. These should be CORDEX variables defined in CORDEX_variables.yml.
-        period : list or an int, optional
-            The period to load. If a list, the start and end years of the period. For a single year both an int and a list with one element are valid. The default is None.
-        freq : str, optional
-            The frequency of the data. The default is None.
-        region : str, optional
-            The region to load. The default is None.
-        cf_convert : bool, optional
-            Whether to convert the data to CF-Compliant format. The default is True.
-        path_identifiers : list, optional
-            Other identifiers to match in the file paths. These are on top the variable long name, year and frequency. The default is [].
-        other_metadata_info : dict, optional
-            Other metadata information to pass to the input converter. The default is {}.
-
-        Returns
-        -------
-        ds : xarray.Dataset
-            The loaded dataset in CF-Compliant format.
-
-        Raises
-        ------
-        FileNotFoundError
-            If no files are found for the specified dataset, variables, period, frequency and path_identifiers.
-
-        ValueError
-            If the dataset name is not valid for the machine. i.e. not in the dataset_PATHS.yml file.
-
-        Examples
-        --------
-        >>> manager = InputManager(machine='hortense')
-        >>> # Get all ERA5 tas (temperature at 2m) at a daily frequency for the years 2000 and 2001. The paths must include "max".
-        >>> ds = manager.load_data("ERA5", variables=["tas"], period=[2000,2001], path_identifiers=["max"])
+        Load a dataset and return an xarray DataArray or Dataset.
         """
-        if isinstance(period, list):
-            if len(period) > 2:
-                raise ValueError("Period must be a list at most 2 elements or an int.")
-            if len(period) == 1:
-                period = int(period[0])
 
-        if self._is_valid_dataset_name(dataset_name):
-            files = self._get_file_paths(
-                dataset_name,
-                variables=variables,
-                period=period,
-                freq=freq,
-                region=region,
-                path_identifiers=path_identifiers,
-            )
-            if not files:
-                raise FileNotFoundError(
-                    f"No files found for dataset {dataset_name}, variables {variables}, period {period}, frequency {freq}, region {region} and path_identifiers {path_identifiers}."
-                )
-            print("File paths found:")
-            for f in files:
-                print(f)
-            if cf_convert:
-                input_converter = INPUT_CONVERTORS[dataset_name]
-                if period:
-                    metadata_info["period"] = period
-                if freq:
-                    metadata_info["freq"] = freq
-                if region:
-                    metadata_info["region"] = region
-                if path_identifiers:
-                    metadata_info["path_identifiers"] = path_identifiers
-                ds = input_converter.convert_input(files, metadata_info=metadata_info)
-            else:
-                ds = xr.open_mfdataset(files, chunks="auto")
+        df = self.df
+
+        number_of_files = {"catalog": len(df)}
+
+        # Check if the dataset name is valid
+        if dataset_name not in self.available_datasets:
+            raise ValueError(f"Dataset {dataset_name} not found in catalog. Available datasets: {self.available_datasets}")
+
+        df = df[df["source_id"] == dataset_name]
+        # Filter the DataFrame based on the provided parameters
+        if variables:
+            def filter_variables(x):
+                if isinstance(x, str):
+                    return x in variables
+                elif isinstance(x, list):
+                    return any(var in variables for var in x)
+                else:
+                    return False
+            df = df[df["variable_id"].apply(filter_variables)]
+            number_of_files["variables"] = len(df)
+        if period:
+            pass
+        if freq:
+            df = df[df["frequency"] == freq]
+            number_of_files["frequency"] = len(df)
+        if other_filters:
+            for key, value in other_filters.items():
+                if key in df.columns:
+                    df = df[df[key] == value]
+                    number_of_files[key] = len(df)
+        
+        if df.empty:
+            raise ValueError(f"No data found for dataset {dataset_name} with the specified filters.\n Filters: {variables}, {period}, {freq}, {other_filters} \n Number of files per filter: {number_of_files}")
+        
+        # Check if an input converter is available for the dataset
+        IC = INPUT_CONVERTORS.get(dataset_name, None)
+        if IC and cf_convert:
+            ds = IC.convert_input(df["path"].to_list(), metadata_info=metadata_info)
+        else:
+            ds = xr.open_mfdataset(df["path"], decode_coords="all", chunks="auto")
+
         return ds
 
-    def _get_file_paths(
+    def open_datatree(
         self,
-        dataset_name,
+        dataset_paths,
         variables=["tas"],
         period=None,
         freq=None,
-        region=None,
-        path_identifiers=[],
+        other_filters={},
+        cf_convert=True,
+        metadata_info={},
     ):
-        """Get the file paths for the specified dataset, variables, period and frequency."""
+        """
+        Load multiple datasets and return a DataTree of xarray DataArrays or Datasets.
 
-        # ERA5Land has same lookuptable as ERA5
-        if dataset_name == "ERA5-Land":
-            dataset_name_lookup = "ERA5"
-        else:
-            dataset_name_lookup = dataset_name
-
-        raw_LOOKUP = load_yml(f"{dataset_name_lookup}_lookup")
-
-        dataset_path = Path(self.dataset_info[dataset_name])
-        file_paths = []
-        variables = (
-            [variables] if isinstance(variables, str) else variables
-        )  # if single variable inputted as string, convert to list
-        for variable in variables:
-            if variable not in raw_LOOKUP:
-                var_regex = f"{variable}"
+        Note the dataset_paths 
+        """
+        datatree_dict = {}
+        
+        for dataset_path in dataset_paths:
+            dataset_name = dataset_path.split("/")[-1]
+            if dataset_name not in self.available_datasets:
+                raise ValueError(f"Dataset {dataset_name} not found in catalog. Available datasets: {self.available_datasets}")
             else:
-                raw_long_name = raw_LOOKUP[variable]["raw_long_name"]
-                raw_name = raw_LOOKUP[variable]["raw_name"]
-                var_regex = f"({raw_long_name}|{raw_name}_|{variable}_)"
-            components = [var_regex] + path_identifiers
-            if period:
-                if isinstance(period, int):
-                    year_regex = f"({period})"
-                else:
-                    year_regex = f"({'|'.join([str(year) for year in range(period[0], period[1]+1)])})"
-                components.append(year_regex)
-            if freq:
-                components.append(freq)
-            if region:
-                components.append(region)
-            file_paths += [
-                f
-                for f in dataset_path.glob("**/*.nc")
-                if all(
-                    re.search(f"{dataset_path}/.*{component}.*", str(f))
-                    for component in components
+                datatree_dict[dataset_path] = self.open_dataset(
+                    dataset_name,
+                    variables=variables,
+                    period=period,
+                    freq=freq,
+                    other_filters=other_filters,
+                    cf_convert=cf_convert,
+                    metadata_info=metadata_info,
                 )
-            ]
+        return DataTree.from_dict(datatree_dict)
 
-        return list(set(file_paths))
-
-    def _is_valid_dataset_name(self, dataset_name):
-        """Check if the dataset name is valid for the machine."""
-        if not dataset_name in self.dataset_info:
-            raise ValueError(
-                f"Dataset name {dataset_name} is not valid for machine {self.machine}. Valid dataset names are {list(self.dataset_info.keys())}. See dataset_PATHS.yml."
-            )
-        return True

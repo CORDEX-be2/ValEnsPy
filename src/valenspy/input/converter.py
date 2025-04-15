@@ -66,13 +66,23 @@ class InputConverter:
         """Return all the raw variables in the lookup table."""
         return {var["raw_name"] for var in self.var_lookup_table.values()}
     
+    @property
+    def raw_variables_long_names(self) -> set:
+        """Return all the raw variables long names in the lookup table."""
+        return {var["raw_long_name"] for var in self.var_lookup_table.values() if "raw_long_name" in var}
+    
+    @property
+    def cordex_variables(self) -> set:
+        """Return all the CORDEX variables in the lookup table."""
+        return set(self.var_lookup_table.keys())
+
     def get_CORDEX_variable(self, raw_variable: str) -> str:
         """Get the CORDEX variable name from the raw variable name.
 
         Parameters
         ----------
         raw_variable : str
-            The raw variable name.
+            The raw variable name or long name.
 
         Returns
         -------
@@ -80,7 +90,7 @@ class InputConverter:
             The CORDEX variable name.
         """
         for cordex_var, var_lookup in self.var_lookup_table.items():
-            if var_lookup.get("raw_name") == raw_variable:
+            if var_lookup.get("raw_name") == raw_variable or var_lookup.get("raw_long_name") == raw_variable:
                 return cordex_var
         return None
     
