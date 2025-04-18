@@ -1,7 +1,7 @@
 """Defines the InputManager class for loading and managing input data for ValEnsPy."""
 from pathlib import Path
 import xarray as xr
-from datatree import DataTree
+from xarray import DataTree
 import re
 import glob
 

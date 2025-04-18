@@ -51,12 +51,11 @@ python = "^3.10"
 regionmask = "^0.12.1"
 scipy = "^1.13.0"
 shapely = "^2.0.3"
-xarray = ">=2023.12.0,<=2024.07.0"
+xarray = ">v2025.03.0" #needs latest version of datatree
 seaborn = "^0.13.2"
 xesmf = "^0.8.8"
-xclim = "^0.54.0"
+xclim = ">0.55.0" #Previous versions not compatible with xarray >2025.03.0 as they rely on xarray.core.merge which was moved
 docstring-parser = "^0.16"
-xarray-datatree = "0.0.14"
 
 [tool.poetry.group.dev]
 # Development group

@@ -1,7 +1,7 @@
 import xarray as xr
 import numpy as np
 from scipy.stats import spearmanr
-from datatree import DataTree
+from xarray import DataTree
 import pandas as pd
 from functools import partial
 
