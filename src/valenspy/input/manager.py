@@ -2,9 +2,9 @@
 from pathlib import Path
 import pandas as pd
 import xarray as xr
-from datatree import DataTree
 from intake_esm.cat import Assets, Attribute, AggregationControl, ESMCatalogModel
 import intake
+from xarray import DataTree
 import re
 import os
 import glob
