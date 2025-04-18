@@ -4467,42 +4467,28 @@ files = [
 
 [[package]]
 name = "xarray"
-version = "2024.7.0"
+version = "2025.3.1"
 description = "N-D labeled arrays and datasets in Python"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 files = [
-    {file = "xarray-2024.7.0-py3-none-any.whl", hash = "sha256:1b0fd51ec408474aa1f4a355d75c00cc1c02bd425d97b2c2e551fd21810e7f64"},
-    {file = "xarray-2024.7.0.tar.gz", hash = "sha256:4cae512d121a8522d41e66d942fb06c526bc1fd32c2c181d5fe62fe65b671638"},
+    {file = "xarray-2025.3.1-py3-none-any.whl", hash = "sha256:3404e313930c226db70a945377441ea3c957225d8ba2d429e764c099bb91a546"},
+    {file = "xarray-2025.3.1.tar.gz", hash = "sha256:0252c96a73528b29d1ed7f0ab28d928d2ec00ad809e47369803b184dece1e447"},
 ]
 
 [package.dependencies]
-numpy = ">=1.23"
-packaging = ">=23.1"
-pandas = ">=2.0"
+numpy = ">=1.24"
+packaging = ">=23.2"
+pandas = ">=2.1"
 
 [package.extras]
-accel = ["bottleneck", "flox", "numbagg", "opt-einsum", "scipy"]
-complete = ["xarray[accel,dev,io,parallel,viz]"]
-dev = ["hypothesis", "mypy", "pre-commit", "pytest", "pytest-cov", "pytest-env", "pytest-timeout", "pytest-xdist", "ruff", "xarray[complete]"]
+accel = ["bottleneck", "flox", "numba (>=0.54)", "numbagg", "opt_einsum", "scipy"]
+complete = ["xarray[accel,etc,io,parallel,viz]"]
+etc = ["sparse"]
 io = ["cftime", "fsspec", "h5netcdf", "netCDF4", "pooch", "pydap", "scipy", "zarr"]
 parallel = ["dask[complete]"]
-viz = ["matplotlib", "nc-time-axis", "seaborn"]
-
-[[package]]
-name = "xarray-datatree"
-version = "0.0.15"
-description = "Hierarchical tree-like data structures for xarray"
-optional = false
-python-versions = ">=3.9"
-files = [
-    {file = "xarray_datatree-0.0.15-py3-none-any.whl", hash = "sha256:190d8262061522eeaaa0dc7058b50df7228a615e6d62761150f093518bdad62c"},
-    {file = "xarray_datatree-0.0.15.tar.gz", hash = "sha256:4e828086d858742e4dec7ed7e9187865d5215302919d0e02a613dce0ff0db003"},
-]
-
-[package.dependencies]
-packaging = "*"
-xarray = ">=2023.12.0,<=2024.07.0"
+types = ["pandas-stubs", "types-PyYAML", "types-Pygments", "types-colorama", "types-decorator", "types-defusedxml", "types-docutils", "types-networkx", "types-openpyxl", "types-pexpect", "types-psutil", "types-pycurl", "types-python-dateutil", "types-pytz", "types-setuptools"]
+viz = ["cartopy", "matplotlib", "nc-time-axis", "seaborn"]
 
 [[package]]
 name = "xattr"
@@ -4591,13 +4577,13 @@ test = ["pytest"]
 
 [[package]]
 name = "xclim"
-version = "0.54.0"
+version = "0.56.0"
 description = "Climate indices computation package based on Xarray."
 optional = false
 python-versions = ">=3.10.0"
 files = [
-    {file = "xclim-0.54.0-py3-none-any.whl", hash = "sha256:5ee9ba35f5e4980cbf45394d147532bcb9abe64ee9cce6139d11ba564d58a1ef"},
-    {file = "xclim-0.54.0.tar.gz", hash = "sha256:1a685e2454e6cb9446a6f2206fb1fc031aa823fa2d4756978be6c6f1666af2fa"},
+    {file = "xclim-0.56.0-py3-none-any.whl", hash = "sha256:bead5b5e3f03e0def348a7697cbae3c8c57a357bc6ddbfc589f719a4f7e59f4a"},
+    {file = "xclim-0.56.0.tar.gz", hash = "sha256:36257713271d31ce55cdbc03e285112de60e2bbf313c204605d0ef24c493a740"},
 ]
 
 [package.dependencies]
@@ -4609,23 +4595,23 @@ click = ">=8.1"
 dask = {version = ">=2024.8.1", extras = ["array"]}
 filelock = ">=3.14.0"
 jsonpickle = ">=3.1.0"
-numba = ">=0.54.1"
-numpy = ">=1.23.0"
+numba = ">=0.57.0"
+numpy = ">=1.24.0"
 packaging = ">=24.0"
-pandas = ">=2.2"
+pandas = ">=2.2.0"
 pint = ">=0.24.4"
-pyarrow = ">=10.0.1"
+pyarrow = ">=15.0"
 pyyaml = ">=6.0.1"
-scikit-learn = ">=1.1.0"
-scipy = ">=1.9.0"
+scikit-learn = ">=1.2.0"
+scipy = ">=1.11.0"
 statsmodels = ">=0.14.2"
 xarray = ">=2023.11.0,<2024.10.0 || >2024.10.0"
 yamale = ">=5.0.0"
 
 [package.extras]
 all = ["xclim[dev]", "xclim[docs]", "xclim[extras]"]
-dev = ["black[jupyter] (==24.10.0)", "blackdoc (==0.3.9)", "bump-my-version (==0.28.1)", "codespell (==2.3.0)", "coverage[toml] (>=7.5.0)", "coveralls (>=4.0.1)", "deptry (==0.21.1)", "flake8 (>=7.1.1)", "flake8-rst-docstrings (>=0.3.0)", "h5netcdf (>=1.3.0)", "ipython (>=8.5.0)", "isort (==5.13.2)", "mypy (>=1.10.0)", "nbconvert (<7.14)", "nbqa (>=1.8.2)", "nbval (>=0.11.0)", "numpydoc (>=1.8.0)", "pandas-stubs (>=2.2)", "pip (>=24.2.0)", "pooch (>=1.8.0)", "pre-commit (>=3.7)", "pylint (>=3.3.1)", "pytest (>=8.0.0)", "pytest-cov (>=5.0.0)", "pytest-socket (>=0.6.0)", "pytest-xdist[psutil] (>=3.2)", "ruff (>=0.7.0)", "tokenize-rt (>=5.2.0)", "tox (>=4.21.2)", "tox-gh (>=1.4.4)", "vulture (==2.14)", "xdoctest (>=1.1.5)", "yamllint (==1.35.1)"]
-docs = ["cairosvg (>=2.6.0)", "distributed (>=2.0)", "furo (>=2023.9.10)", "ipykernel", "matplotlib (>=3.6.0)", "nbsphinx (>=0.9.5)", "nc-time-axis (>=1.4.1)", "pooch (>=1.8.0)", "pybtex (>=0.24.0)", "sphinx (>=7.0.0)", "sphinx-autobuild (>=2024.4.16)", "sphinx-autodoc-typehints", "sphinx-codeautolink", "sphinx-copybutton", "sphinx-mdinclude", "sphinxcontrib-bibtex", "sphinxcontrib-svg2pdfconverter[cairosvg]"]
+dev = ["blackdoc (==0.3.9)", "bump-my-version (>=0.32.1)", "codespell (>=2.4.1)", "coverage[toml] (>=7.5.0)", "deptry (>=0.23.0)", "flake8 (>=7.1.1)", "flake8-rst-docstrings (==0.3.0)", "h5netcdf (>=1.3.0)", "ipython (>=8.10.0)", "mypy (>=1.14.1)", "nbconvert (>=7.16.4)", "nbqa (>=1.8.2)", "nbval (>=0.11.0)", "numpydoc (>=1.8.0)", "pandas-stubs (>=2.2)", "pip (>=25.0)", "pooch (>=1.8.0)", "pre-commit (>=3.7)", "pylint (>=3.3.1)", "pytest (>=8.0.0)", "pytest-cov (>=5.0.0)", "pytest-socket (>=0.6.0)", "pytest-xdist[psutil] (>=3.2)", "ruff (>=0.9.6)", "tokenize-rt (>=5.2.0)", "tox (>=4.24.1)", "tox-gh (>=1.5.0)", "vulture (>=2.14)", "xdoctest (>=1.1.5)", "yamllint (>=1.35.1)"]
+docs = ["cairosvg (>=2.6.0)", "distributed (>=2.0)", "furo (>=2023.9.10)", "ipykernel", "matplotlib (>=3.7.0)", "nbsphinx (>=0.9.5)", "nc-time-axis (>=1.4.1)", "pooch (>=1.8.0)", "pybtex (>=0.24.0)", "sphinx (>=8.2.0)", "sphinx-autobuild (>=2024.4.16)", "sphinx-autodoc-typehints (>=3.1.0)", "sphinx-codeautolink (>=0.16.2)", "sphinx-copybutton", "sphinx-mdinclude", "sphinxcontrib-bibtex", "sphinxcontrib-svg2pdfconverter[cairosvg]"]
 extras = ["POT (>=0.9.4)", "fastnanquantile (>=0.0.2)", "flox (>=0.9)"]
 
 [[package]]
@@ -4686,5 +4672,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "2b57f68ca8cb55313ae3dcbf21db0bb4b6a0e5a3a74bcc2a9117bab0fb943854"
-
+content-hash = "4c6e94bafe3d58cad8edb1d6e8f520eb389544cf5abc8331884c48a0224bcfaf"
