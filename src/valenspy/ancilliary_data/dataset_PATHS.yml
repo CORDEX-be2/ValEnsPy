@@ -15,67 +15,72 @@
 #         version: <version>
 #         experiment_id: <experiment_id>
 
-# Ideally, variable_id and time_range (or start_year, end_year, year, yearmonthday) should be in the filename.
-# If not please also fill in the presumably shared variables and time_range in each file in the meta_data section.
+# Ideally, variable_id and time_period (or start_year, end_year, year, yearmonthday) should be in the filename.
+# If not please also fill in the presumably shared variables and time_period in each file in the meta_data section.
 
 hortense:
-  ERA5:         
+  ERA5: #Note that there is an aggregation variable here! What to do with this? This is messy as it can not be uniquely identified by the filename!
     root: /dodrio/scratch/projects/2022_200/external/era5/
-    pattern: <domain_id>/<variable_id>/<frequency>/<variable_id2>_era5_<domain_id_2>_<frequency_2>_<year>.nc
+    pattern: <domain_id>/<variable_id>/<frequency>/<variable_id_2>_era5_<domain_id_2>_<frequency_2>_<aggregation>_<time_period>.nc
     meta_data:
-      activity_id: "reanalysis"
+      source_id: "ERA5"
+      source_type: "reanalysis"
+      experiment_id: "reanalysis"
+      version: "ERA5.0"
       resolution: "0.25°"
-      version: "v1"
-      experiment_id: "reanalysis"
-  ERA5-Land:
+      institution_id: "ECMWF"
+      time_format: "%Y"   
+
+  ERA5-Land: #Note that there is an aggregation variable here! What to do with this? This is messy as it can not be uniquely identified by the filename!
     root: /dodrio/scratch/projects/2022_200/external/era5-land/
-    pattern: <domain_id>/<variable_id>/<frequency>/<variable_id2>_era5-land_<domain_id_2>_<frequency_2>_<year>.nc
+    pattern: <domain_id>/<variable_id>/<frequency>/<variable_id2>_era5-land_<domain_id_2>_<frequency_2>_<aggregation>_<time_period>.nc
     meta_data:
-      activity_id: "reanalysis"
-      resolution: "0.1°"
-      version: "v1"
+      source_id: "ERA5-Land"
+      source_type: "reanalysis"
       experiment_id: "reanalysis"
-  EOBS: 
+      version: "ERA5-Land"
+      resolution: "0.1°"
+      institution_id: "ECMWF"
+      time_format: "%Y"
+      
+  EOBS: #Note that there is an aggregation variable here! What to do with this?
     root: /dodrio/scratch/projects/2022_200/external/eobs/
-    pattern: <resolution>/<variable_id>_ens_<aggregation>_<resolution2>_reg_v29.0e.nc
+    pattern: <resolution>/<variable_id>_ens_<aggregation>_<resolution2>_reg_<version>.nc
     meta_data:
-      activity_id: "observations"
+      source_id: "EOBS"
+      source_type: "observations"
       domain_id: "Europe"
-      frequency: "daily"
-      version: "v29.0e"
       experiment_id: "observations"
-      start_year: "1950"
-      end_year: "2023"
+      frequency: "daily"
+      time_period_start: "1950"
+      time_period_end: "2023"
+      time_format: "%Y"
+      
   CLIMATE_GRID:
     root: /dodrio/scratch/projects/2022_200/external/climate_grid/regridded/
-    pattern: <domain_id>/<variable_id>_CLIMATE_GRID_<start_year>_<end_year>_<frequency>_<domain_id2>_<resolution>.nc
+    pattern: <domain_id>/<variable_id>_CLIMATE_GRID_<time_period_start>_<time_period_end>_<frequency>_<domain_id2>_<resolution>.nc
     meta_data:
-      activity_id: "RMI_observations"
-      resolution: "~4km"
-      experiment_id: "RMI_observations"
-  CCLM:
-    root: /dodrio/scratch/projects/2022_200/project_output/rcs/CORDEXBE2/postprocessing/
-    pattern: <experiment_id>/<variable_id>/<frequency>/<variable_id2>_<frequency_2>_<yearmonthday>.nc
-  RADCLIM:
-    root: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/data/RADCLIM
-    pattern: <year>/RADCLIM_<variable_id>_<yearmonthday>_<frequency>.nc
-    meta_data:
-      activity_id: "RMI_observations"
-      domain_id: "Belgium"
-      resolution: "~1km"
-      experiment_id: "RMI_observations"
-  MAR:
-    root: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc44757_Nicolas/remap_mar/MAR-ERA5/
-    pattern: MARv3.14-ERA5<year>_BE_latlon_<regridding_method>.nc
-    meta_data:
-      activity_id: "RCM"
-      domain_id: "Belgium"
-      frequency: "daily"
+      source_id: "CLIMATE_GRID"
+      source_type: "observations"
+      experiment_id: "observations"
+      version: "v1"
       resolution: "~5km"
-      version: "v3.14"
-      experiment_id: "evaluation"
-      driving_source_id: "ERA5"
-    # shapefiles:   /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc31332_inne/shapefiles/
+      institution_id: "RMIB"
+      time_format: "%Y"
+
+  RADCLIM: #TODO move to a shared location?
+    root: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/data/RADCLIM
+    pattern: <year>/RADCLIM_<variable_id>_<time_period>_<frequency>.nc
+    meta_data:
+      source_id: "RADCLIM"
+      source_type: "satellite"
+      domain_id: "Belgium"
+      experiment_id: "observations"
+      version: "v1"
+      frequency: "daily"
+      resolution: "~1km"
+      institution_id: "RMIB"
+      time_format: "%Y%m%d"
 
 kili:
   ERA5:
