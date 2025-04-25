@@ -5,6 +5,6 @@ from ._utilities import (
     load_yml, 
     generate_parameters_doc
 )
-from._formatting import create_named_regex
+from._formatting import create_named_regex, parse_time_period
 from .cf_checks import is_cf_compliant, cf_status
 from .unit_converter import CORDEX_VARIABLES, _convert_all_units_to_CF
