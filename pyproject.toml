@@ -2,20 +2,14 @@
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core<2.0.0"]
 
-[project]
-
-[project.urls]
-Repository = "https://github.com/CORDEX-be2/ValEnsPy"
-Issues = "https://github.com/CORDEX-be2/ValEnsPy/issues"
-Documentation = "https://cordex-be2.github.io/ValEnsPy/"
-Changelog = "https://github.com/CORDEX-be2/ValEnsPy/releases"
+#Look to migrate to PEP621 and project entries and away from the tool.poetry table
 
 [tool.poetry]
 name = "ValEnsPy"
-version = "0.2.0a0"
+version = "0.3.2"
 authors = [
   "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
-  "Inne Vanderkelen <inne.vanderkelen@kuleuven.be"
+  "Inne Vanderkelen <inne.vanderkelen@kuleuven.be>"
   ]
 maintainers = [
   "Kobe Vandelanotte <kobe.vandelanotte@meteo.be>",
@@ -25,6 +19,9 @@ description = "A Python package to validate gridded model data."
 readme = "README.md"
 license = "GPL-3.0"
 keywords = ["validation", "ensemble", "climate", "meteorology", "model", "data"]
+homepage = "https://github.com/CORDEX-be2/ValEnsPy"
+repository = "https://github.com/CORDEX-be2/ValEnsPy"
+documentation = "https://cordex-be2.github.io/ValEnsPy/"
 
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -42,8 +39,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 cartopy = "^0.23.0"
-cdo = "^1.6.1"
-cf-xarray = "^0.9.4"
+cf-xarray = ">=0.9.4"
 dask = "^2024.3.1"
 geopandas = "^1.0.1"
 matplotlib = "^3.8.3"
@@ -55,11 +51,12 @@ python = ">=3.10,<4.0"
 regionmask = "^0.12.1"
 scipy = "^1.13.0"
 shapely = "^2.0.3"
-xarray = ">=2023.12.0,<=2024.07.0"
+xarray = ">v2025.03.0" #needs latest version of datatree
 seaborn = "^0.13.2"
 xesmf = "^0.8.8"
-xclim = "^0.54.0"
-xarray-datatree = "^0.0.15"
+xclim = ">0.55.0" #Previous versions not compatible with xarray >2025.03.0 as they rely on xarray.core.merge which was moved
+docstring-parser = "^0.16"
+intake-esm = ">v2023.10.27"
 
 [tool.poetry.group.dev]
 # Development group
@@ -80,6 +77,7 @@ nbsphinx = "^0.9.3"
 pydata-sphinx-theme = "^0.15.2"
 sphinx-copybutton = "^0.5.2"
 sphinx-rtd-theme = "^2.0.0"
+sphinx-design = "^0.6.1"
 
 [tool.poetry.group.examples]
 # Examples group

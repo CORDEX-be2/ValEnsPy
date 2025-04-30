@@ -9,7 +9,7 @@ from valenspy._utilities import load_yml
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
 
-def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
+def _convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
     """Convert all units for all variables in the dataset to the correct units by applying the correct conversion function.
 
     The raw_units attribute is used to determine the current units and therefore the conversion function to apply.
@@ -86,22 +86,3 @@ def convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
                 ds[var].attrs["freq"] = xr.infer_freq(ds[var].time)
             
     return ds
-
-def _determine_time_interval(da: xr.DataArray):
-    """
-    Find the time interval (freq) of the input data array based on it's time axis, by calculating the difference between the first two time instances.
-    """
-    
-    diff = da.time.diff(dim="time").values[0]
-
-    # Check for exact differences
-    if diff == np.timedelta64(1, "h"):
-        return "hour"
-    elif diff == np.timedelta64(1, "D"):
-        return "day"
-    elif diff == np.timedelta64(1, "M"):
-        return "month"
-    elif diff == np.timedelta64(1, "Y"):
-        return "year"
-    else:
-        return "Unknown"

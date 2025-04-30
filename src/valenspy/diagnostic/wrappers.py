@@ -7,8 +7,8 @@ from functools import wraps
 def required_variables(variables):
     """
     A decorator that checks if the required variables are present in the dataset (and reference dataset if applicable) before applying the diagnostic.
-    The required variables are specified as a list of strings. Only if all the required variables are present the diagnostic is applied.
-    Note that this is a minimum requirement, the ds may contain other variables than the required ones.
+    The required variables are specified as a list of strings. Only if all the required variables are present, the diagnostic is applied.
+    Note that this is a minimum requirement; the dataset may contain other variables than the required ones.
 
     Parameters
     ----------
@@ -16,17 +16,17 @@ def required_variables(variables):
         The variable(s) required to apply the diagnostic.
 
     Examples
-    -----
-    #The diagnostic function requires the variables 'tas' and 'pr' to be present in the dataset.
-    @required_variables(["tas", "pr"])
-    def my_diagnostic(ds: xr.Dataset):
-        return ds.tas + ds.pr
-
-    #This also checks if the variables are present in both the data and the reference.
-    #An error is raised if the required variables are not present in the data or the reference.
-    @required_variables(["tas", "pr"])
-    def my_diagnostic(ds: xr.Dataset, ref: xr.Dataset):
-        return ds.tas + ref.pr
+    --------
+    >>> # The diagnostic function requires the variables 'tas' and 'pr' to be present in the dataset.
+    >>> @required_variables(["tas", "pr"])
+    >>> def my_diagnostic(ds: xr.Dataset):
+    >>>    return ds.tas + ds.pr
+    
+    >>> # This also checks if the variables are present in both the data and the reference.
+    >>> # An error is raised if the required variables are not present in the data or the reference.
+    >>> @required_variables(["tas", "pr"])
+    >>> def my_diagnostic(ds: xr.Dataset, ref: xr.Dataset):
+    >>>    return ds.tas + ref.pr
     """
 
     def decorator(diagnostic_function):
@@ -64,11 +64,11 @@ def acceptable_variables(variables):
 
     Examples
     -----
-    #The diagnostic function accepts the variables 'tas', 'tas_max' and 'tas_min'.
-    @acceptable_variables(["tas", "tas_max", "tas_min"])
-    def my_diagnostic(ds: xr.Dataset):
-        #Function which is valid for tas, tas_max and tas_min
-        return result
+    >>> # The diagnostic function accepts the variables 'tas', 'tas_max' and 'tas_min'.
+    >>> @acceptable_variables(["tas", "tas_max", "tas_min"])
+    >>> def my_diagnostic(ds: xr.Dataset):
+    >>>    #Function which is valid for tas, tas_max and tas_min
+    >>>    return result
     """
 
     def decorator(diagnostic_function):

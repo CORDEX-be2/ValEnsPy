@@ -8,5 +8,3 @@ from .converter_functions import (
     RADCLIM_to_CF,
     MAR_to_CF
 )
-
-from .unit_converter import CORDEX_VARIABLES

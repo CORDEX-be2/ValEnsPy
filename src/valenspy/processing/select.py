@@ -1,5 +1,3 @@
-# Collection of preprocessing functions to perfrom a selection
-
 import xarray as xr
 import numpy as np
 import regionmask
@@ -13,22 +11,28 @@ import cartopy.crs as ccrs
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
 
+#TODO: add docstring once reworked (using crs to select_points)
 
 def select_region(ds: xr.Dataset, region: str):
     """
     Selects a specific geographical region from an xarray Dataset based on given region bounds.
 
-    Parameters:
-    ds (xr.Dataset): The input xarray Dataset from which to select the region.
-    region (str): The name of the region to select. This should correspond to a key in the
-                  `region_bounds` dictionary, which contains latitude and longitude bounds
-                  for various regions.
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The input xarray Dataset from which to select the region.
+    region : str
+        The name of the region to select. This should correspond to a key in the
+        `region_bounds` dictionary, which defines the latitude and longitude bounds
 
-    Returns:
-    xr.Dataset: A new xarray Dataset containing only the data within the specified region.
+    Returns
+    -------
+    xr.Dataset
+        A new xarray Dataset containing only the data within the specified region.
 
-    Example:
-    ds_region = sel_region(ds, 'europe')
+    Examples
+    --------
+    >>> ds_region = select_region(ds, 'europe')
     """
 
     # get region bounds

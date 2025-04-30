@@ -13,7 +13,7 @@ def test_access_main():
 
     #Preprocessing - directly accessible
     ##Functions
-    assert vp.remap_cdo, "remap_cdo not accessible from valenspy"
+    assert vp.remap_xesmf, "remap_xesmf not accessible from valenspy"
     assert vp.select_region, "select_region not accessible from valenspy"
     assert vp.select_point, "select_point not accessible from valenspy"
     assert vp.get_shapefile_mask, "get_shapefile_mask not accessible from valenspy"
