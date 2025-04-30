@@ -17,7 +17,7 @@ def create_named_regex(pattern_string: str) -> str:
             regex_parts.append(escape_regex(part))
     return ''.join(regex_parts)
 
-def parse_time_period(time_string: str, format: str = None) -> tuple[datetime, datetime]:
+def parse_string_to_time_period(time_string: str, format: str = None) -> tuple[datetime, datetime]:
     """
     Parses a time string and a format string into a (start_datetime, end_datetime) tuple.
 
