@@ -1,14 +1,16 @@
-# CCLM:
-#   root: /dodrio/scratch/projects/2022_200/project_output/rcs/CORDEXBE2/postprocessing/
-#   pattern: <experiment_id>/<variable_id>/<frequency>/<variable_id2>_<frequency_2>_<yearmonthday>.nc
-#   meta_data:
-#     source_id: "CCLM"
-#     source_type: "RCM"
-#     domain_id: "europe"
-#     version: "v1"
-#     resolution: "~5km"
-#     driving_source_id: "ERA5"
-#     institution_id: "KU Leuven"
+# Currently only the daily CCLM data is loaded here!
+CCLM:
+  root: /dodrio/scratch/projects/2022_200/project_output/rcs/CORDEXBE2/postprocessing/
+  pattern: <experiment_id>/<variable_id2>/<frequency>/<variable_id>_daily_<aggregation>_<time_period>.nc
+  meta_data:
+    source_id: "CCLM"
+    source_type: "RCM"
+    domain_id: "europe"
+    version: "v1"
+    resolution: "~5km"
+    driving_source_id: "ERA5"
+    institution_id: "KU Leuven"
+    data_format: "%Y%m%d"
 
 MAR:
   root: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc44757_Nicolas/remap_mar/MAR-ERA5/
@@ -23,7 +25,6 @@ MAR:
     resolution: "~5km"
     driving_source_id: "ERA5"
     institution_id: "U Liège"
-    time_period_start: 
 
 ALARO:
   root: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/CORDEXbeII/run_ALARO_sfx/out/PROD_ERA5_EUR11/19780101
