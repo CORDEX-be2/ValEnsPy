@@ -1,10 +1,9 @@
 import xclim
 import warnings
 import xarray as xr
-from xarray import DataTree
 
 #Eventually replace this with built in xclim functionality - see https://github.com/Ouranosinc/xclim/issues/2127 and https://github.com/Ouranosinc/xclim/pull/2144
-def convert_units_to(data : xr.Dataset | DataTree, var : str, target_unit : str, context: str ="infer"):
+def convert_units_to(data : xr.Dataset | xr.DataTree, var : str, target_unit : str, context: str ="infer"):
     """
     Convert units of a variable in a xr.Dataset or xr.DataTree to a target unit. 
     
@@ -31,7 +30,7 @@ def convert_units_to(data : xr.Dataset | DataTree, var : str, target_unit : str,
     :func:`xclim.units.convert_units_to`
     """
 
-    if isinstance(data, DataTree):
+    if isinstance(data, xr.DataTree):
         return _dt_convert_units_to(data, var, target_unit, context)
     elif isinstance(data, xr.Dataset):
         return _ds_convert_units_to(data, var, target_unit, context)
@@ -47,7 +46,7 @@ def _ds_convert_units_to(ds: xr.Dataset, var: str, target_unit: str, context: st
         warnings.warn(f"Variable {var} not found in the dataset. Conversion not applied.")
     return ds
     
-def _dt_convert_units_to(dt: DataTree, var: str, target_unit: str, context: str = "infer"):
+def _dt_convert_units_to(dt: xr.DataTree, var: str, target_unit: str, context: str = "infer"):
     """Convert units of a variable in a DataTree to a target unit."""
     
     return dt.map_over_datasets(
