@@ -1,0 +1,109 @@
+# Dataset information for the ValEnsPy package
+
+# Format
+
+# machine:
+#    dataset_name:
+#       root: <path_to_root>
+#       pattern: <path_to_pattern>
+#       meta_data:
+#         source_id: <source_id> #Used to match InputConvertors
+#         activity_id: <activity_id>
+#         domain_id: <domain_id>
+#         frequency: <frequency>
+#         resolution: <resolution>
+#         version: <version>
+#         experiment_id: <experiment_id>
+
+# The following groups should be present in either the meta_data or the pattern (<group>):
+# Required:
+#   "source_id",
+#   "source_type",
+#   "domain_id",        #(e.g. "europe", "EUR-11", "global", "etc")
+#   "experiment_id",    #(e.g. "historical", "rcp85", "ssp585", "land_use_change", "etc")
+#   "version",          #(e.g. "v1", "v2", "etc")
+#   "resolution",       #(e.g. "0.11", "0.44", "etc")
+#   "frequency",        #(e.g. "hourly", "daily", "monthly", "yearly")
+#   "variable_id"       #(e.g. "tas", "pr", "etc") - note that if a IC exists this can be the raw_variable
+#   "time_period" or ("time_period_start" and "time_period_end") #(e.g. "20000201", "2000", ) Note that time period is a single string in the pattern that can be in any format
+# The following groups are required but a default value is used if not explicitly present in meta_data or pattern:
+#   "driving_source_id" #(e.g. "ERA5", "GCM", "RCM", "etc")
+#   "institution_id"    #(e.g. "RMIB", "UCL", "U Liège", "etc")
+#   "realization"       #(e.g. "r1i1p1", "r2i1p1", "etc")
+# Optional:
+#   "time_format"       #(e.g. "%Y%m%d", "%Y-%m-%d", "etc") 
+#                         - used to parse the time period in the pattern
+#                         - if not present then time_period/time_period_start/time_period_end should be parseable with pd.Period
+#                         - if multiple time formats are used in the pattern (e.g. some files are hourly - 2025020523 and some daily - 20250205) use the longest format that should be applicable for all.
+
+
+
+hortense:
+  ERA5: #Note that there is an aggregation variable here! What to do with this? This is messy as it can not be uniquely identified by the filename!
+    root: /dodrio/scratch/projects/2022_200/external/era5/
+    pattern: <domain_id>/<variable_id>/<frequency>/<variable_id_2>_era5_<domain_id_2>_<frequency_2>_<aggregation>_<time_period>.nc
+    meta_data:
+      source_id: "ERA5"
+      source_type: "reanalysis"
+      experiment_id: "reanalysis"
+      version: "ERA5.0"
+      resolution: "0.25°"
+      institution_id: "ECMWF"
+      time_format: "%Y"   
+
+  ERA5-Land: #Note that there is an aggregation variable here! What to do with this? This is messy as it can not be uniquely identified by the filename!
+    root: /dodrio/scratch/projects/2022_200/external/era5-land/
+    pattern: <domain_id>/<variable_id>/<frequency>/<variable_id2>_era5-land_<domain_id_2>_<frequency_2>_<aggregation>_<time_period>.nc
+    meta_data:
+      source_id: "ERA5-Land"
+      source_type: "reanalysis"
+      experiment_id: "reanalysis"
+      version: "ERA5-Land"
+      resolution: "0.1°"
+      institution_id: "ECMWF"
+      time_format: "%Y"
+      
+  EOBS: #Note that there is an aggregation variable here! What to do with this?
+    root: /dodrio/scratch/projects/2022_200/external/eobs/
+    pattern: <resolution>/<variable_id>_ens_<aggregation>_<resolution2>_reg_<version>.nc
+    meta_data:
+      source_id: "EOBS"
+      source_type: "observations"
+      domain_id: "Europe"
+      experiment_id: "observations"
+      frequency: "daily"
+      time_period_start: "1950"
+      time_period_end: "2023"
+      time_format: "%Y"
+      
+  CLIMATE_GRID:
+    root: /dodrio/scratch/projects/2022_200/external/climate_grid/regridded/
+    pattern: <domain_id>/<variable_id>_CLIMATE_GRID_<time_period_start>_<time_period_end>_<frequency>_<domain_id2>_<resolution>.nc
+    meta_data:
+      source_id: "CLIMATE_GRID"
+      source_type: "observations"
+      experiment_id: "observations"
+      version: "v1"
+      resolution: "~5km"
+      institution_id: "RMIB"
+      time_format: "%Y"
+
+  RADCLIM: #TODO move to a shared location?
+    root: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/data/RADCLIM
+    pattern: <year>/RADCLIM_<variable_id>_<time_period>_<frequency>.nc
+    meta_data:
+      source_id: "RADCLIM"
+      source_type: "satellite"
+      domain_id: "Belgium"
+      experiment_id: "observations"
+      version: "v1"
+      frequency: "daily"
+      resolution: "~1km"
+      institution_id: "RMIB"
+      time_format: "%Y%m%d"
+
+kili:
+  ERA5:
+  ERA5-Land:
+  EOBS:
+  CLIMATE_GRID: /mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID/
