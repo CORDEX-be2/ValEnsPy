@@ -30,13 +30,12 @@
 #   "driving_source_id" #(e.g. "ERA5", "GCM", "RCM", "etc")
 #   "institution_id"    #(e.g. "RMIB", "UCL", "U Liège", "etc")
 #   "realization"       #(e.g. "r1i1p1", "r2i1p1", "etc")
+#   "post_processing"   #(e.g. "MBCN")
 # Optional:
 #   "time_format"       #(e.g. "%Y%m%d", "%Y-%m-%d", "etc") 
 #                         - used to parse the time period in the pattern
 #                         - if not present then time_period/time_period_start/time_period_end should be parseable with pd.Period
 #                         - if multiple time formats are used in the pattern (e.g. some files are hourly - 2025020523 and some daily - 20250205) use the longest format that should be applicable for all.
-
-
 
 hortense:
   ERA5: #Note that there is an aggregation variable here! What to do with this? This is messy as it can not be uniquely identified by the filename!
@@ -88,7 +87,7 @@ hortense:
       institution_id: "RMIB"
       time_format: "%Y"
 
-  RADCLIM: #TODO move to a shared location?
+  RADCLIM:
     root: /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/data/RADCLIM
     pattern: <year>/RADCLIM_<variable_id>_<time_period>_<frequency>.nc
     meta_data:
@@ -102,8 +101,47 @@ hortense:
       institution_id: "RMIB"
       time_format: "%Y%m%d"
 
-kili:
-  ERA5:
-  ERA5-Land:
-  EOBS:
-  CLIMATE_GRID: /mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID/
+bilan:
+  CLIMATE_GRID:
+    root: /mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID/regridded/
+    pattern: <domain_id>/<variable_id>_CLIMATE_GRID_<time_period_start>_<time_period_end>_<frequency>_<domain_id2>_<resolution>.nc
+    meta_data:
+      source_id: "CLIMATE_GRID"
+      source_type: "observations"
+      experiment_id: "observations"
+      version: "v1"
+      resolution: "~5km"
+      institution_id: "RMIB"
+      time_format: "%Y"
+  
+  # Ask sylvain for the correct paths - compare to the ALARO runs.
+  CMIP5_CORDEX_BC_CLIMATE_GRID:
+    root: /mnt/HDS_CORDEXBE_HUB/CORDEXBE_HUB/CORDEX/CORDEX_belgium_day_proj_all_latlon_bc/
+    pattern: <post_processing>/<experiment_id2>/<variable_id>_<domain_id>_<driving_source_id>_<experiment_id>_<realization>_<source_id>_<version>_<frequency>_<time_period_start>-<time_period_end>_bc_isimip3.nc
+    meta_data:
+      source_type: "CMIP5-EUROCORDEX_bc" #RCM bias corrected
+      domain_id: "Belgium"
+      resolution: "~5km"
+      # time_format: "%Y%m%d"
+
+  # CMIP5_CORDEX:
+  #   root: /mnt/HDS_CORDEXBE_HUB/CORDEXBE_HUB/CORDEX/CORDEX_raw_day
+  #   pattern: <domain_id>/<institute_id>/<driving_source_id>/<experiment_id>/<realization>/<source_id>/<version>/<frequency>/<variable_id>/<variable_id2>_<domain_id2>_<driving_source_id2>_<experiment_id2>_<realization2>_<source_id2>_<version_2>_<frequency_2>_<time_period_start>-<time_period_end>.nc
+  #   meta_data:
+  #     source_type: "CMIP5-CORDEX" #RCM
+  #     time_format: "%Y%m%d"
+  #     resolution: "12-25km"
+
+  CMIP6:
+    root: /mnt/HDS_AFTER/AFTER/bertvs/CMIP6_raw_day
+    pattern: <source_id>/<experiment_id>/<realization>/<frequency>/<variable_id>/<variable_id2>_<frequency2>_<source_id2>_<experiment_id2>_<realization2>_gn_<time_period_start>-<time_period_end>.nc
+    meta_data:
+      source_type: "CMIP6" #GCM
+      domain_id: "global"
+      resolution: "50-250km"
+      # time_format: "%Y%m%d"
+
+    
+  # ERA5:
+  # ERA5-Land:
+  # EOBS:
