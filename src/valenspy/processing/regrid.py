@@ -1,6 +1,11 @@
 import xarray as xr
 import cf_xarray
-import xesmf as xe
+try:
+    # Import check for xesmf as it has non-python dependencies. This ensures valenspy can function without xesmf - for example when installed via pip.
+    import xesmf as xe
+    XESM_AVAILABLE = True
+except ImportError:
+    XESM_AVAILABLE = False
 
 def remap_xesmf(data : xr.Dataset | xr.DataTree, ds_out : xr.Dataset, method : str ="bilinear", regridder_kwargs : dict ={}, regridding_kwargs: dict ={}):
     """Remap the input dataset to the target grid using xESMF.
@@ -25,6 +30,8 @@ def remap_xesmf(data : xr.Dataset | xr.DataTree, ds_out : xr.Dataset, method : s
     xarray.Dataset or xarray.DataTree
         The remapped data.
     """
+    if not XESM_AVAILABLE:
+        raise ImportError(f"The xesmf dependency ESMF and esmpy (EMSF's python interface) are not installed. Please install it with 'conda install -c conda-forge esmpy' or similar to use this function.")
     if isinstance(data, xr.DataTree):
         return _remap_xesmf_dt(data, ds_out, method, regridder_kwargs, regridding_kwargs)
     elif isinstance(data, xr.Dataset):
