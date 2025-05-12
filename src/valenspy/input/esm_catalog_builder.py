@@ -27,6 +27,7 @@ CATALOG_COLS = {
     "driving_source_id",
     "institution_id",
     "realization",
+    "post_processing",
 ],
 "filtering_identifiers" : [
     #Filtering identifiers within a unique dataset allowing to limit the number of files to load
@@ -127,6 +128,7 @@ class CatalogBuilder:
         files_with_metadata = []
         for dataset_name, dataset_info in self.datasets_info.items():
             # Process the dataset and extract metadata
+            print(f"Processing dataset: {dataset_name}")
             grouped_files_with_metadata = self._process_dataset_for_catalog(dataset_name, dataset_info)
             # Add the dataset name to the metadata
             files_with_metadata.extend(grouped_files_with_metadata)
@@ -219,6 +221,8 @@ class CatalogBuilder:
                         file_metadata["time_period_start"] = start
                         file_metadata["time_period_end"] = end
                     else:
+                        if dataset_name not in self.skipped_files:
+                            self.skipped_files[dataset_name] = []
                         self.skipped_files[dataset_name].append(file_path)
                         continue
 
