@@ -1,7 +1,7 @@
 import xclim
 from xclim.testing import open_dataset
 import xarray as xr
-from datatree import DataTree
+from xarray import DataTree
 import valenspy as vp
 
 def test_unit_conversion():

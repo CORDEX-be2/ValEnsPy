@@ -1,4 +1,4 @@
-from datatree import DataTree
+from xarray import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions
@@ -130,7 +130,7 @@ class DataSetDiagnostic(Diagnostic):
         DataTree
             The data after applying the diagnostic.
         """
-        return dt.map_over_subtree(self.apply, *args, **kwargs)
+        return dt.map_over_datasets(self.apply, *args, **kwargs)
 
     def plot_dt(self, dt, *args, **kwargs):
         if self.plot_type == "single":
@@ -262,8 +262,8 @@ class Model2Self(DataSetDiagnostic):
             The DataTree after applying the diagnostic.
         """
         if mask == "prudence":
-            dt = dt.map_over_subtree(add_prudence_regions)
-        return dt.map_over_subtree(self.diagnostic_function, **kwargs)
+            dt = dt.map_over_datasets(add_prudence_regions)
+        return dt.map_over_datasets(self.diagnostic_function, **kwargs)
 
 
 class Model2Ref(DataSetDiagnostic):
@@ -315,10 +315,10 @@ class Model2Ref(DataSetDiagnostic):
             The DataTree after applying the diagnostic.
         """
         if mask == "prudence":
-            dt = dt.map_over_subtree(add_prudence_regions)
+            dt = dt.map_over_datasets(add_prudence_regions)
             ref = add_prudence_regions(ref)
 
-        return dt.map_over_subtree(self.diagnostic_function, ref=ref, **kwargs)
+        return dt.map_over_datasets(self.diagnostic_function, ref=ref, **kwargs)
 
 class Ensemble2Self(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to itself."""
@@ -345,7 +345,7 @@ class Ensemble2Self(Diagnostic):
             The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
         if mask == "prudence":
-            dt = dt.map_over_subtree(add_prudence_regions)
+            dt = dt.map_over_datasets(add_prudence_regions)
 
         return self.diagnostic_function(dt, **kwargs)
 

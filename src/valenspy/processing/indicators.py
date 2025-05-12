@@ -1,8 +1,8 @@
-from datatree import map_over_subtree, DataTree
+from xarray import DataTree
+import xarray as xr
 from xclim.core.indicator import Indicator
 
-#Note - map_over_subtree is from the original xarray-datatree package, when moved to xarray it was not kept. When shifting to datatree from xarray this should be dealt with.
-@map_over_subtree
+#Eventually replace this with built in xclim functionality - see https://github.com/Ouranosinc/xclim/issues/2127 and https://github.com/Ouranosinc/xclim/pull/2144
 def xclim_indicator(dt : DataTree, indicator : Indicator, vars : str | list, **kwargs) -> DataTree:
     """
     Calculate an xclim indicator on a data tree.
@@ -26,9 +26,21 @@ def xclim_indicator(dt : DataTree, indicator : Indicator, vars : str | list, **k
     xr.Dataset
         A new dataset with the indicator calculated
     """
-    #Note dt is actually a dataset here but due to the wrapper the function works on the datatree level by broadcasting this function to all datasets in the tree.
-    if isinstance(vars, str):
-        return indicator(dt[vars], **kwargs).to_dataset()
-    elif isinstance(vars, list): #Order is important!
-        data_arrays = [dt[var] for var in vars]
-        return indicator(*data_arrays, **kwargs).to_dataset()
+    def xclim_indicator_ds(ds: xr.Dataset, indicator: Indicator,  vars: str | list, **kwargs) -> xr.Dataset:
+        """
+        Wrapper function to apply the indicator to a single dataset.
+        """
+        if isinstance(vars, str):
+            if vars in ds:
+                return indicator(ds[vars], **kwargs).to_dataset()
+        elif isinstance(vars, list): #Order is important!
+            if all(var in ds for var in vars):
+                data_arrays = [ds[var] for var in vars]
+                return indicator(*data_arrays, **kwargs).to_dataset()
+        
+    return dt.map_over_datasets(
+        xclim_indicator_ds,
+        indicator,
+        vars,
+        kwargs=kwargs
+    )
