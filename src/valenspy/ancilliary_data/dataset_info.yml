@@ -139,8 +139,15 @@ bilan:
       source_type: "CMIP6" #GCM
       domain_id: "global"
       resolution: "50-250km"
-      # time_format: "%Y%m%d"
 
+  CMIP5:
+    root: /mnt/HDS_AFTER/AFTER/bertvs/CMIP5_raw_day
+    pattern: <source_id>/<experiment_id>/<realization>/<frequency>/<variable_id>/<variable_id2>_<frequency2>_<source_id2>_<experiment_id2>_<realization2>_<time_period_start>-<time_period_end>.nc
+    meta_data:
+      source_type: "CMIP5" #GCM
+      domain_id: "global"
+      resolution: "50-250km"
+      version: "v1"
     
   # ERA5:
   # ERA5-Land:
