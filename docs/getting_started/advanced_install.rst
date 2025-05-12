@@ -18,6 +18,7 @@ Installing with conda
 To install with conda ensure that you have either `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`__ or `Anaconda <https://docs.continuum.io/free/anaconda/>`__ installed, then run the following command in your terminal:
 
 .. code-block:: shell
+
     #WIP still needs to be published to conda-forge
 
 This will install ValEnsPy and all its dependencies, including ESMF (esmpy) if it is not already installed in the environment.
@@ -33,11 +34,13 @@ Valenspy can be installed via pip from `PyPI <https://pypi.org/project/ValEnsPy/
     Installing ValEnsPy with pip will not install ESMF (esmpy). If you require regridding functionality, either install esmpy in your environment seperately or use conda to install ValEnsPy.
 
     .. code-block:: shell
+
         conda install -c conda-forge esmpy
 
 In your terminal run the following command:
 
 .. code-block:: shell
+    
     pip install ValEnsPy
 
 Installing on Windows

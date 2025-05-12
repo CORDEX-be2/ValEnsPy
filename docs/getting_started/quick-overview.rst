@@ -9,6 +9,7 @@ Components
 ----------
 
 Valenspy consists of three main components:
+
 - **Input**: Gathering raw data, loading it and transforming it to ValEnsPy complaint xarray DataSet or DataTree with uniform naming conventions.
 - **Processing**: User dependent processing steps, e.g. regridding, masking, etc.
 - **Diagnostics**: The computation and visualization of the diagnostics.
@@ -33,7 +34,7 @@ The latter is done by the `InputConvertors` class, which is essentially a datase
 
 For standard datasets, ValEnsPy has built in input processors but users can also easily define their own input processors.
 
-Gathering and loading the data is done by the `Manager` class, which creates a catalog of all available datasets and utilizes the `intake-esm` to make that data searchable and loadable.
+Gathering and loading the data is done by the `Manager` class, which creates a catalog of all available datasets and utilizes `intake-esm <https://intake-esm.readthedocs.io/en/latest/>`_ to make that data searchable and loadable.
 The creation of the catalog is semi-automatic, i.e. only the base directory and a pattern for the files need to be specified. On shared shared machines this could only have to be done once after which the catalog can be used by all users. The catalog is stored in a `yaml` file and can be easily shared with others. The catalog is then used to load the data into xarray DataSets or DataTrees.
 When loading the data, the `Manager` class also applies a set of pre-processing steps to each respective dataset through the aformentioned `InputConvertors`.
 
@@ -56,4 +57,4 @@ Diagnostics are categorized into 4 groups, each with slightly different scope an
 
 The diagnostics functions are applied on the xarray DataSets or DataTrees resulting in some form of output (pandas DataFrame, xarray DataSet or DataTree, dictionary, etc.) which can be saved or visualized with the diagnostic plot functions.
 
-Within ValEnsPy there are `some prexisting diagnostics <_api_docs>`_, but users can also define their own diagnostics.
+Within ValEnsPy there are `some prexisting diagnostics <../_api_docs>`_, but users can also define their own diagnostics.
