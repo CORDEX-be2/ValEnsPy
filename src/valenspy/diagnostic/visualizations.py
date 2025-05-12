@@ -22,7 +22,8 @@ xr.set_options(keep_attrs=True)
 
 
 def plot_diurnal_cycle(da: xr.DataArray, **kwargs):
-    """Plot the daily cycle of the data.
+    """
+    Plot the daily cycle of the data.
     
     Parameters
     ----------
