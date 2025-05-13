@@ -10,7 +10,7 @@ Components
 
 Valenspy consists of three main components:
 
-- **Input**: Gathering raw data, loading it and transforming it to ValEnsPy complaint xarray DataSet or DataTree with uniform naming conventions.
+- **Input**: Gathering raw data, loading it and transforming it to ValEnsPy complaint xarray DataSet or DataTree with a uniform naming convention.
 - **Processing**: User dependent processing steps, e.g. regridding, masking, etc.
 - **Diagnostics**: The computation and visualization of the diagnostics.
 
@@ -20,7 +20,7 @@ The image below illustrates the main components of ValEnsPy and how they interac
 .. image:: /_static/images/valenspy_overview.png
     :alt: Overview diagram of ValEnsPy
     :align: center
-    :width: 80%
+    :width: 100%
 
 Input
 ^^^^^
@@ -35,14 +35,15 @@ The latter is done by the `InputConvertors` class, which is essentially a datase
 For standard datasets, ValEnsPy has built in input processors but users can also easily define their own input processors.
 
 Gathering and loading the data is done by the `Manager` class, which creates a catalog of all available datasets and utilizes `intake-esm <https://intake-esm.readthedocs.io/en/latest/>`_ to make that data searchable and loadable.
-The creation of the catalog is semi-automatic, i.e. only the base directory and a pattern for the files need to be specified. On shared shared machines this could only have to be done once after which the catalog can be used by all users. The catalog is stored in a `yaml` file and can be easily shared with others. The catalog is then used to load the data into xarray DataSets or DataTrees.
+
+The creation of the catalog is semi-automatic, i.e. only the base directory and a pattern for the files need to be specified and can be shared with others using the same computing infrastructure. The catalog is then used to search for and load the user required data into xarray DataSets or DataTrees.
 When loading the data, the `Manager` class also applies a set of pre-processing steps to each respective dataset through the aformentioned `InputConvertors`.
 
 Processing
 ^^^^^^^^^^
 
 The processing component enables users to apply the required processing steps to the data. These are a combination of simple xarray operations time selection, masking and more complex operations like regridding and calculating indicators.
-Where required ValEnsPy extends existing processing functionality in particular to support the new xarray DataTree structure.
+Where required ValEnsPy extends existing processing functionality, in particular to support the new xarray DataTree structure.
 
 Diagnostics
 ^^^^^^^^^^^
@@ -57,4 +58,4 @@ Diagnostics are categorized into 4 groups, each with slightly different scope an
 
 The diagnostics functions are applied on the xarray DataSets or DataTrees resulting in some form of output (pandas DataFrame, xarray DataSet or DataTree, dictionary, etc.) which can be saved or visualized with the diagnostic plot functions.
 
-Within ValEnsPy there are `some prexisting diagnostics <../_api_docs>`_, but users can also define their own diagnostics.
+Within ValEnsPy there are `some prexisting diagnostics <../_api_docs>`_ to explorea and use, but users can also define their own diagnostics.

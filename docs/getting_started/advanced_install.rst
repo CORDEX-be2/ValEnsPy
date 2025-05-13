@@ -23,7 +23,7 @@ To install with conda ensure that you have either `Miniconda <https://docs.conda
 
 This will install ValEnsPy and all its dependencies, including ESMF (esmpy) if it is not already installed in the environment.
 
-.. _install.pip:
+.. _install_pip:
 
 Installing with pip
 -------------------
@@ -40,14 +40,14 @@ Valenspy can be installed via pip from `PyPI <https://pypi.org/project/ValEnsPy/
 In your terminal run the following command:
 
 .. code-block:: shell
-    
+
     pip install ValEnsPy
 
 Installing on Windows
 ---------------------
 
 ValEnsPy is not yet fully supported on Windows because the xesmf package (in particular the ESMF dependency) is not supported on Windows.
-If you are using Windows and do not require regridding functionality, you can :ref:`install ValEnsPy using pip <_install.pip>` without installing ESMF (esmpy) separately. If the regridding functionality is we recommend using a Linux or MacOS environment.
+If you are using Windows and do not require regridding functionality, you can :ref:`install ValEnsPy using pip <_install_pip>` without installing ESMF (esmpy) separately.
 
 Installation from source
 ------------------------

@@ -74,7 +74,7 @@ Still not convinced? Check out the :ref:`Why ValEnsPy <why_ValEnsPy>` page.
 What do I need to get started?
 ------------------------------
 
-- A working `installation <advanced_install>` of ValEnsPy.
+- A working `installation <advanced_install>`_ of ValEnsPy.
 - A basic understanding of `xarray <https://docs.xarray.dev/en/stable/getting-started-guide/index.html>`_ in particular the newly introduced `DataTree <https://docs.xarray.dev/en/stable/user-guide/data-structures.html#datatree>`_ functionality.
 - A basic understanding of `pandas <https://pandas.pydata.org/docs/getting_started/index.html>`_
 
