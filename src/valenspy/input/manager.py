@@ -152,6 +152,7 @@ class InputManager:
         - preprocess: The preprocessor function which applies the input convertor to the dataset if an input convertor exists (i.e. source_id is in INPUT_CONVERTORS).
         - xarray_open_kwargs: The kwargs to be passed to xarray.open_dataset.
         - xarray_combine_by_coords_kwargs: The kwargs to be passed to xarray.combine_by_coords.
+
         """
         kwargs = {
             "preprocess": self.preprocess,}
@@ -178,6 +179,7 @@ class InputManager:
             - root: The root directory of the dataset.
             - pattern: The regex pattern for matching files in the dataset.
             - meta_data: A dictionary containing metadata for the dataset.
+
         """
         self.catalog_builder.add_dataset(
             dataset_name,
@@ -199,6 +201,7 @@ class InputManager:
             - pattern: The regex pattern for matching files in the dataset. This is the reletave path starting from the root and in the following format:
                 <indentifier_name>/<indentifier_name>/<indentifier_name>_fixed_part_<variable_id>/<another_identifier>_<year>.nc
             - meta_data: A dictionary containing metadata for the dataset.
+
         """
         # Load the YAML file
         datasets_info = load_yml(yaml_path)
@@ -226,6 +229,7 @@ class InputManager:
             <indentifier_name>/<indentifier_name>/<indentifier_name>_fixed_part_<variable_id>/<another_identifier>_<year>.nc
         metadata : dict, optional
             Additional metadata to include in the catalog. Default is an empty dictionary.
+
         """
         dataset_info = {
             "root": dataset_root_dir,
@@ -242,6 +246,7 @@ class InputManager:
         A preprocessor function to convert the input dataset to ValEnsPy compliant data.
 
         This function applys the input convertor to the dataset if an input convertor exists (i.e. source_id is in this managers input convertors).
+        
         """
 
         def process_IC(ds, IC_dict, df):

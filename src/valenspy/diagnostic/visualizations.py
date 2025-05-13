@@ -22,7 +22,8 @@ xr.set_options(keep_attrs=True)
 
 
 def plot_diurnal_cycle(da: xr.DataArray, **kwargs):
-    """Plot the daily cycle of the data.
+    """
+    Plot the daily cycle of the data.
     
     Parameters
     ----------
@@ -47,7 +48,8 @@ def plot_diurnal_cycle(da: xr.DataArray, **kwargs):
     return ax
 
 def plot_annual_cycle(da: xr.DataArray, **kwargs):
-    """Plot the annual cycle of the data.
+    """
+    Plot the annual cycle of the data.
 
     Parameters
     ----------
@@ -71,7 +73,8 @@ def plot_annual_cycle(da: xr.DataArray, **kwargs):
 
 
 def plot_time_series(da: xr.DataArray, **kwargs):
-    """Plot a time series of the data.
+    """
+    Plot a time series of the data.
     
     Parameters
     ----------

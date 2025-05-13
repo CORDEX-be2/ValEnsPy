@@ -22,6 +22,7 @@ Modules
 
 Pre-made Diagnostic
 -------------------
+
 Most users will use pre-made diagnostics. They are organized into four categories and listed below.
 
 Model2Self

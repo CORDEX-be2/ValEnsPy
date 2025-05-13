@@ -56,6 +56,7 @@ class CatalogBuilder:
             - pattern: The regex pattern for matching files in the dataset. This is the reletave path starting from the root and in the following format:
                 <indentifier_name>/<indentifier_name>/<indentifier_name>_fixed_part_<variable_id>/<another_identifier>_<year>.nc
             - meta_data: A dictionary containing metadata for the dataset.
+
         """
         self.catalog_id = catalog_id
 
@@ -82,6 +83,7 @@ class CatalogBuilder:
             The name of the dataset to update.
         dataset_info : dict
             The new dataset information to update.
+            
         """
         #TODO - check if the dataset_name is already in the datasets_info
         self.datasets_info[dataset_name] = dataset_info
