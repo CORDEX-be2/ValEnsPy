@@ -39,7 +39,7 @@ CATALOG_COLS = {
 
 class CatalogBuilder:
 
-    def __init__(self, catalog_id, datasets_info : dict | str = None):
+    def __init__(self, catalog_id, datasets_info : dict | str = None, datasets_subset = None):
         """
         Initialize the CatalogBuilder with a catalog ID and dataset information.
 
@@ -55,7 +55,9 @@ class CatalogBuilder:
             - root: The root directory of the dataset.
             - pattern: The regex pattern for matching files in the dataset. This is the reletave path starting from the root and in the following format:
                 <indentifier_name>/<indentifier_name>/<indentifier_name>_fixed_part_<variable_id>/<another_identifier>_<year>.nc
-            - meta_data: A dictionary containing metadata for the dataset.
+            - meta_data: A dictionary containing metadata for the dataset
+        dataset_to_load : str | list, optional
+            The name of the dataset(s) to load. If not provided, all datasets in the dataset_info will be loaded.
         """
         self.catalog_id = catalog_id
 
@@ -65,6 +67,12 @@ class CatalogBuilder:
             self.datasets_info = datasets_info
         else:
             self.datasets_info = DATASET_PATHS[catalog_id]
+
+        if datasets_subset:
+            if isinstance(datasets_subset, str):
+                datasets_subset = [datasets_subset]
+            # Filter the datasets_info to only include the datasets to load
+            self.datasets_info = {dataset_name: self.datasets_info[dataset_name] for dataset_name in datasets_subset if dataset_name in self.datasets_info}
 
         self._validate_dataset_info()
 

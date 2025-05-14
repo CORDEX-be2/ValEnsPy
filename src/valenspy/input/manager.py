@@ -43,7 +43,8 @@ class InputManager:
     def __init__(
             self, 
             machine : str, 
-            datasets_info : dict = None, 
+            datasets_info : dict = None,
+            datasets_subset : str | list = None,
             description=None, 
             input_convertors : dict = INPUT_CONVERTORS,
             esmcat_data : dict = esmcat_default_data,
@@ -67,6 +68,8 @@ class InputManager:
             - pattern: The regex pattern for matching files in the dataset. This is the reletave path starting from the root and in the following format:
                 <indentifier_name>/<indentifier_name>/<indentifier_name>_fixed_part_<variable_id>/<another_identifier>_<year>.nc
             - meta_data: A dictionary containing metadata for the dataset.
+        datasets_subset : str | list, optional
+            The name of the dataset(s) to load. If None, all datasets are loaded. 
         description : str, optional
             A description of the catalog. Default is None. This is used to create the description in the intake-esm catalog.
         input_convertors : dict, optional
@@ -83,7 +86,8 @@ class InputManager:
         """
         self.catalog_builder = CatalogBuilder(
             catalog_id=machine,
-            datasets_info=datasets_info
+            datasets_info=datasets_info,
+            datasets_subset=datasets_subset,
         )
 
         if self.catalog_builder.skipped_files:
