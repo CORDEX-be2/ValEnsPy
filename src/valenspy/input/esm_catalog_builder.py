@@ -95,11 +95,13 @@ class CatalogBuilder:
         self.datasets_info[dataset_name] = dataset_info
         new_data = self._process_dataset_for_catalog(dataset_name, dataset_info)
         
-        # Cast the variable_id column as a list - Hack needed for intake_esm catalog to garantee has_multiple_variable_assets in its current version
-        new_df = pd.DataFrame(new_data)
-        new_df["variable_id"] = new_df["variable_id"].apply(lambda x: x if isinstance(x, list) else [x])
+        #Only continue if new data was found
+        if new_data:
+            # Cast the variable_id column as a list - Hack needed for intake_esm catalog to garantee has_multiple_variable_assets in its current version
+            new_df = pd.DataFrame(new_data)
+            new_df["variable_id"] = new_df["variable_id"].apply(lambda x: x if isinstance(x, list) else [x])
         
-        self.df = pd.concat([self.df, new_df], ignore_index=True)
+            self.df = pd.concat([self.df, new_df], ignore_index=True)
 
     def _validate_dataset_info(self):
         """Validate the dataset information to ensure all required identifiers are present."""
@@ -238,6 +240,9 @@ class CatalogBuilder:
                         if key not in file_metadata:
                             file_metadata[key] = "default"
 
-                    files_with_metadata.append(file_metadata)  
+                    files_with_metadata.append(file_metadata)
+
+        if not files_with_metadata:
+            warnings.warn(f"No valid files found for dataset {dataset_name}; \n Please check the dataset root {dataset_root} and pattern {dataset_info.get('pattern', None)}")
 
         return files_with_metadata
