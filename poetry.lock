@@ -1130,17 +1130,6 @@ paramiko = ["paramiko"]
 pgp = ["gpg"]
 
 [[package]]
-name = "entrypoints"
-version = "0.4"
-description = "Discover and load entry points from installed packages."
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "entrypoints-0.4-py3-none-any.whl", hash = "sha256:f174b5ff827504fd3cd97cc3f8649f3693f51538c7e4bdf3ef002c8429d42f9f"},
-    {file = "entrypoints-0.4.tar.gz", hash = "sha256:b706eddaa9218a19ebcd67b56818f05bb27589b1ca9e8d797b74affad4ccacd4"},
-]
-
-[[package]]
 name = "exceptiongroup"
 version = "1.2.2"
 description = "Backport of PEP 654 (exception groups)"
@@ -1913,36 +1902,6 @@ files = [
 ]
 
 [[package]]
-name = "llvmlite"
-version = "0.43.0"
-description = "lightweight wrapper around basic LLVM functionality"
-optional = false
-python-versions = ">=3.9"
-files = [
-    {file = "llvmlite-0.43.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:a289af9a1687c6cf463478f0fa8e8aa3b6fb813317b0d70bf1ed0759eab6f761"},
-    {file = "llvmlite-0.43.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:6d4fd101f571a31acb1559ae1af30f30b1dc4b3186669f92ad780e17c81e91bc"},
-    {file = "llvmlite-0.43.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7d434ec7e2ce3cc8f452d1cd9a28591745de022f931d67be688a737320dfcead"},
-    {file = "llvmlite-0.43.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6912a87782acdff6eb8bf01675ed01d60ca1f2551f8176a300a886f09e836a6a"},
-    {file = "llvmlite-0.43.0-cp310-cp310-win_amd64.whl", hash = "sha256:14f0e4bf2fd2d9a75a3534111e8ebeb08eda2f33e9bdd6dfa13282afacdde0ed"},
-    {file = "llvmlite-0.43.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:3e8d0618cb9bfe40ac38a9633f2493d4d4e9fcc2f438d39a4e854f39cc0f5f98"},
-    {file = "llvmlite-0.43.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:e0a9a1a39d4bf3517f2af9d23d479b4175ead205c592ceeb8b89af48a327ea57"},
-    {file = "llvmlite-0.43.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c1da416ab53e4f7f3bc8d4eeba36d801cc1894b9fbfbf2022b29b6bad34a7df2"},
-    {file = "llvmlite-0.43.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:977525a1e5f4059316b183fb4fd34fa858c9eade31f165427a3977c95e3ee749"},
-    {file = "llvmlite-0.43.0-cp311-cp311-win_amd64.whl", hash = "sha256:d5bd550001d26450bd90777736c69d68c487d17bf371438f975229b2b8241a91"},
-    {file = "llvmlite-0.43.0-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:f99b600aa7f65235a5a05d0b9a9f31150c390f31261f2a0ba678e26823ec38f7"},
-    {file = "llvmlite-0.43.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:35d80d61d0cda2d767f72de99450766250560399edc309da16937b93d3b676e7"},
-    {file = "llvmlite-0.43.0-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:eccce86bba940bae0d8d48ed925f21dbb813519169246e2ab292b5092aba121f"},
-    {file = "llvmlite-0.43.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:df6509e1507ca0760787a199d19439cc887bfd82226f5af746d6977bd9f66844"},
-    {file = "llvmlite-0.43.0-cp312-cp312-win_amd64.whl", hash = "sha256:7a2872ee80dcf6b5dbdc838763d26554c2a18aa833d31a2635bff16aafefb9c9"},
-    {file = "llvmlite-0.43.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:9cd2a7376f7b3367019b664c21f0c61766219faa3b03731113ead75107f3b66c"},
-    {file = "llvmlite-0.43.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:18e9953c748b105668487b7c81a3e97b046d8abf95c4ddc0cd3c94f4e4651ae8"},
-    {file = "llvmlite-0.43.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:74937acd22dc11b33946b67dca7680e6d103d6e90eeaaaf932603bec6fe7b03a"},
-    {file = "llvmlite-0.43.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:bc9efc739cc6ed760f795806f67889923f7274276f0eb45092a1473e40d9b867"},
-    {file = "llvmlite-0.43.0-cp39-cp39-win_amd64.whl", hash = "sha256:47e147cdda9037f94b399bf03bfd8a6b6b1f2f90be94a454e3386f006455a9b4"},
-    {file = "llvmlite-0.43.0.tar.gz", hash = "sha256:ae2b5b5c3ef67354824fb75517c8db5fbe93bc02cd9671f3c62271626bc041d5"},
-]
-
-[[package]]
 name = "locket"
 version = "1.0.0"
 description = "File-based locks for Python on Linux and Windows"
@@ -2516,6 +2475,16 @@ files = [
     {file = "netCDF4-1.7.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:572f71459ef4b30e8554dcc4e1e6f55de515acc82a50968b48fe622244a64548"},
     {file = "netCDF4-1.7.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7f77e72281acc5f331f82271e5f7f014d46f5ca9bcaa5aafe3e46d66cee21320"},
     {file = "netCDF4-1.7.2-cp39-cp39-win_amd64.whl", hash = "sha256:d0fa7a9674fae8ae4877e813173c3ff7a6beee166b8730bdc847f517b282ed31"},
+    {file = "netcdf4-1.7.2-cp310-cp310-macosx_13_0_x86_64.whl", hash = "sha256:16c3ba053930ed990e58827de6ab03184e407549004fb77438b98e5777e8cf3b"},
+    {file = "netcdf4-1.7.2-cp310-cp310-macosx_14_0_arm64.whl", hash = "sha256:142c9ed2db8a87a15ae0530c8a99f4f045435b0f495df733e9f111995e389d4f"},
+    {file = "netcdf4-1.7.2-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:76cb3bbbbe4cd5fca612578eb105c16217380f7f93af2b549e8f38296bc906bb"},
+    {file = "netcdf4-1.7.2-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:835ae7bcef666c967241baeeee9bef9376ddb7527297b24735597131f6f628e2"},
+    {file = "netcdf4-1.7.2-cp310-cp310-win_amd64.whl", hash = "sha256:73bd7eda3cefb04c4076e76911f652f5ed56bf434e0a3958e367932953437557"},
+    {file = "netcdf4-1.7.2-cp311-abi3-macosx_13_0_x86_64.whl", hash = "sha256:7e81c3c47f2772eab0b93fba8bb05b17b58dce17720e1bed25e9d76551deecd0"},
+    {file = "netcdf4-1.7.2-cp311-abi3-macosx_14_0_arm64.whl", hash = "sha256:cb2791dba37fc98fd1ac4e236c97822909f54efbcdf7f1415c9777810e0a28f4"},
+    {file = "netcdf4-1.7.2-cp311-abi3-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:bf11480f6b8a5b246818ffff6b4d90481e51f8b9555b41af0c372eb0aaf8b65f"},
+    {file = "netcdf4-1.7.2-cp311-abi3-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:1ccc05328a8ff31921b539821791aeb20b054879f3fdf6d1d505bf6422824fec"},
+    {file = "netcdf4-1.7.2-cp311-abi3-win_amd64.whl", hash = "sha256:999bfc4acebf400ed724d5e7329e2e768accc7ee1fa1d82d505da782f730301b"},
     {file = "netcdf4-1.7.2.tar.gz", hash = "sha256:a4c6375540b19989896136943abb6d44850ff6f1fa7d3f063253b1ad3f8b7fce"},
 ]
 
@@ -5231,5 +5200,5 @@ type = ["pytest-mypy"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.10"
-content-hash = "16fd5258ebbdf4068eeddf47e7adafd8f79bec67efb3f451b7bbe5a3246f234d"
+python-versions = ">=3.10,<4.0"
+content-hash = "3d1cf5bfcd0741ffe28e1b7cb02ea933919743a31ef7875f26e7db5ec82a25c9"
