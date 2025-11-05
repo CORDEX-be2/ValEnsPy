@@ -1,6 +1,7 @@
 
 # directory in which output (figures, tables) is written
 output/
+CORDEX_eval_scripts/
 
 # Folder for local exploration
 notebooks/
