@@ -68,6 +68,10 @@ class Diagnostic():
         ----------
         result : xr.Dataset or xr.DataArray or DataTree
             The output of the diagnostic function.
+        title : str
+            The title of the plot.
+        **kwargs
+            Keyword arguments to pass to the plotting function.
 
         Returns
         -------
@@ -124,13 +128,41 @@ class DataSetDiagnostic(Diagnostic):
         ----------
         dt : DataTree
             The data to apply the diagnostic to.
+        *args
+            Positional arguments to pass to the diagnostic function.
+        **kwargs
+            Keyword arguments to pass to the diagnostic function.
 
         Returns
         -------
         DataTree
             The data after applying the diagnostic.
         """
-        return dt.map_over_datasets(self.apply, *args, **kwargs)
+        #Bug fix needed until https://github.com/pydata/xarray/issues/9693 is resolved
+        def apply(ds, *args, **kwargs):
+            if not ds:
+                return ds
+            return self.apply(ds, *args, **kwargs)
+        return dt.map_over_datasets(apply, *args, **kwargs)
+
+    def apply(self, ds: xr.Dataset, *args, **kwargs):
+        """Apply the diagnostic to a single dataset.
+
+        Parameters
+        ----------
+        ds : xr.Dataset
+            The data to apply the diagnostic to.
+        *args
+            Positional arguments to pass to the diagnostic function.
+        **kwargs
+            Keyword arguments to pass to the diagnostic function.
+
+        Returns
+        -------
+        xr.Dataset
+            The data after applying the diagnostic.
+        """
+        return self.diagnostic_function(ds, *args, **kwargs)
 
     def plot_dt(self, dt, *args, **kwargs):
         if self.plot_type == "single":
@@ -230,41 +262,6 @@ class Model2Self(DataSetDiagnostic):
         """Initialize the Model2Self diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
 
-    def apply(self, ds: xr.Dataset, mask=None, **kwargs):
-        """Apply the diagnostic to the data.
-
-        Parameters
-        ----------
-        ds : xr.Dataset
-            The data to apply the diagnostic to.
-
-        Returns
-        -------
-        xr.Dataset
-            The data after applying the diagnostic.
-        """
-        if mask == "prudence":
-            ds = add_prudence_regions(ds)
-        return self.diagnostic_function(ds, **kwargs)
-    
-    def apply_dt(self, dt: DataTree, mask=None, **kwargs):
-        """
-        Apply the diagnostic to a DataTree.
-        
-        Parameters
-        ----------
-        dt : DataTree
-            The DataTree to apply the diagnostic to.
-            
-        Returns
-        -------
-        DataTree
-            The DataTree after applying the diagnostic.
-        """
-        if mask == "prudence":
-            dt = dt.map_over_datasets(add_prudence_regions)
-        return dt.map_over_datasets(self.diagnostic_function, **kwargs)
-
 
 class Model2Ref(DataSetDiagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
@@ -275,7 +272,7 @@ class Model2Ref(DataSetDiagnostic):
         """Initialize the Model2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
 
-    def apply(self, ds: xr.Dataset, ref: xr.Dataset, mask=None, **kwargs):
+    def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data. Only the common variables between the data and the reference are used.
 
         Parameters
@@ -290,35 +287,10 @@ class Model2Ref(DataSetDiagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
-        if mask == "prudence":
-            ds = add_prudence_regions(ds)
-            ref = add_prudence_regions(ref)
 
         ds, ref = _select_common_vars(ds, ref)
 
-        return self.diagnostic_function(ds, ref, **kwargs)
-
-    def apply_dt(self, dt: DataTree, ref: xr.Dataset, mask=None, **kwargs):
-        """
-        Apply the diagnostic to a DataTree.
-        
-        Parameters
-        ----------
-        dt : DataTree
-            The DataTree to apply the diagnostic to.
-        ref : xr.Dataset
-            The reference data to compare the data to.
-            
-        Returns
-        -------
-        DataTree
-            The DataTree after applying the diagnostic.
-        """
-        if mask == "prudence":
-            dt = dt.map_over_datasets(add_prudence_regions)
-            ref = add_prudence_regions(ref)
-
-        return dt.map_over_datasets(self.diagnostic_function, ref=ref, **kwargs)
+        return super().apply(ds, ref, **kwargs)
 
 class Ensemble2Self(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to itself."""
