@@ -72,7 +72,7 @@ prhmax:
   raw_name: TOT_PREC_MAX
   raw_standard_name: daily max of lwe_thickness_of_precipitation_amount
   raw_long_name: daily max of total precipitation amount
-  raw_units: kg m-2
+  raw_units: kg m-2 s-1
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: sum'
 
@@ -149,6 +149,7 @@ sfcWindmax:
 
 evspsbl: 
   raw_name: AEVAP_S
+  raw_standard_name: water_evaporation_amount
   raw_long_name: averaged surface evaporation
   raw_units: kg m-2
   raw_grid_mapping: rotated_pole
@@ -206,6 +207,7 @@ va100m:
 
 prsn:
   raw_name: SNOW_GSP
+  raw_standard_name: lwe_thickness_of_stratiform_snowfall_amount
   raw_long_name: large scale snowfall
   raw_units: kg m-2
   raw_grid_mapping: rotated_pole
