@@ -149,7 +149,7 @@ sfcWindmax:
 
 evspsbl: 
   raw_name: AEVAP_S
-  raw_standard_name: water_evaporation_amount
+  raw_standard_name: lwe_thickness_of_precipitation_amount
   raw_long_name: averaged surface evaporation
   raw_units: kg m-2
   raw_grid_mapping: rotated_pole
