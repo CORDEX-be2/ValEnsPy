@@ -204,7 +204,6 @@ va100m:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-
 prsn:
   raw_name: SNOW_GSP
   raw_standard_name: lwe_thickness_of_stratiform_snowfall_amount
@@ -243,6 +242,7 @@ clh:
 
 cape: 
   raw_name: CAPE_ML
+  raw_standard_name: atmosphere_convective_available_potential_energy_wrt_surface
   raw_long_name: atmosphere_convective_available_potential_energy_wrt_surface
   raw_units: "J kg-1"
   raw_grid_mapping: rotated_pole
