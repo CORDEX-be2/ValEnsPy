@@ -240,7 +240,7 @@ clh:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-cape: 
+CAPE: 
   raw_name: CAPE_ML
   raw_standard_name: atmosphere_convective_available_potential_energy_wrt_surface
   raw_long_name: atmosphere_convective_available_potential_energy_wrt_surface
