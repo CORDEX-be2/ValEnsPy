@@ -9,6 +9,18 @@ import pytest
 lookup_tables = ["EOBS_lookup", "CCLM_lookup", "ALARO-SFX_K_lookup","ERA5_lookup","CLIMATE_GRID_lookup", "RADCLIM_lookup", "MAR_lookup"]
 
 @pytest.mark.parametrize("lookup_name", lookup_tables)
+def test_lookup_variable_existence(lookup_name):
+    """
+    Test whether all variables in the lookup tables exist in CORDEX_variables.yml
+    """
+    CORDEX_VARIABLES = load_yml("CORDEX_variables")
+    lookup_table = load_yml(lookup_name)
+    
+    for var in lookup_table.keys():
+        if var not in CORDEX_VARIABLES.keys():
+            pytest.fail(f"Variable {var} in {lookup_name}.yml not found in CORDEX_variables.yml")
+
+@pytest.mark.parametrize("lookup_name", lookup_tables)
 def test_lookup_unit_conversion(lookup_name):
     """
     Test whether the units in the lookup tables can be converted using xclim's units module.

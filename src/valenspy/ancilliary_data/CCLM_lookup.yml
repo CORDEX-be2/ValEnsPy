@@ -17,6 +17,27 @@ tas:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
+tasmax:
+  raw_name: T_2M_MAX
+  raw_long_name: daily max 2m temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+tasmin:
+  raw_name: T_2M_MIN
+  raw_long_name: daily min 2m temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+tds:
+  raw_name: TD_2M
+  raw_long_name: 2m dewpoint temperature
+  raw_units: K
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
 ps:
   raw_name: PS
   raw_long_name: surface pressure
@@ -46,6 +67,44 @@ pr:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: sum'
 
+
+prhmax:
+  raw_name: TOT_PREC_MAX
+  raw_standard_name: daily max of lwe_thickness_of_precipitation_amount
+  raw_long_name: daily max of total precipitation amount
+  raw_units: kg m-2 s-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: sum'
+
+
+rsds:
+  raw_name: RSDS
+  raw_long_name: surface downwelling shortwave radiation (ASODIR_S + ASODIFD_S)
+  raw_units: W m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: mean'
+
+rlds:
+  raw_name: ATHD_S
+  raw_long_name: averaged downward longwave radiation at the surface
+  raw_units: W m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: mean'
+
+rlus:
+  raw_name: ATHU_S
+  raw_long_name: averaged upward longwave radiation at the surface
+  raw_units: W m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: mean'
+
+rsus:
+  raw_name: ASODIFU_S
+  raw_long_name: averaged diffuse upward shortwave radiation at the surface
+  raw_units: W m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: mean'
+
 clt:
   raw_name: CLCT
   raw_long_name: total cloud cover
@@ -54,9 +113,110 @@ clt:
   raw_cell_methods: 'time: point'
 
 huss:
-  raw_name: QV
-  raw_long_name: specific humidity
+  raw_name: QV_2M
+  raw_long_name: 2m specific humidity
   raw_units: "1"
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+hurs:
+  raw_name: RELHUM_2M
+  raw_long_name: 2m relative humidity
+  raw_units: "%"
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+sfcWind:
+  raw_name: SFCWIND_10M
+  raw_long_name: 10m wind speed (vector product of u_10m and v_10m)
+  raw_units: m s-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+sfcWindmax:
+  raw_name: SFCWIND_10M_MAX
+  raw_long_name: daily maximum of 10m wind speed (vector product of u_10m and v_10m)
+  raw_units: m s-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+sfcWindmax:
+  raw_name: SFCWIND_50M_MAX
+  raw_long_name: daily maximum of 10m wind speed (vector product of u_10m and v_10m)
+  raw_units: m s-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+evspsbl: 
+  raw_name: AEVAP_S
+  raw_standard_name: lwe_thickness_of_precipitation_amount
+  raw_long_name: averaged surface evaporation
+  raw_units: kg m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+mrso: 
+  raw_name: W_SO
+  raw_standard_name: lwe_thickness_of_precipitation_amount
+  raw_long_name: total soil water content, summed over all soil layers (W_SO)
+  raw_units: m
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+uas: 
+  raw_name: U_10M
+  raw_long_name: U-component of 10m wind
+  raw_units: m s-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+vas: 
+  raw_name: V_10M
+  raw_long_name: V-component of 10m wind
+  raw_units: m s-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ua50m: 
+  raw_name: U_50M
+  raw_long_name: U-component of 50m wind
+  raw_units: m s-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+  
+va50m: 
+  raw_name: V_50M
+  raw_long_name: V-component of 50m wind
+  raw_units: m s-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+ua100m: 
+  raw_name: U_100M
+  raw_long_name: U-component of 100m wind
+  raw_units: m s-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+va100m: 
+  raw_name: V_100M
+  raw_long_name: V-component of 100m wind
+  raw_units: m s-1
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+prsn:
+  raw_name: SNOW_GSP
+  raw_standard_name: lwe_thickness_of_stratiform_snowfall_amount
+  raw_long_name: large scale snowfall
+  raw_units: kg m-2
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+snd:
+  raw_name: W_SNOW
+  raw_long_name: surface snow amount
+  raw_units: m
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
@@ -81,10 +241,19 @@ clh:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
+CAPE: 
+  raw_name: CAPE_ML
+  raw_standard_name: atmosphere_convective_available_potential_energy_wrt_surface
+  raw_long_name: atmosphere_convective_available_potential_energy_wrt_surface
+  raw_units: "J kg-1"
+  raw_grid_mapping: rotated_pole
+  raw_cell_methods: 'time: point'
+
+
 # doublecheck
 
 hfss:
-  raw_name: SHFL_S
+  raw_name: ASHFL_S
   raw_long_name: surface sensible heat flux
   raw_units: W m-2
   raw_grid_mapping: rotated_pole
