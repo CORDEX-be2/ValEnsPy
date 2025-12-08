@@ -57,6 +57,7 @@ xesmf = "^0.8.8"
 xclim = ">0.55.0" #Previous versions not compatible with xarray >2025.03.0 as they rely on xarray.core.merge which was moved
 docstring-parser = "^0.16"
 intake-esm = ">v2023.10.27"
+pyarrow = "19.0.1" #pyarrow newer versions incompatible with intake-esm as they use polars (which can't handle Path objects)
 
 [tool.poetry.group.dev]
 # Development group
