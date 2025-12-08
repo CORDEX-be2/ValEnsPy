@@ -6,5 +6,5 @@ import xarray as xr
 # define region bounds bounds
 region_bounds = {
     "europe": {"lat_bounds": [35, 70], "lon_bounds": [-15, 40]},
-    "belgium": {"lat_bounds": [49, 52], "lon_bounds": [2, 7]},
+    "belgium": {"lat_bounds": [49.25, 51.75], "lon_bounds": [2.25, 6.75]},
 }
