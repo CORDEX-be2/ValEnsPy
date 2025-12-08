@@ -157,6 +157,7 @@ evspsbl:
 
 mrso: 
   raw_name: W_SO
+  raw_standard_name: lwe_thickness_of_precipitation_amount
   raw_long_name: total soil water content, summed over all soil layers (W_SO)
   raw_units: m
   raw_grid_mapping: rotated_pole
