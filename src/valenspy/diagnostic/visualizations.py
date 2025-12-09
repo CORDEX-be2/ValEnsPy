@@ -92,6 +92,28 @@ def plot_time_series(da: xr.DataArray, **kwargs):
 
     return ax
 
+@default_plot_kwargs({'histtype':"step"})
+def plot_histogram(da: xr.DataArray, **kwargs):
+    """Plot a histogram of the data.
+    
+    Parameters
+    ----------
+    da : xr.DataArray
+        The data array to plot the histogram of.
+    **kwargs : dict
+        Additional keyword arguments to pass to the xarray DataArray plot method.
+    
+    Returns
+    -------
+    ax : matplotlib.axes.Axes
+        The axes with the plotted histogram.
+    """
+    da.plot.hist(**kwargs)
+
+    ax = _get_gca(**kwargs)
+
+    return ax
+
 @default_plot_kwargs({
     'subplot_kws': {'projection': ccrs.PlateCarree()}
     })
