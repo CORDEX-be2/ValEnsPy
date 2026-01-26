@@ -91,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["macos-latest", "windows-latest"]
+        os: ["macos-latest"] #Windows" not possible due to incompatibility with ESMF. Explore possibility to install without regridding module to allow window users to install the package.
     steps:
       - uses: actions/checkout@v3
       - name: Set up Conda

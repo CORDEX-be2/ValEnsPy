@@ -47,16 +47,17 @@ nc-time-axis = "^1.4.1"
 netCDF4 = "^1.6.5"
 pandas = "^2.2.1"
 pooch = "^1.8.1"
-python = "^3.10"
+python = ">=3.10,<4.0"
 regionmask = "^0.12.1"
 scipy = "^1.13.0"
 shapely = "^2.0.3"
-xarray = ">=2023.12.0,<=2024.07.0"
+xarray = ">v2025.03.0" #needs latest version of datatree ( v2025.11.0 required for concat functionality)
 seaborn = "^0.13.2"
 xesmf = "^0.8.8"
-xclim = "^0.54.0"
+xclim = ">0.55.0" #Previous versions not compatible with xarray >2025.03.0 as they rely on xarray.core.merge which was moved
 docstring-parser = "^0.16"
-xarray-datatree = "0.0.14"
+intake-esm = ">v2023.10.27"
+pyarrow = "19.0.1" #pyarrow newer versions incompatible with intake-esm as they use polars (which can't handle Path objects)
 
 [tool.poetry.group.dev]
 # Development group

@@ -1,9 +1,9 @@
 import xclim
 import warnings
 import xarray as xr
-from datatree import DataTree, map_over_subtree
 
-def convert_units_to(data : xr.Dataset | DataTree, var : str, target_unit : str, context: str ="infer"):
+#Eventually replace this with built in xclim functionality - see https://github.com/Ouranosinc/xclim/issues/2127 and https://github.com/Ouranosinc/xclim/pull/2144
+def convert_units_to(data : xr.Dataset | xr.DataTree, var : str, target_unit : str, context: str ="infer"):
     """
     Convert units of a variable in a xr.Dataset or xr.DataTree to a target unit. 
     
@@ -29,19 +29,29 @@ def convert_units_to(data : xr.Dataset | DataTree, var : str, target_unit : str,
     --------
     :func:`xclim.units.convert_units_to`
     """
-    if isinstance(data, DataTree):
-        return _convert_units_dt_to(data, var, target_unit, context)
-    elif isinstance(data, xr.Dataset) and var in data:
-        ds = data.copy()
-        ds[var] = xclim.units.convert_units_to(ds[var], target_unit, context=context)
-        return ds
-    else:
-        warnings.warn(f"Variable {var} not found in the dataset or data tree.")
-        return data
 
-@map_over_subtree
-def _convert_units_dt_to(ds, var, target_unit, context="infer"):
+    if isinstance(data, xr.DataTree):
+        return _dt_convert_units_to(data, var, target_unit, context)
+    elif isinstance(data, xr.Dataset):
+        return _ds_convert_units_to(data, var, target_unit, context)
+    else:
+        raise TypeError("Input data must be either an xarray Dataset or a DataTree.")
+    
+def _ds_convert_units_to(ds: xr.Dataset, var: str, target_unit: str, context: str = "infer"):
+    """Convert units of a variable in a Dataset to a target unit."""
     if var in ds:
         ds = ds.copy()
         ds[var] = xclim.units.convert_units_to(ds[var], target_unit, context=context)
+    elif ds.data_vars:
+        warnings.warn(f"Variable {var} not found in the dataset. Conversion not applied.")
     return ds
+    
+def _dt_convert_units_to(dt: xr.DataTree, var: str, target_unit: str, context: str = "infer"):
+    """Convert units of a variable in a DataTree to a target unit."""
+    
+    return dt.map_over_datasets(
+        _ds_convert_units_to,
+        var,
+        target_unit,
+        context
+    )

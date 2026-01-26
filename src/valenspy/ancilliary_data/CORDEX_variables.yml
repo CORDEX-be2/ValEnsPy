@@ -1427,3 +1427,16 @@ areacella:
   realm: atmos
   standard_name: cell_area
   units: m2
+
+#################################
+## NON-defined CORDEX variables  ##
+#################################
+
+#These variables are not defined in the CORDEX CMIP6 data request but the following naming conventions are used inside Valenspy.
+
+tds:
+  aggregation: i
+  long_name: Near-Surface Dew Point Temperature
+  realm: atmos
+  standard_name: dew_point_temperature
+  units: K

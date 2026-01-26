@@ -44,7 +44,6 @@ if "/home/" in str(basefolder) or "/dodrio/" in str(basefolder):
 
 project = "ValEnsPy"
 copyright = "2024, Cordex-BE team"
-# author = "Thomas Vergauwen"
 
 
 # =============================================================================
@@ -74,8 +73,8 @@ extensions = [
 intersphinx_mapping = {
     "xclim": ("https://xclim.readthedocs.io/en/stable/", None),
     "xarray": ("https://docs.xarray.dev/en/stable/", None),
-    "datatree": ("https://xarray-datatree.readthedocs.io/en/latest/", None),
     "xesmf": ("https://xesmf.readthedocs.io/en/stable/", None),
+    "intake-esm": ("https://intake-esm.readthedocs.io/en/latest/", None),
 }
 
 # =============================================================================
