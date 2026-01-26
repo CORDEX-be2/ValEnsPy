@@ -1,0 +1,6 @@
+diagnostic.functions.spatial\_time\_mean
+========================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: spatial_time_mean

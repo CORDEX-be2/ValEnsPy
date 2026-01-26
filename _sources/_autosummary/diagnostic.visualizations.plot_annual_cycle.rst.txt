@@ -1,0 +1,6 @@
+diagnostic.visualizations.plot\_annual\_cycle
+=============================================
+
+.. currentmodule:: diagnostic.visualizations
+
+.. autofunction:: plot_annual_cycle

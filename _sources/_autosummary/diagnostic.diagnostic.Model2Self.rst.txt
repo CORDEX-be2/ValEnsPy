@@ -1,0 +1,37 @@
+diagnostic.diagnostic.Model2Self
+================================
+
+.. currentmodule:: diagnostic.diagnostic
+
+.. autoclass:: Model2Self
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Model2Self.__init__
+      ~Model2Self.apply
+      ~Model2Self.apply_dt
+      ~Model2Self.plot
+      ~Model2Self.plot_dt
+      ~Model2Self.plot_dt_facetted
+      ~Model2Self.plot_dt_single
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Model2Self.description
+   
+   

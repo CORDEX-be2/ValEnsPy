@@ -1,0 +1,6 @@
+processing.select.convert\_geo\_to\_LCC
+=======================================
+
+.. currentmodule:: processing.select
+
+.. autofunction:: convert_geo_to_LCC

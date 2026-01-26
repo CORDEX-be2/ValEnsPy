@@ -1,0 +1,6 @@
+input.converter\_functions.MAR\_to\_CF
+======================================
+
+.. currentmodule:: input.converter_functions
+
+.. autofunction:: MAR_to_CF

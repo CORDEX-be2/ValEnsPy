@@ -1,0 +1,6 @@
+diagnostic.functions.get\_userdefined\_binwidth
+===============================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: get_userdefined_binwidth

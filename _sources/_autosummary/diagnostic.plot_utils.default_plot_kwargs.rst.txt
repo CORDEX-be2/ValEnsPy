@@ -1,0 +1,6 @@
+diagnostic.plot\_utils.default\_plot\_kwargs
+============================================
+
+.. currentmodule:: diagnostic.plot_utils
+
+.. autofunction:: default_plot_kwargs

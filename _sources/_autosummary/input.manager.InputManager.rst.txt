@@ -1,0 +1,36 @@
+input.manager.InputManager
+==========================
+
+.. currentmodule:: input.manager
+
+.. autoclass:: InputManager
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~InputManager.__init__
+      ~InputManager.add_input_convertor
+      ~InputManager.update_catalog_from_dataset_info
+      ~InputManager.update_catalog_from_yaml
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~InputManager.intake_to_xarray_kwargs
+      ~InputManager.preprocess
+      ~InputManager.skipped_files
+   
+   

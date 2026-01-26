@@ -1,0 +1,6 @@
+processing.select.select\_region
+================================
+
+.. currentmodule:: processing.select
+
+.. autofunction:: select_region

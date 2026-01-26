@@ -1,0 +1,6 @@
+diagnostic.visualizations.plot\_points\_on\_map
+===============================================
+
+.. currentmodule:: diagnostic.visualizations
+
+.. autofunction:: plot_points_on_map

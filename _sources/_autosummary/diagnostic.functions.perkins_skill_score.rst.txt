@@ -1,0 +1,6 @@
+diagnostic.functions.perkins\_skill\_score
+==========================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: perkins_skill_score

@@ -1,0 +1,6 @@
+diagnostic.wrappers.acceptable\_variables
+=========================================
+
+.. currentmodule:: diagnostic.wrappers
+
+.. autofunction:: acceptable_variables

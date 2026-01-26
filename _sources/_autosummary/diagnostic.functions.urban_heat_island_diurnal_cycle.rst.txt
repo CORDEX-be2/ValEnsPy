@@ -1,0 +1,6 @@
+diagnostic.functions.urban\_heat\_island\_diurnal\_cycle
+========================================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: urban_heat_island_diurnal_cycle

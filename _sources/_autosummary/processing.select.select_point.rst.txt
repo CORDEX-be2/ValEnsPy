@@ -1,0 +1,6 @@
+processing.select.select\_point
+===============================
+
+.. currentmodule:: processing.select
+
+.. autofunction:: select_point

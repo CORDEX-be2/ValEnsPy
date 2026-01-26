@@ -1,0 +1,6 @@
+diagnostic.visualizations.plot\_maps\_mod\_ref\_diff
+====================================================
+
+.. currentmodule:: diagnostic.visualizations
+
+.. autofunction:: plot_maps_mod_ref_diff

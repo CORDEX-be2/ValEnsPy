@@ -1,0 +1,36 @@
+input.converter.InputConverter
+==============================
+
+.. currentmodule:: input.converter
+
+.. autoclass:: InputConverter
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~InputConverter.__init__
+      ~InputConverter.convert_input
+      ~InputConverter.get_CORDEX_variable
+      ~InputConverter.get_raw_variable
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~InputConverter.cordex_variables
+      ~InputConverter.raw_variables
+      ~InputConverter.raw_variables_long_names
+   
+   

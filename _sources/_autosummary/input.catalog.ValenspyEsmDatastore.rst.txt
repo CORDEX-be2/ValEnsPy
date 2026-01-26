@@ -1,0 +1,79 @@
+input.catalog.ValenspyEsmDatastore
+==================================
+
+.. currentmodule:: input.catalog
+
+.. autoclass:: ValenspyEsmDatastore
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ValenspyEsmDatastore.__init__
+      ~ValenspyEsmDatastore.close
+      ~ValenspyEsmDatastore.configure_new
+      ~ValenspyEsmDatastore.describe
+      ~ValenspyEsmDatastore.discover
+      ~ValenspyEsmDatastore.filter
+      ~ValenspyEsmDatastore.force_reload
+      ~ValenspyEsmDatastore.from_dict
+      ~ValenspyEsmDatastore.get
+      ~ValenspyEsmDatastore.items
+      ~ValenspyEsmDatastore.keys
+      ~ValenspyEsmDatastore.keys_info
+      ~ValenspyEsmDatastore.nunique
+      ~ValenspyEsmDatastore.pop
+      ~ValenspyEsmDatastore.read
+      ~ValenspyEsmDatastore.read_chunked
+      ~ValenspyEsmDatastore.read_partition
+      ~ValenspyEsmDatastore.reload
+      ~ValenspyEsmDatastore.save
+      ~ValenspyEsmDatastore.search
+      ~ValenspyEsmDatastore.serialize
+      ~ValenspyEsmDatastore.to_dask
+      ~ValenspyEsmDatastore.to_dataset_dict
+      ~ValenspyEsmDatastore.to_datatree
+      ~ValenspyEsmDatastore.to_spark
+      ~ValenspyEsmDatastore.unique
+      ~ValenspyEsmDatastore.values
+      ~ValenspyEsmDatastore.walk
+      ~ValenspyEsmDatastore.yaml
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ValenspyEsmDatastore.auth
+      ~ValenspyEsmDatastore.cat
+      ~ValenspyEsmDatastore.classname
+      ~ValenspyEsmDatastore.container
+      ~ValenspyEsmDatastore.description
+      ~ValenspyEsmDatastore.df
+      ~ValenspyEsmDatastore.dtype
+      ~ValenspyEsmDatastore.entry
+      ~ValenspyEsmDatastore.gui
+      ~ValenspyEsmDatastore.has_been_persisted
+      ~ValenspyEsmDatastore.interactive
+      ~ValenspyEsmDatastore.is_persisted
+      ~ValenspyEsmDatastore.key_template
+      ~ValenspyEsmDatastore.kwargs
+      ~ValenspyEsmDatastore.metadata
+      ~ValenspyEsmDatastore.name
+      ~ValenspyEsmDatastore.npartitions
+      ~ValenspyEsmDatastore.on_server
+      ~ValenspyEsmDatastore.partition_access
+      ~ValenspyEsmDatastore.shape
+      ~ValenspyEsmDatastore.version
+   
+   

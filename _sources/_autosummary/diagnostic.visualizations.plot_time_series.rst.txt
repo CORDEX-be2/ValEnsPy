@@ -1,0 +1,6 @@
+diagnostic.visualizations.plot\_time\_series
+============================================
+
+.. currentmodule:: diagnostic.visualizations
+
+.. autofunction:: plot_time_series

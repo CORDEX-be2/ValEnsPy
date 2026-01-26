@@ -1,0 +1,6 @@
+diagnostic.functions.diurnal\_cycle\_bias
+=========================================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: diurnal_cycle_bias

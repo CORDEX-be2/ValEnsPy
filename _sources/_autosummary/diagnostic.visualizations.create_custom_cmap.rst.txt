@@ -1,0 +1,6 @@
+diagnostic.visualizations.create\_custom\_cmap
+==============================================
+
+.. currentmodule:: diagnostic.visualizations
+
+.. autofunction:: create_custom_cmap

@@ -1,0 +1,6 @@
+input.converter\_functions.EOBS\_to\_CF
+=======================================
+
+.. currentmodule:: input.converter_functions
+
+.. autofunction:: EOBS_to_CF

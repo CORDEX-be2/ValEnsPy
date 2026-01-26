@@ -1,0 +1,36 @@
+diagnostic.diagnostic
+=====================
+
+.. automodule:: diagnostic.diagnostic
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      DataSetDiagnostic
+      Diagnostic
+      Ensemble2Ref
+      Ensemble2Self
+      Model2Ref
+      Model2Self
+   
+   
+
+   
+   
+   
+
+
+

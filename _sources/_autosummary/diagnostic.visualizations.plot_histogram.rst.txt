@@ -1,0 +1,6 @@
+diagnostic.visualizations.plot\_histogram
+=========================================
+
+.. currentmodule:: diagnostic.visualizations
+
+.. autofunction:: plot_histogram

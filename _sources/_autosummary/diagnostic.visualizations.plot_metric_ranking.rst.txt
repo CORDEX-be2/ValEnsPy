@@ -1,0 +1,6 @@
+diagnostic.visualizations.plot\_metric\_ranking
+===============================================
+
+.. currentmodule:: diagnostic.visualizations
+
+.. autofunction:: plot_metric_ranking

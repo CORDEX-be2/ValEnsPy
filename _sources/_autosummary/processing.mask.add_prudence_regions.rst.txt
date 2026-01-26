@@ -1,0 +1,6 @@
+processing.mask.add\_prudence\_regions
+======================================
+
+.. currentmodule:: processing.mask
+
+.. autofunction:: add_prudence_regions

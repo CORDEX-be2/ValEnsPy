@@ -1,0 +1,6 @@
+diagnostic.visualizations.plot\_diurnal\_cycle
+==============================================
+
+.. currentmodule:: diagnostic.visualizations
+
+.. autofunction:: plot_diurnal_cycle

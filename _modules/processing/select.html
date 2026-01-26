@@ -1,0 +1,698 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>processing.select &#8212; ValEnsPy documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=7732bc7b" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/jquery.js?v=5d32c60e"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/processing/select';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ValEnsPy documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../doc_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribution_pages/index.html">
+    Contributing
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started/index.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../doc_examples/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contribution_pages/index.html">
+    Contributing
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/CORDEX-be2/ValEnsPy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fab fa-github-square fa-xl fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">processing.select</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for processing.select</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">xarray</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">xr</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">regionmask</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">valenspy._utilities._regions</span><span class="w"> </span><span class="kn">import</span> <span class="n">region_bounds</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cartopy.crs</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ccrs</span>
+
+
+<span class="c1"># make sure attributes are passed through</span>
+<span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">keep_attrs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#TODO: add docstring once reworked (using crs to select_points)</span>
+
+<div class="viewcode-block" id="select_region">
+<a class="viewcode-back" href="../../_autosummary/processing.select.select_region.html#processing.select.select_region">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">select_region</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">region</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Selects a specific geographical region from an xarray Dataset based on given region bounds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        The input xarray Dataset from which to select the region.</span>
+<span class="sd">    region : str</span>
+<span class="sd">        The name of the region to select. This should correspond to a key in the</span>
+<span class="sd">        `region_bounds` dictionary, which defines the latitude and longitude bounds</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xr.Dataset</span>
+<span class="sd">        A new xarray Dataset containing only the data within the specified region.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; ds_region = select_region(ds, &#39;europe&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># get region bounds</span>
+    <span class="n">lat_bounds</span> <span class="o">=</span> <span class="n">region_bounds</span><span class="p">[</span><span class="n">region</span><span class="p">][</span><span class="s2">&quot;lat_bounds&quot;</span><span class="p">]</span>
+    <span class="n">lon_bounds</span> <span class="o">=</span> <span class="n">region_bounds</span><span class="p">[</span><span class="n">region</span><span class="p">][</span><span class="s2">&quot;lon_bounds&quot;</span><span class="p">]</span>
+
+    <span class="n">ds_sel</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+        <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">lon_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lon_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="n">lat_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lat_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">ds_sel</span></div>
+
+
+<div class="viewcode-block" id="convert_geo_to_rot">
+<a class="viewcode-back" href="../../_autosummary/processing.select.convert_geo_to_rot.html#processing.select.convert_geo_to_rot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_geo_to_rot</span><span class="p">(</span><span class="n">coord</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a geographic (longitude, latitude) point to a rotated pole (rlon, rlat) point.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coord : list or tuple</span>
+<span class="sd">        Geographic coordinates as a (longitude, latitude) pair in degrees.</span>
+<span class="sd">    ds : xarray.Dataset</span>
+<span class="sd">        The input dataset containing the rotated pole grid information (e.g., from a COSMO-CLM file).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        The corresponding rotated pole coordinates as [rlon, rlat] in degrees.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Extract the rotated pole latitude and longitude from the dataset</span>
+    <span class="n">rp_lat</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">rotated_pole</span><span class="o">.</span><span class="n">grid_north_pole_latitude</span><span class="p">)</span>
+    <span class="n">rp_lon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">rotated_pole</span><span class="o">.</span><span class="n">grid_north_pole_longitude</span><span class="p">)</span>
+
+    <span class="c1"># Convert geographic and rotated pole coordinates from degrees to radians</span>
+    <span class="n">co</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
+    <span class="n">rp_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">rp_lat</span><span class="p">)</span>
+    <span class="n">rp_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">rp_lon</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the rotated pole latitude (rlat) using spherical trigonometry</span>
+    <span class="n">p_rlat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">co</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rp_lat</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">co</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rp_lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">co</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">rp_lon</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Calculate the rotated pole longitude (rlon) using spherical trigonometry</span>
+    <span class="n">p_rlon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">co</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">co</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">rp_lon</span><span class="p">))</span>
+        <span class="o">/</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">co</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rp_lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">co</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">rp_lon</span><span class="p">)</span>
+            <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">co</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rp_lat</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Convert the rotated pole coordinates from radians back to degrees</span>
+    <span class="n">p_rlat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">p_rlat</span><span class="p">)</span>
+    <span class="n">p_rlon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">p_rlon</span><span class="p">)</span>
+
+    <span class="c1"># Return the rotated pole coordinates as a list</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">p_rlon</span><span class="p">,</span> <span class="n">p_rlat</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="convert_geo_to_LCC">
+<a class="viewcode-back" href="../../_autosummary/processing.select.convert_geo_to_LCC.html#processing.select.convert_geo_to_LCC">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_geo_to_LCC</span><span class="p">(</span><span class="n">coord</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert the geographic coordinates to Lambert Conformal Coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    coord : tuple</span>
+<span class="sd">        Geographic coordinates as a (longitude, latitude) pair in degrees.</span>
+<span class="sd">    ds : xarray.Dataset</span>
+<span class="sd">        The input dataset containing the Lambert Conformal Conic grid information.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+<span class="sd">        The corresponding Lambert Conformal Coordinates as (x, y) in meters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">crs</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span>
+        <span class="n">central_longitude</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">longitude_of_central_meridian</span><span class="p">,</span>
+        <span class="n">central_latitude</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">latitude_of_projection_origin</span><span class="p">,</span>
+        <span class="n">false_easting</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">false_easting</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">false_northing</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">false_northing</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">standard_parallels</span><span class="o">=</span><span class="p">[</span><span class="n">ds</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">standard_parallel</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="n">transformer</span> <span class="o">=</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">crs</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="o">*</span><span class="n">coord</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">/</span><span class="mi">1000</span><span class="p">,</span> <span class="n">y</span><span class="o">/</span><span class="mi">1000</span></div>
+
+
+<span class="c1">#TODO: fix this function to work using the ds.crs attribute so that not each crs has to be handled separately</span>
+<span class="c1">#This adds the responsibility to the user to have a wel defined crs attribute (maybe some functionality to check this or help add this in input converter would be nice!)</span>
+<div class="viewcode-block" id="select_point">
+<a class="viewcode-back" href="../../_autosummary/processing.select.select_point.html#processing.select.select_point">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">select_point</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">lat_point</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">lon_point</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">projection</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Select a point from the dataset based on the provided geographic coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xarray.Dataset</span>
+<span class="sd">        The input dataset from which to select the point.</span>
+<span class="sd">    lon_point : float</span>
+<span class="sd">        Geographic longitude coordinate </span>
+<span class="sd">    lat_point : float</span>
+<span class="sd">        Geographic latitude coordinate   </span>
+<span class="sd">    projection : str, optional</span>
+<span class="sd">        The projection of the dataset. The point will be projected to the dataset&#39;s coordinate system before selection. </span>
+<span class="sd">        Currently supported projections are &#39;rotated_pole&#39; and &#39;lcc&#39; (Lambert Conformal Coordinates).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    xarray.Dataset</span>
+<span class="sd">        The dataset subset at the nearest point to the specified coordinates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;rotated_pole&quot;</span><span class="p">:</span>
+        <span class="c1"># Convert geographic coordinates to rotated pole coordinates</span>
+        <span class="n">lon_lat_point_rot</span> <span class="o">=</span> <span class="n">convert_geo_to_rot</span><span class="p">((</span><span class="n">lon_point</span><span class="p">,</span><span class="n">lat_point</span><span class="p">),</span> <span class="n">ds</span><span class="p">)</span>
+        <span class="c1"># Select the nearest point in the rotated pole coordinates</span>
+        <span class="n">ds_point</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+            <span class="n">rlon</span><span class="o">=</span><span class="n">lon_lat_point_rot</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">rlat</span><span class="o">=</span><span class="n">lon_lat_point_rot</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">projection</span> <span class="o">==</span> <span class="s2">&quot;lcc&quot;</span><span class="p">:</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">convert_geo_to_LCC</span><span class="p">((</span><span class="n">lon_point</span><span class="p">,</span><span class="n">lat_point</span><span class="p">),</span> <span class="n">ds</span><span class="p">)</span>
+        <span class="n">ds_point</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Select the nearest point based on geographic coordinates</span>
+        <span class="n">ds_point</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="n">lon_point</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="n">lat_point</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ds_point</span></div>
+
+
+
+<div class="viewcode-block" id="get_shapefile_mask">
+<a class="viewcode-back" href="../../_autosummary/processing.select.get_shapefile_mask.html#processing.select.get_shapefile_mask">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_shapefile_mask</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">shapefile_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a mask from a shapefile to apply to an xarray Dataset.</span>
+
+<span class="sd">    This function reads a shapefile using Geopandas, converts it to the WGS84 coordinate reference system (CRS),</span>
+<span class="sd">    and creates a mask that can be applied to the input xarray Dataset. The mask identifies the grid cells that</span>
+<span class="sd">    fall within the shapefile&#39;s region.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ds : xr.Dataset</span>
+<span class="sd">        Input xarray Dataset containing longitude and latitude coordinates.</span>
+<span class="sd">    shapefile_path : Path</span>
+<span class="sd">        Path to the shapefile to be used for masking.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    mask_shp : xr.Dataset</span>
+<span class="sd">        A boolean mask array where grid cells within the shapefile region are marked as True,</span>
+<span class="sd">        and those outside are marked as False.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - The shapefile is converted to the WGS84 CRS (EPSG:4326) before creating the mask.</span>
+<span class="sd">    - The function uses the regionmask library to generate the mask.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import xarray as xr</span>
+<span class="sd">    &gt;&gt;&gt; from pathlib import Path</span>
+<span class="sd">    &gt;&gt;&gt; ds = xr.open_dataset(&#39;path_to_your_dataset.nc&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; shapefile = Path(&#39;path_to_your_shapefile.shp&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; mask = get_shapefile_mask(ds, shapefile)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># read shape file into geopandas geodataframe</span>
+    <span class="n">gdf_shp</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">shapefile_path</span><span class="p">)</span>
+
+    <span class="c1"># convert geodataframe to WGS84 and mask - only needed to do once</span>
+    <span class="n">gdf_shp</span> <span class="o">=</span> <span class="n">gdf_shp</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="mi">4326</span><span class="p">)</span>
+
+    <span class="c1"># do masking</span>
+    <span class="n">mask_shp</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">regionmask</span><span class="o">.</span><span class="n">mask_geopandas</span><span class="p">(</span><span class="n">gdf_shp</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">ds</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="k">return</span> <span class="n">mask_shp</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Cordex-BE team.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

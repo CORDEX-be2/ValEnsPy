@@ -1,0 +1,27 @@
+input.esm\_catalog\_builder.CatalogBuilder
+==========================================
+
+.. currentmodule:: input.esm_catalog_builder
+
+.. autoclass:: CatalogBuilder
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~CatalogBuilder.__init__
+      ~CatalogBuilder.add_dataset
+      ~CatalogBuilder.create_df
+   
+   
+
+   
+   
+   

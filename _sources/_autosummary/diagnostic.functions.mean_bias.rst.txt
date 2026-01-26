@@ -1,0 +1,6 @@
+diagnostic.functions.mean\_bias
+===============================
+
+.. currentmodule:: diagnostic.functions
+
+.. autofunction:: mean_bias
