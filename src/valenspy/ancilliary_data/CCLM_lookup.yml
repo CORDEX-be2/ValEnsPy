@@ -140,9 +140,9 @@ sfcWindmax:
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
 
-sfcWindmax:
+sfcWindmax50m:
   raw_name: SFCWIND_50M_MAX
-  raw_long_name: daily maximum of 10m wind speed (vector product of u_10m and v_10m)
+  raw_long_name: daily maximum of 10m wind speed (vector product of u_50m and v_50m)
   raw_units: m s-1
   raw_grid_mapping: rotated_pole
   raw_cell_methods: 'time: point'
