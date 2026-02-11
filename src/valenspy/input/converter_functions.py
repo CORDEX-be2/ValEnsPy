@@ -80,7 +80,8 @@ def CCLM_to_CF(ds: xr.Dataset) -> xr.Dataset:
                     ds[new_var] = ds[var].sel(pressure=pressure)
                 ds = ds.drop_vars(var)
         ds = ds.drop_dims("pressure")
-        
+    
+    #ds = ds.assign_coords(time=ds.time.dt.floor("D") + np.timedelta64(12, "h")  
     return ds
 
 
