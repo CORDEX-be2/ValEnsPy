@@ -437,22 +437,3 @@ def _initialize_multiaxis_plot(n, subplot_kws={}):
         )
     return fig, axes
 
-# Ensemble2Ref diagnostics
-EnsembleSubSelection = Ensemble2Ref(
-    case_sub_selection,
-    {"default":
-        default_plot_kwargs({
-        "x": "var",
-        "y": "abs_change", 
-        "selected": ["highest", "middle", "lowest"], 
-        "sel_colors": {"highest": "red", "middle": "blue", "lowest": "green"}
-            })(ensemble_selection_boxplot),
-    "heatmap":
-        default_plot_kwargs({
-        "index": "label",
-        "columns": "var",
-        "values": "rel_change"
-        })(ensemble_change_signal_heatmap)},
-    "Ensemble Sub Selection",
-    "The sub selection of ensemble members."
-)
