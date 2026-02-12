@@ -198,7 +198,7 @@ class CatalogBuilder:
                         continue
 
                     # Add the file path to the metadata
-                    file_metadata["path"] = Path(file_path)
+                    file_metadata["path"] = Path(file_path).as_posix()
 
                     # Add dataset level metadata
                     file_metadata = {**dataset_meta_data, **file_metadata}

@@ -239,21 +239,47 @@ class InputManager:
         self._update_catalog(dataset_name, dataset_info)
         self.catalog_builder._validate_dataset_info()
         self.esm_datastore.esmcat._df = self.catalog_builder.df
-
+    
     @property
     def preprocess(self):
         """
-        A preprocessor function to convert the input dataset to ValEnsPy compliant data.
-
-        This function applys the input convertor to the dataset if an input convertor exists (i.e. source_id is in this managers input convertors).
+        Preprocessor to convert datasets to ValEnsPy-compliant format.
+    
+        Applies the appropriate input converter based on the dataset's source_id.
         """
+    
+        # --- Build lookup once (critical for performance) ---
+        df = self.esm_datastore.df
 
-        def process_IC(ds, IC_dict, df):
-            file_name = ds.encoding["source"]
-            source_id = df[df["path"] == Path(file_name)]["source_id"].values[0]
-            if source_id in IC_dict:
-                return IC_dict[source_id](ds)
-            else:
+        # Ensure paths are POSIX strings
+        path_to_source = dict(zip(df["path"], df["source_id"]))
+    
+        IC_dict = self.input_convertors
+
+        def process_IC(ds, path_to_source, IC_dict):
+            # Intake provides the file path here
+            file_name = ds.encoding.get("source")
+            if file_name is None:
                 return ds
-            
-        return partial(process_IC, IC_dict=self.input_convertors, df=self.esm_datastore.df)
+
+            # Normalize exactly like catalog
+            file_name = Path(file_name).as_posix()
+
+            source_id = path_to_source.get(file_name)
+            if source_id is None:
+                raise ValueError(
+                    f"Dataset path not found in catalog: {file_name}"
+                )
+
+            convertor = IC_dict.get(source_id)
+            if convertor is None:
+                return ds
+
+            return convertor(ds)
+
+        return partial(
+            process_IC,
+            path_to_source=path_to_source,
+            IC_dict=IC_dict,
+        )
+    
