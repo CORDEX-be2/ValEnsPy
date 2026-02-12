@@ -541,6 +541,64 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
     
     return ax
 
+##########################################
+# Ensemble2Ensemble diagnostic functions #
+##########################################
+
+#Add default plot kwargs at the diagnostic level
+def ensemble_selection_boxplot(df, selected=None, sel_colors=None, ax=None, **kwargs):
+    """
+    Create a boxplot of the ensemble members with the selected ensemble members highlighted.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        A DataFrame containing the ensemble members and their values.
+    selected : str or list of str, optional
+        The column name(s) with boolean values indicating the selected ensemble members.
+        If None all members are plotted.
+    ax : matplotlib.axes.Axes, optional
+        The axes on which to plot the boxplot. If None, a new figure and axes are created.
+    **kwargs : dict
+        Additional keyword arguments passed to `seaborn.boxplot`.
+    """
+    sns.boxplot(data=df, ax=ax, **kwargs)
+    
+    if selected is None:
+        sns.swarmplot(data=df, ax=ax, **kwargs)
+    else:
+        for sel in selected:
+            if sel in df.columns:
+                if isinstance(sel_colors, dict) and sel in sel_colors:
+                    kwargs.update({"color": sel_colors[sel]})
+                sns.swarmplot(data=df[df[sel]], ax=ax, **kwargs)
+
+    ax = _get_gca(**kwargs)
+    return ax
+
+def ensemble_change_signal_heatmap(df, index=None, columns=None, values=None, ax=None, **kwargs):
+    """
+    Create a heatmap of the ensemble change signal for different variables per ensemble member.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        A DataFrame containing the ensemble change signals for different variables per ensemble member.
+    index : str, optional
+        The column name to use as the index for the heatmap.
+    columns : str, optional
+        The column name to use as the columns for the heatmap.
+    values : str, optional
+        The column name to use as the climate signal values for the heatmap.
+    ax : matplotlib.axes.Axes, optional
+        The axes on which to plot the heatmap. If None, a new figure and axes are created.
+    **kwargs : dict
+        Additional keyword arguments passed to `seaborn.heatmap`.
+    """
+    sns.heatmap(data=df.pivot(index=index, columns=columns, values=values), ax=ax, **kwargs)
+    ax = _get_gca(**kwargs)
+    return ax
+
 ##################################
 # Helper functions               #
 ##################################
