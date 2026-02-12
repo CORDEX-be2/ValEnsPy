@@ -27,6 +27,7 @@ tasmin:
 
 pr:
   raw_name: PRECIP_QUANTITY
+  raw_standard_name: lwe_thickness_of_precipitation_amount
   raw_long_name: precipitation quantity
   raw_units: mm
 
@@ -47,13 +48,16 @@ rsds:
 
 prhmax:
   raw_name: PRECIP_1H_MAX
+  raw_standard_name: lwe_thickness_of_precipitation_amount
   raw_long_name: maximum precipitation quantity in one hour
   raw_units: mm
 
-evspsblpot:
-  raw_name: EVAPOTRANS_REF
-  raw_long_name: reference evapotranspiration ET0
-  raw_units: mm
+# TODO: check if lwe_thickness_of_precipitation_amount can be used here
+# evspsblpot:
+#   raw_name: EVAPOTRANS_REF
+#   raw_standard_name: ?
+#   raw_long_name: reference evapotranspiration ET0
+#   raw_units: mm
 
 sfcWindmax:
   raw_name: WIND_PEAK_SPEED

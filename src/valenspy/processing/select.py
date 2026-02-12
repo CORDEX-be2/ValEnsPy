@@ -1,5 +1,3 @@
-# Collection of preprocessing functions to perfrom a selection
-
 import xarray as xr
 import numpy as np
 import regionmask
@@ -13,22 +11,28 @@ import cartopy.crs as ccrs
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
 
+#TODO: add docstring once reworked (using crs to select_points)
 
 def select_region(ds: xr.Dataset, region: str):
     """
     Selects a specific geographical region from an xarray Dataset based on given region bounds.
 
-    Parameters:
-    ds (xr.Dataset): The input xarray Dataset from which to select the region.
-    region (str): The name of the region to select. This should correspond to a key in the
-                  `region_bounds` dictionary, which contains latitude and longitude bounds
-                  for various regions.
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The input xarray Dataset from which to select the region.
+    region : str
+        The name of the region to select. This should correspond to a key in the
+        `region_bounds` dictionary, which defines the latitude and longitude bounds
 
-    Returns:
-    xr.Dataset: A new xarray Dataset containing only the data within the specified region.
+    Returns
+    -------
+    xr.Dataset
+        A new xarray Dataset containing only the data within the specified region.
 
-    Example:
-    ds_region = sel_region(ds, 'europe')
+    Examples
+    --------
+    >>> ds_region = select_region(ds, 'europe')
     """
 
     # get region bounds
@@ -118,7 +122,7 @@ def convert_geo_to_LCC(coord: tuple, ds: xr.Dataset):
 
 #TODO: fix this function to work using the ds.crs attribute so that not each crs has to be handled separately
 #This adds the responsibility to the user to have a wel defined crs attribute (maybe some functionality to check this or help add this in input converter would be nice!)
-def select_point(ds: xr.Dataset, lon_point: float, lat_point: float, projection: str = None):
+def select_point(ds: xr.Dataset, lat_point: float, lon_point: float, projection: str = None):
     """
     Select a point from the dataset based on the provided geographic coordinates.
 

@@ -9,5 +9,6 @@
 
 pr:
   raw_name: precipitation
+  raw_standard_name: lwe_thickness_of_precipitation_amount
   raw_long_name: Radar estimated precipitation
   raw_units: mm

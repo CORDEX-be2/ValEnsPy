@@ -3,11 +3,18 @@ import xarray as xr
 import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions
 from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs
+from valenspy._utilities import generate_parameters_doc
+import numpy as np
+import inspect
+import textwrap
+
+#Import get_axis from xarray
+from xarray.plot.utils import get_axis
 
 from abc import abstractmethod
 import warnings
 
-class Diagnostic:
+class Diagnostic():
     """An abstract class representing a diagnostic."""
 
     def __init__(
@@ -34,6 +41,9 @@ class Diagnostic:
             plotting_functions = {"default": plotting_functions}
 
         self.plotting_functions = plotting_functions
+
+        self.__signature__ = inspect.signature(self.diagnostic_function)
+        self.__doc__ = self.description
 
     def __call__(self, data, *args, **kwargs):
         return self.apply(data, *args, **kwargs)
@@ -62,6 +72,10 @@ class Diagnostic:
         ----------
         result : xr.Dataset or xr.DataArray or DataTree
             The output of the diagnostic function.
+        title : str
+            The title of the plot.
+        **kwargs
+            Keyword arguments to pass to the plotting function.
 
         Returns
         -------
@@ -93,8 +107,15 @@ class Diagnostic:
 
     @property
     def description(self):
-        """Return the description of the diagnostic a combination of the name, the type and the description and the docstring of the diagnostic and plot functions."""
-        return f"{self.name} ({self.__class__.__name__})\n{self._description}\n Diagnostic function: {self.diagnostic_function.__name__}\n {self.diagnostic_function.__doc__}\n Visualization function: {self.plotting_functions.__name__}\n"
+        """Generate the docstring for the diagnostic."""
+        name_no_spaces = self.name.replace(" ", "")
+        title = f"{self.name} - {self.__class__.__name__}\n\n"
+        description = f"{self._description}\n\n"
+        params = generate_parameters_doc(self.diagnostic_function)
+        see_also = f"See also\n--------\n:py:class:`{self.__class__.__name__}`, :func:`{self.diagnostic_function.__module__}.{self.diagnostic_function.__name__}`,:func:`{self.plotting_function.__module__}.{self.plotting_function.__name__}` : Plotting function\n\n"
+        examples = f"Examples\n--------\n>>> from valenspy.diagnostic import {name_no_spaces}\n>>> result = {name_no_spaces}(ds)\n>>> {name_no_spaces}.plot(result)\n\n"
+        docstring = f"{title}{description}{params}{see_also}{examples}"
+        return textwrap.dedent(docstring)
 
 class DataSetDiagnostic(Diagnostic):
     """A class representing a diagnostic that operates on the level of single datasets."""
@@ -128,13 +149,41 @@ class DataSetDiagnostic(Diagnostic):
         ----------
         dt : DataTree
             The data to apply the diagnostic to.
+        *args
+            Positional arguments to pass to the diagnostic function.
+        **kwargs
+            Keyword arguments to pass to the diagnostic function.
 
         Returns
         -------
         DataTree
             The data after applying the diagnostic.
         """
-        return dt.map_over_subtree(self.apply, *args, **kwargs)
+        #Bug fix needed until https://github.com/pydata/xarray/issues/9693 is resolved
+        def apply(ds, *args, **kwargs):
+            if not ds:
+                return ds
+            return self.apply(ds, *args, **kwargs)
+        return dt.map_over_datasets(apply, *args, **kwargs)
+
+    def apply(self, ds: xr.Dataset, *args, **kwargs):
+        """Apply the diagnostic to a single dataset.
+
+        Parameters
+        ----------
+        ds : xr.Dataset
+            The data to apply the diagnostic to.
+        *args
+            Positional arguments to pass to the diagnostic function.
+        **kwargs
+            Keyword arguments to pass to the diagnostic function.
+
+        Returns
+        -------
+        xr.Dataset
+            The data after applying the diagnostic.
+        """
+        return self.diagnostic_function(ds, *args, **kwargs)
 
     #Currently no support for different plotting kinds
     def plot_dt(self, dt, *args, **kwargs):
@@ -235,41 +284,6 @@ class Model2Self(DataSetDiagnostic):
         """Initialize the Model2Self diagnostic."""
         super().__init__(diagnostic_function, plotting_functions, name, description, plot_type)
 
-    def apply(self, ds: xr.Dataset, mask=None, **kwargs):
-        """Apply the diagnostic to the data.
-
-        Parameters
-        ----------
-        ds : xr.Dataset
-            The data to apply the diagnostic to.
-
-        Returns
-        -------
-        xr.Dataset
-            The data after applying the diagnostic.
-        """
-        if mask == "prudence":
-            ds = add_prudence_regions(ds)
-        return self.diagnostic_function(ds, **kwargs)
-    
-    def apply_dt(self, dt: DataTree, mask=None, **kwargs):
-        """
-        Apply the diagnostic to a DataTree.
-        
-        Parameters
-        ----------
-        dt : DataTree
-            The DataTree to apply the diagnostic to.
-            
-        Returns
-        -------
-        DataTree
-            The DataTree after applying the diagnostic.
-        """
-        if mask == "prudence":
-            dt = dt.map_over_subtree(add_prudence_regions)
-        return dt.map_over_subtree(self.diagnostic_function, **kwargs)
-
 
 class Model2Ref(DataSetDiagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
@@ -280,7 +294,7 @@ class Model2Ref(DataSetDiagnostic):
         """Initialize the Model2Ref diagnostic."""
         super().__init__(diagnostic_function, plotting_functions, name, description, plot_type)
 
-    def apply(self, ds: xr.Dataset, ref: xr.Dataset, mask=None, **kwargs):
+    def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data. Only the common variables between the data and the reference are used.
 
         Parameters
@@ -295,35 +309,10 @@ class Model2Ref(DataSetDiagnostic):
         xr.Dataset
             The data after applying the diagnostic.
         """
-        if mask == "prudence":
-            ds = add_prudence_regions(ds)
-            ref = add_prudence_regions(ref)
 
         ds, ref = _select_common_vars(ds, ref)
 
-        return self.diagnostic_function(ds, ref, **kwargs)
-
-    def apply_dt(self, dt: DataTree, ref: xr.Dataset, mask=None, **kwargs):
-        """
-        Apply the diagnostic to a DataTree.
-        
-        Parameters
-        ----------
-        dt : DataTree
-            The DataTree to apply the diagnostic to.
-        ref : xr.Dataset
-            The reference data to compare the data to.
-            
-        Returns
-        -------
-        DataTree
-            The DataTree after applying the diagnostic.
-        """
-        if mask == "prudence":
-            dt = dt.map_over_subtree(add_prudence_regions)
-            ref = add_prudence_regions(ref)
-
-        return dt.map_over_subtree(self.diagnostic_function, ref=ref, **kwargs)
+        return super().apply(ds, ref, **kwargs)
 
 class Ensemble2Self(Diagnostic):
     """A class representing a diagnostic that compares an ensemble to itself."""
@@ -350,7 +339,7 @@ class Ensemble2Self(Diagnostic):
             The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
         if mask == "prudence":
-            dt = dt.map_over_subtree(add_prudence_regions)
+            dt = dt.map_over_datasets(add_prudence_regions)
 
         return self.diagnostic_function(dt, **kwargs)
 
@@ -447,84 +436,6 @@ def _initialize_multiaxis_plot(n, subplot_kws={}):
             nrows=n//2+1, ncols=2, figsize=(10, 5 * n), subplot_kw=subplot_kws
         )
     return fig, axes
-
-def filter_like(dt, other):
-    """Filter the dt by the ref."""
-    other = {key for key,_ in other.subtree_with_keys}
-    return dt.filter(lambda node: node.relative_to(dt) in other)
-
-# =============================================================================
-# Pre-made diagnostics
-# =============================================================================
-
-from valenspy.diagnostic.functions import *
-from valenspy.diagnostic.visualizations import *
-
-# Model2Self diagnostics
-DiurnalCycle = Model2Self(
-    diurnal_cycle, 
-    plot_diurnal_cycle, 
-    "Diurnal Cycle", 
-    "The diurnal cycle of the data.",
-    plot_type="single"
-)
-AnnualCycle = Model2Self(
-    annual_cycle,
-    plot_annual_cycle,
-    "Annual Cycle",
-    "The annual cycle of the data.",
-    plot_type="single"
-)
-TimeSeriesSpatialMean = Model2Self(
-    time_series_spatial_mean,
-    plot_time_series,
-    "Time Series",
-    "The time series of the data - if the data is spatial, the spatial mean is taken.",
-    plot_type="single"
-)
-TimeSeriesTrendSpatialMean = Model2Self(
-    time_series_trend,
-    plot_time_series,
-    "Time Series Trend",
-    "The time series trend of the data - if the data is spatial, the spatial mean is taken.",
-    plot_type="single"
-)
-SpatialTimeMean = Model2Self(
-    spatial_time_mean,
-    plot_map,
-    "Spatial Mean",
-    "The spatial representation of the time mean of the data."
-)
-# Model2Ref diagnostics
-SpatialBias = Model2Ref(
-    spatial_bias,
-    plot_map,
-    "Spatial Bias",
-    "The spatial bias of the data compared to the reference.",
-    plot_type="facetted"
-)
-TemporalBias = Model2Ref(
-    temporal_bias,
-    plot_time_series,
-    "Temporal Bias",
-    "The temporal bias of the data compared to the reference.",
-    plot_type="single"
-)
-DiurnalCycleBias = Model2Ref(
-    diurnal_cycle_bias,
-    plot_diurnal_cycle,
-    "Diurnal Cycle Bias",
-    "The diurnal cycle bias of the data compared to the reference.",
-    plot_type="single"
-)
-
-# Ensemble2Ref diagnostics
-MetricsRankings = Ensemble2Ref(
-    calc_metrics_dt,
-    plot_metric_ranking,
-    "Metrics Rankings",
-    "The rankings of ensemble members with respect to several metrics when compared to the reference."
-)
 
 # Ensemble2Ref diagnostics
 EnsembleSubSelection = Ensemble2Ref(

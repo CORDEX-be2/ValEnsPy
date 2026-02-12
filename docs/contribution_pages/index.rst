@@ -1,3 +1,5 @@
+.. _contributing_pages_index:
+
 ============================
 Contribution and Dev notes
 ============================
