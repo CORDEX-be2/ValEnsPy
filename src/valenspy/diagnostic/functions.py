@@ -7,6 +7,7 @@ from functools import partial
 
 from valenspy.processing import select_point
 from valenspy.diagnostic.wrappers import acceptable_variables, required_variables
+from valenspy._utilities import datatree_to_dataframe, datatree_to_dataset
 
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
@@ -260,6 +261,26 @@ def calc_metrics_ds(ds_mod: xr.Dataset, ds_obs: xr.Dataset, metrics=None, pss_bi
     Calculate statistical performance metrics for model data against observed data for a dataset.
     """
     return {variable: calc_metrics_da(ds_mod[variable], ds_obs[variable], metrics, pss_binwidth=pss_binwidth) for variable in ds_mod.data_vars}
+
+######################################
+# Ensemble2Self diagnostic functions #
+######################################
+
+def ensemble_quantile_of_spatial_mean(dt: DataTree, quantile: float | list[float]):
+    """
+    Calculate the ensemble quantile of the spatial mean of the data. If the time dimension is present, the data is averaged over the time dimension before calculating the percentiles.
+
+    Parameters
+    ----------
+    dt : DataTree
+        The data to calculate the ensemble quantiles of the spatial mean of.
+    quantile : float or list of float
+        The quantiles to calculate. Value(s) between 0 and 1.
+    """
+    
+    ds_m = datatree_to_dataset(dt.mean(dim="time"),compat="override",coords="minimal") #Compat is set to override to avoid issues height conflicts between the different datatrees. To be checked why this is needed.
+    return ds_m.quantile(quantile, dim="id")
+
 
 #####################################
 # Ensemble2Ref diagnostic functions #

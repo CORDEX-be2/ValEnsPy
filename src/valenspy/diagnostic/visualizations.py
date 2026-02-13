@@ -541,6 +541,40 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
     
     return ax
 
+######################################
+# Ensemble2Self diagnostic visuals   #
+######################################
+
+def plot_map_per_dimension(ds: xr.Dataset, var: str, dim: str, axes=None, **kwargs):
+    """
+    Plots a map for each unique value along a specified dimension in an xarray Dataset.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The xarray Dataset containing the data to be plotted. It should have the variable of interest and the specified dimension.
+    var : str
+        The name of the variable in the Dataset to be plotted.
+    dim : str
+        The name of the dimension along which to create separate plots for each unique value.
+    axes : array-like of matplotlib.axes.Axes, optional
+        An array of axes to plot on. If None, new axes will be created for each unique value along the specified dimension.
+    **kwargs : dict
+        Additional keyword arguments to pass to the plot_map function for each plot.
+    
+    Returns
+    -------
+    list of matplotlib.axes.Axes
+        A list of axes objects corresponding to each unique value along the specified dimension, with the respective maps plotted.
+    """
+    unique_values = ds[dim].values
+    
+    axes = _get_axes(n_axes=len(unique_values), axes=axes, **kwargs)
+    for i, value in enumerate(unique_values):
+        plot_map(ds[var].sel({dim: value}), ax=axes[i], **kwargs)
+
+    return axes
+
 ##################################
 # Helper functions               #
 ##################################
@@ -553,6 +587,32 @@ def _get_gca(**kwargs):
         return kwargs["ax"]
     else:
         return plt.gca()
+
+def _get_axes(n_axes=1, **kwargs):
+    """
+    Get axes for a multi-axes plot.
+
+    If 'axes' is provided in kwargs, return it.
+    Otherwise, create a new figure with `n_axes` subplots.
+
+    Parameters
+    ----------
+    n_axes : int, default=1
+        Number of axes to create if none are provided.
+    **kwargs
+        May contain 'axes'.
+
+    Returns
+    -------
+    np.ndarray
+        1D array of matplotlib.axes.Axes
+    """
+    if "axes" in kwargs:
+        axes = kwargs["axes"]
+        return np.atleast_1d(axes).ravel()
+    else:
+        _, axes = plt.subplots(n_axes)
+        return np.atleast_1d(axes).ravel()
 
 # Define a function to add borders, coastlines to the axes
 def _add_features(ax, region=None):
