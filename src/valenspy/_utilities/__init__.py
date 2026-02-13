@@ -5,6 +5,7 @@ from ._utilities import (
     load_yml, 
     generate_parameters_doc
 )
-from._formatting import create_named_regex, parse_string_to_time_period
+from ._formatting import create_named_regex, parse_string_to_time_period
 from .cf_checks import is_cf_compliant, cf_status
 from .unit_converter import CORDEX_VARIABLES, _convert_all_units_to_CF
+from ._datatree import datatree_to_dataset, datatree_to_dataframe
