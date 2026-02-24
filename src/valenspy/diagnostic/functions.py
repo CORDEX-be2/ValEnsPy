@@ -277,8 +277,8 @@ def ensemble_quantile_of_spatial_mean(dt: DataTree, quantile: float | list[float
     quantile : float or list of float
         The quantiles to calculate. Value(s) between 0 and 1.
     """
-    
-    ds_m = datatree_to_dataset(dt.mean(dim="time"),compat="override",coords="minimal") #Compat is set to override to avoid issues height conflicts between the different datatrees. To be checked why this is needed.
+    dt_m = dt.map_over_datasets(_average_over_dims, "time")
+    ds_m = datatree_to_dataset(dt_m, compat="override",coords="minimal") #Compat is set to override to avoid issues height conflicts between the different datatrees. To be checked why this is needed.
     return ds_m.quantile(quantile, dim="id")
 
 
