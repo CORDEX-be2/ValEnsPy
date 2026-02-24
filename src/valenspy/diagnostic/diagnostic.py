@@ -398,14 +398,14 @@ class Ensemble2Self(DataTreeDiagnostic):
         """Initialize the Ensemble2Self diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
 
-class Ensemble2Ref(Diagnostic):
+class Ensemble2Ref(DataTreeDiagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None
     ):
         """Initialize the Ensemble2Ref diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description)
+        super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
 
     def apply(self, dt: DataTree, ref, **kwargs):
         """Apply the diagnostic to the data.
@@ -424,30 +424,6 @@ class Ensemble2Ref(Diagnostic):
         """
         # TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.
         return self.diagnostic_function(dt, ref, **kwargs)
-
-    def plot(self, result, facetted=True, **kwargs):
-        """Plot the diagnostic.
-
-        If axes are provided, the diagnostic is plotted facetted. If ax is provided, the diagnostic is plotted non-facetted. 
-        If neither axes nor ax are provided, the diagnostic is plotted on the current axis and no facetting is applied.
-
-        Parameters
-        ----------
-        result : DataTree
-            The result of applying the ensemble diagnostic to a DataTree.
-
-        Returns
-        -------
-        Figure
-            The figure representing the diagnostic.
-        """
-        if "ax" in kwargs and "axes" in kwargs:
-            raise ValueError("Either ax or axes can be provided, not both.")
-        elif "ax" not in kwargs and "axes" not in kwargs:
-            ax = plt.gca()
-            return self.plotting_function(result, ax=ax, **kwargs)
-        else:
-            return self.plotting_function(result, **kwargs)
 
 def _common_vars(ds1, ds2):
     """Return the common variables in two datasets."""

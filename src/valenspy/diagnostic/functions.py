@@ -286,6 +286,33 @@ def ensemble_quantile_of_spatial_mean(dt: DataTree, quantile: float | list[float
 # Ensemble2Ref diagnostic functions #
 #####################################
 
+def climate_change_signal(fut: DataTree, ref: DataTree, abs_diff=True):
+    """
+    Calculate the climate change signal as the difference between the spatial mean of the fut and ref datatree.
+    The difference is only taken for members which are both in the fut and ref datatree with exactly the same path. If abs_diff is True, the absolute difference is calculated, otherwise the relative difference is calculated.
+
+    Parameters
+    ----------
+    fut : DataTree
+        The future data to calculate the climate change signal of.
+    ref : DataTree
+        The reference data to compare the future data to.
+    abs_diff : bool, optional
+        If True, calculate the absolute difference, if False calculate the relative difference, by default True
+
+    Returns
+    -------
+    xr.Datatree
+        The climate change signal as the difference between the spatial mean of the fut and ref datatree.
+    """
+    fut = fut.filter_like(ref).map_over_datasets(_average_over_dims, "time") #For the "members" that are also in the ref datatree, calculate the spatial mean of the fut datatree.
+    ref = ref.filter_like(fut).map_over_datasets(_average_over_dims, "time") #For the "members" that are also in the fut datatree, calculate the spatial mean of the ref datatree.
+    if abs_diff:
+        return fut - ref
+    else:
+        return (fut - ref) / ref
+    
+
 def calc_metrics_dt(dt_mod: DataTree, da_obs: xr.Dataset, metrics=None, pss_binwidth=None):
     """
     Calculate statistical performance metrics for model data against observed data.
