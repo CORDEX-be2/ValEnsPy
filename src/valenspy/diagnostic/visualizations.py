@@ -545,7 +545,7 @@ def plot_metric_ranking(df_metric, ax=None, plot_colorbar=True, hex_color1 = Non
 # Ensemble2Self diagnostic visuals   #
 ######################################
 
-def plot_map_per_dimension(ds: xr.Dataset, var: str, dim: str, axes=None, **kwargs):
+def plot_map_per_dimension(ds: xr.Dataset, var: str, dim: str, axes=None, shared_cbar=None, **kwargs):
     """
     Plots a map for each unique value along a specified dimension in an xarray Dataset.
 
@@ -559,6 +559,11 @@ def plot_map_per_dimension(ds: xr.Dataset, var: str, dim: str, axes=None, **kwar
         The name of the dimension along which to create separate plots for each unique value.
     axes : array-like of matplotlib.axes.Axes, optional
         An array of axes to plot on. If None, new axes will be created for each unique value along the specified dimension.
+    shared_cbar : str
+        How to handle the vmin and vmax of the plot. Options are None, "min_max", "abs".
+        If None, the vmin and vmax are not automatically set. Passing the vmin and vmax as kwargs will still result in shared colorbars. 
+        If "min_max", the vmin and vmax are set respectively to the minimum and maximum over all the leaves of the DataTree. 
+        If "abs", the vmin and vmax are set to the maximum of the absolute value of the minimum and maximum over all the leaves of the DataTree.
     **kwargs : dict
         Additional keyword arguments to pass to the plot_map function for each plot.
     
@@ -568,6 +573,15 @@ def plot_map_per_dimension(ds: xr.Dataset, var: str, dim: str, axes=None, **kwar
         A list of axes objects corresponding to each unique value along the specified dimension, with the respective maps plotted.
     """
     unique_values = ds[dim].values
+
+    if shared_cbar:
+        max = ds[var].max().values
+        min = ds[var].min().values
+        if shared_cbar == "min_max":
+            kwargs = _augment_kwargs({"vmin": min, "vmax": max}, **kwargs)
+        elif shared_cbar == "abs":
+            abs_max = np.max([np.abs(min), np.abs(max)])
+            kwargs = _augment_kwargs({"vmin": -abs_max, "vmax": abs_max}, **kwargs)
     
     axes = _get_axes(n_axes=len(unique_values), axes=axes, **kwargs)
     for i, value in enumerate(unique_values):
