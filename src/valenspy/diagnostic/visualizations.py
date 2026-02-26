@@ -143,11 +143,11 @@ def plot_map(da: xr.DataArray, max_chars=25, **kwargs):
     ax : matplotlib.axes.Axes
         The matplotlib Axes with the plot.
     """
-
-    label =  f"{da.attrs.get('long_name', 'Data')} ({da.units})"
-
-    label_wrapped = "\n".join(textwrap.wrap(label, width=max_chars))
-    kwargs = _augment_kwargs({"cbar_kwargs": {"label":label_wrapped}}, **kwargs)
+    #Check if add_colorbar is set to False, if so, do not set the colorbar label
+    if kwargs.get("add_colorbar", True):
+        label =  f"{da.attrs.get('long_name', 'Data')} ({da.units})"
+        label_wrapped = "\n".join(textwrap.wrap(label, width=max_chars))
+        kwargs = _augment_kwargs({"cbar_kwargs": {"label":label_wrapped}}, **kwargs)
 
     da.plot(**kwargs)
 

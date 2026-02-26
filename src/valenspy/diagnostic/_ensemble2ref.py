@@ -3,8 +3,9 @@ from valenspy.diagnostic.functions import *
 from valenspy.diagnostic.visualizations import *
 
 __all__ = [
+    "ClimateChangeSignal",
     "ClimateChangeSignalOfSpatialMean",
-    "MetricsRankings"
+    "MetricsRankings",
     ]
 
 ClimateChangeSignalOfSpatialMean = Ensemble2Ref(
@@ -17,7 +18,7 @@ ClimateChangeSignalOfSpatialMean = Ensemble2Ref(
 
 ClimateChangeSignal = Ensemble2Ref(
     mean_climate_change_signal,
-    None,
+    lambda ds : ds,
     "Climate Change Signal",
     "The climate change signal as the difference between the spatial and temporal average of two periods."
 )

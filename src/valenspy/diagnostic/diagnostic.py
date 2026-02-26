@@ -68,8 +68,6 @@ class Diagnostic():
         ----------
         result : xr.Dataset or xr.DataArray or DataTree
             The output of the diagnostic function.
-        title : str
-            The title of the plot.
         **kwargs
             Keyword arguments to pass to the plotting function.
 
@@ -147,6 +145,7 @@ class Diagnostic():
         """
         #Flatten the axes if needed
         #Add option if axes is not provided to create new axes
+        #Check how to deal with shared_cbar (shared vmin and vmas - should this be named differently?) and should the cbar really be shared?
 
         if shared_cbar:
             max = np.max([ds[var].values for ds in dt.max().leaves])
@@ -158,9 +157,11 @@ class Diagnostic():
                 kwargs = _augment_kwargs({"vmin": -abs_max, "vmax": abs_max}, **kwargs)
 
         for ax, dt_leave in zip(axes, dt.leaves):
-            if label:
-                kwargs["title"] = getattr(dt_leave, label)
             self.plot(dt_leave[var], ax=ax, **kwargs)
+            if label:
+                title = getattr(dt_leave, label)
+                ax.set_title(title)
+        
         return axes
 
     @property
