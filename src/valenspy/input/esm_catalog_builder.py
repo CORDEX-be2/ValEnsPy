@@ -99,7 +99,7 @@ class CatalogBuilder:
         if new_data:
             # Cast the variable_id column as a list - Hack needed for intake_esm catalog to garantee has_multiple_variable_assets in its current version
             new_df = pd.DataFrame(new_data)
-            new_df["variable_id"] = new_df["variable_id"].apply(lambda x: x if isinstance(x, list) else [x])
+            new_df = new_df.explode(["variable_id", "raw_variable_id"], ignore_index=True)
         
             self.df = pd.concat([self.df, new_df], ignore_index=True)
 
@@ -146,9 +146,9 @@ class CatalogBuilder:
         # Create a DataFrame and save it as a CSV
         df = pd.DataFrame(files_with_metadata)
 
-        # Cast the variable_id column as a list - Hack needed for intake_esm catalog to have has_multiple_variable_assets in its current version
-        df["variable_id"] = df["variable_id"].apply(lambda x: x if isinstance(x, list) else [x])
-        
+        # Explode the variable_id column as a list
+        df = df.explode(["variable_id", "raw_variable_id"], ignore_index=True)
+
         return df
     
     def _process_dataset_for_catalog(self, dataset_name, dataset_info):
@@ -212,6 +212,9 @@ class CatalogBuilder:
                         elif variable_id in variable_set or variable_id in long_name_set:
                             file_metadata["raw_variable_id"] = variable_id
                             file_metadata["variable_id"] = IC.get_CORDEX_variable(variable_id)
+                    else:
+                        #<variable_id> is already in the pattern and in CORDEX variable name convention
+                        file_metadata["raw_variable_id"] = file_metadata.get("variable_id", None)
 
                     #Create time_period attribute using time_period or time_period_start/time_period_end and the time_format
                     time_period = file_metadata.pop("time_period", None)
