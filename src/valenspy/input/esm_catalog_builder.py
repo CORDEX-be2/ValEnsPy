@@ -176,8 +176,10 @@ class CatalogBuilder:
         regex = re.compile(dataset_root.as_posix() + r"/" + regex_pattern)
 
         dataset_meta_data = dataset_info.get("meta_data", {})
-
-        IC = INPUT_CONVERTORS.get(dataset_name, None)
+        if dataset_IC := dataset_info.get("input_convertor", None):
+            IC = INPUT_CONVERTORS.get(dataset_IC, None) #Use the specified ICs
+        else:
+            IC = INPUT_CONVERTORS.get(dataset_name, None) #Use the dataset name to find the IC
         if IC:
             CORDEX_variable_set = IC.cordex_variables
             variable_set = IC.raw_variables
