@@ -99,7 +99,7 @@ class CatalogBuilder:
         if new_data:
             # Cast the variable_id column as a list - Hack needed for intake_esm catalog to garantee has_multiple_variable_assets in its current version
             new_df = pd.DataFrame(new_data)
-            new_df["variable_id"] = new_df["variable_id"].apply(lambda x: x if isinstance(x, list) else [x])
+            new_df = new_df.explode(["variable_id", "raw_variable_id"], ignore_index=True)
         
             self.df = pd.concat([self.df, new_df], ignore_index=True)
 
@@ -110,10 +110,12 @@ class CatalogBuilder:
 
         for dataset_name, dataset_info in self.datasets_info.items():
             key_set = set(dataset_info.get("meta_data", {}).keys())
-            pattern = dataset_info.get("pattern", None)
-            if pattern:
-                for key in re.findall(r"<(.*?)>", pattern):
-                    key_set.add(key)
+            
+            if pattern := dataset_info.get("pattern", None):
+                if isinstance(pattern, str):
+                    pattern = [pattern]
+                #Add keys present in all patterns to the key_set by extracting the identifiers in the pattern.
+                key_set.update(set.intersection(*[set(re.findall(r"<(.*?)>", pat)) for pat in pattern]))                
 
             # Check if all required identifiers are present
             for identifier in required_identifiers:
@@ -146,9 +148,9 @@ class CatalogBuilder:
         # Create a DataFrame and save it as a CSV
         df = pd.DataFrame(files_with_metadata)
 
-        # Cast the variable_id column as a list - Hack needed for intake_esm catalog to have has_multiple_variable_assets in its current version
-        df["variable_id"] = df["variable_id"].apply(lambda x: x if isinstance(x, list) else [x])
-        
+        # Explode the variable_id column as a list
+        df = df.explode(["variable_id", "raw_variable_id"], ignore_index=True)
+
         return df
     
     def _process_dataset_for_catalog(self, dataset_name, dataset_info):
@@ -172,12 +174,19 @@ class CatalogBuilder:
 
         """
         dataset_root = Path(dataset_info.get("root"))
-        regex_pattern = create_named_regex(dataset_info.get("pattern", None))
-        regex = re.compile(dataset_root.as_posix() + r"/" + regex_pattern)
+
+        if pattern := dataset_info.get("pattern", None):
+            if isinstance(pattern, str):
+                pattern = [pattern]
+
+        regex = [re.compile(dataset_root.as_posix() + r"/" + create_named_regex(pat)) for pat in pattern]
 
         dataset_meta_data = dataset_info.get("meta_data", {})
-
-        IC = INPUT_CONVERTORS.get(dataset_name, None)
+        if dataset_IC := dataset_info.get("input_convertor", None):
+            IC = INPUT_CONVERTORS.get(dataset_IC, None) #Use the specified ICs
+        else:
+            IC = INPUT_CONVERTORS.get(dataset_name, None) #Use the dataset name to find the IC
+        
         if IC:
             CORDEX_variable_set = IC.cordex_variables
             variable_set = IC.raw_variables
@@ -188,13 +197,13 @@ class CatalogBuilder:
             for file in files:
                 if file.endswith(".nc"):
                     file_path = os.path.join(root, file)
-                    if match := regex.match(file_path):
-                        file_metadata = match.groupdict()
-                    else:
-                        #Add the skipped file to the skipped files dictionary (create the entry if it does not exist)
-                        if dataset_name not in self.skipped_files:
-                            self.skipped_files[dataset_name] = []
-                        self.skipped_files[dataset_name].append(file_path)
+                    for reg in regex:
+                        if match := reg.match(file_path):
+                            file_metadata = match.groupdict()
+                            break
+
+                    if not match:
+                        self.skipped_files.setdefault(dataset_name, []).append(file_path) 
                         continue
 
                     # Add the file path to the metadata
@@ -212,6 +221,9 @@ class CatalogBuilder:
                         elif variable_id in variable_set or variable_id in long_name_set:
                             file_metadata["raw_variable_id"] = variable_id
                             file_metadata["variable_id"] = IC.get_CORDEX_variable(variable_id)
+                    else:
+                        #<variable_id> is already in the pattern and in CORDEX variable name convention
+                        file_metadata["raw_variable_id"] = file_metadata.get("variable_id", None)
 
                     #Create time_period attribute using time_period or time_period_start/time_period_end and the time_format
                     time_period = file_metadata.pop("time_period", None)

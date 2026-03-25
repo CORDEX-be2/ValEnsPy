@@ -40,7 +40,10 @@
 hortense:
   ERA5: #Note that there is an aggregation variable here! What to do with this? This is messy as it can not be uniquely identified by the filename!
     root: /dodrio/scratch/projects/2022_200/external/era5/
-    pattern: <domain_id>/<variable_id>/<frequency>/<variable_id_2>_era5_<domain_id_2>_<frequency_2>_<aggregation>_<time_period>.nc
+    pattern: #Warning: patterns should be mutually exclusive to ensure correct parsing of the information from the path. A path should not be able to match two patterns!
+      - <domain_id>/<variable_id>/<frequency>/<variable_id_2>_era5_<domain_id_2>_monthly_<aggregation>_<time_period>.nc
+      - <domain_id>/<variable_id>/<frequency>/<variable_id_2>_era5_<domain_id_2>_daily_<aggregation>_<time_period>.nc
+      - <domain_id>/<variable_id>/<frequency>/<variable_id_2>_era5_<domain_id_2>_hourly_<time_period>.nc
     meta_data:
       source_id: "ERA5"
       source_type: "reanalysis"
