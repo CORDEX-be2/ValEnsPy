@@ -27,6 +27,29 @@ def split_by_level(dt: xr.DataTree, level: int):
         result[value].orphan()
     return result
 
+def reorder(dt: xr.DataTree, new_order: list):
+    """
+    Reorder the datatree paths according to the order specified in new_order which should be a list of all leave paths in the datatree. 
+    The index of the leave order will be used as a new parent node to order the datatree by. 
+
+    Parameters
+    ----------
+    dt : xr.DataTree
+        The DataTree to reorder.
+    new_order : list
+        A list of all leave paths in the datatree in the desired order. The index
+        of the leave order will be used as a new parent node to order the datatree by.
+    
+    Returns
+    -------
+    xr.DataTree
+        A reordered DataTree where the paths are reordered according to the order specified in new_order.
+    """
+    return xr.DataTree.from_dict({
+        f"{i}/{path}" : dt[path].dataset
+        for i, path in enumerate(new_order)
+    })
+
 def restructure_by_level(dt: xr.DataTree, level: int):
     """
     Restructure a DataTree such that level n in the node paths becomes the new root level.
