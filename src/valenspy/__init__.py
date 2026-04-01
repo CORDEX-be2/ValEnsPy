@@ -11,7 +11,7 @@ from valenspy.processing import *
 from valenspy.diagnostic import Diagnostic, Model2Self, Model2Ref, Ensemble2Ref, Ensemble2Self
 from valenspy.diagnostic.visualizations import *
 #Utility
-from valenspy._utilities import is_cf_compliant, cf_status
+from valenspy._utilities import is_cf_compliant, cf_status, datatree_to_dataset, datatree_to_dataframe, restructure_by_level, split_by_level
 
 # =============================================================================
 # Version

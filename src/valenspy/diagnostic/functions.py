@@ -4,9 +4,9 @@ from scipy.stats import spearmanr
 from xarray import DataTree
 import pandas as pd
 from functools import partial
-
 from valenspy.processing import select_point
 from valenspy.diagnostic.wrappers import acceptable_variables, required_variables
+from valenspy._utilities import datatree_to_dataframe, datatree_to_dataset, reorder
 
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
@@ -261,9 +261,128 @@ def calc_metrics_ds(ds_mod: xr.Dataset, ds_obs: xr.Dataset, metrics=None, pss_bi
     """
     return {variable: calc_metrics_da(ds_mod[variable], ds_obs[variable], metrics, pss_binwidth=pss_binwidth) for variable in ds_mod.data_vars}
 
+######################################
+# Ensemble2Self diagnostic functions #
+######################################
+
+def ensemble_quantile_of_spatial_mean(dt: DataTree, quantile: float | list[float]):
+    """
+    Calculate the ensemble quantile of the spatial mean of the data. If the time dimension is present, the data is averaged over the time dimension before calculating the percentiles.
+
+    Parameters
+    ----------
+    dt : DataTree
+        The data to calculate the ensemble quantiles of the spatial mean of.
+    quantile : float or list of float
+        The quantiles to calculate. Value(s) between 0 and 1.
+    """
+    dt_m = dt.map_over_datasets(_average_over_dims, "time")
+    ds_m = datatree_to_dataset(dt_m, compat="override",coords="minimal") #Compat is set to override to avoid issues height conflicts between the different datatrees. To be checked why this is needed.
+    return ds_m.quantile(quantile, dim="id")
+
+def ensemble_quantile_closest_member_of_spatial_mean(dt: DataTree, quantile: float | list[float], var: str):
+    """
+    Calculate the ensemble quantile closest member of the spatial mean of the data. If the time dimension is present, the data is averaged over the time dimension before calculating the percentiles.
+
+    Parameters
+    ----------
+    dt : DataTree
+        The data to calculate the ensemble quantiles of the spatial mean of.
+    quantile : float or list of float
+        The quantiles to calculate. Value(s) between 0 and 1.
+    """
+    dt_m = dt.map_over_datasets(_average_over_dims, ["time", "lat", "lon"])
+    df = datatree_to_dataframe(dt_m)
+    #Get the indices of the rows in the dataframe that are closest to the quantiles for the specified variable
+    indices = [(df[var] - df[var].quantile(q)).abs().idxmin() for q in quantile]
+    rows = df.loc[indices]
+    dt_qs = reorder(dt.filter(lambda node: node.path in rows.id.values), rows.id.values) #Reorder the datatree to match the order of the rows in the dataframe
+    return dt_qs.map_over_datasets(_average_over_dims, ["time"])
+    
+
 #####################################
 # Ensemble2Ref diagnostic functions #
 #####################################
+
+def climate_change_signal_of_spatial_mean(fut: DataTree, ref: DataTree, abs_diff=True):
+    """
+    Calculate the climate change signal as the difference between the spatial mean of the fut and ref datatree.
+    The difference is only taken for members which are both in the fut and ref datatree with exactly the same path. If abs_diff is True, the absolute difference is calculated, otherwise the relative difference is calculated.
+
+    Parameters
+    ----------
+    fut : DataTree
+        The future data to calculate the climate change signal of.
+    ref : DataTree
+        The reference data to compare the future data to.
+    abs_diff : bool, optional
+        If True, calculate the absolute difference, if False calculate the relative difference, by default True
+
+    Returns
+    -------
+    xr.Datatree
+        The climate change signal as the difference between the spatial mean of the fut and ref datatree.
+    """
+    return _climate_change_signal(fut, ref, abs_diff=abs_diff, mean_over_dims="time")
+
+def mean_climate_change_signal(fut: DataTree, ref: DataTree, abs_diff=True, add_attributes=False):
+    """
+    Calculate the mean climate change signal as the difference between the mean of the fut and ref datatree.
+    The difference is only taken for members which are both in the fut and ref datatree with exactly the same path. If abs_diff is True, the absolute difference is calculated, otherwise the relative difference is calculated.
+
+    Parameters
+    ----------
+    fut : DataTree
+        The future data to calculate the mean climate change signal of.
+    ref : DataTree
+        The reference data to compare the future data to.
+    abs_diff : bool, optional
+        If True, calculate the absolute difference, if False calculate the relative difference, by default True
+    add_attributes : bool, optional
+        If True, add attributes to the resulting dataframe, by default False
+        
+    Returns
+    -------
+    pd.DataFrame
+        A dataframe with the mean climate change signal for each member in the datatree along with its unique path as an identifier. If add_attributes is True, the dataframe also contains the attributes of the datasets in the datatree.
+    """
+    dt_diff = _climate_change_signal(fut, ref, abs_diff=abs_diff, mean_over_dims=None)
+    return datatree_to_dataframe(dt_diff, add_attributes=add_attributes)
+
+def _climate_change_signal(fut: DataTree, ref: DataTree, abs_diff=True, mean_over_dims=None):
+    """
+    Calculate the climate change signal as the difference between the fut and ref.
+    The mean is taken over the specified dimension(s) before calculating the difference. 
+    The difference is only taken for members which are both in the fut and ref datatree with exactly the same path. If abs_diff is True, the absolute difference is calculated, otherwise the relative difference is calculated.
+
+    Parameters
+    ----------
+    fut : DataTree
+        The future data to calculate the climate change signal of.
+    ref : DataTree
+        The reference data to compare the future data to.
+    abs_diff : bool, optional
+        If True, calculate the absolute difference, if False calculate the relative difference, by default True
+    mean_over_dims : str or list of str, optional
+        The dimension(s) to calculate the mean over before calculating the difference. If None, no mean is calculated, by default None
+    
+    Returns
+    -------
+    xr.Datatree
+        The climate change signal as the difference between the fut and ref datatree.
+    """
+    fut = fut.filter_like(ref) #For the "members" that are also in the ref datatree
+    ref = ref.filter_like(fut) #For the "members" that are also in the fut datatree
+    if mean_over_dims:
+        fut = fut.map_over_datasets(_average_over_dims, mean_over_dims)
+        ref = ref.map_over_datasets(_average_over_dims, mean_over_dims)
+    else:
+        fut = fut.mean() #Mean over all dimensions
+        ref = ref.mean() #Mean over all dimensions
+    if abs_diff:
+        return fut - ref
+    else:
+        return (fut - ref) / ref
 
 def calc_metrics_dt(dt_mod: DataTree, da_obs: xr.Dataset, metrics=None, pss_binwidth=None):
     """

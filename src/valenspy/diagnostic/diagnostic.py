@@ -61,15 +61,13 @@ class Diagnostic():
         """
         pass
 
-    def plot(self, result, title=None, **kwargs):
-        """Plot the diagnostic. Single ax plots.
+    def plot(self, result, **kwargs):
+        """Plot the diagnostic.
 
         Parameters
         ----------
         result : xr.Dataset or xr.DataArray or DataTree
             The output of the diagnostic function.
-        title : str
-            The title of the plot.
         **kwargs
             Keyword arguments to pass to the plotting function.
 
@@ -78,98 +76,8 @@ class Diagnostic():
         ax : matplotlib.axis.Axis
             The axis (singular) of the plot.
         """
-        ax = self.plotting_function(result, **kwargs)
-        if not title:
-            title = self.name
-        ax.set_title(title)
-        return ax
-
-    @property
-    def description(self):
-        """Generate the docstring for the diagnostic."""
-        name_no_spaces = self.name.replace(" ", "")
-        title = f"{self.name} - {self.__class__.__name__}\n\n"
-        description = f"{self._description}\n\n"
-        params = generate_parameters_doc(self.diagnostic_function)
-        see_also = f"See also\n--------\n:py:class:`{self.__class__.__name__}`, :func:`{self.diagnostic_function.__module__}.{self.diagnostic_function.__name__}`,:func:`{self.plotting_function.__module__}.{self.plotting_function.__name__}` : Plotting function\n\n"
-        examples = f"Examples\n--------\n>>> from valenspy.diagnostic import {name_no_spaces}\n>>> result = {name_no_spaces}(ds)\n>>> {name_no_spaces}.plot(result)\n\n"
-        docstring = f"{title}{description}{params}{see_also}{examples}"
-        return textwrap.dedent(docstring)
-
-class DataSetDiagnostic(Diagnostic):
-    """A class representing a diagnostic that operates on the level of single datasets."""
-
-    def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="single"
-    ):
-        """
-        Initialize the DataSetDiagnostic.
-        
-        Parameters
-        ----------
-        plot_type : str
-            The type of plot to create. Options are "single" or "facetted".
-            If "single", plot_dt will plot all the leaves of the DataTree on the same axis.
-            If "facetted", plot_dt will plot all the leaves of the DataTree on different axes.
-        """
-        super().__init__(diagnostic_function, plotting_function, name, description)
-        self.plot_type = plot_type
-
-    def __call__(self, data, *args, **kwargs):
-        if isinstance(data, DataTree):
-            return self.apply_dt(data, *args, **kwargs)
-        else:
-            return self.apply(data, *args, **kwargs)
-        
-    def apply_dt(self, dt: DataTree, *args, **kwargs):
-        """Apply the diagnostic to a DataTree by iterating over the each dataset in the tree.
-
-        Parameters
-        ----------
-        dt : DataTree
-            The data to apply the diagnostic to.
-        *args
-            Positional arguments to pass to the diagnostic function.
-        **kwargs
-            Keyword arguments to pass to the diagnostic function.
-
-        Returns
-        -------
-        DataTree
-            The data after applying the diagnostic.
-        """
-        #Bug fix needed until https://github.com/pydata/xarray/issues/9693 is resolved
-        def apply(ds, *args, **kwargs):
-            if not ds:
-                return ds
-            return self.apply(ds, *args, **kwargs)
-        return dt.map_over_datasets(apply, *args, **kwargs)
-
-    def apply(self, ds: xr.Dataset, *args, **kwargs):
-        """Apply the diagnostic to a single dataset.
-
-        Parameters
-        ----------
-        ds : xr.Dataset
-            The data to apply the diagnostic to.
-        *args
-            Positional arguments to pass to the diagnostic function.
-        **kwargs
-            Keyword arguments to pass to the diagnostic function.
-
-        Returns
-        -------
-        xr.Dataset
-            The data after applying the diagnostic.
-        """
-        return self.diagnostic_function(ds, *args, **kwargs)
-
-    def plot_dt(self, dt, *args, **kwargs):
-        if self.plot_type == "single":
-            return self.plot_dt_single(dt, *args, **kwargs)
-        elif self.plot_type == "facetted":
-            return self.plot_dt_facetted(dt, *args, **kwargs)
-
+        return self.plotting_function(result, **kwargs)
+    
     def plot_dt_single(self, dt, var, ax, label="name", colors=None, **kwargs):
         """
         Plot the diagnostic by iterating over the leaves of a DataTree.
@@ -237,6 +145,7 @@ class DataSetDiagnostic(Diagnostic):
         """
         #Flatten the axes if needed
         #Add option if axes is not provided to create new axes
+        #Check how to deal with shared_cbar (shared vmin and vmas - should this be named differently?) and should the cbar really be shared?
 
         if shared_cbar:
             max = np.max([ds[var].values for ds in dt.max().leaves])
@@ -248,10 +157,199 @@ class DataSetDiagnostic(Diagnostic):
                 kwargs = _augment_kwargs({"vmin": -abs_max, "vmax": abs_max}, **kwargs)
 
         for ax, dt_leave in zip(axes, dt.leaves):
-            if label:
-                kwargs["title"] = getattr(dt_leave, label)
             self.plot(dt_leave[var], ax=ax, **kwargs)
+            if label:
+                title = getattr(dt_leave, label)
+                ax.set_title(title)
+        
         return axes
+
+    @property
+    def description(self):
+        """Generate the docstring for the diagnostic."""
+        name_no_spaces = self.name.replace(" ", "")
+        title = f"{self.name} - {self.__class__.__name__}\n\n"
+        description = f"{self._description}\n\n"
+        params = generate_parameters_doc(self.diagnostic_function)
+        see_also = f"See also\n--------\n:py:class:`{self.__class__.__name__}`, :func:`{self.diagnostic_function.__module__}.{self.diagnostic_function.__name__}`,:func:`{self.plotting_function.__module__}.{self.plotting_function.__name__}` : Plotting function\n\n"
+        examples = f"Examples\n--------\n>>> from valenspy.diagnostic import {name_no_spaces}\n>>> result = {name_no_spaces}(ds)\n>>> {name_no_spaces}.plot(result)\n\n"
+        docstring = f"{title}{description}{params}{see_also}{examples}"
+        return textwrap.dedent(docstring)
+
+class DataSetDiagnostic(Diagnostic):
+    """A class representing a diagnostic that operates on the level of single datasets."""
+
+    def __init__(
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="single"
+    ):
+        """
+        Initialize the DataSetDiagnostic.
+        
+        Parameters
+        ----------
+        plot_type : str
+            The type of plot to create. Options are "single" or "facetted".
+            If "single", plot_dt will plot all the leaves of the DataTree on the same axis.
+            If "facetted", plot_dt will plot all the leaves of the DataTree on different axes.
+        """
+        if plot_type not in ["single", "facetted"]:
+            raise ValueError("Invalid plot_type provided. Options are 'single' or 'facetted'.")
+        self.plot_type = plot_type
+        super().__init__(diagnostic_function, plotting_function, name, description)
+        
+
+    def __call__(self, data, *args, **kwargs):
+        if isinstance(data, DataTree):
+            return self.apply_dt(data, *args, **kwargs)
+        else:
+            return self.apply(data, *args, **kwargs)
+        
+    def apply_dt(self, dt: DataTree, *args, **kwargs):
+        """Apply the diagnostic to a DataTree by iterating over the each dataset in the tree.
+
+        Parameters
+        ----------
+        dt : DataTree
+            The data to apply the diagnostic to.
+        *args
+            Positional arguments to pass to the diagnostic function.
+        **kwargs
+            Keyword arguments to pass to the diagnostic function.
+
+        Returns
+        -------
+        DataTree
+            The data after applying the diagnostic.
+        """
+        #Bug fix needed until https://github.com/pydata/xarray/issues/9693 is resolved
+        def apply(ds, *args, **kwargs):
+            if not ds:
+                return ds
+            return self.apply(ds, *args, **kwargs)
+        return dt.map_over_datasets(apply, *args, **kwargs)
+
+    def apply(self, ds: xr.Dataset, *args, **kwargs):
+        """Apply the diagnostic to a single dataset.
+
+        Parameters
+        ----------
+        ds : xr.Dataset
+            The data to apply the diagnostic to.
+        *args
+            Positional arguments to pass to the diagnostic function.
+        **kwargs
+            Keyword arguments to pass to the diagnostic function.
+
+        Returns
+        -------
+        xr.Dataset
+            The data after applying the diagnostic.
+        """
+        return self.diagnostic_function(ds, *args, **kwargs)
+
+    def plot(self, result, title=None, **kwargs):
+        """Plot the diagnostic. Single ax plots.
+
+        Parameters
+        ----------
+        result : xr.Dataset or xr.DataArray or DataTree
+            The output of the diagnostic function.
+        title : str
+            The title of the plot.
+        **kwargs
+            Keyword arguments to pass to the plotting function.
+
+        Returns
+        -------
+        ax : matplotlib.axis.Axis
+            The axis (singular) of the plot.
+        """
+        ax = super().plot(result, **kwargs)
+        if not title:
+            title = self.name
+        ax.set_title(title)
+        return ax
+
+    def plot_dt(self, dt, *args, **kwargs):
+        if self.plot_type == "single":
+            return self.plot_dt_single(dt, *args, **kwargs)
+        elif self.plot_type == "facetted":
+            return self.plot_dt_facetted(dt, *args, **kwargs)
+
+class DataTreeDiagnostic(Diagnostic):
+    """A class representing a diagnostic that operates on the level of DataTrees."""
+
+    def __init__(
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None
+    ):
+        """Initialize the DataTreeDiagnostic.
+        Parameters
+        ----------
+        plot_type : str, optional
+            The type of plotting function to use. Default is None, which means the plotting function will be used as is. 
+            Options are "single" or "facetted".
+            If "single", plot_dt will plot all the leaves of the DataTree on the same axis.
+            If "facetted", plot_dt will plot all the leaves of the DataTree on different axes.
+
+        """
+        if plot_type not in [None, "single", "facetted"]:
+            raise ValueError("Invalid plot_type provided. Options are None, 'single', or 'facetted'.")
+        self.plot_type = plot_type
+        super().__init__(diagnostic_function, plotting_function, name, description)
+        
+    def __call__(self, data, *args, **kwargs):
+        if not isinstance(data, DataTree):
+            raise ValueError("Data must be a DataTree.")
+        return self.apply(data, *args, **kwargs)
+    
+    def apply(self, dt: DataTree, *args, **kwargs):
+        """Apply the diagnostic to a DataTree.
+
+        Parameters
+        ----------
+        dt : DataTree
+            The data to apply the diagnostic to.
+        *args
+            Positional arguments to pass to the diagnostic function.
+        **kwargs
+            Keyword arguments to pass to the diagnostic function.
+
+        Returns
+        -------
+        DataTree or dict
+            The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
+        """
+        return self.diagnostic_function(dt, *args, **kwargs)
+
+    def plot_dt(self, dt, *args, **kwargs):
+        """Plot the diagnostic by iterating over the leaves of a DataTree.
+
+        Parameters
+        ----------
+        dt : DataTree
+            The DataTree to plot.
+        *args
+            Positional arguments to pass to the plotting function.
+        **kwargs
+            Keyword arguments to pass to the plotting function.
+
+        Returns
+        -------
+        Figure
+            The figure representing the diagnostic.
+        """
+        #Check if the dt is a DataTree and if not raise an error
+        if not isinstance(dt, DataTree):
+            raise ValueError("Data must be a DataTree. Use self.plot to plot non-DataTree data results.")
+        if not self.plot_type:
+            warnings.warn("No plot_type specified, using the default plotting function. It is recommended to use self.plot instead of self.plot_dt when no plot_type is specified.")
+            return self.plotting_function(dt, *args, **kwargs)
+        elif self.plot_type == "single":
+            return self.plot_dt_single(dt, *args, **kwargs)
+        elif self.plot_type == "facetted":
+            return self.plot_dt_facetted(dt, *args, **kwargs)
+        else:
+            raise ValueError("Invalid plot_type specified. Options are 'single', 'facetted', or None.")
 
 class Model2Self(DataSetDiagnostic):
     """A class representing a diagnostic that compares a model to itself."""
@@ -292,67 +390,23 @@ class Model2Ref(DataSetDiagnostic):
 
         return super().apply(ds, ref, **kwargs)
 
-class Ensemble2Self(Diagnostic):
+class Ensemble2Self(DataTreeDiagnostic):
     """A class representing a diagnostic that compares an ensemble to itself."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, iterative_plotting=False
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None
     ):
         """Initialize the Ensemble2Self diagnostic."""
-        self.iterative_plotting = iterative_plotting
-        super().__init__(diagnostic_function, plotting_function, name, description)
-        
+        super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
 
-    def apply(self, dt: DataTree, mask=None, **kwargs):
-        """Apply the diagnostic to the data.
-
-        Parameters
-        ----------
-        dt : DataTree
-            The data to apply the diagnostic to.
-
-        Returns
-        -------
-        DataTree or dict
-            The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
-        """
-        if mask == "prudence":
-            dt = dt.map_over_datasets(add_prudence_regions)
-
-        return self.diagnostic_function(dt, **kwargs)
-
-    def plot(self, result, variables=None, title=None, facetted=None, **kwargs):
-        """Plot the diagnostic.
-
-        If facetted multiple plots on different axes are created. If not facetted, the plots are created on the same axis.
-
-        Parameters
-        ----------
-        result : DataTree
-            The result of applying the ensemble diagnostic to a DataTree.
-
-        Returns
-        -------
-        Figure
-            The figure representing the diagnostic.
-        """
-        if not self.iterative_plotting:
-            if facetted is not None:
-                warnings.warn("facetted is ignored when using a non-iterative plotting function.")
-            return self._plot_non_iterative(result, title=title, **kwargs)
-        else:
-            if variables is None:
-                raise ValueError("variables must be provided when using an iterative plotting function. The variables can be a list of variables to plot or a single variable to plot.")
-            return self._plot_iterative(result, title=title, variables=variables, facetted=facetted, **kwargs)
-
-class Ensemble2Ref(Diagnostic):
+class Ensemble2Ref(DataTreeDiagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None
     ):
         """Initialize the Ensemble2Ref diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description)
+        super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
 
     def apply(self, dt: DataTree, ref, **kwargs):
         """Apply the diagnostic to the data.
@@ -371,30 +425,6 @@ class Ensemble2Ref(Diagnostic):
         """
         # TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.
         return self.diagnostic_function(dt, ref, **kwargs)
-
-    def plot(self, result, facetted=True, **kwargs):
-        """Plot the diagnostic.
-
-        If axes are provided, the diagnostic is plotted facetted. If ax is provided, the diagnostic is plotted non-facetted. 
-        If neither axes nor ax are provided, the diagnostic is plotted on the current axis and no facetting is applied.
-
-        Parameters
-        ----------
-        result : DataTree
-            The result of applying the ensemble diagnostic to a DataTree.
-
-        Returns
-        -------
-        Figure
-            The figure representing the diagnostic.
-        """
-        if "ax" in kwargs and "axes" in kwargs:
-            raise ValueError("Either ax or axes can be provided, not both.")
-        elif "ax" not in kwargs and "axes" not in kwargs:
-            ax = plt.gca()
-            return self.plotting_function(result, ax=ax, **kwargs)
-        else:
-            return self.plotting_function(result, **kwargs)
 
 def _common_vars(ds1, ds2):
     """Return the common variables in two datasets."""
