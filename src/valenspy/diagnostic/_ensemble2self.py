@@ -18,6 +18,6 @@ Ensemble_Quantile_Closest_Member_Spatial_Mean = Ensemble2Self(
     ensemble_quantile_closest_member_of_spatial_mean,
     plot_map,
     "Ensemble quantiles of closest member spatial mean",
-    "The ensemble members that are closest to the quantiles of the spatial mean, and their spatial mean."
+    "The ensemble members that are closest to the quantiles of the spatial mean, and their spatial mean.",
     plot_type="facetted"
 )
