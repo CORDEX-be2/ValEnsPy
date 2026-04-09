@@ -2,10 +2,19 @@ from valenspy.diagnostic.diagnostic import Ensemble2Self
 from valenspy.diagnostic.functions import *
 from valenspy.diagnostic.visualizations import *
 
+import seaborn as sns
+
 __all__ = [
     "Ensemble_Quantile_Spatial_Mean",
-    "Ensemble_Quantile_Closest_Member_Spatial_Mean"
-]
+    "Ensemble_Quantile_Closest_Member_Spatial_Mean",
+    "Ensemble_Histogram"
+    ]
+Ensemble_Histogram = Ensemble2Self(
+    ensemble_member_means,
+    sns.histplot,
+    "Ensemble member means",
+    "The histogram of the ensemble member means."
+)
 
 Ensemble_Quantile_Spatial_Mean = Ensemble2Self(
     ensemble_quantile_of_spatial_mean,
