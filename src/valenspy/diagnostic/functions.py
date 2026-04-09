@@ -265,6 +265,23 @@ def calc_metrics_ds(ds_mod: xr.Dataset, ds_obs: xr.Dataset, metrics=None, pss_bi
 # Ensemble2Self diagnostic functions #
 ######################################
 
+def ensemble_member_means(dt: DataTree, add_attributes=False):
+    """
+    Calculate the mean of each ensemble member in the datatree. If lat, lon and/or time dimensions are present, the data is averaged over these dimensions.
+    
+    Parameters
+    ----------
+    dt : DataTree
+        The data to calculate the mean of.
+
+    Returns
+    -------
+    xr.Dataset
+        The mean of each ensemble member in the datatree.
+    """
+    dt_m = dt.map_over_datasets(_average_over_dims, ["lat", "lon", "time"])
+    return datatree_to_dataframe(dt_m, add_attributes=add_attributes)
+
 def ensemble_quantile_of_spatial_mean(dt: DataTree, quantile: float | list[float]):
     """
     Calculate the ensemble quantile of the spatial mean of the data. If the time dimension is present, the data is averaged over the time dimension before calculating the percentiles.
