@@ -110,19 +110,26 @@ def datatree_to_dataframe(dt: xr.DataTree, add_attributes=False):
             df["id"] = str(key)
             
             if add_attributes:
+                attr_dict = {}
                 if isinstance(add_attributes, bool): #If add_attributes is True, we add all attributes. If it's a list, we only add the specified attributes.
-                    for attr in ds.attrs:
-                        df[attr] = ds.attrs[attr]
-                    for var in ds.data_vars: #Add all the variable related attributes
-                        for attr in ds[var].attrs:
-                            df[f"{var}_{attr}"] = ds[var].attrs[attr]
+                    attr_dict.update(ds.attrs) #The dataset attributes
+                    for var in ds.data_vars: #The variable attributes
+                        attr_dict.update({f"{var}_{attr}": ds[var].attrs[attr] for attr in ds[var].attrs})
                 else:
                     for attr in add_attributes:
                         #if attr is a substring of any attribute in ds.attrs:
                         for ds_attr in ds.attrs:
                             if attr in ds_attr:
-                                df[attr] = ds.attrs[ds_attr]
+                                attr_dict[attr] = ds.attrs[ds_attr]
                                 break #Break the loop after finding the first match to avoid adding multiple attributes with the same substring.
+                #If the attribute is not a string try to cast it to a string, else drop it
+                for attr in attr_dict:
+                    if not isinstance(attr_dict[attr], str):
+                        try:
+                            attr_dict[attr] = str(attr_dict[attr])
+                        except:
+                            del attr_dict[attr]
+                df = df.assign(**attr_dict)
             data_frames.append(df)
                 
     return pd.concat(data_frames, axis=0).reset_index()
