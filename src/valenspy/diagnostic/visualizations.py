@@ -10,9 +10,10 @@ from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
 import matplotlib.colors as mcolors
-import matplotlib.cm as cm
 import textwrap
 import numpy as np
+
+from matplotlib.patches import Patch
 
 # make sure xarray passes the attributes when doing operations - change default for this
 xr.set_options(keep_attrs=True)
@@ -115,7 +116,7 @@ def plot_histogram(da: xr.DataArray, **kwargs):
     return ax
 
 @default_plot_kwargs({
-    'subplot_kws': {'projection': ccrs.PlateCarree()}
+    'subplot_kws': {'transform': ccrs.PlateCarree()}
     })
 def plot_map(da: xr.DataArray, max_chars=25, **kwargs):
     """
@@ -123,7 +124,7 @@ def plot_map(da: xr.DataArray, max_chars=25, **kwargs):
 
     Default plot settings:
 
-    - subplot_kws: {'projection': ccrs.PlateCarree()}
+    - subplot_kws: {'transform': ccrs.PlateCarree()}
     - cbar_kwargs: {'label': "{{da.attrs.get('long_name', 'Data')}} ({{da.name}})"}
     
 
@@ -588,6 +589,62 @@ def plot_map_per_dimension(ds: xr.Dataset, var: str, dim: str, axes=None, shared
         plot_map(ds[var].sel({dim: value}), ax=axes[i], **kwargs)
 
     return axes
+
+#####################################
+# Ensemble2Ref diagnostic visuals   #
+#####################################
+
+#TODO make a hash_kwargs option to pass specific kwargs to the contourf function 
+@default_plot_kwargs({
+    'subplot_kws': {'transform': ccrs.PlateCarree()}
+    })
+def plot_ensemble_mean_map(ds: xr.Dataset, var: str, model_agreement: bool = False, **kwargs):
+    """
+    Plots the ensemble mean map for a specified variable in an xarray Dataset, with an option to indicate model agreement.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The xarray Dataset containing the data to be plotted. It should have the variable of interest and an 'ensemble' dimension.
+    var : str
+        The name of the variable in the Dataset to be plotted as the ensemble mean.
+    model_agreement : bool, optional
+        If True (default), the plot will indicate areas of model agreement by masking out regions where less than 75% of the ensemble members agree on the sign of the variable. If False, no masking is applied and the ensemble mean is plotted as is.
+    **kwargs : dict
+        Additional keyword arguments to pass to the plot
+
+    Returns
+    -------
+    matplotlib.axes.Axes
+        The axes object containing the ensemble mean map plot, with model agreement indicated if specified.
+    """
+    
+    plot_map(ds[var], **kwargs)
+    ax = _get_gca(**kwargs)
+
+    if model_agreement:
+        #Check if ds has var_confidence variable
+        if f"{var}_confidence" not in ds:
+            raise ValueError(f"Dataset must contain a variable named '{var}_confidence' to indicate model agreement when model_agreement is set to True.")
+
+        ax.contourf(
+            ds.lon,
+            ds.lat,
+            ds[f"{var}_confidence"],
+            colors="none",
+            levels=[0.5, 1], #Only show areas with low confidence
+            hatches=["////"],
+            transform=kwargs.get("subplot_kws", {}).get("transform", ccrs.PlateCarree())
+        )
+        description = ds[f"{var}_confidence"].attrs.get("description", "Model dis-agreement confidence")
+        description = "\n".join(textwrap.wrap(description, width=25))
+        legends = [Patch(facecolor="none", hatch="////", label=description)]
+        ax.legend(handles=legends, loc="lower left", frameon=False, fontsize=7)
+    
+    return ax
+
+
+
 
 ##################################
 # Helper functions               #
