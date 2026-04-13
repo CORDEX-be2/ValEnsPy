@@ -265,6 +265,25 @@ def calc_metrics_ds(ds_mod: xr.Dataset, ds_obs: xr.Dataset, metrics=None, pss_bi
 # Ensemble2Self diagnostic functions #
 ######################################
 
+def ensemble_spatial_mean(dt: DataTree):
+    """
+    Calculate the spatial mean of the whole ensemble by averaging over the time dimesion if present, and all ensemble members in the datatree.
+
+    Parameters
+    ----------
+    dt : DataTree
+        The data to calculate the ensemble spatial mean of.
+
+    Returns
+    -------
+    xr.Dataset
+        The spatial mean of the whole ensemble.
+    """
+    dt_m = dt.map_over_datasets(_average_over_dims, "time")
+    ds_m = datatree_to_dataset(dt_m, compat="override", coords="minimal") #Compat is set to override to avoid issues height conflicts between the different datatrees. To be checked why this is needed.
+    return ds_m.mean("id")
+
+
 def ensemble_member_means(dt: DataTree, add_attributes=False):
     """
     Calculate the mean of each ensemble member in the datatree. If lat, lon and/or time dimensions are present, the data is averaged over these dimensions.
@@ -315,7 +334,6 @@ def ensemble_quantile_closest_member_of_spatial_mean(dt: DataTree, quantile: flo
     rows = df.loc[indices]
     dt_qs = reorder(dt.filter(lambda node: node.path in rows.id.values), rows.id.values) #Reorder the datatree to match the order of the rows in the dataframe
     return dt_qs.map_over_datasets(_average_over_dims, ["time"])
-    
 
 #####################################
 # Ensemble2Ref diagnostic functions #
@@ -341,6 +359,42 @@ def climate_change_signal_of_spatial_mean(fut: DataTree, ref: DataTree, abs_diff
         The climate change signal as the difference between the spatial mean of the fut and ref datatree.
     """
     return _climate_change_signal(fut, ref, abs_diff=abs_diff, mean_over_dims="time")
+
+def climate_change_signal_ensemble_mean(fut: DataTree, ref: DataTree, abs_diff=True, model_agreement=False):
+    """
+    Calculate the climate change signal as the difference between the ensemble mean of the fut and ref datatree.
+    The difference is only taken for members which are both in the fut and ref datatree with exactly the same path. If abs_diff is True, the absolute difference is calculated, otherwise the relative difference is calculated.
+
+    Parameters
+    ----------
+    fut : DataTree
+        The future data to calculate the climate change signal of.
+    ref : DataTree
+        The reference data to compare the future data to.
+    abs_diff : bool, optional
+        If True, calculate the absolute difference, if False calculate the relative difference, by default True
+    model_agreement : float, optional
+        The minimum fraction of ensemble members that must agree on the sign of the change, by default False
+
+    Returns
+    -------
+    xr.Datatree
+        The climate change signal as the difference between the ensemble mean of the fut and ref datatree.
+    """
+    dt_cc = climate_change_signal_of_spatial_mean(fut, ref, abs_diff=abs_diff)
+    ds_cc = datatree_to_dataset(dt_cc, compat="override", coords="minimal") 
+    ds_cc_mean = ds_cc.mean("id")
+    if model_agreement:
+        for var in ds_cc.data_vars:
+            n_models = len(ds_cc[var].id)
+            required_n_models = int(np.ceil(model_agreement * n_models))
+            agreement = (ds_cc[var] > 0).sum("id") / n_models 
+            agreement = xr.where(agreement > 0.5, agreement, 1 - agreement) #Get the agreement for the sign of the change, regardless of whether it's a positive or negative change
+            ds_cc_mean[f"{var}_confidence"] = agreement < model_agreement
+            ds_cc_mean[f"{var}_confidence"].attrs["description"] = f"Model dis-agreement in sign of the change, less than {model_agreement*100}% ({required_n_models}/{n_models}) models agree."
+            ds_cc_mean[f"{var}_confidence"].attrs["long_name"] = f"Model dis-agreement ({model_agreement*100}% threshold)"
+            ds_cc_mean[f"{var}_confidence"].attrs["n_models"] = n_models
+    return ds_cc_mean
 
 def mean_climate_change_signal(fut: DataTree, ref: DataTree, abs_diff=True, add_attributes=False):
     """

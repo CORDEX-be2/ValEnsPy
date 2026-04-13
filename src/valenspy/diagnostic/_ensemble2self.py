@@ -5,9 +5,10 @@ from valenspy.diagnostic.visualizations import *
 import seaborn as sns
 
 __all__ = [
+    "Ensemble_Histogram",
     "Ensemble_Quantile_Spatial_Mean",
     "Ensemble_Quantile_Closest_Member_Spatial_Mean",
-    "Ensemble_Histogram"
+    "Ensemble_Spatial_Mean"
     ]
 Ensemble_Histogram = Ensemble2Self(
     ensemble_member_means,
@@ -29,4 +30,11 @@ Ensemble_Quantile_Closest_Member_Spatial_Mean = Ensemble2Self(
     "Ensemble quantiles of closest member spatial mean",
     "The ensemble members that are closest to the quantiles of the spatial mean, and their spatial mean.",
     plot_type="facetted"
+)
+
+Ensemble_Spatial_Mean = Ensemble2Self(
+    ensemble_spatial_mean,
+    plot_map,
+    "Ensemble spatial mean",
+    "The spatial mean across the ensemble members.",
 )
