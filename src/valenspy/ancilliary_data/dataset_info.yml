@@ -53,17 +53,17 @@ hortense:
       institution_id: "ECMWF"
       time_format: "%Y"   
 
-  ERA5-Land: #Note that there is an aggregation variable here! What to do with this? This is messy as it can not be uniquely identified by the filename!
-    root: /dodrio/scratch/projects/2022_200/external/era5-land/
-    pattern: <domain_id>/<variable_id>/<frequency>/<variable_id2>_era5-land_<domain_id_2>_<frequency_2>_<aggregation>_<time_period>.nc
-    meta_data:
-      source_id: "ERA5-Land"
-      source_type: "reanalysis"
-      experiment_id: "reanalysis"
-      version: "ERA5-Land"
-      resolution: "0.1°"
-      institution_id: "ECMWF"
-      time_format: "%Y"
+  # ERA5-Land: #Note that there is an aggregation variable here! What to do with this? This is messy as it can not be uniquely identified by the filename!
+  #   root: /dodrio/scratch/projects/2022_200/external/era5-land/
+  #   pattern: <domain_id>/<variable_id>/<frequency>/<variable_id2>_era5-land_<domain_id_2>_<frequency_2>_<aggregation>_<time_period>.nc
+  #   meta_data:
+  #     source_id: "ERA5-Land"
+  #     source_type: "reanalysis"
+  #     experiment_id: "reanalysis"
+  #     version: "ERA5-Land"
+  #     resolution: "0.1°"
+  #     institution_id: "ECMWF"
+  #     time_format: "%Y"
       
   EOBS: #Note that there is an aggregation variable here! What to do with this?
     root: /dodrio/scratch/projects/2022_200/external/eobs/
