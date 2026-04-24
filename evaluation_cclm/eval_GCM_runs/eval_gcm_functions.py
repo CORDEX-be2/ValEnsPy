@@ -64,8 +64,22 @@ def get_spaghetti_GLUE(da_eval: xr.DataArray, da_exp: xr.DataArray, variable: st
     fig, ax = plt.subplots(figsize = (20,6))
     
     # Exctract unique years
-    years_eval = np.unique(pd.to_datetime(da_eval.time).year)
-    years_exp = np.unique(pd.to_datetime(da_exp.time).year)
+    # years_eval = np.unique(pd.to_datetime(da_eval.time).year)
+    # years_exp = np.unique(pd.to_datetime(da_exp.time).year)
+
+    time = da_exp.time
+
+    if hasattr(time, "dt"):
+        years_exp = np.unique(time.dt.year.values)
+    else:
+        years_exp = np.unique(time.values)
+
+    time = da_eval.time
+
+    if hasattr(time, "dt"):
+        years_eval = np.unique(time.dt.year.values)
+    else:
+        years_eval = np.unique(time.values)
 
     # # Loop over all years:
     for yr in years_eval:
@@ -101,7 +115,7 @@ def get_spaghetti_GLUE(da_eval: xr.DataArray, da_exp: xr.DataArray, variable: st
     ax.grid()
     plt.show()
 
-    return fig
+    return fig, ax
 
 
 def get_temporal_stats(dataset, variable, frequency="yearly", statistics = ['mean'], percentiles=None):
@@ -517,7 +531,8 @@ def visualize_eval_exp_diff(da_eval, da_exp, da_diff, variable = None, statistic
 
     if flag_show:
         plt.show()
-    return fig
+    return fig, axes
+
 
 
 def calc_plot_bias_map_eval(variable: str, da_eval, da_exp, months_to_analyse: list, region='europe', statistic ='mean',flag_save=False, flag_show=True, **kwargs): 
@@ -538,9 +553,9 @@ def calc_plot_bias_map_eval(variable: str, da_eval, da_exp, months_to_analyse: l
         da_diff = da_exp - da_eval
     
     #print("everything fine")
-    fig = visualize_eval_exp_diff(da_eval = da_eval,  da_exp = da_exp,  da_diff = da_diff, statistic = statistic, variable = variable, region=region, flag_show = flag_show)
+    fig, axes = visualize_eval_exp_diff(da_eval = da_eval,  da_exp = da_exp,  da_diff = da_diff, statistic = statistic, variable = variable, region=region, flag_show = flag_show)
 
-    return fig
+    return fig, axes
 
 
 def min_max_scaling(eval_dataset, exp_dataset, variable):
