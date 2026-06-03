@@ -106,8 +106,8 @@ hortense:
 
 bilan:
   CLIMATE_GRID:
-    root: /mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID
-    pattern: <variable_id>_CLIMATE_GRID_<time_period_start>_<time_period_end>_<frequency>.nc
+    root: /mnt/HDS_CLIMATE/CLIMATE/CLIMATE_GRID/regridded/latlon_5km/
+    pattern: <variable_id>_CLIMATE_GRID_<time_period_start>_<time_period_end>_<frequency>_<domain_id2>_<resolution>.nc
     meta_data:
       domain_id: "Belgium"
       source_id: "CLIMATE_GRID"
