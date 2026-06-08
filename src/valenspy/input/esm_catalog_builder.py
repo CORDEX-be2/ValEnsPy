@@ -97,10 +97,7 @@ class CatalogBuilder:
         
         #Only continue if new data was found
         if new_data:
-            # Cast the variable_id column as a list - Hack needed for intake_esm catalog to garantee has_multiple_variable_assets in its current version
             new_df = pd.DataFrame(new_data)
-            new_df = new_df.explode(["variable_id", "raw_variable_id"], ignore_index=True)
-        
             self.df = pd.concat([self.df, new_df], ignore_index=True)
 
     def _validate_dataset_info(self):
@@ -148,9 +145,6 @@ class CatalogBuilder:
         # Create a DataFrame and save it as a CSV
         df = pd.DataFrame(files_with_metadata)
 
-        # Explode the variable_id column as a list
-        df = df.explode(["variable_id", "raw_variable_id"], ignore_index=True)
-
         return df
     
     def _process_dataset_for_catalog(self, dataset_name, dataset_info):
@@ -192,6 +186,15 @@ class CatalogBuilder:
             variable_set = IC.raw_variables
             long_name_set = IC.raw_variables_long_names
 
+        def as_list(value):
+            if isinstance(value, list):
+                return value
+            if isinstance(value, tuple):
+                return list(value)
+            if value is None:
+                return []
+            return [value]
+
         files_with_metadata = []
         for root, _, files in os.walk(dataset_root):
             for file in files:
@@ -219,11 +222,16 @@ class CatalogBuilder:
                             file_metadata["raw_variable_id"] = list(variable_set)
                             file_metadata["variable_id"] = list(CORDEX_variable_set)
                         elif variable_id in variable_set or variable_id in long_name_set:
-                            file_metadata["raw_variable_id"] = variable_id
-                            file_metadata["variable_id"] = IC.get_CORDEX_variable(variable_id)
+                            file_metadata["raw_variable_id"] = [variable_id]
+                            file_metadata["variable_id"] = as_list(IC.get_CORDEX_variable(variable_id))
+                        else:
+                            file_metadata["raw_variable_id"] = [variable_id]
+                            file_metadata["variable_id"] = [variable_id]
                     else:
                         #<variable_id> is already in the pattern and in CORDEX variable name convention
-                        file_metadata["raw_variable_id"] = file_metadata.get("variable_id", None)
+                        variable_id = file_metadata.get("variable_id", None)
+                        file_metadata["raw_variable_id"] = as_list(variable_id)
+                        file_metadata["variable_id"] = as_list(variable_id)
 
                     #Create time_period attribute using time_period or time_period_start/time_period_end and the time_format
                     time_period = file_metadata.pop("time_period", None)

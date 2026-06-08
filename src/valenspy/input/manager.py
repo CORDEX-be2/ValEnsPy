@@ -1,5 +1,6 @@
 """Defines the InputManager class for finding, managing, preprocessing and loading input data for ValEnsPy."""
 from functools import partial
+from copy import deepcopy
 from pathlib import Path
 
 from valenspy.input.converter import INPUT_CONVERTORS
@@ -11,6 +12,7 @@ esmcat_default_data = {
     "id" : "test",
     "esmcat_version": "0.1.0",  # intake-esm JSON file structure version, as per: https://github.com/NCAR/esm-collection-spec
     "assets": {"column_name": "path", "format": "netcdf"},
+    "columns_with_iterables": ["variable_id", "raw_variable_id"],
     "aggregation_control": {
         "variable_column_name": "variable_id",
         "groupby_attrs": CATALOG_COLS["required_identifiers"] + CATALOG_COLS["required_identifiers_with_default"],
@@ -96,11 +98,17 @@ class InputManager:
         #Collection of functions to preprocess the data so that they are ValEnsPy compliant
         self.input_convertors = input_convertors
 
+        esmcat_data = deepcopy(esmcat_data)
         if description:
             esmcat_data["description"] = description
 
+        catalog_df = self._prepare_catalog_df(
+            self.catalog_builder.df,
+            esmcat_data.get("columns_with_iterables", []),
+        )
+
         self.esm_datastore = ValenspyEsmDatastore(
-            obj={"esmcat": esmcat_data, "df": self.catalog_builder.df},
+            obj={"esmcat": esmcat_data, "df": catalog_df},
             **intake_esm_kwargs
             )
 
@@ -211,7 +219,10 @@ class InputManager:
             self._update_catalog(dataset_name, dataset_info)
 
         self.catalog_builder._validate_dataset_info()
-        self.esm_datastore.esmcat._df = self.catalog_builder.df
+        self.esm_datastore.esmcat._df = self._prepare_catalog_df(
+            self.catalog_builder.df,
+            self.esm_datastore.esmcat.dict().get("columns_with_iterables", []),
+        )
         
     def update_catalog_from_dataset_info(self, dataset_name, dataset_root_dir, dataset_pattern, metadata={}):
         """
@@ -238,7 +249,32 @@ class InputManager:
         }
         self._update_catalog(dataset_name, dataset_info)
         self.catalog_builder._validate_dataset_info()
-        self.esm_datastore.esmcat._df = self.catalog_builder.df
+        self.esm_datastore.esmcat._df = self._prepare_catalog_df(
+            self.catalog_builder.df,
+            self.esm_datastore.esmcat.dict().get("columns_with_iterables", []),
+        )
+
+    def _prepare_catalog_df(self, df, iterable_columns):
+        """
+        Convert iterable catalog columns to a string form intake-esm can ingest.
+
+        intake-esm expects iterable columns to be serialized when the DataFrame is
+        converted through pandas -> pyarrow -> polars.
+        """
+        if not iterable_columns:
+            return df
+
+        prepared_df = df.copy()
+
+        for column in iterable_columns:
+            if column not in prepared_df.columns:
+                continue
+
+            prepared_df[column] = prepared_df[column].apply(
+                lambda value: repr(list(value)) if isinstance(value, (list, tuple, set)) else value
+            )
+
+        return prepared_df
     
     @property
     def preprocess(self):
