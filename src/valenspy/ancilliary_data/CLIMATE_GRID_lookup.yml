@@ -64,7 +64,12 @@ sfcWindmax:
   raw_long_name: maximum gusts speed from the closest station
   raw_units: m/s
 
-psl:
+ps:
   raw_name: PRESSURE
-  raw_long_name: sea level pressure
+  raw_long_name: surface air pressure
   raw_units: hPa
+
+# psl:
+#   raw_name: PRESSURE
+#   raw_long_name: sea level pressure
+#   raw_units: hPa
