@@ -155,12 +155,14 @@ def MAR_to_CF(ds: xr.Dataset) -> xr.Dataset:
     Convert a xarray with raw MAR data to a ValensPy compliant xarray Dataset.
 
     Rename TIME to time and remove the ZTQLEV and ZUVLEV dimensions by selecting the first value of each dimension.
+    Derive scalar near-surface wind speed (sfcWind) from the U2Z/V2Z wind components, since MAR - unlike every
+    other source in INPUT_CONVERTORS - does not report a scalar wind speed variable directly.
 
     Parameters
     ----------
     ds : xr.Dataset
         The xarray Dataset of MAR simulation to convert
-    
+
     Returns
     -------
     Dataset
@@ -169,5 +171,15 @@ def MAR_to_CF(ds: xr.Dataset) -> xr.Dataset:
     """
     ds = ds.rename({'TIME':'time'})
     ds = ds.isel(ZTQLEV=0,ZUVLEV=0)
-    
+
+    # MAR only provides the wind vector components (U2Z, V2Z), not a scalar
+    # wind speed - derive it here so it can go through the same raw_name ->
+    # CORDEX rename/unit-conversion path as every other variable (see the
+    # "sfcWind" entry in MAR_lookup.yml). Computed before the raw_name ->
+    # CORDEX rename, at U2Z/V2Z's native "m/s", matching their raw_units in
+    # the lookup table.
+    if "U2Z" in ds and "V2Z" in ds:
+        ds["sfcWind_derived"] = (ds["U2Z"] ** 2 + ds["V2Z"] ** 2) ** 0.5
+        ds["sfcWind_derived"].attrs["units"] = "m/s"
+
     return ds
