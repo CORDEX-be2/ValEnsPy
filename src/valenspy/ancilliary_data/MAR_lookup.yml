@@ -33,6 +33,12 @@ vas:
   raw_long_name: y-reg-Wind Speed component
   raw_units: m/s
 
+sfcWind:
+  raw_name: sfcWind_derived
+  raw_standard_name: wind_speed
+  raw_long_name: Near-Surface Wind Speed (derived from U2Z/V2Z by MAR_to_CF)
+  raw_units: m/s
+
 rsds:
   raw_name: SWD
   raw_long_name: Shortwave Wave Downward
