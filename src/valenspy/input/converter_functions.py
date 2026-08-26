@@ -35,6 +35,16 @@ def _fix_noresm2mm_calendar(ds: xr.Dataset) -> xr.Dataset:
     series can't tell which portion came from which batch and silently produces
     wrong dates - this must run here, in the per-file Input Convertor, not later in
     any per-ensemble post-processing.
+
+    Deliberately kept as cftime.DatetimeNoLeap (not converted to datetime64[ns]):
+    a noleap date is always a valid Gregorian date too, so datetime64 could
+    represent the values, but not the calendar - a downstream frequency check
+    (e.g. xclim's) needs the calendar tag itself to recognize "no Feb 29" as
+    expected rather than a gap; plain datetime64 values with Feb 29 skipped look
+    just as irregular to such a check as the original bug did. See
+    _convert_all_units_to_CF in _utilities/unit_converter.py, which used to force
+    everything through pd.to_datetime() (breaking on cftime) - fixed alongside this
+    to skip that conversion when the time coordinate is already cftime-indexed.
     """
     if "time" not in ds.coords:
         return ds
