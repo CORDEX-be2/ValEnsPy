@@ -19,7 +19,7 @@ class Diagnostic():
     """An abstract class representing a diagnostic."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None
+        self, diagnostic_function, plotting_function, name=None, description=None, short_name=None
     ):
         """Initialize the Diagnostic.
 
@@ -30,11 +30,19 @@ class Diagnostic():
         plotting_function
             The function that visualizes the results of the diagnostic.
         name : str
-            The name of the diagnostic.
+            The name of the diagnostic. Used as-is in `description`'s generated docstring, and
+            as the fallback for `id`/`title` when `short_name` isn't given.
         description : str
             The description of the diagnostic.
+        short_name : str, optional
+            A brief label to use for `id`/`title` instead of `name`, for a diagnostic whose
+            full `name` reads too long for a filename/title (e.g. name "Ensemble quantiles of
+            closest member spatial mean", short_name "Closest Member Quantiles"). `name`
+            itself is unaffected - `description`'s generated docstring always uses the full
+            `name`. Default None (fall back to `name` everywhere).
         """
         self.name = name
+        self.short_name = short_name
         self._description = description
         self.diagnostic_function = diagnostic_function
         self.plotting_function = plotting_function
@@ -179,11 +187,13 @@ class Diagnostic():
 
     @property
     def id(self):
-        """A short, filename-safe identifier for this diagnostic, derived from `name` (e.g.
-        "Spatial Bias" -> "spatial_bias"). Meant to prefix a generated output filename - see
-        `filename`.
+        """A short, filename-safe identifier for this diagnostic, derived from `short_name` if
+        given, else `name` (e.g. "Spatial Bias" -> "spatial-bias"). Words are joined with "-",
+        not "_" - "_" is reserved by `filename` to mark a new section, so keeping it out of
+        `id` (which always occupies the first section) keeps that split unambiguous. Meant to
+        prefix a generated output filename - see `filename`.
         """
-        return re.sub(r"[^0-9a-zA-Z]+", "_", self.name.strip()).strip("_").lower()
+        return re.sub(r"[^0-9a-zA-Z]+", "-", (self.short_name or self.name).strip()).strip("-").lower()
 
     @staticmethod
     def _format_param_value(value):
@@ -199,14 +209,17 @@ class Diagnostic():
         """[id, "var-<value>" (if var given), "<key>-<value>" for each other kwarg given] -
         the section list shared by `filename` and overridden by subclasses (e.g.
         `_ReferenceComparisonNaming`) that want extra named sections between `var` and the
-        rest.
+        rest. A key's own "_" (e.g. from a kwarg named `future_periods`) is rewritten to "-"
+        first - keys are always plain Python identifiers (never containing "-" themselves), so
+        this keeps every section splittable on "_" with no exceptions, at the cost of a
+        multi-word key no longer visually matching its Python spelling.
         """
         sections = [self.id]
         if var is not None:
             sections.append(f"var-{self._format_param_value(var)}")
         for key, value in kwargs.items():
             if value is not None:
-                sections.append(f"{key}-{self._format_param_value(value)}")
+                sections.append(f"{key.replace('_', '-')}-{self._format_param_value(value)}")
         return sections
 
     def _detail(self, **kwargs):
@@ -220,16 +233,17 @@ class Diagnostic():
         return " (" + ", ".join(f"{k}={self._format_param_value(v)}" for k, v in given.items()) + ")"
 
     def filename(self, ext="png", var=None, **kwargs):
-        """Build a short, unambiguously-parseable filename for one output of this diagnostic.
+        """Build a short, readable filename for one output of this diagnostic.
 
-        Sections are joined with a double underscore ("__"), never a single one - `self.id`
-        and most parameter values are themselves multi-word and use a single underscore as
-        their own word separator (e.g. id "spatial_bias", a value like "north_sea"), so "__"
-        is reserved purely to mark a new section. Every section after `id` is written as
-        "<key>-<value>" (var's key is literally "var") rather than the bare value, so a
-        section's identity never depends on its position - splitting on "__" and then each
-        piece on its first "-" recovers `{"var": ..., <key>: ..., ...}` unambiguously
-        regardless of how many optional parameters were given, in any order.
+        Sections are joined with "_", which is reserved purely to mark a new section - `id`
+        uses "-" as its own word separator instead (e.g. "spatial-bias"), precisely so it
+        never contains a "_" that could be mistaken for a section break; every section after
+        `id` is written as "<key>-<value>" (var's key is literally "var") rather than the bare
+        value, with any "_" in a multi-word key name itself rewritten to "-" (see
+        `_filename_sections`) so a section's identity doesn't depend on its position AND no
+        section can ever contain a stray "_" of its own. Splitting on "_" and then each
+        non-id piece on its first "-" recovers `{"var": ..., <key>: ..., ...}` unambiguously,
+        e.g. "future_periods" comes back as key "future-periods", not "future_periods".
 
         Only parameters actually given (not None) produce a section - `filename()` alone (no
         var/kwargs) is just `f"{self.id}.{ext}"`.
@@ -255,9 +269,17 @@ class Diagnostic():
         Returns
         -------
         str
-            e.g. "spatial_bias__var-tas__region-belgium.png".
+            e.g. "spatial-bias_var-tas_region-belgium.png".
         """
-        return "__".join(self._filename_sections(var=var, **kwargs)) + f".{ext}"
+        return "_".join(self._filename_sections(var=var, **kwargs)) + f".{ext}"
+
+    @property
+    def _title_name(self):
+        """`short_name` if given, else `name` - the name used to build `title` (and, via
+        `id`, `filename`). `description`'s generated docstring always uses the full `name`
+        regardless.
+        """
+        return self.short_name or self.name
 
     def title(self, var=None, **kwargs):
         """Build a readable title for one output of this diagnostic.
@@ -267,8 +289,8 @@ class Diagnostic():
         per-variable) and reads far more naturally inline than as a parameter. Every other
         parameter is optional: if given, it's appended as a lightweight "(key=value, ...)"
         parenthetical, just enough to disambiguate one output from another sharing the same
-        name/var without cluttering the headline - nothing beyond `self.name` itself is ever
-        required. Subclasses with a specific calling convention may fold a particular
+        name/var without cluttering the headline - nothing beyond the diagnostic's own name is
+        ever required. Subclasses with a specific calling convention may fold a particular
         parameter into the sentence too, the same way this does for `var` - see e.g.
         `_ReferenceComparisonNaming`'s `reference`.
 
@@ -283,31 +305,34 @@ class Diagnostic():
         -------
         str
             e.g. "Spatial Bias of tas (region=belgium)", or plain "Spatial Bias" if neither
-            `var` nor any kwarg is given.
+            `var` nor any kwarg is given. Uses `short_name` in place of `name` if one was set
+            on this diagnostic (see `Diagnostic.__init__`).
         """
-        base = f"{self.name} of {self._format_param_value(var)}" if var is not None else self.name
+        base = f"{self._title_name} of {self._format_param_value(var)}" if var is not None else self._title_name
         return base + self._detail(**kwargs)
 
 class DataSetDiagnostic(Diagnostic):
     """A class representing a diagnostic that operates on the level of single datasets."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="single"
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="single", short_name=None
     ):
         """
         Initialize the DataSetDiagnostic.
-        
+
         Parameters
         ----------
         plot_type : str
             The type of plot to create. Options are "single" or "facetted".
             If "single", plot_dt will plot all the leaves of the DataTree on the same axis.
             If "facetted", plot_dt will plot all the leaves of the DataTree on different axes.
+        short_name : str, optional
+            See Diagnostic.__init__.
         """
         if plot_type not in ["single", "facetted"]:
             raise ValueError("Invalid plot_type provided. Options are 'single' or 'facetted'.")
         self.plot_type = plot_type
-        super().__init__(diagnostic_function, plotting_function, name, description)
+        super().__init__(diagnostic_function, plotting_function, name, description, short_name)
         
 
     def __call__(self, data, *args, **kwargs):
@@ -392,22 +417,24 @@ class DataTreeDiagnostic(Diagnostic):
     """A class representing a diagnostic that operates on the level of DataTrees."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None, short_name=None
     ):
         """Initialize the DataTreeDiagnostic.
         Parameters
         ----------
         plot_type : str, optional
-            The type of plotting function to use. Default is None, which means the plotting function will be used as is. 
+            The type of plotting function to use. Default is None, which means the plotting function will be used as is.
             Options are "single" or "facetted".
             If "single", plot_dt will plot all the leaves of the DataTree on the same axis.
             If "facetted", plot_dt will plot all the leaves of the DataTree on different axes.
+        short_name : str, optional
+            See Diagnostic.__init__.
 
         """
         if plot_type not in [None, "single", "facetted"]:
             raise ValueError("Invalid plot_type provided. Options are None, 'single', or 'facetted'.")
         self.plot_type = plot_type
-        super().__init__(diagnostic_function, plotting_function, name, description)
+        super().__init__(diagnostic_function, plotting_function, name, description, short_name)
         
     def __call__(self, data, *args, **kwargs):
         if not isinstance(data, DataTree):
@@ -467,10 +494,10 @@ class Model2Self(DataSetDiagnostic):
     """A class representing a diagnostic that compares a model to itself."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="single"
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="single", short_name=None
     ):
         """Initialize the Model2Self diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
+        super().__init__(diagnostic_function, plotting_function, name, description, plot_type, short_name)
 
 
 class _ReferenceComparisonNaming:
@@ -487,13 +514,13 @@ class _ReferenceComparisonNaming:
         section, positioned right after `var`'s.
         """
         ordered_kwargs = {"reference": reference, **kwargs}
-        return "__".join(self._filename_sections(var=var, **ordered_kwargs)) + f".{ext}"
+        return "_".join(self._filename_sections(var=var, **ordered_kwargs)) + f".{ext}"
 
     def title(self, var=None, reference=None, **kwargs):
         """See Diagnostic.title. `reference`, if given, extends the sentence as "... compared
         to <reference>" rather than appearing in the "(key=value, ...)" parenthetical.
         """
-        base = f"{self.name} of {self._format_param_value(var)}" if var is not None else self.name
+        base = f"{self._title_name} of {self._format_param_value(var)}" if var is not None else self._title_name
         if reference is not None:
             base = f"{base} compared to {self._format_param_value(reference)}"
         return base + self._detail(**kwargs)
@@ -502,10 +529,10 @@ class Model2Ref(_ReferenceComparisonNaming, DataSetDiagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="facetted"
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type="facetted", short_name=None
     ):
         """Initialize the Model2Ref diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
+        super().__init__(diagnostic_function, plotting_function, name, description, plot_type, short_name)
 
     def apply(self, ds: xr.Dataset, ref: xr.Dataset, **kwargs):
         """Apply the diagnostic to the data. Only the common variables between the data and the reference are used.
@@ -531,10 +558,10 @@ class Ensemble2Self(DataTreeDiagnostic):
     """A class representing a diagnostic that compares an ensemble to itself."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None, short_name=None
     ):
         """Initialize the Ensemble2Self diagnostic."""
-        super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
+        super().__init__(diagnostic_function, plotting_function, name, description, plot_type, short_name)
 
 #: Default dataset attributes identifying an ensemble member for Ensemble2Ref's
 #: ref-to-data matching (see match_ref_to_data) - matches the attrs intake-esm
@@ -598,7 +625,7 @@ class Ensemble2Ref(_ReferenceComparisonNaming, DataTreeDiagnostic):
 
     def __init__(
         self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None,
-        identity_attrs=DEFAULT_IDENTITY_ATTRS,
+        identity_attrs=DEFAULT_IDENTITY_ATTRS, short_name=None,
     ):
         """Initialize the Ensemble2Ref diagnostic.
 
@@ -609,8 +636,10 @@ class Ensemble2Ref(_ReferenceComparisonNaming, DataTreeDiagnostic):
             to pair `ref`'s members to `dt`'s when `ref` is itself a DataTree (see
             `match_ref_to_data`). Default matches intake-esm-cataloged data's own
             attrs - override for data cataloged differently.
+        short_name : str, optional
+            See Diagnostic.__init__.
         """
-        super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
+        super().__init__(diagnostic_function, plotting_function, name, description, plot_type, short_name)
         self.identity_attrs = identity_attrs
 
     def apply(self, dt: DataTree, ref, **kwargs):
