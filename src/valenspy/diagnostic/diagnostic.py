@@ -188,10 +188,8 @@ class Diagnostic():
     @property
     def id(self):
         """A short, filename-safe identifier for this diagnostic, derived from `short_name` if
-        given, else `name` (e.g. "Spatial Bias" -> "spatial-bias"). Words are joined with "-",
-        not "_" - "_" is reserved by `filename` to mark a new section, so keeping it out of
-        `id` (which always occupies the first section) keeps that split unambiguous. Meant to
-        prefix a generated output filename - see `filename`.
+        given, else `name` (e.g. "Spatial Bias" -> "spatial-bias"). Words are joined with "-".
+        Used as the top-level folder of a generated output path - see `filename`.
         """
         return re.sub(r"[^0-9a-zA-Z]+", "-", (self.short_name or self.name).strip()).strip("-").lower()
 
@@ -206,29 +204,34 @@ class Diagnostic():
         return str(value)
 
     def _filename_sections(self, var=None, **kwargs):
-        """[id, "var--<value>" (if var given), "<key>--<value>" for each other kwarg given] -
+        """[id, "var_<value>" (if var given), "<key>_<value>" for each other kwarg given] -
         the section list shared by `filename` and overridden by subclasses (e.g.
         `_ReferenceComparisonNaming`) that want extra named sections between `var` and the
-        rest. "--" (not "-") separates a section's key from its value - reserving plain "-"
-        purely for joining a list/tuple value's own items (see `_format_param_value`) means
-        the two never look alike: "quantile--0.1-0.5-0.9" reads unambiguously as key
-        "quantile", a 3-item list, whereas "quantile-0.1-0.5-0.9" (both roles sharing a single
-        "-") would not. "--" was chosen over "=" specifically to keep every character in a
-        filename alphanumeric/"-"/"_" - the smallest, most universally filesystem/shell-safe
-        character set - rather than a symbol that can behave oddly in some shells or on some
-        (especially older or networked) filesystems. A key's own "_" (e.g. from a kwarg named
-        `future_periods`) is rewritten to "-" first - keys are always plain Python identifiers
-        (never containing "-" themselves), so this keeps every section splittable on "_" with
-        no exceptions, at the cost of a multi-word key no longer visually matching its Python
-        spelling.
+        rest. Each section becomes its own path segment in `filename` (see `_build_path`), so
+        unlike an earlier version of this method, sections don't need to be mutually
+        distinguishable by punctuation alone - "_" simply joins a key to its value (e.g.
+        "future_periods_gwl2-gwl3"), and "-" is reserved purely for joining a list/tuple
+        value's own items (see `_format_param_value`).
         """
         sections = [self.id]
         if var is not None:
-            sections.append(f"var--{self._format_param_value(var)}")
+            sections.append(f"var_{self._format_param_value(var)}")
         for key, value in kwargs.items():
             if value is not None:
-                sections.append(f"{key.replace('_', '-')}--{self._format_param_value(value)}")
+                sections.append(f"{key}_{self._format_param_value(value)}")
         return sections
+
+    @staticmethod
+    def _build_path(sections, ext):
+        """Turn a `_filename_sections`-style list into a relative path: every section but the
+        last becomes a subfolder, and the last gets the extension - e.g.
+        ["spatial-bias", "var_tas", "reference_ERA5"] -> "spatial-bias/var_tas/reference_ERA5.png".
+        Real, nested folders rather than one long, densely-punctuated filename - each
+        parameter is legible on its own, and outputs sharing an earlier parameter (e.g. every
+        var="tas" output) naturally land in the same folder.
+        """
+        *dirs, last = sections
+        return "/".join(dirs + [f"{last}.{ext}"])
 
     def _detail(self, **kwargs):
         """" (<key>=<value>, ...)" parenthetical from whichever kwargs are given (not None),
@@ -241,25 +244,18 @@ class Diagnostic():
         return " (" + ", ".join(f"{k}={self._format_param_value(v)}" for k, v in given.items()) + ")"
 
     def filename(self, ext="png", var=None, **kwargs):
-        """Build a short, readable filename for one output of this diagnostic.
+        """Build a short, readable relative path for one output of this diagnostic.
 
-        Sections are joined with "_", which is reserved purely to mark a new section - `id`
-        uses "-" as its own word separator instead (e.g. "spatial-bias"), precisely so it
-        never contains a "_" that could be mistaken for a section break; every section after
-        `id` is written as "<key>--<value>" (var's key is literally "var") rather than the bare
-        value, with any "_" in a multi-word key name itself rewritten to "-" (see
-        `_filename_sections`) so a section's identity doesn't depend on its position AND no
-        section can ever contain a stray "_" of its own. "--" is reserved for the key/value
-        split specifically so it reads differently from the single "-" that joins a list/tuple
-        value's own items - "quantile--0.1-0.5-0.9" is visibly key "quantile" with a 3-item
-        list, not several dash-separated tokens with no visible boundary - while keeping every
-        character alphanumeric/"-"/"_", avoiding a symbol like "=" that can behave oddly in
-        some shells or on some filesystems. Splitting on "_" and then each non-id piece on its
-        "--" recovers `{"var": ..., <key>: ..., ...}` unambiguously, e.g. "future_periods"
-        comes back as key "future-periods", not "future_periods".
+        Each parameter becomes its own subfolder, in the order given, with the last one
+        doubling as the file itself (extension appended) - e.g. `filename(var="tas",
+        reference="ERA5")` on SpatialBias returns "spatial-bias/var_tas/reference_ERA5.png".
+        Real folders keep each parameter legible without resorting to a punctuation-heavy
+        single filename, and outputs sharing a parameter (e.g. every `var="tas"` output, from
+        any diagnostic call) land under the same folder. `id` (see `Diagnostic.id`) is always
+        the top-level folder; `filename()` alone (no var/kwargs) is just `f"{self.id}.{ext}"`
+        with no subfolders at all.
 
-        Only parameters actually given (not None) produce a section - `filename()` alone (no
-        var/kwargs) is just `f"{self.id}.{ext}"`.
+        Only parameters actually given (not None) produce a folder level.
 
         Parameters
         ----------
@@ -268,20 +264,20 @@ class Diagnostic():
         var : str, optional
             The variable this output is for, e.g. "tas". Virtually always given in practice
             (almost every diagnostic call is per-variable) - kept as its own parameter (rather
-            than just another kwarg) so it always sits in the same section, right after `id`.
+            than just another kwarg) so it always sits in the same position, right after `id`.
         **kwargs
             Any other parameter distinguishing this particular output from another produced
             by the same diagnostic, e.g. `region="belgium"`. A list/tuple value (e.g.
             `future_periods=["ssp245", "ssp585"]`) is joined with "-". Subclasses with a
             specific calling convention (e.g. Model2Ref's `reference`) may add their own named
-            section - see the subclass's own `filename` if overridden.
+            folder level - see the subclass's own `filename` if overridden.
 
         Returns
         -------
         str
-            e.g. "spatial-bias_var--tas_region--belgium.png".
+            e.g. "spatial-bias/var_tas/region_belgium.png".
         """
-        return "_".join(self._filename_sections(var=var, **kwargs)) + f".{ext}"
+        return self._build_path(self._filename_sections(var=var, **kwargs), ext)
 
     @property
     def _title_name(self):
@@ -537,11 +533,11 @@ class _ReferenceComparisonNaming:
     """
 
     def filename(self, ext="png", var=None, reference=None, **kwargs):
-        """See Diagnostic.filename. `reference`, if given, becomes its own "reference--<value>"
-        section, positioned right after `var`'s.
+        """See Diagnostic.filename. `reference`, if given, becomes its own "reference_<value>"
+        folder level, positioned right after `var`'s.
         """
         ordered_kwargs = {"reference": reference, **kwargs}
-        return "_".join(self._filename_sections(var=var, **ordered_kwargs)) + f".{ext}"
+        return self._build_path(self._filename_sections(var=var, **ordered_kwargs), ext)
 
     def title(self, var=None, long_name=None, reference=None, **kwargs):
         """See Diagnostic.title. `long_name`, if given, is shown in place of `var` in the
