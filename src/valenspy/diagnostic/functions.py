@@ -7,6 +7,7 @@ from functools import partial
 from valenspy.processing import select_point
 from valenspy.diagnostic.wrappers import acceptable_variables, required_variables
 from valenspy._utilities import datatree_to_dataframe, datatree_to_dataset, reorder
+from valenspy._utilities._datatree import restructure_by_attributes
 
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
@@ -330,7 +331,16 @@ def ensemble_quantile_closest_member_of_spatial_mean(dt: DataTree, quantile: flo
     dt_m = dt.map_over_datasets(_average_over_dims, ["time", "lat", "lon"])
     df = datatree_to_dataframe(dt_m)
     #Get the indices of the rows in the dataframe that are closest to the quantiles for the specified variable
-    indices = [(df[var] - df[var].quantile(q)).abs().idxmin() for q in quantile]
+    if df[var].notna().any():
+        indices = [(df[var] - df[var].quantile(q)).abs().idxmin() for q in quantile]
+    else:
+        # No member has a valid (non-NaN) value for this variable - there's no
+        # meaningful "closest member" to find (e.g. a count-based indicator, like a
+        # coldwave length, that never occurs for any member at some future period).
+        # idxmin() on an all-NaN Series returns NaN, which isn't a valid df.loc
+        # label and raises KeyError - fall back to the first row (itself all-NaN
+        # for `var`, so it plots/reports as missing data) instead of crashing.
+        indices = [df.index[0]] * len(quantile)
     rows = df.loc[indices]
     dt_qs = reorder(dt.filter(lambda node: node.path in rows.id.values), rows.id.values) #Reorder the datatree to match the order of the rows in the dataframe
     return dt_qs.map_over_datasets(_average_over_dims, ["time"])
@@ -454,6 +464,113 @@ def _climate_change_signal(fut: DataTree, ref: DataTree, abs_diff=True, mean_ove
         return fut - ref
     else:
         return (fut - ref) / ref
+
+# Default identity for matching the "same" ensemble member across ref/future-period trees
+# that don't share identical DataTree paths - e.g. a GWL-split tree's reference branch is
+# typically under "historical" while its future branches are under "ssp245"/"ssp585"/etc,
+# so the same physical member's path differs by more than just that GWL segment. source_id
+# alone isn't enough either: two members can share a source_id under a different driving
+# GCM (e.g. several MAR-driven runs). These three intake_esm_attrs together (present on
+# every leaf loaded via an InputManager catalog) uniquely identify a member regardless of
+# which experiment_id/GWL branch it currently sits under.
+DEFAULT_MEMBER_IDENTITY_ATTRS = (
+    "intake_esm_attrs:source_id", "intake_esm_attrs:driving_source_id", "intake_esm_attrs:driving_variant_label",
+)
+
+def climate_change_signal_per_member(ref: DataTree, fut_periods: dict, abs_diff=True, identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS):
+    """
+    For each ensemble member individually, its reference-period mean and its own climate
+    change signal (future minus its own reference period) for each future period - unlike
+    climate_change_signal_ensemble_mean/climate_change_signal_of_spatial_mean, members are
+    kept separate rather than averaged together, so each stays its own row when plotted with
+    plot_reference_future_periods_grid.
+
+    A member is only included if its `identity_attrs` combination is present in `ref` AND
+    every tree in `fut_periods` - members missing from any one period are dropped from all of
+    them, so every returned tree covers exactly the same members. Members do not need to share
+    the same DataTree path across trees (see `identity_attrs`), only the same identity.
+
+    Parameters
+    ----------
+    ref : DataTree
+        The reference-period data, one leaf per ensemble member.
+    fut_periods : dict
+        {period label: DataTree} - one DataTree per future period, each with the same per-member
+        leaves as `ref`, identified via `identity_attrs` (e.g. {"GWL2": dt_gwl2, "GWL3": dt_gwl3}).
+    abs_diff : bool, optional
+        See climate_change_signal_of_spatial_mean. Default True.
+    identity_attrs : tuple of str, optional
+        Leaf dataset attributes identifying "the same" member across `ref` and `fut_periods`,
+        used to re-key every tree (via restructure_by_attributes) before matching - handles ref
+        and future branches not sharing identical DataTree paths (e.g. "historical" vs "ssp245").
+        Default DEFAULT_MEMBER_IDENTITY_ATTRS.
+
+    Returns
+    -------
+    dict
+        {"ref": DataTree (reference-period time mean, one leaf per matched member),
+         "fut": {period label: DataTree (that member's climate change signal, one leaf per
+         matched member)}}
+    """
+    ref_matched, fut_periods_matched = _match_members_across_periods(ref, fut_periods, identity_attrs)
+    fut_result = {
+        label: _climate_change_signal(dt, ref_matched, abs_diff=abs_diff, mean_over_dims="time")
+        for label, dt in fut_periods_matched.items()
+    }
+    return {"ref": ref_matched.map_over_datasets(_average_over_dims, "time"), "fut": fut_result}
+
+def climatology_per_member(ref: DataTree, fut_periods: dict, identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS):
+    """
+    For each ensemble member individually, its reference-period mean and its own time mean for
+    each future period - not a change signal, see climate_change_signal_per_member for that.
+    Unlike ensemble_spatial_mean, members are kept separate rather than averaged together, so
+    each stays its own row when plotted with plot_reference_future_periods_grid.
+
+    A member is only included if its `identity_attrs` combination is present in `ref` AND
+    every tree in `fut_periods` - members missing from any one period are dropped from all of
+    them, so every returned tree covers exactly the same members. Members do not need to share
+    the same DataTree path across trees (see `identity_attrs`), only the same identity.
+
+    Parameters
+    ----------
+    ref : DataTree
+        The reference-period data, one leaf per ensemble member.
+    fut_periods : dict
+        {period label: DataTree} - one DataTree per future period, each with the same per-member
+        leaves as `ref`, identified via `identity_attrs` (e.g. {"GWL2": dt_gwl2, "GWL3": dt_gwl3}).
+    identity_attrs : tuple of str, optional
+        See climate_change_signal_per_member. Default DEFAULT_MEMBER_IDENTITY_ATTRS.
+
+    Returns
+    -------
+    dict
+        {"ref": DataTree (reference-period time mean, one leaf per matched member),
+         "fut": {period label: DataTree (that member's future-period time mean, one leaf per
+         matched member)}}
+    """
+    ref_matched, fut_periods_matched = _match_members_across_periods(ref, fut_periods, identity_attrs)
+    fut_result = {
+        label: dt.map_over_datasets(_average_over_dims, "time")
+        for label, dt in fut_periods_matched.items()
+    }
+    return {"ref": ref_matched.map_over_datasets(_average_over_dims, "time"), "fut": fut_result}
+
+def _match_members_across_periods(ref: DataTree, fut_periods: dict, identity_attrs):
+    """(ref, {label: dt}) re-keyed by `identity_attrs` (via restructure_by_attributes) and
+    filtered down to only the members whose identity is present in `ref` AND every tree in
+    `fut_periods` - the shared matching step behind climate_change_signal_per_member and
+    climatology_per_member.
+    """
+    identity_attrs = list(identity_attrs)
+    ref = restructure_by_attributes(ref, identity_attrs)
+    fut_periods = {label: restructure_by_attributes(dt, identity_attrs) for label, dt in fut_periods.items()}
+
+    common = ref
+    for dt in fut_periods.values():
+        common = common.filter_like(dt)
+    ref_matched = ref.filter_like(common)
+    fut_periods_matched = {label: dt.filter_like(common) for label, dt in fut_periods.items()}
+    return ref_matched, fut_periods_matched
 
 def calc_metrics_dt(dt_mod: DataTree, da_obs: xr.Dataset, metrics=None, pss_binwidth=None):
     """
