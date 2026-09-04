@@ -6,6 +6,7 @@ from valenspy.diagnostic.plot_utils import _augment_kwargs
 from valenspy._utilities import generate_parameters_doc
 import numpy as np
 import inspect
+import re
 import textwrap
 
 #Import get_axis from xarray
@@ -175,6 +176,78 @@ class Diagnostic():
         examples = f"Examples\n--------\n>>> from valenspy.diagnostic import {name_no_spaces}\n>>> result = {name_no_spaces}(ds)\n>>> {name_no_spaces}.plot(result)\n\n"
         docstring = f"{title}{description}{params}{see_also}{examples}"
         return textwrap.dedent(docstring)
+
+    @property
+    def id(self):
+        """A short, filename-safe identifier for this diagnostic, derived from `name` (e.g.
+        "Spatial Bias" -> "spatial_bias"). Meant to prefix a generated output filename - see
+        `filename`.
+        """
+        return re.sub(r"[^0-9a-zA-Z]+", "_", self.name.strip()).strip("_").lower()
+
+    @staticmethod
+    def _format_param_value(value):
+        """Render one parameter value as a short, filename/title-safe token. A list/tuple
+        (e.g. a set of quantiles or future periods) is joined with "-" rather than rendered
+        with Python's own repr punctuation.
+        """
+        if isinstance(value, (list, tuple)):
+            return "-".join(Diagnostic._format_param_value(v) for v in value)
+        return str(value)
+
+    def filename(self, ext="png", **kwargs):
+        """Build a short, information-dense filename for one output of this diagnostic.
+
+        Combines `self.id` with the given parameters - typically the same call-specific
+        values used to distinguish this particular output from another produced by the same
+        diagnostic (e.g. the variable, or an ensemble/period label), not the diagnostic's own
+        fixed configuration. Only parameters actually given (not None) are included, in the
+        order passed - `filename()` alone (no kwargs) is just `f"{self.id}.{ext}"`.
+
+        Parameters
+        ----------
+        ext : str, optional
+            The file extension, without a leading dot. Default "png".
+        **kwargs
+            Parameters to fold into the filename, e.g. `var="tas", region="belgium"`. A
+            list/tuple value (e.g. `future_periods=["ssp245", "ssp585"]`) is joined with "-".
+            Subclasses with a specific calling convention (e.g. Model2Ref's `reference`) may
+            recognize particular kwargs to structure the filename around them - see the
+            subclass's own `filename` if overridden.
+
+        Returns
+        -------
+        str
+            A filename of the form "<id>_<value1>_<value2>..._.<ext>", e.g.
+            "spatial_bias_tas.png".
+        """
+        parts = [self.id] + [self._format_param_value(v) for v in kwargs.values() if v is not None]
+        return "_".join(parts) + f".{ext}"
+
+    def title(self, **kwargs):
+        """Build a readable title for one output of this diagnostic.
+
+        Combines `self.name` with the given parameters, e.g. `title(var="tas")` ->
+        "Spatial Bias (var=tas)". Only parameters actually given (not None) are included, in
+        the order passed - `title()` alone (no kwargs) is just `self.name`.
+
+        Parameters
+        ----------
+        **kwargs
+            Same convention as `filename` - e.g. `var="tas", region="belgium"`. Subclasses
+            with a specific calling convention may structure the title differently - see the
+            subclass's own `title` if overridden.
+
+        Returns
+        -------
+        str
+            A title of the form "<name> (<key>=<value>, ...)".
+        """
+        given = {k: v for k, v in kwargs.items() if v is not None}
+        if not given:
+            return self.name
+        detail = ", ".join(f"{k}={self._format_param_value(v)}" for k, v in given.items())
+        return f"{self.name} ({detail})"
 
 class DataSetDiagnostic(Diagnostic):
     """A class representing a diagnostic that operates on the level of single datasets."""
@@ -361,7 +434,34 @@ class Model2Self(DataSetDiagnostic):
         super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
 
 
-class Model2Ref(DataSetDiagnostic):
+class _ReferenceComparisonNaming:
+    """Shared filename/title structure for diagnostics comparing data to a reference
+    (Model2Ref, Ensemble2Ref) - puts an optional `reference` kwarg into an explicit
+    "<name> of <params> vs <reference>" comparison shape instead of Diagnostic's generic
+    "(key=value, ...)" list, matching this apply(data, ref) calling convention. `reference` is
+    a plain label (e.g. a dataset name) supplied by the caller for naming purposes only - `ref`
+    itself is a Dataset/DataTree and has no name of its own to fall back on.
+    """
+
+    def filename(self, ext="png", reference=None, **kwargs):
+        """See Diagnostic.filename. `reference`, if given, is appended as "..._vs_<reference>"
+        rather than mixed in among the other parameters.
+        """
+        parts = [self.id] + [self._format_param_value(v) for v in kwargs.values() if v is not None]
+        if reference is not None:
+            parts += ["vs", self._format_param_value(reference)]
+        return "_".join(parts) + f".{ext}"
+
+    def title(self, reference=None, **kwargs):
+        """See Diagnostic.title. `reference`, if given, is appended as "... vs <reference>"
+        rather than mixed in among the other parameters.
+        """
+        given = {k: v for k, v in kwargs.items() if v is not None}
+        detail = ", ".join(self._format_param_value(v) for v in given.values())
+        base = f"{self.name} of {detail}" if detail else self.name
+        return f"{base} vs {reference}" if reference is not None else base
+
+class Model2Ref(_ReferenceComparisonNaming, DataSetDiagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
 
     def __init__(
@@ -456,7 +556,7 @@ def match_ref_to_data(dt: DataTree, ref: DataTree, identity_attrs=DEFAULT_IDENTI
     return DataTree.from_dict(matched)
 
 
-class Ensemble2Ref(DataTreeDiagnostic):
+class Ensemble2Ref(_ReferenceComparisonNaming, DataTreeDiagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
 
     def __init__(
