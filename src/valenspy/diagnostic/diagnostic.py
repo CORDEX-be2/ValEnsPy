@@ -187,31 +187,22 @@ class Diagnostic():
 
     @property
     def id(self):
-        """A short, filename-safe identifier for this diagnostic, derived from `short_name` if
-        given, else `name` (e.g. "Spatial Bias" -> "spatial-bias"). Words are joined with "-".
-        Used as the top-level folder of a generated output path - see `filename`.
+        """Short filename-safe slug of `short_name` (or `name`), e.g. "spatial-bias". Used as
+        the top-level folder in `filename`.
         """
         return re.sub(r"[^0-9a-zA-Z]+", "-", (self.short_name or self.name).strip()).strip("-").lower()
 
     @staticmethod
     def _format_param_value(value):
-        """Render one parameter value as a short, filename/title-safe token. A list/tuple
-        (e.g. a set of quantiles or future periods) is joined with "-" rather than rendered
-        with Python's own repr punctuation.
-        """
+        """Stringify one parameter value; a list/tuple is "-"-joined."""
         if isinstance(value, (list, tuple)):
             return "-".join(Diagnostic._format_param_value(v) for v in value)
         return str(value)
 
     def _filename_sections(self, var=None, **kwargs):
-        """[id, "var_<value>" (if var given), "<key>_<value>" for each other kwarg given] -
-        the section list shared by `filename` and overridden by subclasses (e.g.
-        `_ReferenceComparisonNaming`) that want extra named sections between `var` and the
-        rest. Each section becomes its own path segment in `filename` (see `_build_path`), so
-        unlike an earlier version of this method, sections don't need to be mutually
-        distinguishable by punctuation alone - "_" simply joins a key to its value (e.g.
-        "future_periods_gwl2-gwl3"), and "-" is reserved purely for joining a list/tuple
-        value's own items (see `_format_param_value`).
+        """[id, "var_<value>", "<key>_<value>", ...] for whichever of var/kwargs are given -
+        one path segment per parameter, built by `filename` via `_build_path`. Overridden by
+        subclasses (e.g. `_ReferenceComparisonNaming`) adding their own named segments.
         """
         sections = [self.id]
         if var is not None:
@@ -223,54 +214,32 @@ class Diagnostic():
 
     @staticmethod
     def _build_path(sections, ext):
-        """Turn a `_filename_sections`-style list into a relative path: every section but the
-        last becomes a subfolder, and the last gets the extension - e.g.
-        ["spatial-bias", "var_tas", "reference_ERA5"] -> "spatial-bias/var_tas/reference_ERA5.png".
-        Real, nested folders rather than one long, densely-punctuated filename - each
-        parameter is legible on its own, and outputs sharing an earlier parameter (e.g. every
-        var="tas" output) naturally land in the same folder.
-        """
+        """[a, b, c] -> "a/b/c.ext" - every section but the last becomes a subfolder."""
         *dirs, last = sections
         return "/".join(dirs + [f"{last}.{ext}"])
 
     def _detail(self, **kwargs):
-        """" (<key>=<value>, ...)" parenthetical from whichever kwargs are given (not None),
-        or "" if none are - the optional trailing part shared by `title` and its subclass
-        overrides.
-        """
+        """" (<key>=<value>, ...)" from whichever kwargs are given, or "" if none are."""
         given = {k: v for k, v in kwargs.items() if v is not None}
         if not given:
             return ""
         return " (" + ", ".join(f"{k}={self._format_param_value(v)}" for k, v in given.items()) + ")"
 
     def filename(self, ext="png", var=None, **kwargs):
-        """Build a short, readable relative path for one output of this diagnostic.
-
-        Each parameter becomes its own subfolder, in the order given, with the last one
-        doubling as the file itself (extension appended) - e.g. `filename(var="tas",
-        reference="ERA5")` on SpatialBias returns "spatial-bias/var_tas/reference_ERA5.png".
-        Real folders keep each parameter legible without resorting to a punctuation-heavy
-        single filename, and outputs sharing a parameter (e.g. every `var="tas"` output, from
-        any diagnostic call) land under the same folder. `id` (see `Diagnostic.id`) is always
-        the top-level folder; `filename()` alone (no var/kwargs) is just `f"{self.id}.{ext}"`
-        with no subfolders at all.
-
-        Only parameters actually given (not None) produce a folder level.
+        """Build a relative output path: one subfolder per given parameter (`var` first, then
+        `**kwargs` in order), with the last one doubling as the file itself. `id` is always the
+        top-level folder; parameters left as None produce no folder level.
 
         Parameters
         ----------
         ext : str, optional
-            The file extension, without a leading dot. Default "png".
+            File extension, no leading dot. Default "png".
         var : str, optional
-            The variable this output is for, e.g. "tas". Virtually always given in practice
-            (almost every diagnostic call is per-variable) - kept as its own parameter (rather
-            than just another kwarg) so it always sits in the same position, right after `id`.
+            The variable this output is for, e.g. "tas".
         **kwargs
-            Any other parameter distinguishing this particular output from another produced
-            by the same diagnostic, e.g. `region="belgium"`. A list/tuple value (e.g.
-            `future_periods=["ssp245", "ssp585"]`) is joined with "-". Subclasses with a
-            specific calling convention (e.g. Model2Ref's `reference`) may add their own named
-            folder level - see the subclass's own `filename` if overridden.
+            Any other parameter distinguishing this output, e.g. `region="belgium"`. A
+            list/tuple value is "-"-joined. Subclasses (e.g. `_ReferenceComparisonNaming`) may
+            add their own named folder level.
 
         Returns
         -------
@@ -281,54 +250,35 @@ class Diagnostic():
 
     @property
     def _title_name(self):
-        """`short_name` if given, else `name` - the name used to build `title` (and, via
-        `id`, `filename`). `description`'s generated docstring always uses the full `name`
-        regardless.
-        """
+        """`short_name` if given, else `name`."""
         return self.short_name or self.name
 
     @staticmethod
     def _var_label(var, long_name):
-        """The string to show for the variable in a title: `long_name` if given, else plain
-        `var`, else None. `filename` has no equivalent - it always uses `var` itself (the
-        short CF code), never `long_name`, to keep filenames compact.
+        """`long_name` if given, else `var`, else None - the value `title` shows for the
+        variable. `filename` has no equivalent; it always uses `var`, never `long_name`.
         """
         return long_name if long_name is not None else var
 
     def title(self, var=None, long_name=None, **kwargs):
-        """Build a readable title for one output of this diagnostic.
-
-        The variable, if given, is folded directly into the sentence as "<name> of <var>"
-        rather than shown as "var=<value>" - it's virtually always given (almost every
-        diagnostic call is per-variable) and reads far more naturally inline than as a
-        parameter. Every other parameter is optional: if given, it's appended as a lightweight
-        "(key=value, ...)" parenthetical, just enough to disambiguate one output from another
-        sharing the same name/var without cluttering the headline - nothing beyond the
-        diagnostic's own name is ever required. Subclasses with a specific calling convention
-        may fold a particular parameter into the sentence too, the same way this does for the
-        variable - see e.g. `_ReferenceComparisonNaming`'s `reference`.
+        """Build a readable title: "<name> of <var>", plus any other given parameter as a
+        trailing "(key=value, ...)". `long_name`, if given, replaces `var` in the sentence -
+        valenspy has no variable-name lookup of its own, so this is only ever what the caller
+        passes. Nothing beyond the diagnostic's own name is required.
 
         Parameters
         ----------
         var : str, optional
-            The variable this output is for, e.g. "tas" - shown in the sentence unless
-            `long_name` is also given.
+            The variable this output is for, e.g. "tas".
         long_name : str, optional
-            A more readable label for the variable, e.g. "Near-Surface Air Temperature" -
-            valenspy has no variable-name lookup of its own, so this is only ever what the
-            caller passes; give it explicitly wherever a nicer label is wanted than the raw
-            `var` code. When given, it's shown in the sentence in place of `var` - `var` itself
-            is not otherwise referenced by `title` (unlike `filename`, which always uses `var`,
-            never `long_name`, to keep filenames short).
+            A more readable label to show instead of `var`, e.g. "Near-Surface Air Temperature".
         **kwargs
             Any other parameter worth noting, e.g. `region="belgium"`.
 
         Returns
         -------
         str
-            e.g. "Spatial Bias of Near-Surface Air Temperature (region=belgium)", or plain
-            "Spatial Bias" if neither the variable nor any kwarg is given. Uses `short_name` in
-            place of `name` if one was set on this diagnostic (see `Diagnostic.__init__`).
+            e.g. "Spatial Bias of Near-Surface Air Temperature (region=belgium)".
         """
         var_label = self._var_label(var, long_name)
         base = f"{self._title_name} of {self._format_param_value(var_label)}" if var_label is not None else self._title_name
@@ -524,26 +474,20 @@ class Model2Self(DataSetDiagnostic):
 
 
 class _ReferenceComparisonNaming:
-    """Shared filename/title structure for diagnostics comparing data to a reference
-    (Model2Ref, Ensemble2Ref) - folds an optional `reference` kwarg into the same "<name> of
-    <var>" sentence Diagnostic.title builds for `var`, as "<name> of <var> compared to
-    <reference>", matching this apply(data, ref) calling convention. `reference` is a plain
-    label (e.g. a dataset name) supplied by the caller for naming purposes only - `ref` itself
-    is a Dataset/DataTree and has no name of its own to fall back on.
+    """filename/title structure for diagnostics comparing data to a reference (Model2Ref,
+    Ensemble2Ref): folds `reference` into the sentence as "<name> of <var> compared to
+    <reference>". `reference` is a plain label the caller supplies for naming purposes only -
+    `ref` itself (a Dataset/DataTree) has no name of its own.
     """
 
     def filename(self, ext="png", var=None, reference=None, **kwargs):
-        """See Diagnostic.filename. `reference`, if given, becomes its own "reference_<value>"
-        folder level, positioned right after `var`'s.
-        """
+        """See Diagnostic.filename. `reference` becomes its own folder level, right after `var`."""
         ordered_kwargs = {"reference": reference, **kwargs}
         return self._build_path(self._filename_sections(var=var, **ordered_kwargs), ext)
 
     def title(self, var=None, long_name=None, reference=None, **kwargs):
-        """See Diagnostic.title. `long_name`, if given, is shown in place of `var` in the
-        sentence, same as Diagnostic.title. `reference`, if given, extends the sentence as
-        "... compared to <reference>" rather than appearing in the "(key=value, ...)"
-        parenthetical.
+        """See Diagnostic.title. `reference`, if given, extends the sentence as "... compared
+        to <reference>" instead of appearing in the "(key=value, ...)" parenthetical.
         """
         var_label = self._var_label(var, long_name)
         base = f"{self._title_name} of {self._format_param_value(var_label)}" if var_label is not None else self._title_name
