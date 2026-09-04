@@ -653,7 +653,7 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
     Parameters
     ----------
     result : dict
-        {"ref": DataTree, "fut": {period label: DataTree}} - the output of
+        {"ref": DataTree, "fut": {future period key: DataTree}} - the output of
         climate_change_signal_per_member or climatology_per_member.
     var : str
         The variable to plot.

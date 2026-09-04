@@ -477,7 +477,7 @@ DEFAULT_MEMBER_IDENTITY_ATTRS = (
     "intake_esm_attrs:source_id", "intake_esm_attrs:driving_source_id", "intake_esm_attrs:driving_variant_label",
 )
 
-def climate_change_signal_per_member(ref: DataTree, fut_periods: dict, abs_diff=True, identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS):
+def climate_change_signal_per_member(dt: DataTree, historical: str, future_periods: list, abs_diff=True, identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS):
     """
     For each ensemble member individually, its reference-period mean and its own climate
     change signal (future minus its own reference period) for each future period - unlike
@@ -485,92 +485,107 @@ def climate_change_signal_per_member(ref: DataTree, fut_periods: dict, abs_diff=
     kept separate rather than averaged together, so each stays its own row when plotted with
     plot_reference_future_periods_grid.
 
-    A member is only included if its `identity_attrs` combination is present in `ref` AND
-    every tree in `fut_periods` - members missing from any one period are dropped from all of
-    them, so every returned tree covers exactly the same members. Members do not need to share
-    the same DataTree path across trees (see `identity_attrs`), only the same identity.
+    A member is included as long as its `identity_attrs` combination is present in the
+    `historical` branch - it need not also be present in every (or any) branch named in
+    `future_periods`. A member missing from a given future branch is simply absent from that
+    branch's returned tree (see plot_reference_future_periods_grid, which renders that
+    member/period cell as an empty placeholder rather than dropping the member from the whole
+    result). Members do not need to share the same DataTree path across branches (see
+    `identity_attrs`), only the same identity.
 
     Parameters
     ----------
-    ref : DataTree
-        The reference-period data, one leaf per ensemble member.
-    fut_periods : dict
-        {period label: DataTree} - one DataTree per future period, each with the same per-member
-        leaves as `ref`, identified via `identity_attrs` (e.g. {"GWL2": dt_gwl2, "GWL3": dt_gwl3}).
+    dt : DataTree
+        The full ensemble, with one top-level branch per period/experiment (e.g.
+        "historical", "ssp245", "ssp585"), each containing one leaf per ensemble member.
+    historical : str
+        The top-level key of `dt` to use as the reference/historical period, e.g. "historical".
+    future_periods : list of str
+        The top-level key(s) of `dt` to use as future periods, e.g. ["ssp245", "ssp585"]. Each
+        key is also used, unchanged, as that period's label in the returned "fut" dict.
     abs_diff : bool, optional
         See climate_change_signal_of_spatial_mean. Default True.
     identity_attrs : tuple of str, optional
-        Leaf dataset attributes identifying "the same" member across `ref` and `fut_periods`,
-        used to re-key every tree (via restructure_by_attributes) before matching - handles ref
-        and future branches not sharing identical DataTree paths (e.g. "historical" vs "ssp245").
-        Default DEFAULT_MEMBER_IDENTITY_ATTRS.
+        Leaf dataset attributes identifying "the same" member across `historical` and
+        `future_periods` branches, used to re-key each branch (via restructure_by_attributes)
+        before matching - handles branches not sharing identical DataTree paths (e.g.
+        "historical" vs "ssp245"). Default DEFAULT_MEMBER_IDENTITY_ATTRS.
 
     Returns
     -------
     dict
-        {"ref": DataTree (reference-period time mean, one leaf per matched member),
-         "fut": {period label: DataTree (that member's climate change signal, one leaf per
-         matched member)}}
+        {"ref": DataTree (reference-period time mean, one leaf per member in `historical`),
+         "fut": {future period key: DataTree (that member's climate change signal, one leaf per
+         member of `historical` also present in that future branch)}}
     """
-    ref_matched, fut_periods_matched = _match_members_across_periods(ref, fut_periods, identity_attrs)
+    ref_matched, fut_periods_matched = _match_members_across_periods(dt, historical, future_periods, identity_attrs)
     fut_result = {
-        label: _climate_change_signal(dt, ref_matched, abs_diff=abs_diff, mean_over_dims="time")
-        for label, dt in fut_periods_matched.items()
+        label: _climate_change_signal(fut_dt, ref_matched, abs_diff=abs_diff, mean_over_dims="time")
+        for label, fut_dt in fut_periods_matched.items()
     }
     return {"ref": ref_matched.map_over_datasets(_average_over_dims, "time"), "fut": fut_result}
 
-def climatology_per_member(ref: DataTree, fut_periods: dict, identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS):
+def climatology_per_member(dt: DataTree, historical: str, future_periods: list, identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS):
     """
     For each ensemble member individually, its reference-period mean and its own time mean for
     each future period - not a change signal, see climate_change_signal_per_member for that.
     Unlike ensemble_spatial_mean, members are kept separate rather than averaged together, so
     each stays its own row when plotted with plot_reference_future_periods_grid.
 
-    A member is only included if its `identity_attrs` combination is present in `ref` AND
-    every tree in `fut_periods` - members missing from any one period are dropped from all of
-    them, so every returned tree covers exactly the same members. Members do not need to share
-    the same DataTree path across trees (see `identity_attrs`), only the same identity.
+    A member is included as long as its `identity_attrs` combination is present in the
+    `historical` branch - it need not also be present in every (or any) branch named in
+    `future_periods`. A member missing from a given future branch is simply absent from that
+    branch's returned tree (see plot_reference_future_periods_grid, which renders that
+    member/period cell as an empty placeholder rather than dropping the member from the whole
+    result). Members do not need to share the same DataTree path across branches (see
+    `identity_attrs`), only the same identity.
 
     Parameters
     ----------
-    ref : DataTree
-        The reference-period data, one leaf per ensemble member.
-    fut_periods : dict
-        {period label: DataTree} - one DataTree per future period, each with the same per-member
-        leaves as `ref`, identified via `identity_attrs` (e.g. {"GWL2": dt_gwl2, "GWL3": dt_gwl3}).
+    dt : DataTree
+        The full ensemble, with one top-level branch per period/experiment (e.g.
+        "historical", "ssp245", "ssp585"), each containing one leaf per ensemble member.
+    historical : str
+        The top-level key of `dt` to use as the reference/historical period, e.g. "historical".
+    future_periods : list of str
+        The top-level key(s) of `dt` to use as future periods, e.g. ["ssp245", "ssp585"]. Each
+        key is also used, unchanged, as that period's label in the returned "fut" dict.
     identity_attrs : tuple of str, optional
         See climate_change_signal_per_member. Default DEFAULT_MEMBER_IDENTITY_ATTRS.
 
     Returns
     -------
     dict
-        {"ref": DataTree (reference-period time mean, one leaf per matched member),
-         "fut": {period label: DataTree (that member's future-period time mean, one leaf per
-         matched member)}}
+        {"ref": DataTree (reference-period time mean, one leaf per member in `historical`),
+         "fut": {future period key: DataTree (that member's future-period time mean, one leaf
+         per member of `historical` also present in that future branch)}}
     """
-    ref_matched, fut_periods_matched = _match_members_across_periods(ref, fut_periods, identity_attrs)
+    ref_matched, fut_periods_matched = _match_members_across_periods(dt, historical, future_periods, identity_attrs)
     fut_result = {
-        label: dt.map_over_datasets(_average_over_dims, "time")
-        for label, dt in fut_periods_matched.items()
+        label: fut_dt.map_over_datasets(_average_over_dims, "time")
+        for label, fut_dt in fut_periods_matched.items()
     }
     return {"ref": ref_matched.map_over_datasets(_average_over_dims, "time"), "fut": fut_result}
 
-def _match_members_across_periods(ref: DataTree, fut_periods: dict, identity_attrs):
-    """(ref, {label: dt}) re-keyed by `identity_attrs` (via restructure_by_attributes) and
-    filtered down to only the members whose identity is present in `ref` AND every tree in
-    `fut_periods` - the shared matching step behind climate_change_signal_per_member and
-    climatology_per_member.
+def _match_members_across_periods(dt: DataTree, historical: str, future_periods: list, identity_attrs):
+    """Slice `dt[historical]` and `dt[period]` for each `period` in `future_periods`, re-key
+    every resulting branch by `identity_attrs` (via restructure_by_attributes), and restrict
+    each future branch to the members present in `historical` - the shared matching step
+    behind climate_change_signal_per_member and climatology_per_member.
+
+    Every member present in `historical` is kept, regardless of whether it also appears in
+    `future_periods` - a member missing from a given future branch is simply absent from that
+    branch's returned tree (not dropped from `historical` or from the other future branches),
+    so callers/plotting can render that member/period combination as missing rather than
+    excluding the member altogether.
     """
     identity_attrs = list(identity_attrs)
-    ref = restructure_by_attributes(ref, identity_attrs)
-    fut_periods = {label: restructure_by_attributes(dt, identity_attrs) for label, dt in fut_periods.items()}
-
-    common = ref
-    for dt in fut_periods.values():
-        common = common.filter_like(dt)
-    ref_matched = ref.filter_like(common)
-    fut_periods_matched = {label: dt.filter_like(common) for label, dt in fut_periods.items()}
-    return ref_matched, fut_periods_matched
+    ref = restructure_by_attributes(dt[historical], identity_attrs)
+    fut_periods_matched = {
+        period: restructure_by_attributes(dt[period], identity_attrs).filter_like(ref)
+        for period in future_periods
+    }
+    return ref, fut_periods_matched
 
 def calc_metrics_dt(dt_mod: DataTree, da_obs: xr.Dataset, metrics=None, pss_binwidth=None):
     """
