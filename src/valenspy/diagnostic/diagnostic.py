@@ -206,20 +206,24 @@ class Diagnostic():
         return str(value)
 
     def _filename_sections(self, var=None, **kwargs):
-        """[id, "var-<value>" (if var given), "<key>-<value>" for each other kwarg given] -
+        """[id, "var=<value>" (if var given), "<key>=<value>" for each other kwarg given] -
         the section list shared by `filename` and overridden by subclasses (e.g.
         `_ReferenceComparisonNaming`) that want extra named sections between `var` and the
-        rest. A key's own "_" (e.g. from a kwarg named `future_periods`) is rewritten to "-"
-        first - keys are always plain Python identifiers (never containing "-" themselves), so
-        this keeps every section splittable on "_" with no exceptions, at the cost of a
-        multi-word key no longer visually matching its Python spelling.
+        rest. "=" (not "-") separates a section's key from its value - reserving "-" purely
+        for joining a list/tuple value's own items (see `_format_param_value`) means the two
+        never look alike: "quantile=0.1-0.5-0.9" reads unambiguously as key "quantile", a
+        3-item list, whereas "quantile-0.1-0.5-0.9" (both roles sharing "-") would not. A key's
+        own "_" (e.g. from a kwarg named `future_periods`) is rewritten to "-" first - keys are
+        always plain Python identifiers (never containing "-" themselves), so this keeps every
+        section splittable on "_" with no exceptions, at the cost of a multi-word key no longer
+        visually matching its Python spelling.
         """
         sections = [self.id]
         if var is not None:
-            sections.append(f"var-{self._format_param_value(var)}")
+            sections.append(f"var={self._format_param_value(var)}")
         for key, value in kwargs.items():
             if value is not None:
-                sections.append(f"{key.replace('_', '-')}-{self._format_param_value(value)}")
+                sections.append(f"{key.replace('_', '-')}={self._format_param_value(value)}")
         return sections
 
     def _detail(self, **kwargs):
@@ -238,12 +242,15 @@ class Diagnostic():
         Sections are joined with "_", which is reserved purely to mark a new section - `id`
         uses "-" as its own word separator instead (e.g. "spatial-bias"), precisely so it
         never contains a "_" that could be mistaken for a section break; every section after
-        `id` is written as "<key>-<value>" (var's key is literally "var") rather than the bare
+        `id` is written as "<key>=<value>" (var's key is literally "var") rather than the bare
         value, with any "_" in a multi-word key name itself rewritten to "-" (see
         `_filename_sections`) so a section's identity doesn't depend on its position AND no
-        section can ever contain a stray "_" of its own. Splitting on "_" and then each
-        non-id piece on its first "-" recovers `{"var": ..., <key>: ..., ...}` unambiguously,
-        e.g. "future_periods" comes back as key "future-periods", not "future_periods".
+        section can ever contain a stray "_" of its own. "=" is reserved for the key/value
+        split specifically so it reads differently from "-", which joins a list/tuple value's
+        own items - "quantile=0.1-0.5-0.9" is visibly key "quantile" with a 3-item list, not
+        four dash-separated tokens with no visible boundary. Splitting on "_" and then each
+        non-id piece on its "=" recovers `{"var": ..., <key>: ..., ...}` unambiguously, e.g.
+        "future_periods" comes back as key "future-periods", not "future_periods".
 
         Only parameters actually given (not None) produce a section - `filename()` alone (no
         var/kwargs) is just `f"{self.id}.{ext}"`.
@@ -259,17 +266,14 @@ class Diagnostic():
         **kwargs
             Any other parameter distinguishing this particular output from another produced
             by the same diagnostic, e.g. `region="belgium"`. A list/tuple value (e.g.
-            `future_periods=["ssp245", "ssp585"]`) is joined with "-" - note this means a
-            value must not itself contain "-" if it needs to stay distinguishable from a
-            joined list (true of every value used in practice: variable/region/period names,
-            non-negative quantiles). Subclasses with a specific calling convention (e.g.
-            Model2Ref's `reference`) may add their own named section - see the subclass's own
-            `filename` if overridden.
+            `future_periods=["ssp245", "ssp585"]`) is joined with "-". Subclasses with a
+            specific calling convention (e.g. Model2Ref's `reference`) may add their own named
+            section - see the subclass's own `filename` if overridden.
 
         Returns
         -------
         str
-            e.g. "spatial-bias_var-tas_region-belgium.png".
+            e.g. "spatial-bias_var=tas_region=belgium.png".
         """
         return "_".join(self._filename_sections(var=var, **kwargs)) + f".{ext}"
 
@@ -510,7 +514,7 @@ class _ReferenceComparisonNaming:
     """
 
     def filename(self, ext="png", var=None, reference=None, **kwargs):
-        """See Diagnostic.filename. `reference`, if given, becomes its own "reference-<value>"
+        """See Diagnostic.filename. `reference`, if given, becomes its own "reference=<value>"
         section, positioned right after `var`'s.
         """
         ordered_kwargs = {"reference": reference, **kwargs}
