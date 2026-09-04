@@ -5,6 +5,7 @@ import xarray as xr
 import numpy as np
 import xclim
 import pandas as pd
+import cftime
 from valenspy._utilities import load_yml
 
 CORDEX_VARIABLES = load_yml("CORDEX_variables")
@@ -76,7 +77,18 @@ def _convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
             ds[var].attrs["original_name"] = raw_var
             ds[var].attrs["original_units"] = raw_units
 
-            ds[var]["time"] = pd.to_datetime(ds[var].time)
+            # Skip for a cftime-indexed (non-standard calendar, e.g. noleap) time
+            # coordinate - pd.to_datetime() can't represent it (raises TypeError:
+            # cftime objects aren't convertible to datetime) and cftime is already a
+            # valid datetime-like index for xarray's own purposes, so there's nothing
+            # to convert. Forcing it to pandas Timestamps would also be lossy: a
+            # genuinely non-standard calendar (e.g. this project's MAR/NorESM2-MM
+            # data - see MAR_to_CF's _fix_noresm2mm_calendar) can't be represented as
+            # datetime64 without losing the calendar information that makes its
+            # frequency correctly inferrable downstream (e.g. by xclim).
+            time_values = np.asarray(ds[var]["time"].values)
+            if not (time_values.size and isinstance(time_values.flat[0], cftime.datetime)):
+                ds[var]["time"] = pd.to_datetime(ds[var].time)
 
             if metadata_info:
                 for key, value in metadata_info.items():
