@@ -399,14 +399,82 @@ class Ensemble2Self(DataTreeDiagnostic):
         """Initialize the Ensemble2Self diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
 
+#: Default dataset attributes identifying an ensemble member for Ensemble2Ref's
+#: ref-to-data matching (see match_ref_to_data) - matches the attrs intake-esm
+#: attaches to a catalog-loaded dataset (InputManager's own catalog machinery),
+#: not specific to any one project's diagnostics.
+DEFAULT_IDENTITY_ATTRS = (
+    "intake_esm_attrs:source_id", "intake_esm_attrs:driving_source_id", "intake_esm_attrs:driving_variant_label",
+)
+
+
+def _member_identity(ds, identity_attrs):
+    return tuple(ds.attrs.get(attr) for attr in identity_attrs)
+
+
+def _identity_map(dt, identity_attrs):
+    """{identity: dataset} for every real leaf of `dt`, keyed by each leaf's own
+    `identity_attrs` values - lossy if `dt` has more than one leaf sharing the same
+    identity (last one wins), so only ever used on `ref` below, where a reference
+    is expected to have at most one dataset per identity. `dt`'s own side of the
+    match walks every leaf directly instead (see match_ref_to_data), specifically
+    so that doesn't apply to it.
+    """
+    result = {}
+    for path, node in dt.subtree_with_keys:
+        if not path or node.children or node.dataset is None:
+            continue
+        result[_member_identity(node.dataset, identity_attrs)] = node.dataset
+    return result
+
+
+def match_ref_to_data(dt: DataTree, ref: DataTree, identity_attrs=DEFAULT_IDENTITY_ATTRS) -> DataTree:
+    """Re-key `ref` so its member paths exactly match `dt`'s, pairing members by
+    identity (`identity_attrs`) rather than by tree path.
+
+    `dt` and `ref` frequently don't share tree paths even when they cover the same
+    ensemble members - e.g. a reference/historical branch and several future
+    scenario branches for the same model don't share a path segment for the
+    scenario/experiment, since that's exactly the thing distinguishing them. A
+    member present under several different branches of `dt` (e.g. the same model
+    run under more than one future scenario) legitimately needs the same `ref`
+    member duplicated under each of `dt`'s paths, not merged into one entry -
+    they're independent comparisons against the same baseline, which is why this
+    walks every leaf of `dt` individually rather than going through `dt`'s own
+    identity map (see _identity_map's docstring on why that would silently drop
+    all but one of several same-identity paths). Any `dt` member whose identity
+    isn't found in `ref` is simply absent from the result.
+    """
+    ref_by_identity = _identity_map(ref, identity_attrs)
+    matched = {}
+    for path, node in dt.subtree_with_keys:
+        if not path or node.children or node.dataset is None:
+            continue
+        identity = _member_identity(node.dataset, identity_attrs)
+        if identity in ref_by_identity:
+            matched[path] = ref_by_identity[identity]
+    return DataTree.from_dict(matched)
+
+
 class Ensemble2Ref(DataTreeDiagnostic):
     """A class representing a diagnostic that compares an ensemble to a reference."""
 
     def __init__(
-        self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None
+        self, diagnostic_function, plotting_function, name=None, description=None, plot_type=None,
+        identity_attrs=DEFAULT_IDENTITY_ATTRS,
     ):
-        """Initialize the Ensemble2Ref diagnostic."""
+        """Initialize the Ensemble2Ref diagnostic.
+
+        Parameters
+        ----------
+        identity_attrs : tuple of str, optional
+            Dataset attribute names identifying an ensemble member, used by `apply`
+            to pair `ref`'s members to `dt`'s when `ref` is itself a DataTree (see
+            `match_ref_to_data`). Default matches intake-esm-cataloged data's own
+            attrs - override for data cataloged differently.
+        """
         super().__init__(diagnostic_function, plotting_function, name, description, plot_type)
+        self.identity_attrs = identity_attrs
 
     def apply(self, dt: DataTree, ref, **kwargs):
         """Apply the diagnostic to the data.
@@ -416,7 +484,9 @@ class Ensemble2Ref(DataTreeDiagnostic):
         dt : DataTree
             The data to apply the diagnostic to.
         ref : xr.DataSet or DataTree
-            The reference data to compare the data to.
+            The reference data to compare the data to. If a DataTree, its members
+            are first re-paired to `dt`'s own members by identity (see
+            `match_ref_to_data`) - `ref` need not already share `dt`'s tree paths.
 
         Returns
         -------
@@ -424,6 +494,8 @@ class Ensemble2Ref(DataTreeDiagnostic):
             The data after applying the diagnostic as a DataTree or a dictionary of results with the tree nodes as keys.
         """
         # TODO: Add some checks to make sure the reference is a DataTree or a Dataset and contain common variables with the data.
+        if isinstance(ref, DataTree):
+            ref = match_ref_to_data(dt, ref, identity_attrs=self.identity_attrs)
         return self.diagnostic_function(dt, ref, **kwargs)
 
 def _common_vars(ds1, ds2):

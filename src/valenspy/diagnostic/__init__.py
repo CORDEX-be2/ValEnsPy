@@ -1,4 +1,7 @@
-from .diagnostic import Diagnostic, Model2Self, Model2Ref, Ensemble2Ref, Ensemble2Self
+from .diagnostic import (
+    Diagnostic, Model2Self, Model2Ref, Ensemble2Ref, Ensemble2Self,
+    match_ref_to_data, DEFAULT_IDENTITY_ATTRS,
+)
 
 # =============================================================================
 # Pre-made diagnostics
