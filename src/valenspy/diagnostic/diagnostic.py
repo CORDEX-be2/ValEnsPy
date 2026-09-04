@@ -206,24 +206,28 @@ class Diagnostic():
         return str(value)
 
     def _filename_sections(self, var=None, **kwargs):
-        """[id, "var=<value>" (if var given), "<key>=<value>" for each other kwarg given] -
+        """[id, "var--<value>" (if var given), "<key>--<value>" for each other kwarg given] -
         the section list shared by `filename` and overridden by subclasses (e.g.
         `_ReferenceComparisonNaming`) that want extra named sections between `var` and the
-        rest. "=" (not "-") separates a section's key from its value - reserving "-" purely
-        for joining a list/tuple value's own items (see `_format_param_value`) means the two
-        never look alike: "quantile=0.1-0.5-0.9" reads unambiguously as key "quantile", a
-        3-item list, whereas "quantile-0.1-0.5-0.9" (both roles sharing "-") would not. A key's
-        own "_" (e.g. from a kwarg named `future_periods`) is rewritten to "-" first - keys are
-        always plain Python identifiers (never containing "-" themselves), so this keeps every
-        section splittable on "_" with no exceptions, at the cost of a multi-word key no longer
-        visually matching its Python spelling.
+        rest. "--" (not "-") separates a section's key from its value - reserving plain "-"
+        purely for joining a list/tuple value's own items (see `_format_param_value`) means
+        the two never look alike: "quantile--0.1-0.5-0.9" reads unambiguously as key
+        "quantile", a 3-item list, whereas "quantile-0.1-0.5-0.9" (both roles sharing a single
+        "-") would not. "--" was chosen over "=" specifically to keep every character in a
+        filename alphanumeric/"-"/"_" - the smallest, most universally filesystem/shell-safe
+        character set - rather than a symbol that can behave oddly in some shells or on some
+        (especially older or networked) filesystems. A key's own "_" (e.g. from a kwarg named
+        `future_periods`) is rewritten to "-" first - keys are always plain Python identifiers
+        (never containing "-" themselves), so this keeps every section splittable on "_" with
+        no exceptions, at the cost of a multi-word key no longer visually matching its Python
+        spelling.
         """
         sections = [self.id]
         if var is not None:
-            sections.append(f"var={self._format_param_value(var)}")
+            sections.append(f"var--{self._format_param_value(var)}")
         for key, value in kwargs.items():
             if value is not None:
-                sections.append(f"{key.replace('_', '-')}={self._format_param_value(value)}")
+                sections.append(f"{key.replace('_', '-')}--{self._format_param_value(value)}")
         return sections
 
     def _detail(self, **kwargs):
@@ -242,15 +246,17 @@ class Diagnostic():
         Sections are joined with "_", which is reserved purely to mark a new section - `id`
         uses "-" as its own word separator instead (e.g. "spatial-bias"), precisely so it
         never contains a "_" that could be mistaken for a section break; every section after
-        `id` is written as "<key>=<value>" (var's key is literally "var") rather than the bare
+        `id` is written as "<key>--<value>" (var's key is literally "var") rather than the bare
         value, with any "_" in a multi-word key name itself rewritten to "-" (see
         `_filename_sections`) so a section's identity doesn't depend on its position AND no
-        section can ever contain a stray "_" of its own. "=" is reserved for the key/value
-        split specifically so it reads differently from "-", which joins a list/tuple value's
-        own items - "quantile=0.1-0.5-0.9" is visibly key "quantile" with a 3-item list, not
-        four dash-separated tokens with no visible boundary. Splitting on "_" and then each
-        non-id piece on its "=" recovers `{"var": ..., <key>: ..., ...}` unambiguously, e.g.
-        "future_periods" comes back as key "future-periods", not "future_periods".
+        section can ever contain a stray "_" of its own. "--" is reserved for the key/value
+        split specifically so it reads differently from the single "-" that joins a list/tuple
+        value's own items - "quantile--0.1-0.5-0.9" is visibly key "quantile" with a 3-item
+        list, not several dash-separated tokens with no visible boundary - while keeping every
+        character alphanumeric/"-"/"_", avoiding a symbol like "=" that can behave oddly in
+        some shells or on some filesystems. Splitting on "_" and then each non-id piece on its
+        "--" recovers `{"var": ..., <key>: ..., ...}` unambiguously, e.g. "future_periods"
+        comes back as key "future-periods", not "future_periods".
 
         Only parameters actually given (not None) produce a section - `filename()` alone (no
         var/kwargs) is just `f"{self.id}.{ext}"`.
@@ -273,7 +279,7 @@ class Diagnostic():
         Returns
         -------
         str
-            e.g. "spatial-bias_var=tas_region=belgium.png".
+            e.g. "spatial-bias_var--tas_region--belgium.png".
         """
         return "_".join(self._filename_sections(var=var, **kwargs)) + f".{ext}"
 
@@ -285,34 +291,51 @@ class Diagnostic():
         """
         return self.short_name or self.name
 
-    def title(self, var=None, **kwargs):
+    @staticmethod
+    def _var_label(var, long_name):
+        """The string to show for the variable in a title: `long_name` if given, else plain
+        `var`, else None. `filename` has no equivalent - it always uses `var` itself (the
+        short CF code), never `long_name`, to keep filenames compact.
+        """
+        return long_name if long_name is not None else var
+
+    def title(self, var=None, long_name=None, **kwargs):
         """Build a readable title for one output of this diagnostic.
 
-        `var`, if given, is folded directly into the sentence as "<name> of <var>" rather than
-        shown as "var=<value>" - it's virtually always given (almost every diagnostic call is
-        per-variable) and reads far more naturally inline than as a parameter. Every other
-        parameter is optional: if given, it's appended as a lightweight "(key=value, ...)"
-        parenthetical, just enough to disambiguate one output from another sharing the same
-        name/var without cluttering the headline - nothing beyond the diagnostic's own name is
-        ever required. Subclasses with a specific calling convention may fold a particular
-        parameter into the sentence too, the same way this does for `var` - see e.g.
-        `_ReferenceComparisonNaming`'s `reference`.
+        The variable, if given, is folded directly into the sentence as "<name> of <var>"
+        rather than shown as "var=<value>" - it's virtually always given (almost every
+        diagnostic call is per-variable) and reads far more naturally inline than as a
+        parameter. Every other parameter is optional: if given, it's appended as a lightweight
+        "(key=value, ...)" parenthetical, just enough to disambiguate one output from another
+        sharing the same name/var without cluttering the headline - nothing beyond the
+        diagnostic's own name is ever required. Subclasses with a specific calling convention
+        may fold a particular parameter into the sentence too, the same way this does for the
+        variable - see e.g. `_ReferenceComparisonNaming`'s `reference`.
 
         Parameters
         ----------
         var : str, optional
-            The variable this output is for, e.g. "tas".
+            The variable this output is for, e.g. "tas" - shown in the sentence unless
+            `long_name` is also given.
+        long_name : str, optional
+            A more readable label for the variable, e.g. "Near-Surface Air Temperature" -
+            valenspy has no variable-name lookup of its own, so this is only ever what the
+            caller passes; give it explicitly wherever a nicer label is wanted than the raw
+            `var` code. When given, it's shown in the sentence in place of `var` - `var` itself
+            is not otherwise referenced by `title` (unlike `filename`, which always uses `var`,
+            never `long_name`, to keep filenames short).
         **kwargs
             Any other parameter worth noting, e.g. `region="belgium"`.
 
         Returns
         -------
         str
-            e.g. "Spatial Bias of tas (region=belgium)", or plain "Spatial Bias" if neither
-            `var` nor any kwarg is given. Uses `short_name` in place of `name` if one was set
-            on this diagnostic (see `Diagnostic.__init__`).
+            e.g. "Spatial Bias of Near-Surface Air Temperature (region=belgium)", or plain
+            "Spatial Bias" if neither the variable nor any kwarg is given. Uses `short_name` in
+            place of `name` if one was set on this diagnostic (see `Diagnostic.__init__`).
         """
-        base = f"{self._title_name} of {self._format_param_value(var)}" if var is not None else self._title_name
+        var_label = self._var_label(var, long_name)
+        base = f"{self._title_name} of {self._format_param_value(var_label)}" if var_label is not None else self._title_name
         return base + self._detail(**kwargs)
 
 class DataSetDiagnostic(Diagnostic):
@@ -514,17 +537,20 @@ class _ReferenceComparisonNaming:
     """
 
     def filename(self, ext="png", var=None, reference=None, **kwargs):
-        """See Diagnostic.filename. `reference`, if given, becomes its own "reference=<value>"
+        """See Diagnostic.filename. `reference`, if given, becomes its own "reference--<value>"
         section, positioned right after `var`'s.
         """
         ordered_kwargs = {"reference": reference, **kwargs}
         return "_".join(self._filename_sections(var=var, **ordered_kwargs)) + f".{ext}"
 
-    def title(self, var=None, reference=None, **kwargs):
-        """See Diagnostic.title. `reference`, if given, extends the sentence as "... compared
-        to <reference>" rather than appearing in the "(key=value, ...)" parenthetical.
+    def title(self, var=None, long_name=None, reference=None, **kwargs):
+        """See Diagnostic.title. `long_name`, if given, is shown in place of `var` in the
+        sentence, same as Diagnostic.title. `reference`, if given, extends the sentence as
+        "... compared to <reference>" rather than appearing in the "(key=value, ...)"
+        parenthetical.
         """
-        base = f"{self._title_name} of {self._format_param_value(var)}" if var is not None else self._title_name
+        var_label = self._var_label(var, long_name)
+        base = f"{self._title_name} of {self._format_param_value(var_label)}" if var_label is not None else self._title_name
         if reference is not None:
             base = f"{base} compared to {self._format_param_value(reference)}"
         return base + self._detail(**kwargs)
