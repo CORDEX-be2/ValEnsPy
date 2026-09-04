@@ -195,59 +195,98 @@ class Diagnostic():
             return "-".join(Diagnostic._format_param_value(v) for v in value)
         return str(value)
 
-    def filename(self, ext="png", **kwargs):
-        """Build a short, information-dense filename for one output of this diagnostic.
+    def _filename_sections(self, var=None, **kwargs):
+        """[id, "var-<value>" (if var given), "<key>-<value>" for each other kwarg given] -
+        the section list shared by `filename` and overridden by subclasses (e.g.
+        `_ReferenceComparisonNaming`) that want extra named sections between `var` and the
+        rest.
+        """
+        sections = [self.id]
+        if var is not None:
+            sections.append(f"var-{self._format_param_value(var)}")
+        for key, value in kwargs.items():
+            if value is not None:
+                sections.append(f"{key}-{self._format_param_value(value)}")
+        return sections
 
-        Combines `self.id` with the given parameters - typically the same call-specific
-        values used to distinguish this particular output from another produced by the same
-        diagnostic (e.g. the variable, or an ensemble/period label), not the diagnostic's own
-        fixed configuration. Only parameters actually given (not None) are included, in the
-        order passed - `filename()` alone (no kwargs) is just `f"{self.id}.{ext}"`.
+    def _detail(self, **kwargs):
+        """" (<key>=<value>, ...)" parenthetical from whichever kwargs are given (not None),
+        or "" if none are - the optional trailing part shared by `title` and its subclass
+        overrides.
+        """
+        given = {k: v for k, v in kwargs.items() if v is not None}
+        if not given:
+            return ""
+        return " (" + ", ".join(f"{k}={self._format_param_value(v)}" for k, v in given.items()) + ")"
+
+    def filename(self, ext="png", var=None, **kwargs):
+        """Build a short, unambiguously-parseable filename for one output of this diagnostic.
+
+        Sections are joined with a double underscore ("__"), never a single one - `self.id`
+        and most parameter values are themselves multi-word and use a single underscore as
+        their own word separator (e.g. id "spatial_bias", a value like "north_sea"), so "__"
+        is reserved purely to mark a new section. Every section after `id` is written as
+        "<key>-<value>" (var's key is literally "var") rather than the bare value, so a
+        section's identity never depends on its position - splitting on "__" and then each
+        piece on its first "-" recovers `{"var": ..., <key>: ..., ...}` unambiguously
+        regardless of how many optional parameters were given, in any order.
+
+        Only parameters actually given (not None) produce a section - `filename()` alone (no
+        var/kwargs) is just `f"{self.id}.{ext}"`.
 
         Parameters
         ----------
         ext : str, optional
             The file extension, without a leading dot. Default "png".
+        var : str, optional
+            The variable this output is for, e.g. "tas". Virtually always given in practice
+            (almost every diagnostic call is per-variable) - kept as its own parameter (rather
+            than just another kwarg) so it always sits in the same section, right after `id`.
         **kwargs
-            Parameters to fold into the filename, e.g. `var="tas", region="belgium"`. A
-            list/tuple value (e.g. `future_periods=["ssp245", "ssp585"]`) is joined with "-".
-            Subclasses with a specific calling convention (e.g. Model2Ref's `reference`) may
-            recognize particular kwargs to structure the filename around them - see the
-            subclass's own `filename` if overridden.
+            Any other parameter distinguishing this particular output from another produced
+            by the same diagnostic, e.g. `region="belgium"`. A list/tuple value (e.g.
+            `future_periods=["ssp245", "ssp585"]`) is joined with "-" - note this means a
+            value must not itself contain "-" if it needs to stay distinguishable from a
+            joined list (true of every value used in practice: variable/region/period names,
+            non-negative quantiles). Subclasses with a specific calling convention (e.g.
+            Model2Ref's `reference`) may add their own named section - see the subclass's own
+            `filename` if overridden.
 
         Returns
         -------
         str
-            A filename of the form "<id>_<value1>_<value2>..._.<ext>", e.g.
-            "spatial_bias_tas.png".
+            e.g. "spatial_bias__var-tas__region-belgium.png".
         """
-        parts = [self.id] + [self._format_param_value(v) for v in kwargs.values() if v is not None]
-        return "_".join(parts) + f".{ext}"
+        return "__".join(self._filename_sections(var=var, **kwargs)) + f".{ext}"
 
-    def title(self, **kwargs):
+    def title(self, var=None, **kwargs):
         """Build a readable title for one output of this diagnostic.
 
-        Combines `self.name` with the given parameters, e.g. `title(var="tas")` ->
-        "Spatial Bias (var=tas)". Only parameters actually given (not None) are included, in
-        the order passed - `title()` alone (no kwargs) is just `self.name`.
+        `var`, if given, is folded directly into the sentence as "<name> of <var>" rather than
+        shown as "var=<value>" - it's virtually always given (almost every diagnostic call is
+        per-variable) and reads far more naturally inline than as a parameter. Every other
+        parameter is optional: if given, it's appended as a lightweight "(key=value, ...)"
+        parenthetical, just enough to disambiguate one output from another sharing the same
+        name/var without cluttering the headline - nothing beyond `self.name` itself is ever
+        required. Subclasses with a specific calling convention may fold a particular
+        parameter into the sentence too, the same way this does for `var` - see e.g.
+        `_ReferenceComparisonNaming`'s `reference`.
 
         Parameters
         ----------
+        var : str, optional
+            The variable this output is for, e.g. "tas".
         **kwargs
-            Same convention as `filename` - e.g. `var="tas", region="belgium"`. Subclasses
-            with a specific calling convention may structure the title differently - see the
-            subclass's own `title` if overridden.
+            Any other parameter worth noting, e.g. `region="belgium"`.
 
         Returns
         -------
         str
-            A title of the form "<name> (<key>=<value>, ...)".
+            e.g. "Spatial Bias of tas (region=belgium)", or plain "Spatial Bias" if neither
+            `var` nor any kwarg is given.
         """
-        given = {k: v for k, v in kwargs.items() if v is not None}
-        if not given:
-            return self.name
-        detail = ", ".join(f"{k}={self._format_param_value(v)}" for k, v in given.items())
-        return f"{self.name} ({detail})"
+        base = f"{self.name} of {self._format_param_value(var)}" if var is not None else self.name
+        return base + self._detail(**kwargs)
 
 class DataSetDiagnostic(Diagnostic):
     """A class representing a diagnostic that operates on the level of single datasets."""
@@ -436,30 +475,28 @@ class Model2Self(DataSetDiagnostic):
 
 class _ReferenceComparisonNaming:
     """Shared filename/title structure for diagnostics comparing data to a reference
-    (Model2Ref, Ensemble2Ref) - puts an optional `reference` kwarg into an explicit
-    "<name> of <params> vs <reference>" comparison shape instead of Diagnostic's generic
-    "(key=value, ...)" list, matching this apply(data, ref) calling convention. `reference` is
-    a plain label (e.g. a dataset name) supplied by the caller for naming purposes only - `ref`
-    itself is a Dataset/DataTree and has no name of its own to fall back on.
+    (Model2Ref, Ensemble2Ref) - folds an optional `reference` kwarg into the same "<name> of
+    <var>" sentence Diagnostic.title builds for `var`, as "<name> of <var> compared to
+    <reference>", matching this apply(data, ref) calling convention. `reference` is a plain
+    label (e.g. a dataset name) supplied by the caller for naming purposes only - `ref` itself
+    is a Dataset/DataTree and has no name of its own to fall back on.
     """
 
-    def filename(self, ext="png", reference=None, **kwargs):
-        """See Diagnostic.filename. `reference`, if given, is appended as "..._vs_<reference>"
-        rather than mixed in among the other parameters.
+    def filename(self, ext="png", var=None, reference=None, **kwargs):
+        """See Diagnostic.filename. `reference`, if given, becomes its own "reference-<value>"
+        section, positioned right after `var`'s.
         """
-        parts = [self.id] + [self._format_param_value(v) for v in kwargs.values() if v is not None]
-        if reference is not None:
-            parts += ["vs", self._format_param_value(reference)]
-        return "_".join(parts) + f".{ext}"
+        ordered_kwargs = {"reference": reference, **kwargs}
+        return "__".join(self._filename_sections(var=var, **ordered_kwargs)) + f".{ext}"
 
-    def title(self, reference=None, **kwargs):
-        """See Diagnostic.title. `reference`, if given, is appended as "... vs <reference>"
-        rather than mixed in among the other parameters.
+    def title(self, var=None, reference=None, **kwargs):
+        """See Diagnostic.title. `reference`, if given, extends the sentence as "... compared
+        to <reference>" rather than appearing in the "(key=value, ...)" parenthetical.
         """
-        given = {k: v for k, v in kwargs.items() if v is not None}
-        detail = ", ".join(self._format_param_value(v) for v in given.values())
-        base = f"{self.name} of {detail}" if detail else self.name
-        return f"{base} vs {reference}" if reference is not None else base
+        base = f"{self.name} of {self._format_param_value(var)}" if var is not None else self.name
+        if reference is not None:
+            base = f"{base} compared to {self._format_param_value(reference)}"
+        return base + self._detail(**kwargs)
 
 class Model2Ref(_ReferenceComparisonNaming, DataSetDiagnostic):
     """A class representing a diagnostic that compares a model to a reference."""
