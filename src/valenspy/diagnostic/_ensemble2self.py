@@ -48,7 +48,8 @@ ClimateChangeSignalPerMember = Ensemble2Self(
     "For each ensemble member individually, its reference-period mean followed by its own "
     "climate change signal (future minus its own reference period) for each future period - "
     "unlike ClimateChangeSignalEnsembleMean, members are kept separate rather than averaged "
-    "together. Call as ClimateChangeSignalPerMember(ref, fut_periods={{label: DataTree, ...}})."
+    "together. Call as ClimateChangeSignalPerMember(dt, historical=\"historical\", "
+    "future_periods=[\"ssp245\", \"ssp585\"])."
 )
 
 ClimatologyPerMember = Ensemble2Self(
@@ -58,5 +59,6 @@ ClimatologyPerMember = Ensemble2Self(
     "For each ensemble member individually, its reference-period mean followed by its own time "
     "mean for each future period (not a change signal - see ClimateChangeSignalPerMember for "
     "that) - unlike Ensemble_Spatial_Mean, members are kept separate rather than averaged "
-    "together. Call as ClimatologyPerMember(ref, fut_periods={{label: DataTree, ...}})."
+    "together. Call as ClimatologyPerMember(dt, historical=\"historical\", "
+    "future_periods=[\"ssp245\", \"ssp585\"])."
 )
