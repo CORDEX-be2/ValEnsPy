@@ -76,6 +76,29 @@ def restructure_by_level(dt: xr.DataTree, level: int):
     }
     return xr.DataTree.from_dict(reorganized_nodes)
 
+def restructure_by_attributes(dt: xr.DataTree, attributes: list):
+    """
+    Restructure a DataTree such that the specified attributes form the new path of the DataTree. The attributes should be specified in the order they should appear in the new path.
+
+    Parameters
+    ----------
+    dt : xr.DataTree
+        The DataTree to restructure.
+    attributes : list
+        A list of attributes to restructure the DataTree by. The attributes should be specified in the order they should appear in the new path.
+
+    Returns
+    -------
+    xr.DataTree
+        A restructured DataTree where the specified attributes form the new path of the DataTree.
+    """
+    reorganized_nodes = {
+        "/".join([str(node.dataset.attrs.get(attr, "None")) for attr in attributes]): node.dataset
+        for path, node in dt.subtree_with_keys
+        if path and (node.dataset is not None) and (not node.children) #Only include leaf nodes with datasets
+    }
+    return xr.DataTree.from_dict(reorganized_nodes)
+
 def datatree_to_dataset(dt: xr.DataTree, **kwargs):
     """
     Convert a DataTree to a xarray Dataset.

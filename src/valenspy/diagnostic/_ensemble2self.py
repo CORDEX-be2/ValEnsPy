@@ -8,7 +8,9 @@ __all__ = [
     "Ensemble_Histogram",
     "Ensemble_Quantile_Spatial_Mean",
     "Ensemble_Quantile_Closest_Member_Spatial_Mean",
-    "Ensemble_Spatial_Mean"
+    "Ensemble_Spatial_Mean",
+    "ClimateChangeSignalPerMember",
+    "ClimatologyPerMember",
     ]
 Ensemble_Histogram = Ensemble2Self(
     ensemble_member_means,
@@ -37,4 +39,24 @@ Ensemble_Spatial_Mean = Ensemble2Self(
     plot_map,
     "Ensemble spatial mean",
     "The spatial mean across the ensemble members.",
+)
+
+ClimateChangeSignalPerMember = Ensemble2Self(
+    climate_change_signal_per_member,
+    plot_reference_future_periods_grid,
+    "Climate change signal per member",
+    "For each ensemble member individually, its reference-period mean followed by its own "
+    "climate change signal (future minus its own reference period) for each future period - "
+    "unlike ClimateChangeSignalEnsembleMean, members are kept separate rather than averaged "
+    "together. Call as ClimateChangeSignalPerMember(ref, fut_periods={{label: DataTree, ...}})."
+)
+
+ClimatologyPerMember = Ensemble2Self(
+    climatology_per_member,
+    plot_reference_future_periods_grid,
+    "Climatology per member",
+    "For each ensemble member individually, its reference-period mean followed by its own time "
+    "mean for each future period (not a change signal - see ClimateChangeSignalPerMember for "
+    "that) - unlike Ensemble_Spatial_Mean, members are kept separate rather than averaged "
+    "together. Call as ClimatologyPerMember(ref, fut_periods={{label: DataTree, ...}})."
 )

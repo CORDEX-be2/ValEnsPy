@@ -640,8 +640,113 @@ def plot_ensemble_mean_map(ds: xr.Dataset, var: str, model_agreement: bool = Fal
         description = "\n".join(textwrap.wrap(description, width=25))
         legends = [Patch(facecolor="none", hatch="////", label=description)]
         ax.legend(handles=legends, loc="lower left", frameon=False, fontsize=7)
-    
+
     return ax
+
+
+def plot_reference_future_periods_grid(result: dict, var: str, label="path", title=None, region=None, shared_cbar=None, shared_cbar_scope="future", projection=None, **kwargs):
+    """
+    Plot climate_change_signal_per_member/climatology_per_member's result as a grid: one row
+    per ensemble member, one column for the reference period followed by one column per
+    future period (in `result["fut"]`'s insertion order).
+
+    Parameters
+    ----------
+    result : dict
+        {"ref": DataTree, "fut": {period label: DataTree}} - the output of
+        climate_change_signal_per_member or climatology_per_member.
+    var : str
+        The variable to plot.
+    label : str, optional
+        The DataTree leaf attribute used for each row's title (shown on every panel in
+        that row, same convention as plot_dt_facetted's `label`). The special value "path"
+        (default) uses the leaf's full DataTree path instead of a single attribute - the
+        more informative default here since climate_change_signal_per_member/
+        climatology_per_member re-key every tree by `identity_attrs`, so a leaf's path
+        already is the joined member identity.
+    title : str, optional
+        If given, set as the whole figure's suptitle.
+    region : str, optional
+        Passed to _add_features for every map's extent/borders.
+    projection : cartopy.crs.Projection, optional
+        The map projection for every subplot's axes. Default ccrs.PlateCarree() - pass e.g. a
+        project-specific projection (data is still plotted via plot_map's own transform, which
+        defaults to PlateCarree independently of this - pass `transform=` in **kwargs to change
+        that too if the data itself isn't in PlateCarree coordinates).
+    shared_cbar : str, optional
+        None, "min_max", or "abs" - see plot_dt_facetted. Passing vmin/vmax directly in
+        **kwargs always overrides this.
+    shared_cbar_scope : str, optional
+        "future" (default): only the future-period columns share a colour scale, computed
+        across them - appropriate for mode="change" results, where the reference period is
+        on a different absolute scale to a climate change signal. "all": the reference
+        column is folded into that same shared scale too - appropriate for mode="absolute"
+        results, where every column is a directly comparable climatology.
+    **kwargs
+        Passed to plot_map for every cell; `figsize` sizes the whole grid (default scales
+        with the number of rows/columns).
+
+    Returns
+    -------
+    np.ndarray
+        2D array of axes, shape (n_members, 1 + n_future_periods).
+    """
+    if shared_cbar_scope not in ("future", "all"):
+        raise ValueError("Invalid shared_cbar_scope provided. Options are 'future' or 'all'.")
+
+    dt_ref = result["ref"]
+    fut_by_period = result["fut"]
+    ref_leaves = [leaf for leaf in dt_ref.leaves if leaf.has_data and var in leaf.ds.data_vars]
+    n_rows, n_cols = len(ref_leaves), 1 + len(fut_by_period)
+
+    figsize = kwargs.pop("figsize", (4 * n_cols, 3 * n_rows))
+    fig, axes = plt.subplots(n_rows, n_cols, subplot_kw={"projection": projection or ccrs.PlateCarree()}, figsize=figsize)
+    axes = np.atleast_2d(axes).reshape(n_rows, n_cols)
+
+    fut_kwargs, ref_kwargs = dict(kwargs), dict(kwargs)
+    if shared_cbar:
+        fut_values = [leaf.ds[var] for dt in fut_by_period.values() for leaf in dt.leaves if leaf.has_data and var in leaf.ds.data_vars]
+        scoped_values = fut_values if shared_cbar_scope == "future" else fut_values + [leaf.ds[var] for leaf in ref_leaves]
+        vmax = float(max(v.max().values for v in scoped_values))
+        vmin = float(min(v.min().values for v in scoped_values))
+        if shared_cbar == "min_max":
+            scale = {"vmin": vmin, "vmax": vmax}
+        elif shared_cbar == "abs":
+            abs_max = max(abs(vmin), abs(vmax))
+            scale = {"vmin": -abs_max, "vmax": abs_max}
+        else:
+            raise ValueError("Invalid shared_cbar provided. Options are None, 'min_max', or 'abs'.")
+        fut_kwargs = _augment_kwargs(scale, **kwargs)
+        if shared_cbar_scope == "all":
+            ref_kwargs = _augment_kwargs(scale, **kwargs)
+
+    def _row_label(leaf):
+        return leaf.path.strip("/") if label == "path" else getattr(leaf, label)
+
+    for row, leaf in enumerate(ref_leaves):
+        plot_map(leaf.ds[var], ax=axes[row, 0], **ref_kwargs)
+        row_label = _row_label(leaf)
+        axes[row, 0].set_title(f"Reference\n{row_label}" if row == 0 else row_label)
+
+    for col, (period_label, dt) in enumerate(fut_by_period.items(), start=1):
+        for row, leaf in enumerate(ref_leaves):
+            try:
+                fut_leaf = dt[leaf.path]
+            except KeyError:
+                fut_leaf = None
+            row_label = _row_label(leaf)
+            cell_title = f"{period_label}\n{row_label}" if row == 0 else row_label
+            if fut_leaf is not None and fut_leaf.has_data and var in fut_leaf.ds.data_vars:
+                plot_map(fut_leaf.ds[var], ax=axes[row, col], **fut_kwargs)
+            axes[row, col].set_title(cell_title)
+
+    for ax in axes.flat:
+        _add_features(ax, region=region)
+
+    if title:
+        fig.suptitle(title)
+    fig.tight_layout()
+    return axes
 
 
 
