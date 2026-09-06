@@ -758,11 +758,13 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
 def _get_gca(**kwargs):
     """
     Get the current axes as the axis passed in the keyword arguments or the current axis.
+
+    Checks the value, not just key presence - a caller that always forwards `ax=ax` (e.g. a
+    function whose own signature defaults `ax=None`) still ends up with an "ax" key even when
+    no axis was actually given, which key-presence alone would wrongly treat as "provided".
     """
-    if "ax" in kwargs:
-        return kwargs["ax"]
-    else:
-        return plt.gca()
+    ax = kwargs.get("ax")
+    return ax if ax is not None else plt.gca()
 
 def _get_axes(n_axes=1, **kwargs):
     """
@@ -770,6 +772,10 @@ def _get_axes(n_axes=1, **kwargs):
 
     If 'axes' is provided in kwargs, return it.
     Otherwise, create a new figure with `n_axes` subplots.
+
+    Checks the value, not just key presence - a caller that always forwards `axes=axes` (e.g.
+    a function whose own signature defaults `axes=None`) still ends up with an "axes" key even
+    when none was actually given, which key-presence alone would wrongly treat as "provided".
 
     Parameters
     ----------
@@ -783,12 +789,10 @@ def _get_axes(n_axes=1, **kwargs):
     np.ndarray
         1D array of matplotlib.axes.Axes
     """
-    if "axes" in kwargs:
-        axes = kwargs["axes"]
-        return np.atleast_1d(axes).ravel()
-    else:
+    axes = kwargs.get("axes")
+    if axes is None:
         _, axes = plt.subplots(n_axes)
-        return np.atleast_1d(axes).ravel()
+    return np.atleast_1d(axes).ravel()
 
 # Define a function to add borders, coastlines to the axes
 def _add_features(ax, region=None):

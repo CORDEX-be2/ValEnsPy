@@ -8,6 +8,7 @@ import numpy as np
 import inspect
 import re
 import textwrap
+from pathlib import Path
 
 #Import get_axis from xarray
 from xarray.plot.utils import get_axis
@@ -87,23 +88,25 @@ class Diagnostic():
         """
         return self.plotting_function(result, **kwargs)
     
-    def plot_dt_single(self, dt, var, ax, label="name", colors=None, **kwargs):
+    def plot_dt_single(self, dt, var, ax=None, label="name", colors=None, subplot_kw=None, **kwargs):
         """
         Plot the diagnostic by iterating over the leaves of a DataTree.
-        
+
         Parameters
         ----------
         dt : DataTree
             The DataTree to plot.
         var : str
             The variable to plot.
-        ax : matplotlib.axis.Axis
-            The axis to plot on.
+        ax : matplotlib.axis.Axis, optional
+            The axis to plot on. If None, a new one is created (using `subplot_kw` if given).
         label : str
             The attribute of the DataTree nodes to use as a title for the plots.
         colors : dict or list
             The colors to use for the different leaves of the DataTree.
             Either a dictionary with the colors as values and the DataTree paths as keys or a list of colors.
+        subplot_kw : dict, optional
+            Passed to `plt.subplots` when `ax` is None. Ignored if `ax` is given.
         **kwargs
             Keyword arguments to pass to the plotting function.
 
@@ -112,6 +115,9 @@ class Diagnostic():
         ax : matplotlib.axis.Axis
             The axis of the plot.
         """
+        if ax is None:
+            _, ax = plt.subplots(subplot_kw=subplot_kw or {})
+
         if colors:
             if isinstance(colors, list):
                 colors = {dt_leave.path: color for dt_leave, color in zip(dt.leaves, colors)}
@@ -125,25 +131,28 @@ class Diagnostic():
 
         return ax
         
-    def plot_dt_facetted(self, dt, var, axes, label="name", shared_cbar=None, **kwargs):
+    def plot_dt_facetted(self, dt, var, axes=None, label="name", shared_cbar=None, subplot_kw=None, **kwargs):
         """
         Plot the diagnostic by iterating over the leaves of a DataTree.
-        
+
         Parameters
         ----------
         dt : DataTree
             The DataTree to plot.
         var : str
             The variable to plot.
-        axes : np.ndarray
-            The axes to plot on.
+        axes : np.ndarray, optional
+            The axes to plot on, one per leaf of `dt`. If None, new ones are created (using
+            `subplot_kw` if given) - one row, one column per leaf.
         label : str
             The attribute of the DataTree nodes to use as a title for the plots.
         shared_cbar : str
             How to handle the vmin and vmax of the plot. Options are None, "min_max", "abs".
-            If None, the vmin and vmax are not automatically set. Passing the vmin and vmax as kwargs will still result in shared colorbars. 
-            If "min_max", the vmin and vmax are set respectively to the minimum and maximum over all the leaves of the DataTree. 
+            If None, the vmin and vmax are not automatically set. Passing the vmin and vmax as kwargs will still result in shared colorbars.
+            If "min_max", the vmin and vmax are set respectively to the minimum and maximum over all the leaves of the DataTree.
             If "abs", the vmin and vmax are set to the maximum of the absolute value of the minimum and maximum over all the leaves of the DataTree.
+        subplot_kw : dict, optional
+            Passed to `plt.subplots` when `axes` is None. Ignored if `axes` is given.
         **kwargs
             Keyword arguments to pass to the plotting function.
 
@@ -152,9 +161,11 @@ class Diagnostic():
         axes : np.ndarray
             The axes of the plot.
         """
-        #Flatten the axes if needed
-        #Add option if axes is not provided to create new axes
         #Check how to deal with shared_cbar (shared vmin and vmas - should this be named differently?) and should the cbar really be shared?
+
+        if axes is None:
+            _, axes = plt.subplots(1, len(list(dt.leaves)), subplot_kw=subplot_kw or {})
+        axes = np.atleast_1d(axes).ravel()
 
         if shared_cbar:
             max = np.max([ds[var].values for ds in dt.max().leaves])
@@ -283,6 +294,91 @@ class Diagnostic():
         var_label = self._var_label(var, long_name)
         base = f"{self._title_name} of {self._format_param_value(var_label)}" if var_label is not None else self._title_name
         return base + self._detail(**kwargs)
+
+    def _plotting_function_wants_var(self):
+        """Whether `plotting_function` itself takes a `var` parameter (e.g.
+        plot_reference_future_periods_grid(result, var, ...)) as opposed to expecting an
+        already-`var`-selected DataArray (e.g. plot_map(da, ...)) - both conventions exist
+        across valenspy's own plotting functions, so `run` checks this rather than guessing.
+        """
+        try:
+            return "var" in inspect.signature(self.plotting_function).parameters
+        except (TypeError, ValueError):
+            return False
+
+    def run(self, data, ref=None, var=None, out_dir=None, ext="png", save_result=None,
+            compute_kwargs=None, plot_kwargs=None, filename_kwargs=None, title_kwargs=None):
+        """Compute this diagnostic's result and plot (+ optionally save) it in one call - the
+        all-in-one convenience form of calling the diagnostic directly and then `plot`/
+        `plot_dt` separately. Purely additive: computing, saving the raw result, and plotting
+        by hand remain fully supported and are exactly what `run` is built from - nothing here
+        requires going through `run`.
+
+        Chaining diagnostics needs no separate object - call an earlier diagnostic directly
+        for its raw result, then `run` the last one on that result:
+
+        >>> intermediate = diagnostic_a(data, ref)
+        >>> result, ax = diagnostic_b.run(intermediate, out_dir="figures")
+
+        Parameters
+        ----------
+        data
+            Passed to the diagnostic - `self(data, ref, **compute_kwargs)` if `ref` is given,
+            else `self(data, **compute_kwargs)`.
+        ref : optional
+            The reference data, for a diagnostic whose `apply` takes one (Model2Ref,
+            Ensemble2Ref). Leave None for one that doesn't.
+        var : str, optional
+            The variable to plot, and passed on to `filename`/`title` for output naming. For a
+            DataTree result, forwarded to `plot_dt` (which requires it). For any other result,
+            forwarded to `plot` only if `plotting_function` itself takes a `var` parameter;
+            otherwise `result[var]` is selected first if `result` is a Dataset containing it.
+        out_dir : str or Path, optional
+            If given, the figure is saved to `out_dir / self.filename(ext=ext, var=var,
+            **filename_kwargs)`, creating any missing parent folders.
+        ext : str, optional
+            Figure file extension. Default "png".
+        save_result : str or Path, optional
+            If given, the raw result is also saved here - `.to_netcdf` for an xarray
+            object, `.to_csv` for a DataFrame (e.g. a table-shaped diagnostic's output).
+        compute_kwargs, plot_kwargs, filename_kwargs, title_kwargs : dict, optional
+            Extra keyword arguments for the compute/plot/filename/title steps respectively -
+            e.g. `title_kwargs={"reference": "ERA5"}` for a Model2Ref/Ensemble2Ref diagnostic
+            (see `_ReferenceComparisonNaming`).
+
+        Returns
+        -------
+        result, ax
+            The diagnostic's result, and the axis (or array of axes) it was plotted on.
+        """
+        compute_kwargs = compute_kwargs or {}
+        plot_kwargs = dict(plot_kwargs or {})
+        filename_kwargs = filename_kwargs or {}
+        title_kwargs = title_kwargs or {}
+
+        result = self(data, ref, **compute_kwargs) if ref is not None else self(data, **compute_kwargs)
+
+        if save_result is not None:
+            _save_result(result, save_result)
+
+        if isinstance(result, DataTree):
+            ax = self.plot_dt(result, var=var, **plot_kwargs)
+        elif var is not None and self._plotting_function_wants_var():
+            ax = self.plot(result, var=var, **plot_kwargs)
+        elif var is not None and isinstance(result, xr.Dataset) and var in result.data_vars:
+            ax = self.plot(result[var], **plot_kwargs)
+        else:
+            ax = self.plot(result, **plot_kwargs)
+
+        fig = np.atleast_1d(ax).ravel()[0].figure
+        fig.suptitle(self.title(var=var, **title_kwargs))
+
+        if out_dir is not None:
+            out_file = Path(out_dir) / self.filename(ext=ext, var=var, **filename_kwargs)
+            out_file.parent.mkdir(parents=True, exist_ok=True)
+            fig.savefig(out_file)
+
+        return result, ax
 
 class DataSetDiagnostic(Diagnostic):
     """A class representing a diagnostic that operates on the level of single datasets."""
@@ -649,3 +745,17 @@ def _initialize_multiaxis_plot(n, subplot_kws={}):
             nrows=n//2+1, ncols=2, figsize=(10, 5 * n), subplot_kw=subplot_kws
         )
     return fig, axes
+
+def _save_result(result, path):
+    """Save a diagnostic result to `path` - `to_netcdf` for an xarray Dataset/DataArray/
+    DataTree, `to_csv` for a DataFrame (e.g. a table-shaped diagnostic's output). Used by
+    `Diagnostic.run`'s `save_result`.
+    """
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if isinstance(result, (xr.Dataset, xr.DataArray, DataTree)):
+        result.to_netcdf(path)
+    elif hasattr(result, "to_csv"):
+        result.to_csv(path)
+    else:
+        raise TypeError(f"Don't know how to save a result of type {type(result).__name__}.")
