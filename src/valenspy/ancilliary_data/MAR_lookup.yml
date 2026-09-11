@@ -70,3 +70,9 @@ prsn:
   raw_standard_name: lwe_thickness_of_snowfall_amount
   raw_long_name: Snow
   raw_units: mm
+
+ps:
+  raw_name: SP
+  raw_standard_name: surface_air_pressure
+  raw_long_name: Surface Pressure
+  raw_units: hPa

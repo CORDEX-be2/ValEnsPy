@@ -232,7 +232,10 @@ def MAR_to_CF(ds: xr.Dataset) -> xr.Dataset:
     """
     ds = ds.rename({'TIME':'time'})
     ds = _fix_noresm2mm_calendar(ds)
-    ds = ds.isel(ZTQLEV=0,ZUVLEV=0)
+    # ZTQLEV/ZUVLEV (near-surface level dims for TTZ/QQZ/RHZ/U2Z/V2Z etc.) aren't present in
+    # every MAR file - a surface-only variable like SP (no vertical level reference at all)
+    # is split into its own file without them, so isel unconditionally on both would raise.
+    ds = ds.isel({dim: 0 for dim in ("ZTQLEV", "ZUVLEV") if dim in ds.dims})
 
     # MAR only provides the wind vector components (U2Z, V2Z), not a scalar
     # wind speed - derive it here so it can go through the same raw_name ->
