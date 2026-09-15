@@ -312,10 +312,18 @@ class Diagnostic():
         all-in-one convenience form of calling the diagnostic directly and then `plot`/
         `plot_dt` separately. Purely additive: computing, saving the raw result, and plotting
         by hand remain fully supported and are exactly what `run` is built from - nothing here
-        requires going through `run`.
+        requires going through `run`. Just `compute, then delegate to render` - see `render`
+        for everything after the compute step (plot/title/save), split out for a caller that
+        wants to compute ONCE and plot several times without recomputing - e.g. a diagnostic
+        whose result already covers every variable, rendered once per variable:
 
-        Chaining diagnostics needs no separate object - call an earlier diagnostic directly
-        for its raw result, then `run` the last one on that result:
+        >>> result = diagnostic(data, ref, **compute_kwargs)   # compute once
+        >>> for var in ("tas", "pr"):
+        ...     diagnostic.render(result, var=var, out_dir="figures")   # no recompute
+
+        Chaining diagnostics needs no separate object either - call an earlier diagnostic
+        directly for its raw result, then `run` (or `render`, if a var-independent stage was
+        already computed once - see above) the last one on that result:
 
         >>> intermediate = diagnostic_a(data, ref)
         >>> result, ax = diagnostic_b.run(intermediate, out_dir="figures")
@@ -328,6 +336,44 @@ class Diagnostic():
         ref : optional
             The reference data, for a diagnostic whose `apply` takes one (Model2Ref,
             Ensemble2Ref). Leave None for one that doesn't.
+        save_result : str or Path, optional
+            If given, the raw result is also saved here via `save` - `.to_netcdf` for an
+            xarray object, `.to_csv` for a DataFrame (e.g. a table-shaped diagnostic's
+            output).
+        compute_kwargs : dict, optional
+            Extra keyword arguments for the compute step.
+        var, out_dir, ext, plot_kwargs, filename_kwargs, title_kwargs
+            See `render` - forwarded to it unchanged.
+
+        Returns
+        -------
+        result, ax
+            The diagnostic's result, and the axis (or array of axes) it was plotted on.
+        """
+        compute_kwargs = compute_kwargs or {}
+        result = self(data, ref, **compute_kwargs) if ref is not None else self(data, **compute_kwargs)
+
+        if save_result is not None:
+            self.save(result, save_result)
+
+        ax = self.render(
+            result, var=var, out_dir=out_dir, ext=ext,
+            plot_kwargs=plot_kwargs, filename_kwargs=filename_kwargs, title_kwargs=title_kwargs,
+        )
+        return result, ax
+
+    def render(self, result, var=None, out_dir=None, ext="png",
+               plot_kwargs=None, filename_kwargs=None, title_kwargs=None):
+        """Plot (+ optionally save) an ALREADY-COMPUTED result - the plot/title/save half of
+        `run`, on its own, for a caller that computed `result` itself (directly, or via a
+        previous `run`/`render` call) and wants to render it without recomputing - see `run`'s
+        own docstring for the "compute once, render per variable" example this exists for.
+
+        Parameters
+        ----------
+        result
+            An already-computed diagnostic result - whatever `self(data, ref, ...)` (or
+            `run`'s own first return value) produces.
         var : str, optional
             The variable to plot, and passed on to `filename`/`title` for output naming. For a
             DataTree result, forwarded to `plot_dt` (which requires it). For any other result,
@@ -338,28 +384,19 @@ class Diagnostic():
             **filename_kwargs)`, creating any missing parent folders.
         ext : str, optional
             Figure file extension. Default "png".
-        save_result : str or Path, optional
-            If given, the raw result is also saved here - `.to_netcdf` for an xarray
-            object, `.to_csv` for a DataFrame (e.g. a table-shaped diagnostic's output).
-        compute_kwargs, plot_kwargs, filename_kwargs, title_kwargs : dict, optional
-            Extra keyword arguments for the compute/plot/filename/title steps respectively -
-            e.g. `title_kwargs={"reference": "ERA5"}` for a Model2Ref/Ensemble2Ref diagnostic
-            (see `_ReferenceComparisonNaming`).
+        plot_kwargs, filename_kwargs, title_kwargs : dict, optional
+            Extra keyword arguments for the plot/filename/title steps respectively - e.g.
+            `title_kwargs={"reference": "ERA5"}` for a Model2Ref/Ensemble2Ref diagnostic (see
+            `_ReferenceComparisonNaming`).
 
         Returns
         -------
-        result, ax
-            The diagnostic's result, and the axis (or array of axes) it was plotted on.
+        ax
+            The axis (or array of axes) `result` was plotted on.
         """
-        compute_kwargs = compute_kwargs or {}
         plot_kwargs = dict(plot_kwargs or {})
         filename_kwargs = filename_kwargs or {}
         title_kwargs = title_kwargs or {}
-
-        result = self(data, ref, **compute_kwargs) if ref is not None else self(data, **compute_kwargs)
-
-        if save_result is not None:
-            _save_result(result, save_result)
 
         if isinstance(result, DataTree):
             ax = self.plot_dt(result, var=var, **plot_kwargs)
@@ -378,7 +415,18 @@ class Diagnostic():
             out_file.parent.mkdir(parents=True, exist_ok=True)
             fig.savefig(out_file)
 
-        return result, ax
+        return ax
+
+    @staticmethod
+    def save(result, path):
+        """Save a diagnostic result to `path` - `.to_netcdf()` for an xarray Dataset/
+        DataArray/DataTree, `.to_csv()` for a DataFrame (e.g. a table-shaped diagnostic's
+        output, one whose `plotting_function` isn't meant to be used at all - only its raw
+        result matters). Creates any missing parent folders. The same helper `run`'s own
+        `save_result=` uses internally, exposed directly for a caller that wants to save a
+        result WITHOUT also plotting it - `run`/`render` always plot; this doesn't.
+        """
+        _save_result(result, path)
 
 class DataSetDiagnostic(Diagnostic):
     """A class representing a diagnostic that operates on the level of single datasets."""
