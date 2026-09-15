@@ -584,6 +584,46 @@ def climatology_per_member(dt: DataTree, historical: str, future_periods: list, 
     }
     return {"ref": ref_matched.map_over_datasets(_average_over_dims, "time"), "fut": fut_result}
 
+def climate_change_signal_ensemble_mean_grid(dt: DataTree, historical: str, future_periods: list,
+                                              model_agreement=False, abs_diff=True,
+                                              identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS):
+    """
+    The reference-period ensemble mean next to the ensemble-mean climate change signal for each
+    future period - the ensemble-mean counterpart to climate_change_signal_per_member (members
+    averaged together here, rather than kept as separate rows). Returns the same {"ref", "fut"}
+    shape climate_change_signal_per_member does, so plot_reference_future_periods_grid renders
+    it unchanged - a 1-member "ref"/"fut" DataTree is just that function's n_rows=1 case.
+
+    Parameters
+    ----------
+    dt : DataTree
+        The full ensemble. Leaves are selected for `historical`/`future_periods` the same way
+        as climate_change_signal_per_member - see there.
+    historical : str
+        The node name identifying the reference/historical period, e.g. "historical".
+    future_periods : list of str
+        The node name(s) identifying each future period, e.g. ["ssp245", "ssp585"]. Each name
+        is also used, unchanged, as that period's label in the returned "fut" dict.
+    model_agreement, abs_diff : optional
+        See climate_change_signal_ensemble_mean.
+    identity_attrs : tuple of str, optional
+        See climate_change_signal_per_member. Default DEFAULT_MEMBER_IDENTITY_ATTRS.
+
+    Returns
+    -------
+    dict
+        {"ref": DataTree (one leaf: the reference-period ensemble mean), "fut": {future period
+        name: DataTree (one leaf: that period's ensemble-mean climate change signal)}}.
+    """
+    ref_matched, fut_periods_matched = _match_members_across_periods(dt, historical, future_periods, identity_attrs)
+    fut_result = {
+        label: DataTree.from_dict({"ensemble_mean": climate_change_signal_ensemble_mean(
+            fut_dt, ref_matched, abs_diff=abs_diff, model_agreement=model_agreement,
+        )})
+        for label, fut_dt in fut_periods_matched.items()
+    }
+    return {"ref": DataTree.from_dict({"ensemble_mean": ensemble_spatial_mean(ref_matched)}), "fut": fut_result}
+
 def _match_members_across_periods(dt: DataTree, historical: str, future_periods: list, identity_attrs):
     """Select the leaves under a node named `historical` (see `_select_period`), and separately
     for each name in `future_periods`, re-key each selection by `identity_attrs` (via
