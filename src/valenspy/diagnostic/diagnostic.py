@@ -1,7 +1,7 @@
 from xarray import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
-from valenspy.processing.mask import add_prudence_regions
+from valenspy.processing.mask import add_prudence_regions, mask_to_reference_coverage, _mask_ds_to_reference_coverage
 from valenspy.diagnostic.plot_utils import _augment_kwargs
 from valenspy._utilities import generate_parameters_doc
 import numpy as np
@@ -615,6 +615,51 @@ class Model2Self(DataSetDiagnostic):
     ):
         """Initialize the Model2Self diagnostic."""
         super().__init__(diagnostic_function, plotting_function, name, description, plot_type, short_name)
+
+    def apply(self, ds: xr.Dataset, *args, mask_to_reference=None, **kwargs):
+        """Apply the diagnostic to a single dataset, optionally masking it first to
+        another dataset's own coverage.
+
+        Parameters
+        ----------
+        mask_to_reference : xr.Dataset, optional
+            If given, `ds` is restricted first to wherever `mask_to_reference` has a
+            valid value anywhere along time (see `mask_to_reference_coverage`'s own
+            docstring) - NOT variable-specific, since this diagnostic itself isn't
+            (e.g. AnnualCycle, applied to every variable a dataset has at once): the
+            restriction is to whichever variables `mask_to_reference` itself has, not
+            one named variable, so this works whether `ds`/`mask_to_reference` carry
+            one variable or several. Must be a Dataset here, not a path - there is no
+            DataTree to resolve a path against when calling on a single Dataset
+            directly; see `apply_dt` for that.
+        """
+        if mask_to_reference is not None:
+            if isinstance(mask_to_reference, str):
+                raise TypeError(
+                    "mask_to_reference as a path is only valid when calling with a "
+                    "DataTree (see apply_dt) - there is no tree to resolve it against here."
+                )
+            ds = _mask_ds_to_reference_coverage(ds, mask_to_reference, dim="time")
+        return super().apply(ds, *args, **kwargs)
+
+    def apply_dt(self, dt: DataTree, *args, mask_to_reference=None, **kwargs):
+        """Apply the diagnostic to a DataTree, optionally masking every leaf first to
+        another dataset's own coverage - see `apply`'s own docstring for what masking
+        does and why it isn't variable-specific.
+
+        Parameters
+        ----------
+        mask_to_reference : xr.Dataset or str, optional
+            A Dataset (see `apply`), or a path naming one of `dt`'s OWN branches (e.g.
+            "observations/CLIMATE_GRID"), resolved via `dt[mask_to_reference].ds`
+            before masking - convenient when the reference is itself one of `dt`'s own
+            branches, rather than an externally supplied Dataset.
+        """
+        if mask_to_reference is not None:
+            if isinstance(mask_to_reference, str):
+                mask_to_reference = dt[mask_to_reference].ds
+            dt = mask_to_reference_coverage(dt, mask_to_reference)
+        return super().apply_dt(dt, *args, **kwargs)
 
 
 class _ReferenceComparisonNaming:
