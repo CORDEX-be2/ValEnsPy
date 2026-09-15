@@ -590,6 +590,37 @@ def plot_map_per_dimension(ds: xr.Dataset, var: str, dim: str, axes=None, shared
 
     return axes
 
+def plot_quantile_map(ds: xr.Dataset, var: str, dim: str = "quantile", **kwargs):
+    """
+    `plot_map_per_dimension`, defaulting `dim` to "quantile" and titling each panel as a
+    percentile of that dimension's values instead of the plain fractional value.
+
+    Parameters
+    ----------
+    ds : xr.Dataset
+        The xarray Dataset containing the data to be plotted - typically the result of a
+        diagnostic like `ensemble_quantile_of_spatial_mean`, whose own quantile dimension is
+        always named "quantile".
+    var : str
+        The name of the variable in the Dataset to be plotted.
+    dim : str, optional
+        The name of the dimension along which to create separate plots for each unique value.
+        Default "quantile". Panels are titled as a percentile only when `dim` is "quantile" -
+        for any other dimension, titles fall back to the plain value.
+    **kwargs : dict
+        Additional keyword arguments passed to `plot_map_per_dimension`.
+
+    Returns
+    -------
+    list of matplotlib.axes.Axes
+        A list of axes objects corresponding to each unique value along `dim`, with the
+        respective maps plotted.
+    """
+    axes = plot_map_per_dimension(ds, var, dim=dim, **kwargs)
+    for ax, value in zip(axes, ds[dim].values):
+        ax.set_title(f"{value * 100:.0f}th percentile" if dim == "quantile" else str(value))
+    return axes
+
 #####################################
 # Ensemble2Ref diagnostic visuals   #
 #####################################

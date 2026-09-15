@@ -22,7 +22,7 @@ Ensemble_Histogram = Ensemble2Self(
 
 Ensemble_Quantile_Spatial_Mean = Ensemble2Self(
     ensemble_quantile_of_spatial_mean,
-    plot_map_per_dimension,
+    plot_quantile_map,
     "Ensemble quantiles of spatial mean",
     "The quantiles accross the ensembles spatial mean."
 )
