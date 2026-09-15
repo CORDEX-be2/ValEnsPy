@@ -2,46 +2,6 @@ import pandas as pd
 import xarray as xr
 from copy import deepcopy
 
-def mask_to_reference_coverage(dt: xr.DataTree, reference: xr.Dataset, dim: str = "time") -> xr.DataTree:
-    """Mask every leaf of `dt` to `reference`'s own coverage: NaN wherever `reference`
-    has NO valid value anywhere along `dim`, at every OTHER coordinate. Useful e.g. for
-    restricting model data to the same spatial extent an observational reference actually
-    covers (so a comparison isn't biased by grid cells - like ocean pixels for a
-    land-only observational dataset - the reference never has real data for), with
-    `dim="time"` (the default) checking "ever valid at any timestep" rather than
-    requiring validity at every timestep.
-
-    Parameters
-    ----------
-    dt : xr.DataTree
-        The data to mask - every leaf is restricted independently, against the SAME
-        `reference` coverage.
-    reference : xr.Dataset
-        The reference dataset defining "valid coverage" - `reference.notnull().any(dim=
-        dim)` gives the mask (True wherever `reference` has at least one valid value
-        along `dim`), applied to every leaf of `dt` via `.where(...)`. Typically already
-        restricted to the same variable(s) as `dt`, so coverage reflects only what's
-        actually being compared.
-    dim : str, optional
-        The dimension to reduce over when checking coverage - "does `reference` have a
-        valid value anywhere along this dimension". Default "time" (mask by spatial
-        extent, checking temporal validity); pass e.g. `dim=["lat", "lon"]` instead to
-        mask by TEMPORAL coverage (checking spatial validity) if that's what's needed.
-
-    Returns
-    -------
-    xr.DataTree
-        `dt`, masked to `reference`'s own coverage.
-    """
-    coverage = reference.notnull().any(dim=dim)
-
-    def _mask(ds):
-        if not ds:  # Empty leaf placeholder - nothing to mask.
-            return ds
-        return ds.where(coverage)
-
-    return dt.map_over_datasets(_mask)
-
 def split_by_level(dt: xr.DataTree, level: int):
     """
     Split a DataTree into multiple DataTrees based on the unique values at a given level in the node paths.
