@@ -308,25 +308,14 @@ class Diagnostic():
 
     def run(self, data, ref=None, var=None, out_dir=None, ext="png", save_result=None,
             compute_kwargs=None, plot_kwargs=None, filename_kwargs=None, title_kwargs=None):
-        """Compute this diagnostic's result and plot (+ optionally save) it in one call - the
-        all-in-one convenience form of calling the diagnostic directly and then `plot`/
-        `plot_dt` separately. Purely additive: computing, saving the raw result, and plotting
-        by hand remain fully supported and are exactly what `run` is built from - nothing here
-        requires going through `run`. Just `compute, then delegate to render` - see `render`
-        for everything after the compute step (plot/title/save), split out for a caller that
-        wants to compute ONCE and plot several times without recomputing - e.g. a diagnostic
-        whose result already covers every variable, rendered once per variable:
+        """Compute this diagnostic's result and plot (+ optionally save) it in one call.
 
-        >>> result = diagnostic(data, ref, **compute_kwargs)   # compute once
-        >>> for var in ("tas", "pr"):
-        ...     diagnostic.render(result, var=var, out_dir="figures")   # no recompute
-
-        Chaining diagnostics needs no separate object either - call an earlier diagnostic
-        directly for its raw result, then `run` (or `render`, if a var-independent stage was
-        already computed once - see above) the last one on that result:
-
-        >>> intermediate = diagnostic_a(data, ref)
-        >>> result, ax = diagnostic_b.run(intermediate, out_dir="figures")
+        The all-in-one convenience form of calling the diagnostic directly and then `plot`/
+        `plot_dt` separately - computing, saving the raw result, and plotting by hand remain
+        fully supported, and are exactly what `run` is built from: compute, then delegate to
+        `render` for everything after (plot/title/save). Use `render` directly instead when a
+        var-independent result should be computed once and rendered several times without
+        recomputing - see its own Examples.
 
         Parameters
         ----------
@@ -349,6 +338,11 @@ class Diagnostic():
         -------
         result, ax
             The diagnostic's result, and the axis (or array of axes) it was plotted on.
+
+        Examples
+        --------
+        >>> intermediate = diagnostic_a(data, ref)
+        >>> result, ax = diagnostic_b.run(intermediate, out_dir="figures")
         """
         compute_kwargs = compute_kwargs or {}
         result = self(data, ref, **compute_kwargs) if ref is not None else self(data, **compute_kwargs)
@@ -364,10 +358,11 @@ class Diagnostic():
 
     def render(self, result, var=None, out_dir=None, ext="png",
                plot_kwargs=None, filename_kwargs=None, title_kwargs=None):
-        """Plot (+ optionally save) an ALREADY-COMPUTED result - the plot/title/save half of
-        `run`, on its own, for a caller that computed `result` itself (directly, or via a
-        previous `run`/`render` call) and wants to render it without recomputing - see `run`'s
-        own docstring for the "compute once, render per variable" example this exists for.
+        """Plot (+ optionally save) an already-computed result.
+
+        The plot/title/save half of `run`, on its own, for a caller that computed `result`
+        itself (directly, or via a previous `run`/`render` call) and wants to render it again
+        without recomputing - e.g. a var-independent result rendered once per variable.
 
         Parameters
         ----------
@@ -393,6 +388,12 @@ class Diagnostic():
         -------
         ax
             The axis (or array of axes) `result` was plotted on.
+
+        Examples
+        --------
+        >>> result = diagnostic(data, ref, **compute_kwargs)   # compute once
+        >>> for var in ("tas", "pr"):
+        ...     diagnostic.render(result, var=var, out_dir="figures")   # no recompute
         """
         plot_kwargs = dict(plot_kwargs or {})
         filename_kwargs = filename_kwargs or {}
@@ -419,12 +420,20 @@ class Diagnostic():
 
     @staticmethod
     def save(result, path):
-        """Save a diagnostic result to `path` - `.to_netcdf()` for an xarray Dataset/
-        DataArray/DataTree, `.to_csv()` for a DataFrame (e.g. a table-shaped diagnostic's
-        output, one whose `plotting_function` isn't meant to be used at all - only its raw
-        result matters). Creates any missing parent folders. The same helper `run`'s own
-        `save_result=` uses internally, exposed directly for a caller that wants to save a
-        result WITHOUT also plotting it - `run`/`render` always plot; this doesn't.
+        """Save a diagnostic result to disk, without plotting it.
+
+        The same helper `run`'s own `save_result=` uses internally, exposed directly for a
+        caller that wants to save a result on its own - `run`/`render` always plot; this
+        doesn't.
+
+        Parameters
+        ----------
+        result
+            An already-computed diagnostic result. `.to_netcdf()` for an xarray Dataset/
+            DataArray/DataTree, `.to_csv()` for a DataFrame (e.g. a table-shaped diagnostic's
+            output, one whose `plotting_function` isn't meant to be used at all).
+        path : str or Path
+            Where to save `result`. Any missing parent folders are created.
         """
         _save_result(result, path)
 
