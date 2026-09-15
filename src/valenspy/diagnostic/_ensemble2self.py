@@ -11,6 +11,7 @@ __all__ = [
     "Ensemble_Spatial_Mean",
     "ClimateChangeSignalPerMember",
     "ClimatologyPerMember",
+    "ClimateChangeSignalEnsembleMeanGrid",
     ]
 Ensemble_Histogram = Ensemble2Self(
     ensemble_member_means,
@@ -60,5 +61,16 @@ ClimatologyPerMember = Ensemble2Self(
     "mean for each future period (not a change signal - see ClimateChangeSignalPerMember for "
     "that) - unlike Ensemble_Spatial_Mean, members are kept separate rather than averaged "
     "together. Call as ClimatologyPerMember(dt, historical=\"historical\", "
+    "future_periods=[\"ssp245\", \"ssp585\"])."
+)
+
+ClimateChangeSignalEnsembleMeanGrid = Ensemble2Self(
+    climate_change_signal_ensemble_mean_grid,
+    plot_reference_future_periods_grid,
+    "Climate change signal of the ensemble mean",
+    "The reference-period ensemble mean next to the ensemble-mean climate change signal for "
+    "each future period - the ensemble-mean counterpart to ClimateChangeSignalPerMember "
+    "(members averaged together here, rather than kept as separate rows). Call as "
+    "ClimateChangeSignalEnsembleMeanGrid(dt, historical=\"historical\", "
     "future_periods=[\"ssp245\", \"ssp585\"])."
 )
