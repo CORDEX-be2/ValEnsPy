@@ -82,10 +82,10 @@ def _convert_all_units_to_CF(ds: xr.Dataset, raw_LOOKUP, metadata_info: dict):
             # cftime objects aren't convertible to datetime) and cftime is already a
             # valid datetime-like index for xarray's own purposes, so there's nothing
             # to convert. Forcing it to pandas Timestamps would also be lossy: a
-            # genuinely non-standard calendar (e.g. this project's MAR/NorESM2-MM
-            # data - see MAR_to_CF's _fix_noresm2mm_calendar) can't be represented as
-            # datetime64 without losing the calendar information that makes its
-            # frequency correctly inferrable downstream (e.g. by xclim).
+            # genuinely non-standard calendar (e.g. this project's MAR/NorESM2-MM and
+            # MAR/CMCC-CM2-SR5 data - see MAR_to_CF's _fix_mar_batch_calendar) can't
+            # be represented as datetime64 without losing the calendar information
+            # that makes its frequency correctly inferrable downstream (e.g. by xclim).
             time_values = np.asarray(ds[var]["time"].values)
             if not (time_values.size and isinstance(time_values.flat[0], cftime.datetime)):
                 ds[var]["time"] = pd.to_datetime(ds[var].time)

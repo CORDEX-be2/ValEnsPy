@@ -583,8 +583,13 @@ def plot_map_per_dimension(ds: xr.Dataset, var: str, dim: str, axes=None, shared
         elif shared_cbar == "abs":
             abs_max = np.max([np.abs(min), np.abs(max)])
             kwargs = _augment_kwargs({"vmin": -abs_max, "vmax": abs_max}, **kwargs)
-    
-    axes = _get_axes(n_axes=len(unique_values), axes=axes, **kwargs)
+
+    # subplot_kw (e.g. {"projection": ...}) is only meaningful for creating new axes,
+    # not for the per-panel plot_map call below - forwarding it there too crashes
+    # matplotlib ("QuadMesh.set() got an unexpected keyword argument 'subplot_kw'"),
+    # since by that point the axes already exist.
+    subplot_kw = kwargs.pop("subplot_kw", None)
+    axes = _get_axes(n_axes=len(unique_values), axes=axes, subplot_kw=subplot_kw, **kwargs)
     for i, value in enumerate(unique_values):
         plot_map(ds[var].sel({dim: value}), ax=axes[i], **kwargs)
 
@@ -797,12 +802,13 @@ def _get_gca(**kwargs):
     ax = kwargs.get("ax")
     return ax if ax is not None else plt.gca()
 
-def _get_axes(n_axes=1, **kwargs):
+def _get_axes(n_axes=1, subplot_kw=None, **kwargs):
     """
     Get axes for a multi-axes plot.
 
     If 'axes' is provided in kwargs, return it.
-    Otherwise, create a new figure with `n_axes` subplots.
+    Otherwise, create a new figure with `n_axes` subplots, using `subplot_kw` if given
+    (e.g. `{"projection": ccrs.PlateCarree()}` for map axes).
 
     Checks the value, not just key presence - a caller that always forwards `axes=axes` (e.g.
     a function whose own signature defaults `axes=None`) still ends up with an "axes" key even
@@ -812,6 +818,8 @@ def _get_axes(n_axes=1, **kwargs):
     ----------
     n_axes : int, default=1
         Number of axes to create if none are provided.
+    subplot_kw : dict, optional
+        Passed to `plt.subplots` when creating new axes (ignored if 'axes' is provided).
     **kwargs
         May contain 'axes'.
 
@@ -822,7 +830,7 @@ def _get_axes(n_axes=1, **kwargs):
     """
     axes = kwargs.get("axes")
     if axes is None:
-        _, axes = plt.subplots(n_axes)
+        _, axes = plt.subplots(n_axes, subplot_kw=subplot_kw)
     return np.atleast_1d(axes).ravel()
 
 # Define a function to add borders, coastlines to the axes
