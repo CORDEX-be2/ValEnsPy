@@ -2,7 +2,7 @@ from xarray import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions, mask_to_reference_coverage, _mask_ds_to_reference_coverage
-from valenspy.diagnostic.plot_utils import _augment_kwargs
+from valenspy.diagnostic.plot_utils import _augment_kwargs, cbar_scale
 from valenspy._utilities import generate_parameters_doc
 from valenspy._utilities._datatree import datatree_var_range
 import numpy as np
@@ -172,13 +172,7 @@ class Diagnostic():
 
         if shared_cbar:
             vmin, vmax = datatree_var_range(dt, var)
-            if shared_cbar == "min_max":
-                kwargs = _augment_kwargs({"vmin": vmin, "vmax": vmax}, **kwargs)
-            elif shared_cbar == "abs":
-                abs_max = max(abs(vmin), abs(vmax))
-                kwargs = _augment_kwargs({"vmin": -abs_max, "vmax": abs_max}, **kwargs)
-            else:
-                raise ValueError("Invalid shared_cbar provided. Options are None, 'min_max', or 'abs'.")
+            kwargs = _augment_kwargs(cbar_scale(vmin, vmax, shared_cbar), **kwargs)
             kwargs["add_colorbar"] = False  # one shared colorbar is added below instead
 
         mesh = None

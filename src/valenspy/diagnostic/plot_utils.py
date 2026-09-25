@@ -3,6 +3,30 @@ from functools import wraps
 def _merge_kwargs(def_kwargs, kwargs):
     return {**def_kwargs, **kwargs}
 
+def cbar_scale(vmin, vmax, kind):
+    """{"vmin": ..., "vmax": ...} for a shared colorbar - the vmin/vmax -> plot kwargs
+    conversion behind every `shared_cbar` option in this package.
+
+    Parameters
+    ----------
+    vmin, vmax : float
+        The data's own range.
+    kind : str
+        "min_max": `vmin`/`vmax` as given. "abs": a symmetric range around 0, sized to
+        whichever of `vmin`/`vmax` has the larger absolute value.
+
+    Returns
+    -------
+    dict
+        {"vmin": ..., "vmax": ...}
+    """
+    if kind == "min_max":
+        return {"vmin": vmin, "vmax": vmax}
+    elif kind == "abs":
+        abs_max = max(abs(vmin), abs(vmax))
+        return {"vmin": -abs_max, "vmax": abs_max}
+    raise ValueError(f"Invalid cbar kind {kind!r}. Options are 'min_max' or 'abs'.")
+
 def _augment_kwargs(def_kwargs, **kwargs):
     """
     Augment the user provided keyword arguments with the default plot keyword arguments, subplot keyword arguments and colorbar keyword arguments.

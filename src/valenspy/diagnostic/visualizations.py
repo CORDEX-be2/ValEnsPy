@@ -6,7 +6,7 @@ import warnings
 from valenspy._utilities._regions import region_bounds
 from valenspy._utilities._datatree import datatree_var_range
 from valenspy.diagnostic.functions import perkins_skill_score
-from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs
+from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs, cbar_scale
 
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
@@ -577,13 +577,8 @@ def plot_map_per_dimension(ds: xr.Dataset, var: str, dim: str, axes=None, shared
     unique_values = ds[dim].values
 
     if shared_cbar:
-        max = ds[var].max().values
-        min = ds[var].min().values
-        if shared_cbar == "min_max":
-            kwargs = _augment_kwargs({"vmin": min, "vmax": max}, **kwargs)
-        elif shared_cbar == "abs":
-            abs_max = np.max([np.abs(min), np.abs(max)])
-            kwargs = _augment_kwargs({"vmin": -abs_max, "vmax": abs_max}, **kwargs)
+        vmin, vmax = float(ds[var].min().values), float(ds[var].max().values)
+        kwargs = _augment_kwargs(cbar_scale(vmin, vmax, shared_cbar), **kwargs)
 
     # subplot_kw (e.g. {"projection": ...}) is only meaningful for creating new axes,
     # not for the per-panel plot_map call below - forwarding it there too crashes
@@ -743,22 +738,14 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         for col in range(n_cols):
             axes[row, col] = fig.add_subplot(gs[row, col + 1], projection=projection or ccrs.PlateCarree())
 
-    def _scale(dts, kind):
-        vmin, vmax = datatree_var_range(dts, var)
-        if kind == "min_max":
-            return {"vmin": vmin, "vmax": vmax}
-        elif kind == "abs":
-            abs_max = max(abs(vmin), abs(vmax))
-            return {"vmin": -abs_max, "vmax": abs_max}
-        raise ValueError(f"Invalid cbar type {kind!r}. Options are None, 'min_max', or 'abs'.")
-
     fut_kwargs, ref_kwargs = dict(kwargs), dict(kwargs)
     if ref_cbar:
-        ref_kwargs = _augment_kwargs(_scale(dt_ref, ref_cbar), **ref_kwargs)
+        ref_kwargs = _augment_kwargs(cbar_scale(*datatree_var_range(dt_ref, var), ref_cbar), **ref_kwargs)
         ref_kwargs.pop("cbar_kwargs", None)
         ref_kwargs["add_colorbar"] = False  # one shared colorbar for the group is added below
     if fut_cbar:
-        fut_kwargs = _augment_kwargs(_scale(list(fut_by_period.values()), fut_cbar), **fut_kwargs)
+        fut_range = datatree_var_range(list(fut_by_period.values()), var)
+        fut_kwargs = _augment_kwargs(cbar_scale(*fut_range, fut_cbar), **fut_kwargs)
         fut_kwargs.pop("cbar_kwargs", None)
         fut_kwargs["add_colorbar"] = False
 
