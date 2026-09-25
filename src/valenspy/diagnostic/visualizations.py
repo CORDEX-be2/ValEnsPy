@@ -678,7 +678,7 @@ def plot_ensemble_mean_map(ds: xr.Dataset, var: str, model_agreement: bool = Fal
 
 def plot_reference_future_periods_grid(result: dict, var: str, label="path", title=None, region=None, projection=None,
                                         ref_cbar=None, fut_cbar=None, ref_cbar_kwargs=None, fut_cbar_kwargs=None,
-                                        cbar_location="bottom", **kwargs):
+                                        cbar_location="bottom", ref_cmap=None, fut_cmap=None, **kwargs):
     """
     Plot climate_change_signal_per_member/climatology_per_member's result as a grid: one row
     per member, one column for the reference period then one per future period.
@@ -709,6 +709,12 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
     cbar_location : str, optional
         Where a group's shared colorbar is placed relative to its panels - "bottom" (default,
         spans just that group's own width), "left"/"right"/"top".
+    ref_cmap, fut_cmap : str or Colormap, optional
+        Override `cmap` (see **kwargs) independently for the reference column's and the future
+        columns' panels - e.g. a sequential colormap for the reference (absolute values) and a
+        diverging one for the future columns (a change signal). None (default) for a group:
+        falls back to whatever `cmap` is passed via **kwargs, same for both groups (unchanged
+        behaviour from before these parameters existed).
     **kwargs
         Passed to plot_map for every cell; `figsize` sizes the whole grid. `label_col_width`
         (default 1.2, inches) sets the row-label column's width.
@@ -739,6 +745,10 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
             axes[row, col] = fig.add_subplot(gs[row, col + 1], projection=projection or ccrs.PlateCarree())
 
     fut_kwargs, ref_kwargs = dict(kwargs), dict(kwargs)
+    if ref_cmap is not None:
+        ref_kwargs["cmap"] = ref_cmap
+    if fut_cmap is not None:
+        fut_kwargs["cmap"] = fut_cmap
     if ref_cbar:
         ref_kwargs = _augment_kwargs(cbar_scale(*datatree_var_range(dt_ref, var), ref_cbar), **ref_kwargs)
         ref_kwargs.pop("cbar_kwargs", None)
