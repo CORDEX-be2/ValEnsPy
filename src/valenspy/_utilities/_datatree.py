@@ -52,11 +52,9 @@ def datatree_var_range(dts: xr.DataTree | list, var: str) -> tuple:
     leaves = [leaf.ds[var] for dt in dts for leaf in dt.leaves if leaf.has_data and var in leaf.ds.data_vars]
     if not leaves:
         raise ValueError(f"No leaf has data for variable {var!r}.")
-    # Reduce each leaf to a scalar before combining - leaves can sit on different native
-    # grids, so concatenating the raw arrays directly is not shape-safe.
-    mins = xr.concat([da.min() for da in leaves], dim="_leaf")
-    maxs = xr.concat([da.max() for da in leaves], dim="_leaf")
-    return float(mins.min()), float(maxs.max())
+    # Each leaf reduced independently first - leaves can have different grids/coordinates,
+    # so concatenating them isn't safe.
+    return float(min(da.min() for da in leaves)), float(max(da.max() for da in leaves))
 
 def split_by_level(dt: xr.DataTree, level: int):
     """
