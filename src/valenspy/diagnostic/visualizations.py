@@ -683,57 +683,36 @@ def plot_ensemble_mean_map(ds: xr.Dataset, var: str, model_agreement: bool = Fal
 def plot_reference_future_periods_grid(result: dict, var: str, label="path", title=None, region=None, shared_cbar=None, shared_cbar_scope="future", projection=None, **kwargs):
     """
     Plot climate_change_signal_per_member/climatology_per_member's result as a grid: one row
-    per ensemble member, one column for the reference period followed by one column per
-    future period (in `result["fut"]`'s insertion order).
+    per member, one column for the reference period then one per future period.
 
     Parameters
     ----------
     result : dict
-        {"ref": DataTree, "fut": {future period key: DataTree}} - the output of
-        climate_change_signal_per_member or climatology_per_member.
+        {"ref": DataTree, "fut": {future period key: DataTree}}.
     var : str
         The variable to plot.
     label : str, optional
-        The DataTree leaf attribute used for each row's label (shown once, to the left of the
-        row, rather than repeated on every one of that row's panels). The special value "path"
-        (default) uses the leaf's full DataTree path instead of a single attribute - the
-        more informative default here since climate_change_signal_per_member/
-        climatology_per_member re-key every tree by `identity_attrs`, so a leaf's path
-        already is the joined member identity.
+        DataTree leaf attribute used for each row's label, shown once per row in a dedicated
+        left-hand column. "path" (default) uses the leaf's full path.
     title : str, optional
-        If given, set as the whole figure's suptitle - wrapped to the figure's width and
-        placed above the column headers, since a generated title (e.g. from Diagnostic.title)
-        can be long.
+        If given, wrapped and set as the figure's suptitle.
     region : str, optional
         Passed to _add_features for every map's extent/borders.
     projection : cartopy.crs.Projection, optional
-        The map projection for every subplot's axes. Default ccrs.PlateCarree() - pass e.g. a
-        project-specific projection (data is still plotted via plot_map's own transform, which
-        defaults to PlateCarree independently of this - pass `transform=` in **kwargs to change
-        that too if the data itself isn't in PlateCarree coordinates).
+        Projection for every subplot's axes. Default ccrs.PlateCarree().
     shared_cbar : str, optional
-        None, "min_max", or "abs" - see plot_dt_facetted. Passing vmin/vmax directly in
-        **kwargs always overrides this. When given, the reference column and the future
-        columns each get ONE shared colorbar for their group (see shared_cbar_scope) instead
-        of one per panel - meaningful only because every panel in a group is then actually on
-        the same scale. Left as None, each panel keeps its own independently-scaled colorbar
-        (the previous default), since a single shared bar would misrepresent panels that
-        don't actually share a scale.
+        None, "min_max", or "abs" - see plot_dt_facetted. When given, the reference column and
+        the future columns each get one shared colorbar for their group instead of one per
+        panel. None (default): each panel keeps its own independently-scaled colorbar.
     shared_cbar_scope : str, optional
-        Only affects what the reference column's shared scale is computed from - the
-        reference column always gets its own single shared colorbar when `shared_cbar` is
-        given, regardless of this setting. "future" (default): the reference scale is
-        computed from the reference panels alone, independent of the future columns'
-        scale - appropriate for mode="change" results, where the reference period is on a
-        different absolute footing to a climate change signal. "all": the reference column
-        instead shares the exact same scale as the future columns - appropriate for
-        mode="absolute" results, where every column is a directly comparable climatology.
+        "future" (default): the reference column's shared scale is computed from the
+        reference panels alone. "all": it instead uses the same scale as the future columns.
+        Either way the reference column always gets one shared colorbar when `shared_cbar` is
+        given.
     **kwargs
-        Passed to plot_map for every cell; `figsize` sizes the whole grid (default scales
-        with the number of rows/columns). `label_col_width` (default 1.2) is the width, in
-        inches, of the dedicated column row labels are drawn in - widen it for very long
-        labels. `cbar_kwargs` (e.g. `{"shrink": 0.8}`) is passed to the shared colorbar(s)
-        instead of to each panel when `shared_cbar` is given.
+        Passed to plot_map for every cell; `figsize` sizes the whole grid. `label_col_width`
+        (default 1.2, inches) sets the row-label column's width. `cbar_kwargs` goes to the
+        shared colorbar(s) instead of to each panel when `shared_cbar` is given.
 
     Returns
     -------
@@ -750,13 +729,9 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
 
     figsize = kwargs.pop("figsize", (4 * n_cols, 3 * n_rows))
     label_col_width = kwargs.pop("label_col_width", 1.2)
-    # constrained_layout (rather than a manual tight_layout/rect) reserves space for the
-    # suptitle and the colorbars added below automatically, since both are real, layout-aware
-    # artists it already knows how to account for - no hand-tuned margins needed. Row labels
-    # need their own dedicated plain (non-cartopy) axes column rather than e.g. a GeoAxes
-    # ylabel - cartopy's GeoAxes silently drops ylabel text entirely (confirmed: the Text
-    # artist reports itself visible, with the right content, but nothing is actually drawn),
-    # and a loose fig.text call has no width for constrained_layout to reserve room for.
+    # Row labels get their own plain (non-cartopy) axes column - GeoAxes doesn't render
+    # ylabels. constrained_layout then sizes everything (labels, suptitle, colorbars)
+    # automatically.
     fig = plt.figure(figsize=(figsize[0] + label_col_width, figsize[1]), layout="constrained")
     gs = fig.add_gridspec(n_rows, n_cols + 1, width_ratios=[label_col_width] + [1] * n_cols)
     label_axes = [fig.add_subplot(gs[row, 0]) for row in range(n_rows)]
@@ -784,26 +759,16 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         fut_values = [leaf.ds[var] for dt in fut_by_period.values() for leaf in dt.leaves if leaf.has_data and var in leaf.ds.data_vars]
         ref_values = [leaf.ds[var] for leaf in ref_leaves]
         fut_scale = _scale(fut_values)
-        # "all": reference shares future's own scale, directly comparable (e.g. a plain
-        # climatology, where every column is on the same absolute footing). "future": the
-        # reference is computed on its OWN scale instead of future's - still shared across
-        # every reference panel (so one colorbar for the whole column is still meaningful),
-        # just not forced to match a climate-change signal's very different numeric range.
         ref_scale = fut_scale if shared_cbar_scope == "all" else _scale(ref_values)
         fut_kwargs = _augment_kwargs(fut_scale, **fut_kwargs)
         ref_kwargs = _augment_kwargs(ref_scale, **ref_kwargs)
-        # Every panel's own colorbar is suppressed - one shared colorbar per group is added
-        # below instead, built from whichever panel's mesh was plotted last in that group
-        # (every panel in the group is on the same scale, so any one of them will do).
+        # Per-panel colorbars are suppressed; one shared colorbar per group is added below.
         ref_kwargs["add_colorbar"] = False
         fut_kwargs["add_colorbar"] = False
 
     def _row_label(leaf):
-        # "/"-joined path segments (the default "path" case) are wrapped onto one line per
-        # segment explicitly - matplotlib's own `wrap=True` only breaks on whitespace, so a
-        # single long "/"-separated token (no spaces) would otherwise never wrap at all and
-        # just overflow the label column. Any other single-attribute label falls back to
-        # plain word-wrapping.
+        # Split explicitly on "/" for path labels - matplotlib's wrap=True only breaks on
+        # whitespace, which a path has none of.
         raw = leaf.path.strip("/") if label == "path" else str(getattr(leaf, label))
         return "\n".join(raw.split("/")) if label == "path" else "\n".join(textwrap.wrap(raw, width=14))
 
@@ -812,8 +777,6 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         plot_map(leaf.ds[var], ax=axes[row, 0], **ref_kwargs)
         if axes[row, 0].collections:
             ref_mesh = axes[row, 0].collections[-1]
-        # One label per row, in its own dedicated axes - not repeated on every one of that
-        # row's panel titles.
         label_axes[row].text(1.0, 0.5, _row_label(leaf), ha="right", va="center", fontsize=8)
     axes[0, 0].set_title("Reference")
 
@@ -839,8 +802,6 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         fig.colorbar(fut_mesh, ax=list(axes[:, 1:].flat), location="right", **grouped_cbar_kwargs)
 
     if title:
-        # Wrapped since a generated title (e.g. from Diagnostic.title) can be long -
-        # constrained_layout reserves whatever vertical room the wrapped text ends up needing.
         wrapped_title = "\n".join(textwrap.wrap(title, width=max(30, 14 * n_cols)))
         fig.suptitle(wrapped_title, fontsize=11)
 
