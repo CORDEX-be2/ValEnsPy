@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions, mask_to_reference_coverage, _mask_ds_to_reference_coverage
 from valenspy.diagnostic.plot_utils import _augment_kwargs
 from valenspy._utilities import generate_parameters_doc
+from valenspy._utilities._datatree import datatree_var_range
 import numpy as np
 import inspect
 import re
@@ -131,9 +132,10 @@ class Diagnostic():
 
         return ax
         
-    def plot_dt_facetted(self, dt, var, axes=None, label="name", shared_cbar=None, subplot_kw=None, **kwargs):
+    def plot_dt_facetted(self, dt, var, axes=None, label="name", shared_cbar=None, cbar_kwargs=None,
+                         cbar_location="bottom", subplot_kw=None, **kwargs):
         """
-        Plot the diagnostic by iterating over the leaves of a DataTree.
+        Plot the diagnostic by iterating over the leaves of a DataTree, one panel per leaf.
 
         Parameters
         ----------
@@ -146,11 +148,14 @@ class Diagnostic():
             `subplot_kw` if given) - one row, one column per leaf.
         label : str
             The attribute of the DataTree nodes to use as a title for the plots.
-        shared_cbar : str
-            How to handle the vmin and vmax of the plot. Options are None, "min_max", "abs".
-            If None, the vmin and vmax are not automatically set. Passing the vmin and vmax as kwargs will still result in shared colorbars.
-            If "min_max", the vmin and vmax are set respectively to the minimum and maximum over all the leaves of the DataTree.
-            If "abs", the vmin and vmax are set to the maximum of the absolute value of the minimum and maximum over all the leaves of the DataTree.
+        shared_cbar : str, optional
+            None, "min_max", or "abs". None (default): each panel keeps its own
+            independently-scaled colorbar. Otherwise: one colorbar shared across every panel,
+            scale computed over all of `dt`'s leaves - per-panel colorbars are suppressed.
+        cbar_kwargs : dict, optional
+            Passed to the shared colorbar when `shared_cbar` is given.
+        cbar_location : str, optional
+            Where the shared colorbar is placed - "bottom" (default), "left"/"right"/"top".
         subplot_kw : dict, optional
             Passed to `plt.subplots` when `axes` is None. Ignored if `axes` is given.
         **kwargs
@@ -161,27 +166,33 @@ class Diagnostic():
         axes : np.ndarray
             The axes of the plot.
         """
-        #Check how to deal with shared_cbar (shared vmin and vmas - should this be named differently?) and should the cbar really be shared?
-
         if axes is None:
             _, axes = plt.subplots(1, len(list(dt.leaves)), subplot_kw=subplot_kw or {})
         axes = np.atleast_1d(axes).ravel()
 
         if shared_cbar:
-            max = np.max([ds[var].values for ds in dt.max().leaves])
-            min = np.min([ds[var].values for ds in dt.min().leaves])
+            vmin, vmax = datatree_var_range(dt, var)
             if shared_cbar == "min_max":
-                kwargs = _augment_kwargs({"vmin": min, "vmax": max}, **kwargs)
+                kwargs = _augment_kwargs({"vmin": vmin, "vmax": vmax}, **kwargs)
             elif shared_cbar == "abs":
-                abs_max = np.max([np.abs(min), np.abs(max)])
+                abs_max = max(abs(vmin), abs(vmax))
                 kwargs = _augment_kwargs({"vmin": -abs_max, "vmax": abs_max}, **kwargs)
+            else:
+                raise ValueError("Invalid shared_cbar provided. Options are None, 'min_max', or 'abs'.")
+            kwargs["add_colorbar"] = False  # one shared colorbar is added below instead
 
+        mesh = None
         for ax, dt_leave in zip(axes, dt.leaves):
             self.plot(dt_leave[var], ax=ax, **kwargs)
+            if ax.collections:
+                mesh = ax.collections[-1]
             if label:
                 title = getattr(dt_leave, label)
                 ax.set_title(title)
-        
+
+        if shared_cbar and mesh is not None:
+            axes[0].figure.colorbar(mesh, ax=list(axes), location=cbar_location, **(cbar_kwargs or {}))
+
         return axes
 
     @property

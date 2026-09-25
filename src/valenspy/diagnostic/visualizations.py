@@ -4,6 +4,7 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import warnings
 from valenspy._utilities._regions import region_bounds
+from valenspy._utilities._datatree import datatree_var_range
 from valenspy.diagnostic.functions import perkins_skill_score
 from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs
 
@@ -680,7 +681,9 @@ def plot_ensemble_mean_map(ds: xr.Dataset, var: str, model_agreement: bool = Fal
     return ax
 
 
-def plot_reference_future_periods_grid(result: dict, var: str, label="path", title=None, region=None, shared_cbar=None, shared_cbar_scope="future", projection=None, **kwargs):
+def plot_reference_future_periods_grid(result: dict, var: str, label="path", title=None, region=None, projection=None,
+                                        ref_cbar=None, fut_cbar=None, ref_cbar_kwargs=None, fut_cbar_kwargs=None,
+                                        cbar_location="bottom", **kwargs):
     """
     Plot climate_change_signal_per_member/climatology_per_member's result as a grid: one row
     per member, one column for the reference period then one per future period.
@@ -700,28 +703,26 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         Passed to _add_features for every map's extent/borders.
     projection : cartopy.crs.Projection, optional
         Projection for every subplot's axes. Default ccrs.PlateCarree().
-    shared_cbar : str, optional
-        None, "min_max", or "abs" - see plot_dt_facetted. When given, the reference column and
-        the future columns each get one shared colorbar for their group instead of one per
-        panel. None (default): each panel keeps its own independently-scaled colorbar.
-    shared_cbar_scope : str, optional
-        "future" (default): the reference column's shared scale is computed from the
-        reference panels alone. "all": it instead uses the same scale as the future columns.
-        Either way the reference column always gets one shared colorbar when `shared_cbar` is
-        given.
+    ref_cbar, fut_cbar : str, optional
+        None, "min_max", or "abs" - independently control the reference column's and the
+        future columns' own shared colorbar (scale computed from that group's panels alone).
+        None (default) for a group: each of its panels keeps its own independently-scaled
+        colorbar instead.
+    ref_cbar_kwargs, fut_cbar_kwargs : dict, optional
+        Passed to the reference/future group's shared colorbar respectively, e.g.
+        `{"label": "tas (K)"}`. Only used when `ref_cbar`/`fut_cbar` is given.
+    cbar_location : str, optional
+        Where a group's shared colorbar is placed relative to its panels - "bottom" (default,
+        spans just that group's own width), "left"/"right"/"top".
     **kwargs
         Passed to plot_map for every cell; `figsize` sizes the whole grid. `label_col_width`
-        (default 1.2, inches) sets the row-label column's width. `cbar_kwargs` goes to the
-        shared colorbar(s) instead of to each panel when `shared_cbar` is given.
+        (default 1.2, inches) sets the row-label column's width.
 
     Returns
     -------
     np.ndarray
         2D array of axes, shape (n_members, 1 + n_future_periods).
     """
-    if shared_cbar_scope not in ("future", "all"):
-        raise ValueError("Invalid shared_cbar_scope provided. Options are 'future' or 'all'.")
-
     dt_ref = result["ref"]
     fut_by_period = result["fut"]
     ref_leaves = [leaf for leaf in dt_ref.leaves if leaf.has_data and var in leaf.ds.data_vars]
@@ -742,28 +743,23 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         for col in range(n_cols):
             axes[row, col] = fig.add_subplot(gs[row, col + 1], projection=projection or ccrs.PlateCarree())
 
-    fut_kwargs, ref_kwargs = dict(kwargs), dict(kwargs)
-    grouped_cbar_kwargs = fut_kwargs.pop("cbar_kwargs", {})
-    ref_kwargs.pop("cbar_kwargs", None)
-    if shared_cbar:
-        def _scale(values):
-            vmax = float(max(v.max().values for v in values))
-            vmin = float(min(v.min().values for v in values))
-            if shared_cbar == "min_max":
-                return {"vmin": vmin, "vmax": vmax}
-            elif shared_cbar == "abs":
-                abs_max = max(abs(vmin), abs(vmax))
-                return {"vmin": -abs_max, "vmax": abs_max}
-            raise ValueError("Invalid shared_cbar provided. Options are None, 'min_max', or 'abs'.")
+    def _scale(dts, kind):
+        vmin, vmax = datatree_var_range(dts, var)
+        if kind == "min_max":
+            return {"vmin": vmin, "vmax": vmax}
+        elif kind == "abs":
+            abs_max = max(abs(vmin), abs(vmax))
+            return {"vmin": -abs_max, "vmax": abs_max}
+        raise ValueError(f"Invalid cbar type {kind!r}. Options are None, 'min_max', or 'abs'.")
 
-        fut_values = [leaf.ds[var] for dt in fut_by_period.values() for leaf in dt.leaves if leaf.has_data and var in leaf.ds.data_vars]
-        ref_values = [leaf.ds[var] for leaf in ref_leaves]
-        fut_scale = _scale(fut_values)
-        ref_scale = fut_scale if shared_cbar_scope == "all" else _scale(ref_values)
-        fut_kwargs = _augment_kwargs(fut_scale, **fut_kwargs)
-        ref_kwargs = _augment_kwargs(ref_scale, **ref_kwargs)
-        # Per-panel colorbars are suppressed; one shared colorbar per group is added below.
-        ref_kwargs["add_colorbar"] = False
+    fut_kwargs, ref_kwargs = dict(kwargs), dict(kwargs)
+    if ref_cbar:
+        ref_kwargs = _augment_kwargs(_scale(dt_ref, ref_cbar), **ref_kwargs)
+        ref_kwargs.pop("cbar_kwargs", None)
+        ref_kwargs["add_colorbar"] = False  # one shared colorbar for the group is added below
+    if fut_cbar:
+        fut_kwargs = _augment_kwargs(_scale(list(fut_by_period.values()), fut_cbar), **fut_kwargs)
+        fut_kwargs.pop("cbar_kwargs", None)
         fut_kwargs["add_colorbar"] = False
 
     def _row_label(leaf):
@@ -796,10 +792,10 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
     for ax in axes.flat:
         _add_features(ax, region=region)
 
-    if shared_cbar and ref_mesh is not None:
-        fig.colorbar(ref_mesh, ax=list(axes[:, 0]), location="left", pad=0.12, **grouped_cbar_kwargs)
-    if shared_cbar and fut_mesh is not None:
-        fig.colorbar(fut_mesh, ax=list(axes[:, 1:].flat), location="right", **grouped_cbar_kwargs)
+    if ref_cbar and ref_mesh is not None:
+        fig.colorbar(ref_mesh, ax=list(axes[:, 0]), location=cbar_location, **(ref_cbar_kwargs or {}))
+    if fut_cbar and fut_mesh is not None:
+        fig.colorbar(fut_mesh, ax=list(axes[:, 1:].flat), location=cbar_location, **(fut_cbar_kwargs or {}))
 
     if title:
         wrapped_title = "\n".join(textwrap.wrap(title, width=max(30, 14 * n_cols)))

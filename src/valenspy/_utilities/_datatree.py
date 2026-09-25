@@ -30,6 +30,30 @@ def select_period(dt: xr.DataTree, value: str):
     """
     return dt.filter(lambda node: node.dataset is not None and not node.children and value in node.path.strip("/").split("/"))
 
+def datatree_var_range(dts: xr.DataTree | list, var: str) -> tuple:
+    """(min, max) of `var` across every real leaf of `dts` - a single DataTree, or an
+    iterable of them (e.g. one per period, combined into one shared range). Leaves without
+    `var`, or with no data, are skipped.
+
+    Parameters
+    ----------
+    dts : xr.DataTree or iterable of xr.DataTree
+        Tree(s) to scan.
+    var : str
+        The variable to compute the range of.
+
+    Returns
+    -------
+    (float, float)
+        (min, max) of `var` across every qualifying leaf.
+    """
+    if isinstance(dts, xr.DataTree):
+        dts = [dts]
+    values = [leaf.ds[var] for dt in dts for leaf in dt.leaves if leaf.has_data and var in leaf.ds.data_vars]
+    if not values:
+        raise ValueError(f"No leaf has data for variable {var!r}.")
+    return float(min(v.min().values for v in values)), float(max(v.max().values for v in values))
+
 def split_by_level(dt: xr.DataTree, level: int):
     """
     Split a DataTree into multiple DataTrees based on the unique values at a given level in the node paths.
