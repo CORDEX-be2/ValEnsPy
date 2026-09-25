@@ -7,7 +7,7 @@ from functools import partial
 from valenspy.processing import select_point
 from valenspy.diagnostic.wrappers import acceptable_variables, required_variables
 from valenspy._utilities import datatree_to_dataframe, datatree_to_dataset, reorder
-from valenspy._utilities._datatree import restructure_by_attributes
+from valenspy._utilities._datatree import restructure_by_attributes, select_period
 
 # make sure attributes are passed through
 xr.set_options(keep_attrs=True)
@@ -476,14 +476,6 @@ def _climate_change_signal(fut: DataTree, ref: DataTree, abs_diff=True, mean_ove
 DEFAULT_MEMBER_IDENTITY_ATTRS = (
     "intake_esm_attrs:source_id", "intake_esm_attrs:driving_source_id", "intake_esm_attrs:driving_variant_label",
 )
-
-def select_period(dt: DataTree, value: str):
-    """All leaves that sit under a node named `value` at any level of `dt` - the node naming a
-    period doesn't have to be a direct/top-level child of `dt`, only present somewhere along
-    each matching leaf's path. Matches a whole path segment, not a substring (e.g. value
-    "historical" does not match a sibling node named "ssp245historical").
-    """
-    return dt.filter(lambda node: node.dataset is not None and not node.children and value in node.path.strip("/").split("/"))
 
 def climate_change_signal_per_member(dt: DataTree, historical: str, future_periods: list, abs_diff=True,
                                       identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS, disambiguate_scenarios=False):
