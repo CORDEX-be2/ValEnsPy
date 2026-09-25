@@ -8,6 +8,8 @@ __all__ = [
     "Ensemble_Histogram",
     "Ensemble_Quantile_Spatial_Mean",
     "Ensemble_Quantile_Closest_Member_Spatial_Mean",
+    "Ensemble_Quantile_Of_Climate_Change_Signal",
+    "Ensemble_Quantile_Closest_Member_Of_Climate_Change_Signal",
     "Ensemble_Spatial_Mean",
     "ClimateChangeSignalPerMember",
     "ClimatologyPerMember",
@@ -32,6 +34,29 @@ Ensemble_Quantile_Closest_Member_Spatial_Mean = Ensemble2Self(
     plot_map,
     "Ensemble quantiles of closest member spatial mean",
     "The ensemble members that are closest to the quantiles of the spatial mean, and their spatial mean.",
+    plot_type="facetted"
+)
+
+Ensemble_Quantile_Of_Climate_Change_Signal = Ensemble2Self(
+    ensemble_quantile_of_climate_change_signal,
+    plot_quantile_map,
+    "Ensemble quantiles of climate change signal",
+    "The quantiles across the ensemble's climate-change signal (future period minus "
+    "historical, matched per member by identity) - the per-member spread of the "
+    "projected change at one future period, summarized by quantile. Call as "
+    "Ensemble_Quantile_Of_Climate_Change_Signal(dt, historical=\"historical\", "
+    "period=\"ssp245\", quantile=[0.1, 0.5, 0.9])."
+)
+
+Ensemble_Quantile_Closest_Member_Of_Climate_Change_Signal = Ensemble2Self(
+    ensemble_quantile_closest_member_of_climate_change_signal,
+    plot_map,
+    "Ensemble quantiles of closest member climate change signal",
+    "The ensemble members whose climate-change signal is closest to each requested "
+    "quantile, and their own signal - the closest-member counterpart to "
+    "Ensemble_Quantile_Of_Climate_Change_Signal. Call as "
+    "Ensemble_Quantile_Closest_Member_Of_Climate_Change_Signal(dt, historical=\"historical\", "
+    "period=\"ssp245\", quantile=[0.1, 0.5, 0.9], var=\"tas\").",
     plot_type="facetted"
 )
 

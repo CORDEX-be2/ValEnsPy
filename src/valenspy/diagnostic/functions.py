@@ -477,7 +477,7 @@ DEFAULT_MEMBER_IDENTITY_ATTRS = (
     "intake_esm_attrs:source_id", "intake_esm_attrs:driving_source_id", "intake_esm_attrs:driving_variant_label",
 )
 
-def _select_period(dt: DataTree, value: str):
+def select_period(dt: DataTree, value: str):
     """All leaves that sit under a node named `value` at any level of `dt` - the node naming a
     period doesn't have to be a direct/top-level child of `dt`, only present somewhere along
     each matching leaf's path. Matches a whole path segment, not a substring (e.g. value
@@ -485,7 +485,8 @@ def _select_period(dt: DataTree, value: str):
     """
     return dt.filter(lambda node: node.dataset is not None and not node.children and value in node.path.strip("/").split("/"))
 
-def climate_change_signal_per_member(dt: DataTree, historical: str, future_periods: list, abs_diff=True, identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS):
+def climate_change_signal_per_member(dt: DataTree, historical: str, future_periods: list, abs_diff=True,
+                                      identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS, disambiguate_scenarios=False):
     """
     For each ensemble member individually, its reference-period mean and its own climate
     change signal (future minus its own reference period) for each future period - unlike
@@ -499,7 +500,7 @@ def climate_change_signal_per_member(dt: DataTree, historical: str, future_perio
     from that period's returned tree (see plot_reference_future_periods_grid, which renders
     that member/period cell as an empty placeholder rather than dropping the member from the
     whole result). The node naming a period does not need to be a top-level child of `dt`, nor
-    at the same depth across periods - see `_select_period` - so `dt` can be nested however the
+    at the same depth across periods - see `select_period` - so `dt` can be nested however the
     source ensemble happens to be structured. Members are then matched across periods by
     `identity_attrs` rather than by path, since a member's own path below its period node
     typically differs between periods too (e.g. driving-GCM/realization segments that only
@@ -510,7 +511,7 @@ def climate_change_signal_per_member(dt: DataTree, historical: str, future_perio
     dt : DataTree
         The full ensemble. Leaves are selected for `historical`/`future_periods` by walking
         `dt` for a node named after each value (at any depth, not just `dt`'s direct
-        children) and taking every leaf beneath it - see `_select_period`.
+        children) and taking every leaf beneath it - see `select_period`.
     historical : str
         The node name identifying the reference/historical period, e.g. "historical".
     future_periods : list of str
@@ -522,22 +523,31 @@ def climate_change_signal_per_member(dt: DataTree, historical: str, future_perio
         Leaf dataset attributes identifying "the same" member across periods, used to re-key
         each period's leaves (via restructure_by_attributes) before matching. Default
         DEFAULT_MEMBER_IDENTITY_ATTRS.
+    disambiguate_scenarios : bool, optional
+        See _match_members_across_periods. Set True when a single driving model can have more
+        than one experiment_id/scenario landing under the same `future_periods` node (e.g. one
+        GWL crossed by both ssp245 and ssp585) - otherwise those scenarios silently collide
+        into one row. Default False (identical behaviour to before this parameter existed).
 
     Returns
     -------
     dict
-        {"ref": DataTree (reference-period time mean, one leaf per member in `historical`),
+        {"ref": DataTree (reference-period time mean, one leaf per member in `historical`, or
+         per (member, scenario) pair kept if disambiguate_scenarios=True),
          "fut": {future period name: DataTree (that member's climate change signal, one leaf
          per member of `historical` also present in that future period)}}
     """
-    ref_matched, fut_periods_matched = _match_members_across_periods(dt, historical, future_periods, identity_attrs)
+    ref_matched, fut_periods_matched = _match_members_across_periods(
+        dt, historical, future_periods, identity_attrs, disambiguate_scenarios=disambiguate_scenarios,
+    )
     fut_result = {
         label: _climate_change_signal(fut_dt, ref_matched, abs_diff=abs_diff, mean_over_dims="time")
         for label, fut_dt in fut_periods_matched.items()
     }
     return {"ref": ref_matched.map_over_datasets(_average_over_dims, "time"), "fut": fut_result}
 
-def climatology_per_member(dt: DataTree, historical: str, future_periods: list, identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS):
+def climatology_per_member(dt: DataTree, historical: str, future_periods: list,
+                            identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS, disambiguate_scenarios=False):
     """
     For each ensemble member individually, its reference-period mean and its own time mean for
     each future period - not a change signal, see climate_change_signal_per_member for that.
@@ -550,7 +560,7 @@ def climatology_per_member(dt: DataTree, historical: str, future_periods: list, 
     from that period's returned tree (see plot_reference_future_periods_grid, which renders
     that member/period cell as an empty placeholder rather than dropping the member from the
     whole result). The node naming a period does not need to be a top-level child of `dt`, nor
-    at the same depth across periods - see `_select_period` - so `dt` can be nested however the
+    at the same depth across periods - see `select_period` - so `dt` can be nested however the
     source ensemble happens to be structured. Members are then matched across periods by
     `identity_attrs` rather than by path, since a member's own path below its period node
     typically differs between periods too (e.g. driving-GCM/realization segments that only
@@ -561,7 +571,7 @@ def climatology_per_member(dt: DataTree, historical: str, future_periods: list, 
     dt : DataTree
         The full ensemble. Leaves are selected for `historical`/`future_periods` by walking
         `dt` for a node named after each value (at any depth, not just `dt`'s direct
-        children) and taking every leaf beneath it - see `_select_period`.
+        children) and taking every leaf beneath it - see `select_period`.
     historical : str
         The node name identifying the reference/historical period, e.g. "historical".
     future_periods : list of str
@@ -569,15 +579,20 @@ def climatology_per_member(dt: DataTree, historical: str, future_periods: list, 
         is also used, unchanged, as that period's label in the returned "fut" dict.
     identity_attrs : tuple of str, optional
         See climate_change_signal_per_member. Default DEFAULT_MEMBER_IDENTITY_ATTRS.
+    disambiguate_scenarios : bool, optional
+        See _match_members_across_periods / climate_change_signal_per_member. Default False.
 
     Returns
     -------
     dict
-        {"ref": DataTree (reference-period time mean, one leaf per member in `historical`),
+        {"ref": DataTree (reference-period time mean, one leaf per member in `historical`, or
+         per (member, scenario) pair kept if disambiguate_scenarios=True),
          "fut": {future period name: DataTree (that member's future-period time mean, one leaf
          per member of `historical` also present in that future period)}}
     """
-    ref_matched, fut_periods_matched = _match_members_across_periods(dt, historical, future_periods, identity_attrs)
+    ref_matched, fut_periods_matched = _match_members_across_periods(
+        dt, historical, future_periods, identity_attrs, disambiguate_scenarios=disambiguate_scenarios,
+    )
     fut_result = {
         label: fut_dt.map_over_datasets(_average_over_dims, "time")
         for label, fut_dt in fut_periods_matched.items()
@@ -624,8 +639,9 @@ def climate_change_signal_ensemble_mean_grid(dt: DataTree, historical: str, futu
     }
     return {"ref": DataTree.from_dict({"ensemble_mean": ensemble_spatial_mean(ref_matched)}), "fut": fut_result}
 
-def _match_members_across_periods(dt: DataTree, historical: str, future_periods: list, identity_attrs):
-    """Select the leaves under a node named `historical` (see `_select_period`), and separately
+def _match_members_across_periods(dt: DataTree, historical: str, future_periods: list, identity_attrs,
+                                   disambiguate_scenarios=False):
+    """Select the leaves under a node named `historical` (see `select_period`), and separately
     for each name in `future_periods`, re-key each selection by `identity_attrs` (via
     restructure_by_attributes), and restrict each future period's leaves to the members present
     in `historical` - the shared matching step behind climate_change_signal_per_member and
@@ -636,14 +652,128 @@ def _match_members_across_periods(dt: DataTree, historical: str, future_periods:
     period's returned tree (not dropped from `historical` or from the other future periods), so
     callers/plotting can render that member/period combination as missing rather than excluding
     the member altogether.
+
+    disambiguate_scenarios : bool, optional
+        `identity_attrs` (source_id/driving_source_id/driving_variant_label by default) doesn't
+        include experiment_id, since it exists precisely to match a member's historical run
+        against its future run even though those sit under different experiment_id nodes. That
+        breaks down when a single driving model has MORE than one scenario landing under the
+        same future-period node (e.g. a GWL crossed by both ssp245 and ssp585) - both scenarios
+        then collide on the same identity key, and restructure_by_attributes's plain dict
+        comprehension keeps only whichever one is encountered last (silently, no warning).
+        Confirmed happening for real in CORDEX.be-II's hist_gwl ensemble: e.g. MAR/GWL2/
+        CMCC-CM2-SR5 has ssp126, ssp245, ssp370 AND ssp585 all present.
+
+        When True, each future period's leaves are re-keyed by `identity_attrs` PLUS
+        experiment_id, so distinct scenarios for the same member become distinct rows instead
+        of colliding. `historical` has no such ambiguity (there's only ever one "historical"
+        experiment_id per member) so its own leaves stay keyed by the plain `identity_attrs` -
+        instead, the matching reference dataset is broadcast to a path ending in each observed
+        (member, experiment_id) pair actually kept from `future_periods`, so plotting code that
+        looks up `ref_tree[fut_leaf.path]` style still finds an exact match (see
+        plot_reference_future_periods_grid, which relies on this).
     """
     identity_attrs = list(identity_attrs)
-    ref = restructure_by_attributes(_select_period(dt, historical), identity_attrs)
-    fut_periods_matched = {
-        period: restructure_by_attributes(_select_period(dt, period), identity_attrs).filter_like(ref)
-        for period in future_periods
-    }
+    ref_by_member = restructure_by_attributes(select_period(dt, historical), identity_attrs)
+    if not disambiguate_scenarios:
+        fut_periods_matched = {
+            period: restructure_by_attributes(select_period(dt, period), identity_attrs).filter_like(ref_by_member)
+            for period in future_periods
+        }
+        return ref_by_member, fut_periods_matched
+
+    member_paths = {path for path, node in ref_by_member.subtree_with_keys if path and node.dataset is not None}
+    scenario_attrs = identity_attrs + ["intake_esm_attrs:experiment_id"]
+    fut_periods_matched = {}
+    ref_paths_needed = {}  # scenario-keyed path -> its plain member path in ref_by_member
+    for period in future_periods:
+        fut = restructure_by_attributes(select_period(dt, period), scenario_attrs)
+        keep = {}
+        for path, node in fut.subtree_with_keys:
+            if not path or node.dataset is None:
+                continue
+            member_path = "/".join(path.split("/")[:-1])
+            if member_path in member_paths:
+                keep[path] = member_path
+        # node.path (absolute, "/a/b") vs subtree_with_keys's path (relative, "a/b") - see
+        # select_period/the module's other .filter() call for the same distinction.
+        keep_abs = {f"/{p}" for p in keep}
+        fut_periods_matched[period] = fut.filter(lambda node: node.path in keep_abs)
+        ref_paths_needed.update(keep)
+
+    ref = xr.DataTree.from_dict({
+        scenario_path: ref_by_member[member_path].dataset
+        for scenario_path, member_path in ref_paths_needed.items()
+    })
     return ref, fut_periods_matched
+
+
+def ensemble_quantile_of_climate_change_signal(dt: DataTree, historical: str, period: str,
+                                                quantile: float | list[float], abs_diff=True,
+                                                identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS,
+                                                disambiguate_scenarios=False):
+    """
+    The quantiles across the ensemble's climate-change signal (future `period` minus
+    `historical`, matched per member by identity) - the per-member spread of the
+    projected change at one future period, summarized by quantile. Combines
+    `climate_change_signal_of_spatial_mean`'s per-member signal with
+    `ensemble_quantile_of_spatial_mean`'s own quantile-taking into one diagnostic, so
+    a caller wanting "how uncertain is the projected change" doesn't need to chain two
+    diagnostics by hand - a single named diagnostic for a single named quantity,
+    rather than the raw quantile-of-spatial-mean diagnostic reused with pre-transformed
+    input (which would leave two structurally different things sharing one name).
+
+    Parameters
+    ----------
+    dt : DataTree
+        The full ensemble. Leaves are selected for `historical`/`period` by node name
+        at any depth - see `select_period`.
+    historical : str
+        The node name identifying the reference/historical period, e.g. "historical".
+    period : str
+        The node name identifying the future period to compare against `historical`,
+        e.g. "ssp245".
+    quantile : float or list of float
+        The quantiles to calculate. Value(s) between 0 and 1.
+    abs_diff : bool, optional
+        See `climate_change_signal_of_spatial_mean`. Default True.
+    identity_attrs, disambiguate_scenarios : optional
+        See `climate_change_signal_per_member`. Default `DEFAULT_MEMBER_IDENTITY_ATTRS`/False.
+    """
+    ref_matched, fut_matched = _match_members_across_periods(
+        dt, historical, [period], identity_attrs, disambiguate_scenarios=disambiguate_scenarios,
+    )
+    signal = _climate_change_signal(fut_matched[period], ref_matched, abs_diff=abs_diff, mean_over_dims="time")
+    return ensemble_quantile_of_spatial_mean(signal, quantile)
+
+
+def ensemble_quantile_closest_member_of_climate_change_signal(dt: DataTree, historical: str, period: str,
+                                                                quantile: float | list[float], var: str,
+                                                                abs_diff=True,
+                                                                identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS,
+                                                                disambiguate_scenarios=False):
+    """
+    The ensemble members whose climate-change signal (future `period` minus
+    `historical`, matched per member by identity) is closest to each requested
+    quantile, and their own signal - the "closest member" counterpart to
+    `ensemble_quantile_of_climate_change_signal` (see there for why this is its own
+    diagnostic rather than the raw closest-member-of-spatial-mean diagnostic reused).
+
+    Parameters
+    ----------
+    dt, historical, period, abs_diff, identity_attrs, disambiguate_scenarios : optional
+        See `ensemble_quantile_of_climate_change_signal`.
+    quantile : float or list of float
+        The quantiles to calculate. Value(s) between 0 and 1.
+    var : str
+        The variable to find the closest member for.
+    """
+    ref_matched, fut_matched = _match_members_across_periods(
+        dt, historical, [period], identity_attrs, disambiguate_scenarios=disambiguate_scenarios,
+    )
+    signal = _climate_change_signal(fut_matched[period], ref_matched, abs_diff=abs_diff, mean_over_dims="time")
+    return ensemble_quantile_closest_member_of_spatial_mean(signal, quantile, var)
+
 
 def calc_metrics_dt(dt_mod: DataTree, da_obs: xr.Dataset, metrics=None, pss_binwidth=None):
     """
