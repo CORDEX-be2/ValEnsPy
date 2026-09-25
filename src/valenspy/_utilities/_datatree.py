@@ -2,6 +2,34 @@ import pandas as pd
 import xarray as xr
 from copy import deepcopy
 
+def select_period(dt: xr.DataTree, value: str):
+    """All leaves of `dt` that sit under a node named `value`, at any depth - e.g.
+    `select_period(dt, "historical")` returns every leaf under any node literally named
+    "historical", however deep in the tree. Matches a whole path segment, not a substring
+    (a node named "ssp245historical" does NOT match `value="historical"`).
+
+    Unlike `split_by_level`, this needs no fixed tree depth - `dt` can be nested however the
+    source ensemble happens to be structured, and different periods don't need to sit at the
+    same depth. Used internally by `climate_change_signal_per_member`/`climatology_per_member`/
+    `climate_change_signal_ensemble_mean_grid` to select each period by name rather than by a
+    project-specific level number.
+
+    Parameters
+    ----------
+    dt : xr.DataTree
+        The DataTree to search.
+    value : str
+        The node name identifying the period/group to select, e.g. "historical", "ssp245".
+
+    Returns
+    -------
+    xr.DataTree
+        Every leaf of `dt` sitting under a node named `value` - an empty (leafless) DataTree,
+        not an error, if no node is named `value` anywhere in `dt`; the caller decides whether
+        that's itself an error.
+    """
+    return dt.filter(lambda node: node.dataset is not None and not node.children and value in node.path.strip("/").split("/"))
+
 def split_by_level(dt: xr.DataTree, level: int):
     """
     Split a DataTree into multiple DataTrees based on the unique values at a given level in the node paths.
