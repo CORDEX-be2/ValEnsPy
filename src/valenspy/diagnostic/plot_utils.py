@@ -3,6 +3,39 @@ from functools import wraps
 def _merge_kwargs(def_kwargs, kwargs):
     return {**def_kwargs, **kwargs}
 
+def set_wrapped_suptitle(fig, title, **kwargs):
+    """Set `title` as `fig`'s suptitle, wrapped to actually fit the figure's own width -
+    unlike `textwrap.wrap`, which needs a character-count guess that goes stale the moment
+    figsize/fontsize/n_cols change independently of each other.
+
+    Parameters
+    ----------
+    fig : matplotlib.figure.Figure
+    title : str
+    **kwargs
+        Passed to `fig.suptitle`, e.g. `fontsize=11`.
+
+    Returns
+    -------
+    matplotlib.text.Text
+    """
+    suptitle = fig.suptitle(title, **kwargs)
+    renderer = fig.canvas.get_renderer()
+    fig_width = fig.get_window_extent(renderer).width
+
+    lines, line = [], ""
+    for word in title.split():
+        candidate = f"{line} {word}".strip()
+        suptitle.set_text(candidate)
+        if line and suptitle.get_window_extent(renderer).width > fig_width:
+            lines.append(line)
+            line = word
+        else:
+            line = candidate
+    lines.append(line)
+    suptitle.set_text("\n".join(lines))
+    return suptitle
+
 def cbar_scale(vmin, vmax, kind):
     """{"vmin": ..., "vmax": ...} for a shared colorbar - the vmin/vmax -> plot kwargs
     conversion behind every `shared_cbar` option in this package.

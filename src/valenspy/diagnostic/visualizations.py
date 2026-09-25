@@ -6,7 +6,7 @@ import warnings
 from valenspy._utilities._regions import region_bounds
 from valenspy._utilities._datatree import datatree_var_range
 from valenspy.diagnostic.functions import perkins_skill_score
-from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs, cbar_scale
+from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs, cbar_scale, set_wrapped_suptitle
 
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
@@ -323,7 +323,7 @@ def plot_maps_mod_ref_diff(
     ax.set_title(f"{mod_title} - {ref_title}", loc="right")
     _add_features(ax, region=region)
 
-    fig.suptitle(f"{da_ref.attrs['long_name']} ({da_ref.name})", y=1)
+    set_wrapped_suptitle(fig, f"{da_ref.attrs['long_name']} ({da_ref.name})", y=1)
     fig.tight_layout()
 
     return axes
@@ -768,9 +768,10 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
     ref_mesh = None
     for row, leaf in enumerate(ref_leaves):
         plot_map(leaf.ds[var], ax=axes[row, 0], **ref_kwargs)
+        axes[row, 0].set_title("")  # no per-axis title - xarray's own defaults to leftover coords
         if axes[row, 0].collections:
             ref_mesh = axes[row, 0].collections[-1]
-        label_axes[row].text(1.0, 0.5, _row_label(leaf), ha="right", va="center", fontsize=8)
+        label_axes[row].text(1.0, 0.5, _row_label(leaf), ha="right", va="center", fontsize=10)
     axes[0, 0].set_title("Reference")
 
     fut_mesh = None
@@ -782,6 +783,7 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
                 fut_leaf = None
             if fut_leaf is not None and fut_leaf.has_data and var in fut_leaf.ds.data_vars:
                 plot_map(fut_leaf.ds[var], ax=axes[row, col], **fut_kwargs)
+                axes[row, col].set_title("")
                 if axes[row, col].collections:
                     fut_mesh = axes[row, col].collections[-1]
         axes[0, col].set_title(period_label)
@@ -789,14 +791,17 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
     for ax in axes.flat:
         _add_features(ax, region=region)
 
+    # aspect (length:thickness) scaled by how many columns the group's colorbar spans, so a
+    # 1-column and a (n_cols - 1)-column colorbar come out the same absolute thickness instead
+    # of the wider one also getting proportionally thicker.
     if ref_cbar and ref_mesh is not None:
-        fig.colorbar(ref_mesh, ax=list(axes[:, 0]), location=cbar_location, **(ref_cbar_kwargs or {}))
+        fig.colorbar(ref_mesh, ax=list(axes[:, 0]), location=cbar_location, **{"aspect": 20, **(ref_cbar_kwargs or {})})
     if fut_cbar and fut_mesh is not None:
-        fig.colorbar(fut_mesh, ax=list(axes[:, 1:].flat), location=cbar_location, **(fut_cbar_kwargs or {}))
+        fig.colorbar(fut_mesh, ax=list(axes[:, 1:].flat), location=cbar_location,
+                     **{"aspect": 20 * (n_cols - 1), **(fut_cbar_kwargs or {})})
 
     if title:
-        wrapped_title = "\n".join(textwrap.wrap(title, width=max(30, 14 * n_cols)))
-        fig.suptitle(wrapped_title, fontsize=11)
+        set_wrapped_suptitle(fig, title, fontsize=11)
 
     return axes
 

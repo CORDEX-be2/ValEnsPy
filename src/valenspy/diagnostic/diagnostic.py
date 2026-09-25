@@ -2,7 +2,7 @@ from xarray import DataTree
 import xarray as xr
 import matplotlib.pyplot as plt
 from valenspy.processing.mask import add_prudence_regions, mask_to_reference_coverage, _mask_ds_to_reference_coverage
-from valenspy.diagnostic.plot_utils import _augment_kwargs, cbar_scale
+from valenspy.diagnostic.plot_utils import _augment_kwargs, cbar_scale, set_wrapped_suptitle
 from valenspy._utilities import generate_parameters_doc
 from valenspy._utilities._datatree import datatree_var_range
 import numpy as np
@@ -414,7 +414,7 @@ class Diagnostic():
             ax = self.plot(result, **plot_kwargs)
 
         fig = np.atleast_1d(ax).ravel()[0].figure
-        fig.suptitle(self.title(var=var, **title_kwargs))
+        set_wrapped_suptitle(fig, self.title(var=var, **title_kwargs))
 
         if out_dir is not None:
             out_file = Path(out_dir) / self.filename(ext=ext, var=var, **filename_kwargs)
