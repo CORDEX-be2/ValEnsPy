@@ -1,4 +1,5 @@
 from functools import wraps
+from matplotlib.layout_engine import ConstrainedLayoutEngine
 
 def _merge_kwargs(def_kwargs, kwargs):
     return {**def_kwargs, **kwargs}
@@ -34,6 +35,17 @@ def set_wrapped_suptitle(fig, title, **kwargs):
             line = candidate
     lines.append(line)
     suptitle.set_text("\n".join(lines))
+
+    # constrained_layout doesn't reliably reserve headroom for a suptitle added after the
+    # axes already exist (e.g. Diagnostic.render plots first, then sets the title) - it can
+    # end up overlapping the top row's own axes titles. Reserve the space explicitly, sized
+    # to the suptitle's own (now final, possibly multi-line) rendered height.
+    engine = fig.get_layout_engine()
+    if isinstance(engine, ConstrainedLayoutEngine):
+        fig_height = fig.get_window_extent(renderer).height
+        title_height = suptitle.get_window_extent(renderer).height
+        top = 1 - 4 * title_height / fig_height
+        engine.set(rect=(0, 0, 1, top))
     return suptitle
 
 def cbar_scale(vmin, vmax, kind):
