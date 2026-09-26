@@ -717,7 +717,8 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         behaviour from before these parameters existed).
     **kwargs
         Passed to plot_map for every cell; `figsize` sizes the whole grid. `label_col_width`
-        (default 1.2, inches) sets the row-label column's width.
+        (inches) sets the row-label column's width - default sized to fit the labels
+        themselves.
 
     Returns
     -------
@@ -728,9 +729,28 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
     fut_by_period = result["fut"]
     ref_leaves = [leaf for leaf in dt_ref.leaves if leaf.has_data and var in leaf.ds.data_vars]
     n_rows, n_cols = len(ref_leaves), 1 + len(fut_by_period)
+    label_fontsize = 12
+
+    def _row_label(leaf):
+        # Split explicitly on "/" for path labels - matplotlib's wrap=True only breaks on
+        # whitespace, which a path has none of.
+        raw = leaf.path.strip("/") if label == "path" else str(getattr(leaf, label))
+        return "\n".join(raw.split("/")) if label == "path" else "\n".join(textwrap.wrap(raw, width=14))
+
+    row_labels = [_row_label(leaf) for leaf in ref_leaves]
 
     figsize = kwargs.pop("figsize", (4 * n_cols, 3 * n_rows))
-    label_col_width = kwargs.pop("label_col_width", 1.2)
+    # Sized to the labels' own rendered width (plus a small margin) rather than a fixed
+    # guess - a fixed width leaves a lot of unused space for short labels, since they're
+    # right-aligned against the maps rather than filling the column.
+    def _text_width_inches(text, fontsize):
+        scratch = plt.figure()
+        extent = scratch.text(0, 0, text, fontsize=fontsize).get_window_extent(scratch.canvas.get_renderer())
+        plt.close(scratch)
+        return extent.width / scratch.dpi
+
+    default_label_col_width = max((_text_width_inches(l, label_fontsize) for l in row_labels), default=0) + 0.3
+    label_col_width = kwargs.pop("label_col_width", default_label_col_width)
     # Row labels get their own plain (non-cartopy) axes column - GeoAxes doesn't render
     # ylabels. constrained_layout then sizes everything (labels, suptitle, colorbars)
     # automatically.
@@ -759,19 +779,13 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         fut_kwargs.pop("cbar_kwargs", None)
         fut_kwargs["add_colorbar"] = False
 
-    def _row_label(leaf):
-        # Split explicitly on "/" for path labels - matplotlib's wrap=True only breaks on
-        # whitespace, which a path has none of.
-        raw = leaf.path.strip("/") if label == "path" else str(getattr(leaf, label))
-        return "\n".join(raw.split("/")) if label == "path" else "\n".join(textwrap.wrap(raw, width=14))
-
     ref_mesh = None
     for row, leaf in enumerate(ref_leaves):
         plot_map(leaf.ds[var], ax=axes[row, 0], **ref_kwargs)
         axes[row, 0].set_title("")  # no per-axis title - xarray's own defaults to leftover coords
         if axes[row, 0].collections:
             ref_mesh = axes[row, 0].collections[-1]
-        label_axes[row].text(1.0, 0.5, _row_label(leaf), ha="right", va="center", fontsize=10)
+        label_axes[row].text(1.0, 0.5, row_labels[row], ha="right", va="center", fontsize=label_fontsize)
     axes[0, 0].set_title("Reference")
 
     fut_mesh = None
@@ -793,12 +807,14 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
 
     # aspect (length:thickness) scaled by how many columns the group's colorbar spans, so a
     # 1-column and a (n_cols - 1)-column colorbar come out the same absolute thickness instead
-    # of the wider one also getting proportionally thicker.
+    # of the wider one also getting proportionally thicker. pad raised from constrained_layout's
+    # own default (0.05) - too tight against the last row for a grid with many rows.
     if ref_cbar and ref_mesh is not None:
-        fig.colorbar(ref_mesh, ax=list(axes[:, 0]), location=cbar_location, **{"aspect": 20, **(ref_cbar_kwargs or {})})
+        fig.colorbar(ref_mesh, ax=list(axes[:, 0]), location=cbar_location,
+                     **{"aspect": 20, "pad": 0.15, **(ref_cbar_kwargs or {})})
     if fut_cbar and fut_mesh is not None:
         fig.colorbar(fut_mesh, ax=list(axes[:, 1:].flat), location=cbar_location,
-                     **{"aspect": 20 * (n_cols - 1), **(fut_cbar_kwargs or {})})
+                     **{"aspect": 20 * (n_cols - 1), "pad": 0.15, **(fut_cbar_kwargs or {})})
 
     if title:
         set_wrapped_suptitle(fig, title, fontsize=11)
