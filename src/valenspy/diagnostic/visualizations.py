@@ -676,11 +676,11 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
     var : str
         The variable to plot.
     label : str, optional
-        DataTree leaf attribute used for each row's label. "path" (default) uses the leaf's
-        full path. Shown once per row in a dedicated left-hand column when there's more than
-        one row; for a single row (e.g. an ensemble-mean grid) that column would exist just to
-        show one static string, so it's dropped and the label becomes a small subtitle on the
-        Reference panel instead.
+        DataTree leaf attribute used for each row's label, shown once per row in a dedicated
+        left-hand column. "path" (default) uses the leaf's full path. Not shown for a single
+        row (e.g. an ensemble-mean grid) - a dedicated column would exist just to show one
+        static string, so it's dropped rather than folded into a panel title; pass `title`
+        instead if that row's identity needs to be shown somewhere.
     title : str, optional
         If given, wrapped and set as the figure's suptitle.
     region : str, optional
@@ -813,7 +813,7 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
             hatch_legends[0] = plot_confidence_hatch(axes[row, 0], leaf.ds, var)
         if show_label_column:
             label_axes[row].text(1.0, 0.5, row_labels[row], ha="right", va="center", fontsize=label_fontsize)
-    axes[0, 0].set_title("Reference" if show_label_column else f"{row_labels[0]}\nReference")
+    axes[0, 0].set_title("Reference")
 
     fut_mesh = None
     for col, (period_label, dt) in enumerate(fut_by_period.items(), start=1):
@@ -837,20 +837,27 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
     for col, legend in hatch_legends.items():
         axes[-1, col].legend(handles=[legend], loc="lower left", frameon=False, fontsize=7)
 
-    # aspect (length:thickness) scaled by how many columns the group's colorbar spans, so a
-    # 1-column and a (n_cols - 1)-column colorbar come out the same absolute thickness instead
-    # of the wider one also getting proportionally thicker.
-    # pad is a fraction of the *parent axes group's own* bounding box, which for a column
-    # spanning every row is roughly the whole grid height - a fixed fraction (even
-    # constrained_layout's own small default) balloons into inches of blank space for a
-    # many-row grid. Scaled here to a constant ~0.3in gap regardless of n_rows.
-    cbar_pad = 0.3 / figsize[1]
+    # aspect (length:thickness) and pad (axes-to-colorbar gap) both come out of `fig.colorbar`
+    # as fractions of the *parent axes group's own* bounding box - and which side of that bbox
+    # (height or width) is the relevant one flips with orientation. For "bottom"/"top", length
+    # runs along the group's width (so it grows with how many columns the group spans - ref's
+    # 1 column vs. fut's (n_cols - 1)) while pad runs along its height (the same figsize[1] for
+    # both groups, since both span every row). For "left"/"right" it's the other way round:
+    # length tracks height (identical for both groups here, so aspect doesn't need scaling),
+    # pad tracks width (which does differ between the two groups, so pad does).
+    if cbar_location in ("left", "right"):
+        col_width = figsize[0] / n_cols
+        ref_aspect, fut_aspect = 20, 20
+        ref_pad, fut_pad = 0.3 / col_width, 0.3 / (col_width * (n_cols - 1))
+    else:
+        ref_aspect, fut_aspect = 20, 20 * (n_cols - 1)
+        ref_pad = fut_pad = 0.3 / figsize[1]
     if ref_cbar and ref_mesh is not None:
         fig.colorbar(ref_mesh, ax=list(axes[:, 0]), location=cbar_location,
-                     **{"aspect": 20, "pad": cbar_pad, **(ref_cbar_kwargs or {})})
+                     **{"aspect": ref_aspect, "pad": ref_pad, **(ref_cbar_kwargs or {})})
     if fut_cbar and fut_mesh is not None:
         fig.colorbar(fut_mesh, ax=list(axes[:, 1:].flat), location=cbar_location,
-                     **{"aspect": 20 * (n_cols - 1), "pad": cbar_pad, **(fut_cbar_kwargs or {})})
+                     **{"aspect": fut_aspect, "pad": fut_pad, **(fut_cbar_kwargs or {})})
 
     if title:
         # No explicit fontsize - inherits the caller's own rcParams (figure.titlesize),
