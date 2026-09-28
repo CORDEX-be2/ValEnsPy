@@ -44,7 +44,15 @@ def set_wrapped_suptitle(fig, title, **kwargs):
     if isinstance(engine, ConstrainedLayoutEngine):
         fig_height = fig.get_window_extent(renderer).height
         title_height = suptitle.get_window_extent(renderer).height
-        top = 1 - 4 * title_height / fig_height
+        # 1.3x, not the title's own height 1:1 - a little breathing room so descenders/
+        # multi-line titles don't touch the row of axes titles just below, without
+        # ballooning into a visibly large gap. A larger fixed multiplier here previously
+        # reserved way more headroom than needed, and - since it scales with fig_height,
+        # not with the title itself - hit shorter (few-row) figures hardest: the same
+        # absolute title height ate a much bigger fraction of a short figure's total
+        # height than a tall one's (confirmed 2026-09-28, at the user's request to
+        # tighten this for a 5-row grid).
+        top = 1 - 1.3 * title_height / fig_height
         engine.set(rect=(0, 0, 1, top))
     return suptitle
 

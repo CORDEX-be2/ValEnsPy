@@ -826,7 +826,11 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
                      **{"aspect": 20 * (n_cols - 1), "pad": cbar_pad, **(fut_cbar_kwargs or {})})
 
     if title:
-        set_wrapped_suptitle(fig, title, fontsize=11)
+        # No explicit fontsize - inherits the caller's own rcParams (figure.titlesize),
+        # e.g. this repo's presentation.mplstyle sets 16pt; a hardcoded fontsize=11 here
+        # previously silently overrode that (confirmed 2026-09-28, at the user's request
+        # to increase title size).
+        set_wrapped_suptitle(fig, title)
 
     return axes
 
