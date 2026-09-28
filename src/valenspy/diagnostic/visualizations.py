@@ -755,7 +755,12 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
     # ylabels. constrained_layout then sizes everything (labels, suptitle, colorbars)
     # automatically.
     fig = plt.figure(figsize=(figsize[0] + label_col_width, figsize[1]), layout="constrained")
-    gs = fig.add_gridspec(n_rows, n_cols + 1, width_ratios=[label_col_width] + [1] * n_cols)
+    # width_ratios are weights, not inches - a data column's "1" weight is figsize[0]/n_cols
+    # inches, so the label column's weight has to be scaled onto that same per-weight-unit
+    # size for label_col_width to actually render at that many inches, instead of being
+    # inflated by roughly n_cols.
+    label_weight = label_col_width / (figsize[0] / n_cols)
+    gs = fig.add_gridspec(n_rows, n_cols + 1, width_ratios=[label_weight] + [1] * n_cols)
     label_axes = [fig.add_subplot(gs[row, 0]) for row in range(n_rows)]
     for ax in label_axes:
         ax.axis("off")
@@ -807,14 +812,18 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
 
     # aspect (length:thickness) scaled by how many columns the group's colorbar spans, so a
     # 1-column and a (n_cols - 1)-column colorbar come out the same absolute thickness instead
-    # of the wider one also getting proportionally thicker. pad raised from constrained_layout's
-    # own default (0.05) - too tight against the last row for a grid with many rows.
+    # of the wider one also getting proportionally thicker.
+    # pad is a fraction of the *parent axes group's own* bounding box, which for a column
+    # spanning every row is roughly the whole grid height - a fixed fraction (even
+    # constrained_layout's own small default) balloons into inches of blank space for a
+    # many-row grid. Scaled here to a constant ~0.3in gap regardless of n_rows.
+    cbar_pad = 0.3 / figsize[1]
     if ref_cbar and ref_mesh is not None:
         fig.colorbar(ref_mesh, ax=list(axes[:, 0]), location=cbar_location,
-                     **{"aspect": 20, "pad": 0.15, **(ref_cbar_kwargs or {})})
+                     **{"aspect": 20, "pad": cbar_pad, **(ref_cbar_kwargs or {})})
     if fut_cbar and fut_mesh is not None:
         fig.colorbar(fut_mesh, ax=list(axes[:, 1:].flat), location=cbar_location,
-                     **{"aspect": 20 * (n_cols - 1), "pad": 0.15, **(fut_cbar_kwargs or {})})
+                     **{"aspect": 20 * (n_cols - 1), "pad": cbar_pad, **(fut_cbar_kwargs or {})})
 
     if title:
         set_wrapped_suptitle(fig, title, fontsize=11)
