@@ -663,7 +663,7 @@ def plot_ensemble_mean_map(ds: xr.Dataset, var: str, model_agreement: bool = Fal
 
 def plot_reference_future_periods_grid(result: dict, var: str, label="path", title=None, region=None, projection=None,
                                         ref_cbar=None, fut_cbar=None, ref_cbar_kwargs=None, fut_cbar_kwargs=None,
-                                        cbar_location="bottom", ref_cmap=None, fut_cmap=None, model_agreement=False,
+                                        cbar_location=None, ref_cmap=None, fut_cmap=None, model_agreement=False,
                                         **kwargs):
     """
     Plot climate_change_signal_per_member/climatology_per_member's result as a grid: one row
@@ -696,8 +696,8 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         Passed to the reference/future group's shared colorbar respectively, e.g.
         `{"label": "tas (K)"}`. Only used when `ref_cbar`/`fut_cbar` is given.
     cbar_location : str, optional
-        Where a group's shared colorbar is placed relative to its panels - "bottom" (default,
-        spans just that group's own width), "left"/"right"/"top".
+        Where a group's shared colorbar is placed relative to its panels - "bottom", "left",
+        "right", "top". Default None: "right" for a single-row result, "bottom" otherwise.
     ref_cmap, fut_cmap : str or Colormap, optional
         Override `cmap` (see **kwargs) independently for the reference column's and the future
         columns' panels - e.g. a sequential colormap for the reference (absolute values) and a
@@ -708,7 +708,10 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         Hatch cells with low model agreement - requires a `<var>_confidence` variable, e.g.
         from climate_change_signal_ensemble_mean_grid(..., model_agreement=0.75). Cells
         without that variable (typically the reference column, which isn't a change signal)
-        are silently left unhatched. Default False.
+        are silently left unhatched. Confidence is computed per future period (member count
+        can differ between periods - a member missing from one period doesn't affect others),
+        so each future column gets its own legend rather than one shared for the whole figure.
+        Default False.
     **kwargs
         Passed to plot_map for every cell; `figsize` sizes the whole grid. `label_col_width`
         (inches) sets the row-label column's width - default sized to fit the labels
@@ -733,8 +736,13 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
 
     row_labels = [_row_label(leaf) for leaf in ref_leaves]
     show_label_column = n_rows > 1
+    if cbar_location is None:
+        cbar_location = "right" if n_rows == 1 else "bottom"
 
-    figsize = kwargs.pop("figsize", (4 * n_cols, 3 * n_rows))
+    # A single row has no other rows competing for vertical space and (with cbar_location
+    # defaulting to "right") no bottom colorbar eating into it either - size panels larger.
+    default_figsize = (4 * n_cols, 3 * n_rows) if n_rows > 1 else (5 * n_cols, 5)
+    figsize = kwargs.pop("figsize", default_figsize)
     if show_label_column:
         # Sized to the labels' own rendered width (plus a small margin) rather than a fixed
         # guess - a fixed width leaves a lot of unused space for short labels, since they're
@@ -790,7 +798,11 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         fut_kwargs.pop("cbar_kwargs", None)
         fut_kwargs["add_colorbar"] = False
 
-    hatch_legend = None
+    # Keyed by column - confidence (and so the hatch's own description, e.g. how many members
+    # went into it) is computed per future period, and periods can have different member
+    # counts (a member missing from one period doesn't affect others), so each future column
+    # gets its own legend rather than one shared across the whole figure.
+    hatch_legends = {}
     ref_mesh = None
     for row, leaf in enumerate(ref_leaves):
         plot_map(leaf.ds[var], ax=axes[row, 0], **ref_kwargs)
@@ -798,7 +810,7 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         if axes[row, 0].collections:
             ref_mesh = axes[row, 0].collections[-1]
         if model_agreement and f"{var}_confidence" in leaf.ds.data_vars:
-            hatch_legend = plot_confidence_hatch(axes[row, 0], leaf.ds, var)
+            hatch_legends[0] = plot_confidence_hatch(axes[row, 0], leaf.ds, var)
         if show_label_column:
             label_axes[row].text(1.0, 0.5, row_labels[row], ha="right", va="center", fontsize=label_fontsize)
     axes[0, 0].set_title("Reference" if show_label_column else f"{row_labels[0]}\nReference")
@@ -816,14 +828,14 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
                 if axes[row, col].collections:
                     fut_mesh = axes[row, col].collections[-1]
                 if model_agreement and f"{var}_confidence" in fut_leaf.ds.data_vars:
-                    hatch_legend = plot_confidence_hatch(axes[row, col], fut_leaf.ds, var)
+                    hatch_legends[col] = plot_confidence_hatch(axes[row, col], fut_leaf.ds, var)
         axes[0, col].set_title(period_label)
 
     for ax in axes.flat:
         _add_features(ax, region=region)
 
-    if hatch_legend is not None:
-        fig.legend(handles=[hatch_legend], loc="outside lower center", frameon=False, fontsize=8)
+    for col, legend in hatch_legends.items():
+        axes[-1, col].legend(handles=[legend], loc="lower left", frameon=False, fontsize=7)
 
     # aspect (length:thickness) scaled by how many columns the group's colorbar spans, so a
     # 1-column and a (n_cols - 1)-column colorbar come out the same absolute thickness instead
