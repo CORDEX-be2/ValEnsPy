@@ -392,13 +392,19 @@ def climate_change_signal_ensemble_mean(fut: DataTree, ref: DataTree, abs_diff=T
         The climate change signal as the difference between the ensemble mean of the fut and ref datatree.
     """
     dt_cc = climate_change_signal_of_spatial_mean(fut, ref, abs_diff=abs_diff)
-    ds_cc = datatree_to_dataset(dt_cc, compat="override", coords="minimal") 
+    ds_cc = datatree_to_dataset(dt_cc, compat="override", coords="minimal")
     ds_cc_mean = ds_cc.mean("id")
     if model_agreement:
         for var in ds_cc.data_vars:
-            n_models = len(ds_cc[var].id)
+            # len(ds_cc[var].id) is every member matched across periods, not every member
+            # that actually has `var` - members that don't produce this variable still get an
+            # "id" entry (all-NaN, from concatenating datasets with different variable sets in
+            # datatree_to_dataset), so it silently inflates the required-agreement count.
+            spatial_dims = [d for d in ds_cc[var].dims if d != "id"]
+            has_var = ds_cc[var].notnull().any(spatial_dims)
+            n_models = int(has_var.sum())
             required_n_models = int(np.ceil(model_agreement * n_models))
-            agreement = (ds_cc[var] > 0).sum("id") / n_models 
+            agreement = (ds_cc[var] > 0).sum("id") / n_models
             agreement = xr.where(agreement > 0.5, agreement, 1 - agreement) #Get the agreement for the sign of the change, regardless of whether it's a positive or negative change
             ds_cc_mean[f"{var}_confidence"] = agreement < model_agreement
             ds_cc_mean[f"{var}_confidence"].attrs["description"] = f"Model dis-agreement in sign of the change, less than {model_agreement*100}% ({required_n_models}/{n_models}) models agree."
