@@ -6,7 +6,7 @@ import warnings
 from valenspy._utilities._regions import region_bounds
 from valenspy._utilities._datatree import datatree_var_range
 from valenspy.diagnostic.functions import perkins_skill_score
-from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs, cbar_scale, set_wrapped_suptitle
+from valenspy.diagnostic.plot_utils import default_plot_kwargs, _augment_kwargs, cbar_scale, set_wrapped_suptitle, plot_confidence_hatch
 
 import seaborn as sns
 from matplotlib.colors import LinearSegmentedColormap
@@ -655,30 +655,16 @@ def plot_ensemble_mean_map(ds: xr.Dataset, var: str, model_agreement: bool = Fal
     ax = _get_gca(**kwargs)
 
     if model_agreement:
-        #Check if ds has var_confidence variable
-        if f"{var}_confidence" not in ds:
-            raise ValueError(f"Dataset must contain a variable named '{var}_confidence' to indicate model agreement when model_agreement is set to True.")
-
-        ax.contourf(
-            ds.lon,
-            ds.lat,
-            ds[f"{var}_confidence"],
-            colors="none",
-            levels=[0.5, 1], #Only show areas with low confidence
-            hatches=["////"],
-            transform=kwargs.get("subplot_kws", {}).get("transform", ccrs.PlateCarree())
-        )
-        description = ds[f"{var}_confidence"].attrs.get("description", "Model dis-agreement confidence")
-        description = "\n".join(textwrap.wrap(description, width=25))
-        legends = [Patch(facecolor="none", hatch="////", label=description)]
-        ax.legend(handles=legends, loc="lower left", frameon=False, fontsize=7)
+        legend = plot_confidence_hatch(ax, ds, var, transform=kwargs.get("subplot_kws", {}).get("transform"))
+        ax.legend(handles=[legend], loc="lower left", frameon=False, fontsize=7)
 
     return ax
 
 
 def plot_reference_future_periods_grid(result: dict, var: str, label="path", title=None, region=None, projection=None,
                                         ref_cbar=None, fut_cbar=None, ref_cbar_kwargs=None, fut_cbar_kwargs=None,
-                                        cbar_location="bottom", ref_cmap=None, fut_cmap=None, **kwargs):
+                                        cbar_location="bottom", ref_cmap=None, fut_cmap=None, model_agreement=False,
+                                        **kwargs):
     """
     Plot climate_change_signal_per_member/climatology_per_member's result as a grid: one row
     per member, one column for the reference period then one per future period.
@@ -715,6 +701,11 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         diverging one for the future columns (a change signal). None (default) for a group:
         falls back to whatever `cmap` is passed via **kwargs, same for both groups (unchanged
         behaviour from before these parameters existed).
+    model_agreement : bool, optional
+        Hatch cells with low model agreement - requires a `<var>_confidence` variable, e.g.
+        from climate_change_signal_ensemble_mean_grid(..., model_agreement=0.75). Cells
+        without that variable (typically the reference column, which isn't a change signal)
+        are silently left unhatched. Default False.
     **kwargs
         Passed to plot_map for every cell; `figsize` sizes the whole grid. `label_col_width`
         (inches) sets the row-label column's width - default sized to fit the labels
@@ -784,12 +775,15 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         fut_kwargs.pop("cbar_kwargs", None)
         fut_kwargs["add_colorbar"] = False
 
+    hatch_legend = None
     ref_mesh = None
     for row, leaf in enumerate(ref_leaves):
         plot_map(leaf.ds[var], ax=axes[row, 0], **ref_kwargs)
         axes[row, 0].set_title("")  # no per-axis title - xarray's own defaults to leftover coords
         if axes[row, 0].collections:
             ref_mesh = axes[row, 0].collections[-1]
+        if model_agreement and f"{var}_confidence" in leaf.ds.data_vars:
+            hatch_legend = plot_confidence_hatch(axes[row, 0], leaf.ds, var)
         label_axes[row].text(1.0, 0.5, row_labels[row], ha="right", va="center", fontsize=label_fontsize)
     axes[0, 0].set_title("Reference")
 
@@ -805,10 +799,15 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
                 axes[row, col].set_title("")
                 if axes[row, col].collections:
                     fut_mesh = axes[row, col].collections[-1]
+                if model_agreement and f"{var}_confidence" in fut_leaf.ds.data_vars:
+                    hatch_legend = plot_confidence_hatch(axes[row, col], fut_leaf.ds, var)
         axes[0, col].set_title(period_label)
 
     for ax in axes.flat:
         _add_features(ax, region=region)
+
+    if hatch_legend is not None:
+        fig.legend(handles=[hatch_legend], loc="outside lower center", frameon=False, fontsize=8)
 
     # aspect (length:thickness) scaled by how many columns the group's colorbar spans, so a
     # 1-column and a (n_cols - 1)-column colorbar come out the same absolute thickness instead

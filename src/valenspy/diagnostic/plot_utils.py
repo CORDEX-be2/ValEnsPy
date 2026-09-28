@@ -1,8 +1,45 @@
 from functools import wraps
+import textwrap
+import cartopy.crs as ccrs
 from matplotlib.layout_engine import ConstrainedLayoutEngine
+from matplotlib.patches import Patch
 
 def _merge_kwargs(def_kwargs, kwargs):
     return {**def_kwargs, **kwargs}
+
+def plot_confidence_hatch(ax, ds, var, transform=None):
+    """Hatch overlay marking low model agreement on `ax` - the `model_agreement` option
+    behind both plot_ensemble_mean_map and plot_reference_future_periods_grid. `ds` must
+    carry a `<var>_confidence` boolean variable (set by climate_change_signal_ensemble_mean's
+    own `model_agreement` option) - True marks a cell as low-agreement and gets hatched.
+
+    Parameters
+    ----------
+    ax : matplotlib.axes.Axes
+        A cartopy GeoAxes to draw the hatch on.
+    ds : xr.Dataset
+        Must contain a `f"{var}_confidence"` variable, with `lat`/`lon` coordinates.
+    var : str
+        The variable whose confidence to hatch.
+    transform : cartopy.crs.Projection, optional
+        Default ccrs.PlateCarree().
+
+    Returns
+    -------
+    matplotlib.patches.Patch
+        A legend handle for the hatch, labelled from the confidence variable's own
+        "description" attribute if set.
+    """
+    confidence_var = f"{var}_confidence"
+    if confidence_var not in ds:
+        raise ValueError(f"Dataset must contain a variable named {confidence_var!r} to draw a model agreement hatch.")
+    ax.contourf(
+        ds.lon, ds.lat, ds[confidence_var],
+        colors="none", levels=[0.5, 1], hatches=["////"],
+        transform=transform or ccrs.PlateCarree(),
+    )
+    description = ds[confidence_var].attrs.get("description", "Model dis-agreement confidence")
+    return Patch(facecolor="none", hatch="////", label="\n".join(textwrap.wrap(description, width=25)))
 
 def set_wrapped_suptitle(fig, title, **kwargs):
     """Set `title` as `fig`'s suptitle, wrapped to actually fit the figure's own width -

@@ -635,13 +635,15 @@ def climate_change_signal_ensemble_mean_grid(dt: DataTree, historical: str, futu
         name: DataTree (one leaf: that period's ensemble-mean climate change signal)}}.
     """
     ref_matched, fut_periods_matched = _match_members_across_periods(dt, historical, future_periods, identity_attrs)
+    # "Ensemble Mean" is the sole leaf name in each returned tree - plot_reference_future_periods_grid's
+    # default label="path" shows it verbatim as the (only) row label.
     fut_result = {
-        label: DataTree.from_dict({"ensemble_mean": climate_change_signal_ensemble_mean(
+        label: DataTree.from_dict({"Ensemble Mean": climate_change_signal_ensemble_mean(
             fut_dt, ref_matched, abs_diff=abs_diff, model_agreement=model_agreement,
         )})
         for label, fut_dt in fut_periods_matched.items()
     }
-    return {"ref": DataTree.from_dict({"ensemble_mean": ensemble_spatial_mean(ref_matched)}), "fut": fut_result}
+    return {"ref": DataTree.from_dict({"Ensemble Mean": ensemble_spatial_mean(ref_matched)}), "fut": fut_result}
 
 def _leaf_key(dataset, attrs):
     """The same "/"-joined key `restructure_by_attributes` would give this one dataset's leaf,
