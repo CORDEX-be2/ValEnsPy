@@ -605,7 +605,8 @@ def climatology_per_member(dt: DataTree, historical: str, future_periods: list,
 
 def climate_change_signal_ensemble_mean_grid(dt: DataTree, historical: str, future_periods: list,
                                               model_agreement=False, abs_diff=True,
-                                              identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS):
+                                              identity_attrs=DEFAULT_MEMBER_IDENTITY_ATTRS,
+                                              member_identity_attrs=None):
     """
     The reference-period ensemble mean next to the ensemble-mean climate change signal for each
     future period - the ensemble-mean counterpart to climate_change_signal_per_member (members
@@ -627,6 +628,16 @@ def climate_change_signal_ensemble_mean_grid(dt: DataTree, historical: str, futu
         See climate_change_signal_ensemble_mean.
     identity_attrs : tuple of str, optional
         See climate_change_signal_per_member. Default DEFAULT_MEMBER_IDENTITY_ATTRS.
+    member_identity_attrs : tuple of str, optional
+        See _match_members_across_periods - without this, a driving model crossing the same
+        future-period node under more than one scenario silently loses all but one of those
+        scenarios from the ensemble mean, same as for climate_change_signal_per_member. When
+        given, `_match_members_across_periods` broadcasts one copy of that model's historical
+        run to each disambiguated future variant's path (correct for climate_change_signal_per_member,
+        where each variant is its own row) - the reference ensemble mean below re-collapses
+        those copies back to one per model by `identity_attrs` first, so a model with several
+        future scenarios doesn't get its historical run counted once per scenario. Default None
+        (no extra disambiguation).
 
     Returns
     -------
@@ -634,7 +645,9 @@ def climate_change_signal_ensemble_mean_grid(dt: DataTree, historical: str, futu
         {"ref": DataTree (one leaf: the reference-period ensemble mean), "fut": {future period
         name: DataTree (one leaf: that period's ensemble-mean climate change signal)}}.
     """
-    ref_matched, fut_periods_matched = _match_members_across_periods(dt, historical, future_periods, identity_attrs)
+    ref_matched, fut_periods_matched = _match_members_across_periods(
+        dt, historical, future_periods, identity_attrs, member_identity_attrs=member_identity_attrs,
+    )
     # "Ensemble Mean" is the sole leaf name in each returned tree - plot_reference_future_periods_grid's
     # default label="path" shows it verbatim as the (only) row label.
     fut_result = {
@@ -643,7 +656,9 @@ def climate_change_signal_ensemble_mean_grid(dt: DataTree, historical: str, futu
         )})
         for label, fut_dt in fut_periods_matched.items()
     }
-    return {"ref": DataTree.from_dict({"Ensemble Mean": ensemble_spatial_mean(ref_matched)}), "fut": fut_result}
+    # De-duplicated back to one leaf per model before averaging - see member_identity_attrs above.
+    ref_for_mean = restructure_by_attributes(ref_matched, identity_attrs) if member_identity_attrs else ref_matched
+    return {"ref": DataTree.from_dict({"Ensemble Mean": ensemble_spatial_mean(ref_for_mean)}), "fut": fut_result}
 
 def _leaf_key(dataset, attrs):
     """The same "/"-joined key `restructure_by_attributes` would give this one dataset's leaf,

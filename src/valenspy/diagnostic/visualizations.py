@@ -676,8 +676,11 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
     var : str
         The variable to plot.
     label : str, optional
-        DataTree leaf attribute used for each row's label, shown once per row in a dedicated
-        left-hand column. "path" (default) uses the leaf's full path.
+        DataTree leaf attribute used for each row's label. "path" (default) uses the leaf's
+        full path. Shown once per row in a dedicated left-hand column when there's more than
+        one row; for a single row (e.g. an ensemble-mean grid) that column would exist just to
+        show one static string, so it's dropped and the label becomes a small subtitle on the
+        Reference panel instead.
     title : str, optional
         If given, wrapped and set as the figure's suptitle.
     region : str, optional
@@ -729,36 +732,48 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         return "\n".join(raw.split("/")) if label == "path" else "\n".join(textwrap.wrap(raw, width=14))
 
     row_labels = [_row_label(leaf) for leaf in ref_leaves]
+    show_label_column = n_rows > 1
 
     figsize = kwargs.pop("figsize", (4 * n_cols, 3 * n_rows))
-    # Sized to the labels' own rendered width (plus a small margin) rather than a fixed
-    # guess - a fixed width leaves a lot of unused space for short labels, since they're
-    # right-aligned against the maps rather than filling the column.
-    def _text_width_inches(text, fontsize):
-        scratch = plt.figure()
-        extent = scratch.text(0, 0, text, fontsize=fontsize).get_window_extent(scratch.canvas.get_renderer())
-        plt.close(scratch)
-        return extent.width / scratch.dpi
+    if show_label_column:
+        # Sized to the labels' own rendered width (plus a small margin) rather than a fixed
+        # guess - a fixed width leaves a lot of unused space for short labels, since they're
+        # right-aligned against the maps rather than filling the column.
+        def _text_width_inches(text, fontsize):
+            scratch = plt.figure()
+            extent = scratch.text(0, 0, text, fontsize=fontsize).get_window_extent(scratch.canvas.get_renderer())
+            plt.close(scratch)
+            return extent.width / scratch.dpi
 
-    default_label_col_width = max((_text_width_inches(l, label_fontsize) for l in row_labels), default=0) + 0.3
-    label_col_width = kwargs.pop("label_col_width", default_label_col_width)
+        default_label_col_width = max((_text_width_inches(l, label_fontsize) for l in row_labels), default=0) + 0.3
+        label_col_width = kwargs.pop("label_col_width", default_label_col_width)
+    else:
+        kwargs.pop("label_col_width", None)  # accepted but unused - nothing to size for a single row
+        label_col_width = 0
+
     # Row labels get their own plain (non-cartopy) axes column - GeoAxes doesn't render
     # ylabels. constrained_layout then sizes everything (labels, suptitle, colorbars)
     # automatically.
     fig = plt.figure(figsize=(figsize[0] + label_col_width, figsize[1]), layout="constrained")
-    # width_ratios are weights, not inches - a data column's "1" weight is figsize[0]/n_cols
-    # inches, so the label column's weight has to be scaled onto that same per-weight-unit
-    # size for label_col_width to actually render at that many inches, instead of being
-    # inflated by roughly n_cols.
-    label_weight = label_col_width / (figsize[0] / n_cols)
-    gs = fig.add_gridspec(n_rows, n_cols + 1, width_ratios=[label_weight] + [1] * n_cols)
-    label_axes = [fig.add_subplot(gs[row, 0]) for row in range(n_rows)]
-    for ax in label_axes:
-        ax.axis("off")
+    if show_label_column:
+        # width_ratios are weights, not inches - a data column's "1" weight is figsize[0]/n_cols
+        # inches, so the label column's weight has to be scaled onto that same per-weight-unit
+        # size for label_col_width to actually render at that many inches, instead of being
+        # inflated by roughly n_cols.
+        label_weight = label_col_width / (figsize[0] / n_cols)
+        gs = fig.add_gridspec(n_rows, n_cols + 1, width_ratios=[label_weight] + [1] * n_cols)
+        label_axes = [fig.add_subplot(gs[row, 0]) for row in range(n_rows)]
+        for ax in label_axes:
+            ax.axis("off")
+        col_offset = 1
+    else:
+        gs = fig.add_gridspec(n_rows, n_cols)
+        label_axes = None
+        col_offset = 0
     axes = np.empty((n_rows, n_cols), dtype=object)
     for row in range(n_rows):
         for col in range(n_cols):
-            axes[row, col] = fig.add_subplot(gs[row, col + 1], projection=projection or ccrs.PlateCarree())
+            axes[row, col] = fig.add_subplot(gs[row, col + col_offset], projection=projection or ccrs.PlateCarree())
 
     fut_kwargs, ref_kwargs = dict(kwargs), dict(kwargs)
     if ref_cmap is not None:
@@ -784,8 +799,9 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
             ref_mesh = axes[row, 0].collections[-1]
         if model_agreement and f"{var}_confidence" in leaf.ds.data_vars:
             hatch_legend = plot_confidence_hatch(axes[row, 0], leaf.ds, var)
-        label_axes[row].text(1.0, 0.5, row_labels[row], ha="right", va="center", fontsize=label_fontsize)
-    axes[0, 0].set_title("Reference")
+        if show_label_column:
+            label_axes[row].text(1.0, 0.5, row_labels[row], ha="right", va="center", fontsize=label_fontsize)
+    axes[0, 0].set_title("Reference" if show_label_column else f"{row_labels[0]}\nReference")
 
     fut_mesh = None
     for col, (period_label, dt) in enumerate(fut_by_period.items(), start=1):
