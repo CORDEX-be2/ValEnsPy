@@ -663,7 +663,7 @@ def plot_ensemble_mean_map(ds: xr.Dataset, var: str, model_agreement: bool = Fal
 
 def plot_reference_future_periods_grid(result: dict, var: str, label="path", title=None, region=None, projection=None,
                                         ref_cbar=None, fut_cbar=None, ref_cbar_kwargs=None, fut_cbar_kwargs=None,
-                                        cbar_location=None, ref_cmap=None, fut_cmap=None, model_agreement=False,
+                                        cbar_location="bottom", ref_cmap=None, fut_cmap=None, model_agreement=False,
                                         **kwargs):
     """
     Plot climate_change_signal_per_member/climatology_per_member's result as a grid: one row
@@ -696,8 +696,8 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
         Passed to the reference/future group's shared colorbar respectively, e.g.
         `{"label": "tas (K)"}`. Only used when `ref_cbar`/`fut_cbar` is given.
     cbar_location : str, optional
-        Where a group's shared colorbar is placed relative to its panels - "bottom", "left",
-        "right", "top". Default None: "right" for a single-row result, "bottom" otherwise.
+        Where a group's shared colorbar is placed relative to its panels - "bottom" (default,
+        spans just that group's own width), "left"/"right"/"top".
     ref_cmap, fut_cmap : str or Colormap, optional
         Override `cmap` (see **kwargs) independently for the reference column's and the future
         columns' panels - e.g. a sequential colormap for the reference (absolute values) and a
@@ -736,11 +736,8 @@ def plot_reference_future_periods_grid(result: dict, var: str, label="path", tit
 
     row_labels = [_row_label(leaf) for leaf in ref_leaves]
     show_label_column = n_rows > 1
-    if cbar_location is None:
-        cbar_location = "right" if n_rows == 1 else "bottom"
 
-    # A single row has no other rows competing for vertical space and (with cbar_location
-    # defaulting to "right") no bottom colorbar eating into it either - size panels larger.
+    # A single row has no other rows competing for vertical space - size panels larger.
     default_figsize = (4 * n_cols, 3 * n_rows) if n_rows > 1 else (5 * n_cols, 5)
     figsize = kwargs.pop("figsize", default_figsize)
     if show_label_column:
