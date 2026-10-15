@@ -230,6 +230,7 @@ def MAR_to_CF(ds: xr.Dataset) -> xr.Dataset:
     Rename TIME to time and remove the ZTQLEV and ZUVLEV dimensions by selecting the first value of each dimension.
     Derive scalar near-surface wind speed (sfcWind) from the U2Z/V2Z wind components, since MAR - unlike every
     other source in INPUT_CONVERTORS - does not report a scalar wind speed variable directly.
+    Rename TTZ_2/TTZ_3/RHZ_2 to TTZmax/TTZmin/RHZmin if those are absent.
     For files driven by a driving model in _MAR_NOLEAP_MISLABELED_DRIVING_MODELS,
     also corrects a mislabeled calendar (declared "standard", actually
     365-day/noleap) - see _fix_mar_batch_calendar.
@@ -261,5 +262,10 @@ def MAR_to_CF(ds: xr.Dataset) -> xr.Dataset:
     if "U2Z" in ds and "V2Z" in ds:
         ds["sfcWind_derived"] = (ds["U2Z"] ** 2 + ds["V2Z"] ** 2) ** 0.5
         ds["sfcWind_derived"].attrs["units"] = "m/s"
+
+    # GCM-driven files name the daily max/min temperature and min humidity TTZ_2/TTZ_3/RHZ_2.
+    for dup_name, std_name in (("TTZ_2", "TTZmax"), ("TTZ_3", "TTZmin"), ("RHZ_2", "RHZmin")):
+        if dup_name in ds and std_name not in ds:
+            ds = ds.rename({dup_name: std_name})
 
     return ds
