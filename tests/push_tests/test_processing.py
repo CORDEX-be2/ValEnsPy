@@ -26,6 +26,37 @@ def test_unit_conversion():
     assert isinstance(ds_c, xr.Dataset), "xr.Dataset not returned after unit conversion"
     assert isinstance(dt_c, DataTree), "DataTree not returned after unit conversion"
         
+def test_convert_units_by_mapping():
+    ds = open_dataset("ERA5/daily_surface_cancities_1990-1993.nc")
+    dt = DataTree.from_dict({"a": ds, "b": ds})
+
+    units_map = {"K": "degC", "kg m-2 s-1": ("mm/d", "hydro")}
+    ds_c = vp.convert_units_by_mapping(ds, units_map)
+    dt_c = vp.convert_units_by_mapping(dt, units_map)
+
+    for out in (ds_c, dt_c["a"].to_dataset(), dt_c["b"].to_dataset()):
+        assert out["tasmax"].units == "°C"
+        assert out["pr"].units == "mm d-1"
+    assert isinstance(ds_c, xr.Dataset) and isinstance(dt_c, DataTree)
+    assert ds["tasmax"].units == "K", "input must not be modified"
+
+    custom = vp.convert_units_by_mapping(ds, {"K": "degF"})
+    assert custom["tasmax"].units == "°F" and custom["pr"].units == ds["pr"].units
+
+def test_convert_units_by_mapping_temperature_difference():
+    diff = xr.DataArray([6.0], dims="x", attrs={"units": "K", "units_metadata": "temperature: difference"})
+    absolute = xr.DataArray([300.0], dims="x", attrs={"units": "K"})
+    ds = xr.Dataset({"excess": diff, "tas": absolute})
+    dt = DataTree.from_dict({"a": ds, "b": xr.Dataset({"tas": absolute})})
+
+    for out in (vp.convert_units_by_mapping(ds, {"K": "degC"}),
+                vp.convert_units_by_mapping(dt, {"K": "degC"})["a"].to_dataset()):
+        assert float(out["excess"]) == 6.0, "a difference must not get the 273.15 offset"
+        assert out["excess"].attrs["units_metadata"] == "temperature: difference"
+        assert abs(float(out["tas"]) - 26.85) < 1e-6
+
+    assert abs(float(vp.convert_units_by_mapping(ds, {"K": "degF"})["excess"]) - 10.8) < 1e-6
+
 def test_xclim_indicators():
     #xclim test dataset
     ds = open_dataset("ERA5/daily_surface_cancities_1990-1993.nc")
