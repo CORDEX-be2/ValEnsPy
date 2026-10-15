@@ -75,9 +75,12 @@ def convert_units_by_mapping(data : xr.Dataset | xr.DataTree, units_map : dict):
     data : xr.Dataset or xr.DataTree
         The input dataset or data tree.
     units_map : dict
-        ``{source_unit: target_unit}`` or ``{source_unit: (target_unit, context)}``, e.g.
-        ``{"K": "degC", "kg m-2 s-1": ("mm/d", "hydro")}``. The ``hydro`` context is needed to
-        relate a mass flux to a depth rate.
+        ``{source_unit: target}``, where ``target`` is a unit string, a ``(unit, context)`` tuple, or a
+        dict ``{"units": ..., "context": ..., "label": ...}`` (``context`` and ``label`` optional), e.g.
+        ``{"K": "degC", "kg m-2 s-1": ("mm/d", "hydro"), "K days": {"units": "degC days", "label": "°C days"}}``.
+        The ``hydro`` context is needed to relate a mass flux to a depth rate. ``label`` replaces the
+        ``units`` attribute after the conversion, for when pint's own formatting (e.g. ``d degC``)
+        is not what should be displayed.
 
     Returns
     -------
@@ -104,8 +107,24 @@ def convert_units_by_mapping(data : xr.Dataset | xr.DataTree, units_map : dict):
         target = units_map.get(attrs.get("units"))
         if target is None:
             continue
-        target_unit, context = (target, "infer") if isinstance(target, str) else target
+        label = None
+        if isinstance(target, str):
+            target_unit, context = target, "infer"
+        elif isinstance(target, dict):
+            target_unit, context, label = target["units"], target.get("context", "infer"), target.get("label")
+        else:
+            target_unit, context = target
         if attrs.get("units_metadata") == "temperature: difference":
             target_unit = {"units": target_unit, "units_metadata": "temperature: difference"}
         data = convert_units_to(data, var=var, target_unit=target_unit, context=context)
+        if label is not None:
+            data = _set_units_label(data, var, label)
     return data
+
+
+def _set_units_label(data, var, label):
+    """Set the ``units`` attribute of `var` to `label` in a Dataset or every leaf of a DataTree."""
+    def _ds(ds):
+        return ds.assign({var: ds[var].assign_attrs(units=label)}) if var in ds else ds
+
+    return data.map_over_datasets(_ds) if isinstance(data, xr.DataTree) else _ds(data)

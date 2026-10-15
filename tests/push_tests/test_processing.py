@@ -57,6 +57,18 @@ def test_convert_units_by_mapping_temperature_difference():
 
     assert abs(float(vp.convert_units_by_mapping(ds, {"K": "degF"})["excess"]) - 10.8) < 1e-6
 
+def test_convert_units_by_mapping_label():
+    dd = xr.DataArray([100.0], dims="x", attrs={"units": "K days"})
+    ds = xr.Dataset({"dd": dd, "other": dd.copy()})
+    dt = DataTree.from_dict({"a": ds, "b": xr.Dataset({"dd": dd})})
+    units_map = {"K days": {"units": "degC days", "label": "°C days"}}
+
+    out = vp.convert_units_by_mapping(ds, units_map)
+    assert float(out["dd"]) == 100.0 and out["dd"].units == "°C days"
+    out_dt = vp.convert_units_by_mapping(dt, units_map)
+    assert out_dt["a"].to_dataset()["dd"].units == "°C days" and out_dt["b"].to_dataset()["dd"].units == "°C days"
+    assert vp.convert_units_by_mapping(ds, {"K days": {"units": "degC days"}})["dd"].units == "d degC"
+
 def test_xclim_indicators():
     #xclim test dataset
     ds = open_dataset("ERA5/daily_surface_cancities_1990-1993.nc")
