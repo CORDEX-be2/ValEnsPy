@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     # %%
     #Creating the input manager and adding our personal yml file to the catalog
-    m = valenspy.InputManager("bilan") #This takes very long for the all the CORDEX data...  
+    m = valenspy.InputManager("balin") #This takes very long for the all the CORDEX data...  
 
     # %%
     cat = m.search(
