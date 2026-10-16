@@ -69,6 +69,14 @@ def test_convert_units_by_mapping_label():
     assert out_dt["a"].to_dataset()["dd"].units == "°C days" and out_dt["b"].to_dataset()["dd"].units == "°C days"
     assert vp.convert_units_by_mapping(ds, {"K days": {"units": "degC days"}})["dd"].units == "d degC"
 
+def test_mask_to_reference_coverage_without_time():
+    import numpy as np
+    from valenspy.processing import mask_to_reference_coverage
+    ref = xr.Dataset({"v": (("lat", "lon"), np.array([[1.0, np.nan], [2.0, 3.0]]))})
+    dt = DataTree.from_dict({"m": xr.Dataset({"v": (("lat", "lon"), np.ones((2, 2)))})})
+    out = mask_to_reference_coverage(dt, ref)["m"].to_dataset()["v"].values
+    assert np.isnan(out[0, 1]) and out[0, 0] == 1.0 and out[1, 1] == 1.0
+
 def test_xclim_indicators():
     #xclim test dataset
     ds = open_dataset("ERA5/daily_surface_cancities_1990-1993.nc")

@@ -25,17 +25,27 @@ def _restrict_to_shared_vars(ds: xr.Dataset, other_vars) -> xr.Dataset:
     return ds[[v for v in ds.data_vars if v in other_vars]]
 
 
+def _coverage(reference: xr.Dataset, dim) -> xr.Dataset:
+    """Where `reference` has a valid value anywhere along `dim`. Only the dimensions of `dim` that
+    `reference` actually has are reduced, so a reference without e.g. a "time" dimension (a return
+    level, a climatology) is used as its own coverage instead of raising."""
+    dims = [dim] if isinstance(dim, str) else list(dim)
+    present = [d for d in dims if d in reference.dims]
+    valid = reference.notnull()
+    return valid.any(dim=present) if present else valid
+
+
 def _mask_ds_to_reference_coverage(ds: xr.Dataset, reference: xr.Dataset, dim) -> xr.Dataset:
     """One dataset's worth of `mask_to_reference_coverage` - used directly by
     `Model2Self.apply` (a single Dataset, no `mask_dt` to delegate to there)."""
-    coverage = reference.notnull().any(dim=dim)
-    return _restrict_to_shared_vars(ds, reference.data_vars).where(coverage)
+    return _restrict_to_shared_vars(ds, reference.data_vars).where(_coverage(reference, dim))
 
 
 def mask_to_reference_coverage(dt: xr.DataTree, reference: xr.Dataset, dim: str = "time") -> xr.DataTree:
     """Mask every leaf of `dt` to `reference`'s own coverage: NaN wherever `reference`
     has no valid value anywhere along `dim` (default "time", i.e. mask by spatial
-    extent - pass e.g. `["lat", "lon"]` for temporal coverage instead).
+    extent - pass e.g. `["lat", "lon"]` for temporal coverage instead). A `dim` that
+    `reference` does not have is ignored.
 
     Each leaf is first restricted to whichever of its own variables `reference` also
     has - a variable `reference` doesn't cover at all is dropped rather than silently
@@ -49,7 +59,7 @@ def mask_to_reference_coverage(dt: xr.DataTree, reference: xr.Dataset, dim: str 
     xr.DataTree
         `dt`, masked to `reference`'s own coverage.
     """
-    coverage = reference.notnull().any(dim=dim)
+    coverage = _coverage(reference, dim)
     restricted = dt.map_over_datasets(
         lambda ds: _restrict_to_shared_vars(ds, reference.data_vars) if ds else ds
     )
