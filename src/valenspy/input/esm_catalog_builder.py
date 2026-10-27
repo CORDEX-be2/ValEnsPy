@@ -1,3 +1,4 @@
+from copy import deepcopy
 from pathlib import Path
 import pandas as pd
 import re
@@ -39,7 +40,7 @@ CATALOG_COLS = {
 
 class CatalogBuilder:
 
-    def __init__(self, catalog_id, datasets_info : dict | str = None, datasets_subset = None):
+    def __init__(self, catalog_id, datasets_info : dict | str = None, datasets_subset = None, input_convertors : dict = None):
         """
         Initialize the CatalogBuilder with a catalog ID and dataset information.
 
@@ -58,15 +59,24 @@ class CatalogBuilder:
             - meta_data: A dictionary containing metadata for the dataset
         dataset_to_load : str | list, optional
             The name of the dataset(s) to load. If not provided, all datasets in the dataset_info will be loaded.
+        input_convertors : dict, optional
+            Input convertors keyed by dataset name, used to translate raw variable names to CORDEX variable names.
+            The dict is used as given (not copied), so a convertor added to it later is seen by this builder - an
+            InputManager relies on this to share its own convertors with its builder.
+            Default is None, in which case the built-in INPUT_CONVERTORS are used (read-only).
         """
         self.catalog_id = catalog_id
+        self.input_convertors = INPUT_CONVERTORS if input_convertors is None else input_convertors
 
+        # Copied, never aliased: add_dataset writes into self.datasets_info, which would otherwise
+        # mutate the module-level DATASET_PATHS (or the caller's own dict) and leak into every
+        # CatalogBuilder/InputManager later built for the same machine.
         if datasets_info:
             if isinstance(datasets_info, str):
                 datasets_info = load_yml(datasets_info)
-            self.datasets_info = datasets_info
+            self.datasets_info = deepcopy(datasets_info)
         else:
-            self.datasets_info = DATASET_PATHS[catalog_id]
+            self.datasets_info = deepcopy(DATASET_PATHS[catalog_id])
 
         if datasets_subset:
             if isinstance(datasets_subset, str):
@@ -177,9 +187,9 @@ class CatalogBuilder:
 
         dataset_meta_data = dataset_info.get("meta_data", {})
         if dataset_IC := dataset_info.get("input_convertor", None):
-            IC = INPUT_CONVERTORS.get(dataset_IC, None) #Use the specified ICs
+            IC = self.input_convertors.get(dataset_IC, None) #Use the specified ICs
         else:
-            IC = INPUT_CONVERTORS.get(dataset_name, None) #Use the dataset name to find the IC
+            IC = self.input_convertors.get(dataset_name, None) #Use the dataset name to find the IC
         
         if IC:
             CORDEX_variable_set = IC.cordex_variables
