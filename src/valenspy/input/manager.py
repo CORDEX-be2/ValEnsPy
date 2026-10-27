@@ -48,10 +48,10 @@ class InputManager:
             datasets_info : dict = None,
             datasets_subset : str | list = None,
             description=None, 
-            input_convertors : dict = INPUT_CONVERTORS,
+            input_convertors : dict = None,
             esmcat_data : dict = esmcat_default_data,
-            xarray_open_kwargs : dict = {},
-            xarray_combine_by_coords_kwargs : dict = {},
+            xarray_open_kwargs : dict = None,
+            xarray_combine_by_coords_kwargs : dict = None,
             intake_esm_kwargs : dict = {"sep": "/"}
             ):
         """
@@ -76,7 +76,8 @@ class InputManager:
             A description of the catalog. Default is None. This is used to create the description in the intake-esm catalog.
         input_convertors : dict, optional
             A dictionary containing input convertors for the datasets. The keys are dataset names and the values are functions that convert the dataset to ValEnsPy compliant format.
-            Default is INPUT_CONVERTORS, the set of predefined input convertors.
+            Default is None, a per-manager copy of INPUT_CONVERTORS (the set of predefined input convertors). A dictionary passed in is copied too,
+            so :meth:`add_input_convertor` only affects this manager.
         esmcat_data : dict, optional
             A dictionary containing the description of esmcat data to create the intake-esm catalog. Default is esmcat_default_data. See :func:`intake_esm.esm_datastore.from_dict` for more information.
         xarray_open_kwargs : dict, optional
@@ -86,17 +87,20 @@ class InputManager:
         intake_esm_kwargs : dict, optional
             A dictionary containing additional arguments for the creation of the intake_esm catalog. Default is an empty dictionary. See :func:`intake_esm.esm_datastore` for more information.
         """
+        #Collection of functions to preprocess the data so that they are ValEnsPy compliant.
+        #A per-manager copy: add_input_convertor writes into it, and the catalog builder below
+        #shares this same dict, so it must not be the module-level INPUT_CONVERTORS itself.
+        self.input_convertors = dict(INPUT_CONVERTORS if input_convertors is None else input_convertors)
+
         self.catalog_builder = CatalogBuilder(
             catalog_id=machine,
             datasets_info=datasets_info,
             datasets_subset=datasets_subset,
+            input_convertors=self.input_convertors,
         )
 
         if self.catalog_builder.skipped_files:
             print("There are files that were skipped during the catalog creation. Please check the skipped_files property for a list of skipped files.")
-
-        #Collection of functions to preprocess the data so that they are ValEnsPy compliant
-        self.input_convertors = input_convertors
 
         esmcat_data = deepcopy(esmcat_data)
         if description:
@@ -112,9 +116,9 @@ class InputManager:
             **intake_esm_kwargs
             )
 
-        #Options for xarray.open_dataset and xarray.combine_by_coords
-        self.xarray_open_kwargs = xarray_open_kwargs
-        self.xarray_combine_by_coords_kwargs = xarray_combine_by_coords_kwargs
+        #Options for xarray.open_dataset and xarray.combine_by_coords (per-manager copies, never shared)
+        self.xarray_open_kwargs = dict(xarray_open_kwargs or {})
+        self.xarray_combine_by_coords_kwargs = dict(xarray_combine_by_coords_kwargs or {})
 
     def __getattr__(self, name):
         """
@@ -224,7 +228,7 @@ class InputManager:
             self.esm_datastore.esmcat.dict().get("columns_with_iterables", []),
         )
         
-    def update_catalog_from_dataset_info(self, dataset_name, dataset_root_dir, dataset_pattern, metadata={}):
+    def update_catalog_from_dataset_info(self, dataset_name, dataset_root_dir, dataset_pattern, metadata=None):
         """
         Update the catalog with a new dataset.
 
@@ -240,12 +244,12 @@ class InputManager:
             The regex pattern for matching files in the dataset. This is the reletave path starting from the root and in the following format:
             <indentifier_name>/<indentifier_name>/<indentifier_name>_fixed_part_<variable_id>/<another_identifier>_<year>.nc
         metadata : dict, optional
-            Additional metadata to include in the catalog. Default is an empty dictionary.
+            Additional metadata to include in the catalog. Default is None (no additional metadata).
         """
         dataset_info = {
             "root": dataset_root_dir,
             "pattern": dataset_pattern,
-            "meta_data": metadata,
+            "meta_data": dict(metadata or {}),
         }
         self._update_catalog(dataset_name, dataset_info)
         self.catalog_builder._validate_dataset_info()
