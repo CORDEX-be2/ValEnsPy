@@ -281,14 +281,18 @@ class InputManager:
         """
         Preprocessor to convert datasets to ValEnsPy-compliant format.
     
-        Applies the appropriate input converter based on the dataset's source_id.
+        Applies the appropriate input converter based on the dataset's source_id, unless the
+        dataset's meta_data sets `input_convertor` (e.g. "none" for data that is already
+        ValEnsPy-compliant but shares a raw source's source_id).
         """
-    
+
         # --- Build lookup once (critical for performance) ---
         df = self.esm_datastore.df
 
+        # A dataset's meta_data `input_convertor` overrides the source_id lookup; "none" = no convertor.
+        IC_keys = df["input_convertor"].fillna(df["source_id"]) if "input_convertor" in df else df["source_id"]
         # Ensure paths are POSIX strings
-        path_to_source = dict(zip(df["path"], df["source_id"]))
+        path_to_source = dict(zip(df["path"], IC_keys))
     
         IC_dict = self.input_convertors
 
